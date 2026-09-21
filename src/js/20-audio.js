@@ -216,6 +216,14 @@
     opts = opts || {};
     rebuildIfNeeded();
 
+    // 合成音效优先。ui.tap / ui.correct 这些根本没有对应文件 ——
+    // 它们是 21-sfx.js 用振荡器现场合成的（见那里的注释：为什么音效不走文件）。
+    // 放前面是因为合成音效不需要解码、不会失败，能立刻出声。
+    if (G.Sfx && G.Sfx.has(audioId)) {
+      var ok = G.Sfx.play(audioId);
+      return Promise.resolve(ok);
+    }
+
     return resolve(audioId).then(function (hit) {
       if (!hit) return false;
 
@@ -258,6 +266,7 @@
   }
 
   function has(audioId) {
+    if (G.Sfx && G.Sfx.has(audioId)) return true;      // 合成音效，永远可用
     return !!(overrides[audioId] || (G.AUDIO_MAP && G.AUDIO_MAP[audioId]));
   }
 
@@ -584,6 +593,9 @@
     watchVisibility();
     loadOverrideIndex();
 
+    // 全局按钮反馈音。放在这里而不是各页面里 —— 见 21-sfx.js 的注释。
+    if (G.Sfx && G.Sfx.installTap) G.Sfx.installTap();
+
     // 微信内置浏览器更严。WeixinJSBridgeReady 是微信最早可用的时机。
     if (G.env.isWeChat) {
       document.addEventListener('WeixinJSBridgeReady', function () {
@@ -596,6 +608,20 @@
       rebuildIfNeeded();
       if (!unlocked) unlock();
     }, { passive: true });
+
+    // 三重保险：pointerdown 在少数环境下拿不到手势授权 ——
+    // 微信 X5 内核、部分安卓 WebView、以及 iOS 上「从后台切回来」后的
+    // 第一次点击，都可能出现 pointerdown 到了但 resume() 被拒的情况。
+    // 加 touchend 和 click 是因为它们**同样算真实手势**，但触发时机和
+    // 事件路径都不同；多一条路径，就少一次「家长说没声音」。
+    // 已解锁时是空转（unlocked 判断在 unlock() 之前），不产生开销。
+    ['touchend', 'click'].forEach(function (type) {
+      document.addEventListener(type, function () {
+        if (unlocked) return;
+        rebuildIfNeeded();
+        unlock();
+      }, { passive: true });
+    });
   }
 
   G.Audio = {
@@ -619,7 +645,10 @@
 
     // 调试用
     _buffers: function () { return buffers; },
-    _ctx: function () { return ctx; }
+    _ctx: function () { return ctx; },
+    // 21-sfx.js 用这个拿 context —— 它必须复用同一个实例。
+    // 各建一个的话，音效那个永远停在 suspended，症状又是「点了没声音」。
+    _ensureCtx: getCtx
   };
 
 })(window);

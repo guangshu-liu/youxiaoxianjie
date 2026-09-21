@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="识字闯关">
+<meta name="apple-mobile-web-app-title" content="幼小衔接闯关">
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#FFF8E7">
-<title>识字闯关 · 幼小衔接</title>
+<title>幼小衔接闯关</title>
 
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
@@ -48,10 +48,9 @@
       G.SelfTest.run();
       return;
     }
-    G.App.boot({
-      chinese: window.G.DATA.chinese,
-      zibiao: window.G.DATA.zibiao
-    });
+    // 三科题库整个交给 Bank.init —— 它按 G.SUBJECTS 自己去取，
+    // 这里逐个列出来只会变成「加了科目忘了改这里」。
+    G.App.boot(window.G.DATA);
   }
 
   if (document.readyState === 'loading') {

@@ -1,22 +1,473 @@
 {
   "entries": {
-    "ui.spin": {
-      "_placeholder": true,
-      "path": "ui/spin.wav",
-      "rate": "-10%",
-      "sha1": "a8b70e85923d8bc024d6eb1fbdbfa8e87c1fbcd2",
-      "text": "转一转！",
-      "text_sha1": "fcc2b2e959bb5ac32ebde5b608c12a501987628e",
-      "voice": "zh-CN-XiaoyiNeural"
+    "en.bag": {
+      "path": "en/bag.m4a",
+      "sha1": "2b243a4aaa14207dd69f99de35dd33ca05d1de20",
+      "text": "bag",
+      "text_sha1": "9b4e473e4de7949c4ab8e441a7faa5e2b295b469",
+      "voice": "Samantha"
     },
-    "ui.win": {
-      "_placeholder": true,
-      "path": "ui/win.wav",
-      "rate": "-10%",
-      "sha1": "3ff4f5dad96becee406e7d027fa620ae721480dd",
-      "text": "哇，中奖啦！",
-      "text_sha1": "3c0dc704e3064b4faa01ba6c20757741378f5dec",
-      "voice": "zh-CN-XiaoyiNeural"
+    "en.bed": {
+      "path": "en/bed.m4a",
+      "sha1": "b6dee2b4be6ca059a515fec9085b872de8cc7691",
+      "text": "bed",
+      "text_sha1": "fefe2393a7fc8eafc6f15a3953f6102dfebf6d1a",
+      "voice": "Samantha"
+    },
+    "en.big": {
+      "path": "en/big.m4a",
+      "sha1": "a3fc9ec97f4826385e7b4988212c94e873a7a844",
+      "text": "big",
+      "text_sha1": "95c4bea12e4edcf8aad730a222793324dc42c29d",
+      "voice": "Samantha"
+    },
+    "en.can": {
+      "path": "en/can.m4a",
+      "sha1": "4dedf8477e34c77d5218181e66285f1c33120cc9",
+      "text": "can",
+      "text_sha1": "7e9219a0599eae1d9601883f894b4fbe60870586",
+      "voice": "Samantha"
+    },
+    "en.cat": {
+      "path": "en/cat.m4a",
+      "sha1": "1811c5426aa93ac936954680dc74ab1fe9172208",
+      "text": "cat",
+      "text_sha1": "9d989e8d27dc9e0ec3389fc855f142c3d40f0c50",
+      "voice": "Samantha"
+    },
+    "en.cot": {
+      "path": "en/cot.m4a",
+      "sha1": "1206c91771a0f5b99d0d8a9294448e87d040f0e0",
+      "text": "cot",
+      "text_sha1": "7fd2e982067b387f73dcb93cf080fe66cc2f33b3",
+      "voice": "Samantha"
+    },
+    "en.dad": {
+      "path": "en/dad.m4a",
+      "sha1": "2bde0d8bea029e23eb49615b998e349625fc9c29",
+      "text": "dad",
+      "text_sha1": "0da19b540f7c3526f24acba988b03df43b3c5cf3",
+      "voice": "Samantha"
+    },
+    "en.did": {
+      "path": "en/did.m4a",
+      "sha1": "fe8be5f0b041493e818d4812853f40934e2aa535",
+      "text": "did",
+      "text_sha1": "5dd92d18235068c22ce2d3bc8dcd5759539ac5cd",
+      "voice": "Samantha"
+    },
+    "en.fin": {
+      "path": "en/fin.m4a",
+      "sha1": "46b40acb085563bb559e7cd7948c09436c8f364d",
+      "text": "fin",
+      "text_sha1": "b76049e61518de9781f18a52d2d89b5f4ac6ae9f",
+      "voice": "Samantha"
+    },
+    "en.gun": {
+      "path": "en/gun.m4a",
+      "sha1": "f86b72f2dcc30d29bb7e3c412f82357c284fe9a8",
+      "text": "gun",
+      "text_sha1": "ebebee19b34c4c0c47e35d517432df7db90993f8",
+      "voice": "Samantha"
+    },
+    "en.ham": {
+      "path": "en/ham.m4a",
+      "sha1": "e485d14a086da70df2b611f8e6b5ae7fc451df8e",
+      "text": "ham",
+      "text_sha1": "78844960f3ebdb074babae8cc5981cae5981aa32",
+      "voice": "Samantha"
+    },
+    "en.hid": {
+      "path": "en/hid.m4a",
+      "sha1": "c7cc6b81fb3ffad505490ba1a91db60b45da4dcb",
+      "text": "hid",
+      "text_sha1": "ce2505af510d8b52c393427b0701c9dfbf0260b9",
+      "voice": "Samantha"
+    },
+    "en.hit": {
+      "path": "en/hit.m4a",
+      "sha1": "b3cb39feac9a077bd112a50e30af767aa2d680f6",
+      "text": "hit",
+      "text_sha1": "d7d390bd9ebac6bfa0b17ab10695fe73916ebcc2",
+      "voice": "Samantha"
+    },
+    "en.hug": {
+      "path": "en/hug.m4a",
+      "sha1": "a96df0449ef7376f2d0a1ff45476e50d7a99d5db",
+      "text": "hug",
+      "text_sha1": "f11fb55cedc6b7d6b24d3f7a53bbb2967846315b",
+      "voice": "Samantha"
+    },
+    "en.jam": {
+      "path": "en/jam.m4a",
+      "sha1": "03419fea69778ccaeed64c5c2921a38a2cbbce32",
+      "text": "jam",
+      "text_sha1": "da3dd5c2657fecad769c041097dbd8ecd725687d",
+      "voice": "Samantha"
+    },
+    "en.jug": {
+      "path": "en/jug.m4a",
+      "sha1": "5e509c16b483c895e6e0a7c5391db593ce7f3457",
+      "text": "jug",
+      "text_sha1": "1c35e97db7d1637c5bb0928b16e0af73b46f2a4f",
+      "voice": "Samantha"
+    },
+    "en.lap": {
+      "path": "en/lap.m4a",
+      "sha1": "aaa617912b7c78e3f92984570f1e41082d0da9fd",
+      "text": "lap",
+      "text_sha1": "fcedddf472903165abd504d567d88b066db9c733",
+      "voice": "Samantha"
+    },
+    "en.led": {
+      "path": "en/led.m4a",
+      "sha1": "f6b1fd129a16bac4b259233b4966fe212d0d893e",
+      "text": "led",
+      "text_sha1": "6a9a37af6cf5b18589847d90cddfc861aae1df65",
+      "voice": "Samantha"
+    },
+    "en.lip": {
+      "path": "en/lip.m4a",
+      "sha1": "981be02be13e48055d76b8270cd3ef2a4978dde0",
+      "text": "lip",
+      "text_sha1": "7d72878c2a31d4501c9a2aee9630ba785b82c18d",
+      "voice": "Samantha"
+    },
+    "en.mad": {
+      "path": "en/mad.m4a",
+      "sha1": "16e5cb98c4a600d8b056fc410251fb9839270662",
+      "text": "mad",
+      "text_sha1": "1b3cccda27f8c7a6605e28053c30066f73cd5717",
+      "voice": "Samantha"
+    },
+    "en.man": {
+      "path": "en/man.m4a",
+      "sha1": "ba12a2df0e4bfb5f97b3372694851f69bd889c6b",
+      "text": "man",
+      "text_sha1": "8175e3c8753aeb1696959f72ede260ebf3ea14c5",
+      "voice": "Samantha"
+    },
+    "en.mop": {
+      "path": "en/mop.m4a",
+      "sha1": "a0d66f955035400fb97ebb312657d37241cd2e7a",
+      "text": "mop",
+      "text_sha1": "e428b54c599d1dcb9fd1a13d21727d17c57422b6",
+      "voice": "Samantha"
+    },
+    "en.pen": {
+      "path": "en/pen.m4a",
+      "sha1": "eb97baf5554f895c09d4af344e70358bb847bdf0",
+      "text": "pen",
+      "text_sha1": "31a841af7b2f732799f0457318848625089a63a7",
+      "voice": "Samantha"
+    },
+    "en.pop": {
+      "path": "en/pop.m4a",
+      "sha1": "09306af52fe14b49d168abed6147e2b119eb563e",
+      "text": "pop",
+      "text_sha1": "4f197c99a78b8411f1cf48ab409a0a6d176b99b7",
+      "voice": "Samantha"
+    },
+    "en.pot": {
+      "path": "en/pot.m4a",
+      "sha1": "275f43ee1cc0a0c3753489919b505f94073bbeef",
+      "text": "pot",
+      "text_sha1": "cb79bd0ce2a8c435a9bbeddc9ef6c8bc7c3c4b43",
+      "voice": "Samantha"
+    },
+    "en.rag": {
+      "path": "en/rag.m4a",
+      "sha1": "0ff9459e659c4ac0abfb53ef63d899b16f33f92f",
+      "text": "rag",
+      "text_sha1": "69a537093ff93cdd1b1dfcce775d6254a9b999c9",
+      "voice": "Samantha"
+    },
+    "en.rat": {
+      "path": "en/rat.m4a",
+      "sha1": "e7b31557c8cbd24b5a4bb35fa439e2b9d541a72a",
+      "text": "rat",
+      "text_sha1": "359ce0caae50b7d35ab21e93589a87e806b536b9",
+      "voice": "Samantha"
+    },
+    "en.sad": {
+      "path": "en/sad.m4a",
+      "sha1": "cd7da407eb53d648f40defbbe6e2b6cd1af4e38d",
+      "text": "sad",
+      "text_sha1": "b4914600112ba18af7798b6c1a1363728ae1d96f",
+      "voice": "Samantha"
+    },
+    "en.sentence.01": {
+      "path": "en/sentence/01.m4a",
+      "sha1": "a1dbe6b31d373562f12e2033cdd0348e9fdb8fd9",
+      "text": "the red hat is on the mat.",
+      "text_sha1": "3c20dfec316d541c798a0a1dedc4113ef8b739f4",
+      "voice": "Samantha"
+    },
+    "en.sentence.02": {
+      "path": "en/sentence/02.m4a",
+      "sha1": "e6656e618d711226e28b98e2fae3565ab92e56b9",
+      "text": "the big bug is in the mud.",
+      "text_sha1": "5166d67fc41c5cdc9792b2aef89025985f303bca",
+      "voice": "Samantha"
+    },
+    "en.sentence.03": {
+      "path": "en/sentence/03.m4a",
+      "sha1": "66eb34bca8544d8cb03cd618c64f48cf8f18f3c4",
+      "text": "the big cat is on the bed.",
+      "text_sha1": "e240e2f46e014e6204d64cc61de315f9ed6ef34a",
+      "voice": "Samantha"
+    },
+    "en.sentence.04": {
+      "path": "en/sentence/04.m4a",
+      "sha1": "ca2a8fe2ca2e0c82a78ad469d3e535b50ad06b7d",
+      "text": "the hot pot is on the mat.",
+      "text_sha1": "5d81dbdab2a170b5b557925fa6f158589037317a",
+      "voice": "Samantha"
+    },
+    "en.sentence.05": {
+      "path": "en/sentence/05.m4a",
+      "sha1": "7c11b760d3de47cfcabec533b340d5b1a6e095d7",
+      "text": "my wet hat is in the bag.",
+      "text_sha1": "a8191d7973874a1e0b13e6d90276ee0e5cdfe0c6",
+      "voice": "Samantha"
+    },
+    "en.sentence.06": {
+      "path": "en/sentence/06.m4a",
+      "sha1": "0012baf2d31f00277fa1e316891ae4d08adaf6ac",
+      "text": "the red jam is on the mat.",
+      "text_sha1": "2083766586593c349fdef1d8adef80b557fc3fe6",
+      "voice": "Samantha"
+    },
+    "en.sentence.07": {
+      "path": "en/sentence/07.m4a",
+      "sha1": "5ae571c31da79dac30829ee93ad9e75556d56192",
+      "text": "the big pig is in the tub.",
+      "text_sha1": "1864beb6fdb938bc92137d8a72c4141c8c7213c4",
+      "voice": "Samantha"
+    },
+    "en.sentence.08": {
+      "path": "en/sentence/08.m4a",
+      "sha1": "5537f4d03c1dcd8ba8dad550e60d794f453b87cc",
+      "text": "the hen can see a big bug.",
+      "text_sha1": "439bd064948cc0a579630306511bbdade9391b3b",
+      "voice": "Samantha"
+    },
+    "en.sentence.09": {
+      "path": "en/sentence/09.m4a",
+      "sha1": "3e62d4edf852e66852373589a844e9a1ce949b69",
+      "text": "the man can see a red hat.",
+      "text_sha1": "93b3f8a4a569f7a7f0e1d86fdf6bd66619cd5922",
+      "voice": "Samantha"
+    },
+    "en.sentence.10": {
+      "path": "en/sentence/10.m4a",
+      "sha1": "6be642aa3066769f90443e7a015066b24e4dbc03",
+      "text": "the cat has a red hat.",
+      "text_sha1": "fd57eeabeab7eb93c9b0e460a32698fd092c150f",
+      "voice": "Samantha"
+    },
+    "en.sentence.11": {
+      "path": "en/sentence/11.m4a",
+      "sha1": "ef31dffab1c2c76d62873ebdcd018b46b3bc1bb1",
+      "text": "the pen is red.",
+      "text_sha1": "a69ee47b9b2fc50d8bc669b7bd4ab1bdec484fda",
+      "voice": "Samantha"
+    },
+    "en.sentence.12": {
+      "path": "en/sentence/12.m4a",
+      "sha1": "7fac0f311184d9241397815f649cbce596618c3c",
+      "text": "the sun is hot.",
+      "text_sha1": "5555e80dd8d67dcf9061e1531cf30fa61bdf2051",
+      "voice": "Samantha"
+    },
+    "en.sentence.13": {
+      "path": "en/sentence/13.m4a",
+      "sha1": "bc2c2236e860601f8a20fdcfc2b7d7fd8e041cfe",
+      "text": "the mud is wet.",
+      "text_sha1": "57371755985a579006ccdde709b5691abb203875",
+      "voice": "Samantha"
+    },
+    "en.sentence.14": {
+      "path": "en/sentence/14.m4a",
+      "sha1": "0c316f59395079b03026e688209530b92f200139",
+      "text": "the hen can see.",
+      "text_sha1": "811ea293abbf5cfbd90edb1a239c5acefa68a45c",
+      "voice": "Samantha"
+    },
+    "en.sentence.15": {
+      "path": "en/sentence/15.m4a",
+      "sha1": "8427593d43416a1905623677bd323f6e717c437f",
+      "text": "the kid can see the sun.",
+      "text_sha1": "d90711a57455ec91c43841635731400745fa536a",
+      "voice": "Samantha"
+    },
+    "en.sentence.16": {
+      "path": "en/sentence/16.m4a",
+      "sha1": "1f320d49f66070c22a4416b40833d2db40e5cfd1",
+      "text": "the pup can see the cat.",
+      "text_sha1": "067ec5276e1fdc6568e15aa65e965066341f8d95",
+      "voice": "Samantha"
+    },
+    "en.sentence.17": {
+      "path": "en/sentence/17.m4a",
+      "sha1": "059abe7e647026549753df55aaa4f0eaa4c19ce6",
+      "text": "the bug can see the mud.",
+      "text_sha1": "0c1cd455a1b2990a714310c8f06524f744aa3b9f",
+      "voice": "Samantha"
+    },
+    "en.sentence.18": {
+      "path": "en/sentence/18.m4a",
+      "sha1": "f9dae0b7ab602a80ae029d67cedaa6775eedf1e2",
+      "text": "the man can see my hat.",
+      "text_sha1": "460aa3ccfea4ab615062ab1d1cfcfcb095429c2a",
+      "voice": "Samantha"
+    },
+    "en.sentence.19": {
+      "path": "en/sentence/19.m4a",
+      "sha1": "04262b8a0e81cc21138c03e6ec024105a1badb25",
+      "text": "the pig can see my bed.",
+      "text_sha1": "0d28dffdbabb07eee0d53b6cd906af0742df1b63",
+      "voice": "Samantha"
+    },
+    "en.sentence.20": {
+      "path": "en/sentence/20.m4a",
+      "sha1": "9b842cad708d60f6de82b1cc1d3c8bb226ab53fa",
+      "text": "the pig has a red hat.",
+      "text_sha1": "a1bbc5c83230831fba766ff59472f15dd0f6496d",
+      "voice": "Samantha"
+    },
+    "en.sentence.21": {
+      "path": "en/sentence/21.m4a",
+      "sha1": "0c2980db4410d9dcadb1e60c35c816485add22ad",
+      "text": "the man has a big hat.",
+      "text_sha1": "b0551542db0cac1c8e3fb79692db47f44913d4d1",
+      "voice": "Samantha"
+    },
+    "en.sentence.22": {
+      "path": "en/sentence/22.m4a",
+      "sha1": "b8127b9a46438a1b9e9ce6e3a2c8fd6155d13dfc",
+      "text": "the kid has a red cup.",
+      "text_sha1": "fdb02b1b741d3d84741bc3000e0135c3856144cc",
+      "voice": "Samantha"
+    },
+    "en.sentence.23": {
+      "path": "en/sentence/23.m4a",
+      "sha1": "e6b567195e4063080a7641c0a0ce09b16401c0de",
+      "text": "the pup has a big mug.",
+      "text_sha1": "a61fab80b6c0b0ed8497e8e7fce33f58ea011fef",
+      "voice": "Samantha"
+    },
+    "en.sentence.24": {
+      "path": "en/sentence/24.m4a",
+      "sha1": "908d0a11940807c8e6618e9904196f51e3dd4bdc",
+      "text": "the man has a red van.",
+      "text_sha1": "e87c087f8416d44bc8498c366351705838e7f2c8",
+      "voice": "Samantha"
+    },
+    "en.sentence.25": {
+      "path": "en/sentence/25.m4a",
+      "sha1": "fbff16d59900da7e17f7762a0ba7302be6c5cefd",
+      "text": "the kid can see ten men.",
+      "text_sha1": "eef00d3e7afe2ed64915db9fbda1eacbe98e4ad6",
+      "voice": "Samantha"
+    },
+    "en.sentence.26": {
+      "path": "en/sentence/26.m4a",
+      "sha1": "8a6835b33dd5a00cbdeda50583baa99b38bcb45f",
+      "text": "the pin is in the cup.",
+      "text_sha1": "2fe7d8ebde3baac84b645d0106ed97ada529b749",
+      "voice": "Samantha"
+    },
+    "en.sentence.27": {
+      "path": "en/sentence/27.m4a",
+      "sha1": "e224ec57e5deb076998776e35ff7678e74236bfa",
+      "text": "the nut is in the pot.",
+      "text_sha1": "196a2b924f2175f5deb9d758646db52935e429cf",
+      "voice": "Samantha"
+    },
+    "en.sip": {
+      "path": "en/sip.m4a",
+      "sha1": "5387c38655facbc8494c01e4c95179d073c4b491",
+      "text": "sip",
+      "text_sha1": "bff8797c8e35f629017fba0fdf33695b450c0a91",
+      "voice": "Samantha"
+    },
+    "en.sit": {
+      "path": "en/sit.m4a",
+      "sha1": "f31633af696091b4ae16b209d3287a03eb796bad",
+      "text": "sit",
+      "text_sha1": "abdcde66d68bf5da210f684db67c663b24a82a9c",
+      "voice": "Samantha"
+    },
+    "en.sun": {
+      "path": "en/sun.m4a",
+      "sha1": "fc5f073fc561e17a5e247524212a104fbe4c6d15",
+      "text": "sun",
+      "text_sha1": "22fa6121da96f43a106e413e65d4f9089c53824c",
+      "voice": "Samantha"
+    },
+    "en.tap": {
+      "path": "en/tap.m4a",
+      "sha1": "32f1f192d98ffff9644b6998b62f2604454e19e0",
+      "text": "tap",
+      "text_sha1": "25f30d353d672994bc46f110e821d857b2525e65",
+      "voice": "Samantha"
+    },
+    "en.ten": {
+      "path": "en/ten.m4a",
+      "sha1": "d76a488e25f71139420ce594cef522e0429fab5b",
+      "text": "ten",
+      "text_sha1": "dd3562449147ffc783230d2a13d02a75ac42989b",
+      "voice": "Samantha"
+    },
+    "en.van": {
+      "path": "en/van.m4a",
+      "sha1": "5b6b66639c99ab4ca24975e359945669ec8e4ac5",
+      "text": "van",
+      "text_sha1": "efa44987b6e36a90882a7df93eedc89343acdcb6",
+      "voice": "Samantha"
+    },
+    "en.vet": {
+      "path": "en/vet.m4a",
+      "sha1": "c2b1df8bd16d0ec0e93d978af1d08fd232ce18f4",
+      "text": "vet",
+      "text_sha1": "cd57239bd6edcd4567e20c0428102374f57993b4",
+      "voice": "Samantha"
+    },
+    "en.wag": {
+      "path": "en/wag.m4a",
+      "sha1": "96001ca22f145db924d2bea0c2180e045804ec86",
+      "text": "wag",
+      "text_sha1": "d47d8b0a383c196f375f87c83158e8627c42debc",
+      "voice": "Samantha"
+    },
+    "en.wet": {
+      "path": "en/wet.m4a",
+      "sha1": "47d5a837d2419abfcd15e2fbbaac022b6af1dcad",
+      "text": "wet",
+      "text_sha1": "c8e275e6d1882f2b83c027cf28ccf7dd0d12999a",
+      "voice": "Samantha"
+    },
+    "en.wig": {
+      "path": "en/wig.m4a",
+      "sha1": "1b3b1888a789935d8495e285d441fad1696e9638",
+      "text": "wig",
+      "text_sha1": "f6be1064be55fb7fbf8d98c3651dc73525bb5f77",
+      "voice": "Samantha"
+    },
+    "en.win": {
+      "path": "en/win.m4a",
+      "sha1": "3ef7b9aaecd8d65ddf63defc926fffc627056c9c",
+      "text": "win",
+      "text_sha1": "c76ac2e9cd86441713c7dfae92c451f3e6d17fdc",
+      "voice": "Samantha"
+    },
+    "en.yam": {
+      "path": "en/yam.m4a",
+      "sha1": "428c0169e4866b5e1835fe648eb73c9364f790d5",
+      "text": "yam",
+      "text_sha1": "8813acb6df4c58abdb392b18f934525daa03b4a5",
+      "voice": "Samantha"
     }
   },
   "version": 1

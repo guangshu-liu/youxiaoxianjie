@@ -1,12 +1,11 @@
 /* 41-render-choice.js — 选择题渲染器
  *
- * 整个题库现在只有一种题型：choice（题干 + 4 个选项）。曾经还有个 listen
- * 渲染分支（听音选词，走 OPW2 自然拼读），英语下线后一起删了 —— 留着就是
- * 一段永远跑不到、也没人测的代码。
+ * 三科 300 道题全部是 choice（题干 + 4 个选项），所以只有一个渲染分支。
+ * 差异全在数据里：stem.layout 决定选项排布，stem.audio 决定要不要喇叭。
  *
- * rendererFor 也放在这里。它原来在 44-render-realword.js，那个文件承载的
- * 是「看图选词 / 排序 / 拼词」三种英语题型；三种都没了，只剩下「按 type
- * 找渲染器」这一件小事，没必要为它单开一个文件。
+ * rendererFor 也放在这里。它原来在 44-render-realword.js —— 那个文件承载的
+ * 是「看图选词 / 排序 / 拼词」三种看图题型，都删了，只剩下「按 type 找
+ * 渲染器」这一件小事，没必要为它单开一个文件。
  */
 (function (window) {
   'use strict';
@@ -14,6 +13,9 @@
   var G = window.G;
 
   G.Renderers = G.Renderers || {};
+
+  /** 单个汉字。用来判断「这是不是识字题的单字选项」。 */
+  var HAN_RE = /^[一-鿿]$/;
 
   /**
    * 按题型取渲染器。目前只有 choice 一种，未知题型兜底也给它 ——
@@ -28,21 +30,40 @@
     var layout = (q.stem && q.stem.layout) || (options.length <= 2 ? 'row' : 'grid');
     var answered = false;
 
-    var root = G.el('div', { class: 'q q-choice' });
+    // 布局类别挂在根上，题干和选项都能按它取样式
+    // （math 的 big-number 要连题干一起放大，只给选项加类做不到）。
+    var root = G.el('div', { class: 'q q-choice q-layout-' + layout });
 
     // ---- 题干 ----
     var stem = G.el('div', { class: 'stem' });
 
-    if (q.stem && q.stem.audio) {
-      // 有语音的题干（「这个字读什么？」读一遍给孩子听）。
-      // 现在的识字题库没有音频题干，这条留给以后加真人读音时用。
-      if (q.stem.prompt) {
-        stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
-      }
-      stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    var hasAudio = !!(q.stem && q.stem.audio);
+    // 语音会不会念出答案（句子填空念的是填好空的那句）。
+    // 会的话，喇叭按钮要等答完再出现 —— 否则孩子一点就听见答案了。
+    var audioReveals = !!(q.stem && q.stem.audioReveals);
 
-    } else if (q.stem && q.stem.text) {
+    if (q.stem && q.stem.prompt) {
+      stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
+    }
+
+    // 题干文字和喇叭按钮**不是二选一**：英语的听音选词两者都有
+    // （「听一听，选出你听到的词」+ 音频），句子填空也是（整句 + 音频）。
+    // 早先这里写成了 if/else if，结果是 67 道英语题的文字题干全都不显示，
+    // 句子填空连要填的句子都看不见。
+    if (q.stem && q.stem.text) {
       stem.appendChild(G.el('div', { class: 'stem-text', text: q.stem.text }));
+    }
+
+    if (hasAudio && !audioReveals) {
+      stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    }
+
+    // 答完后才放出来的喇叭（答案已经在屏幕上了，这时听是复习不是作弊）
+    var lateSpeaker = null;
+    if (hasAudio && audioReveals) {
+      lateSpeaker = G.UI.speakerButton(q.stem.audio, '听一遍', { small: true });
+      lateSpeaker.classList.add('hidden');
+      stem.appendChild(lateSpeaker);
     }
 
     root.appendChild(stem);
@@ -53,12 +74,19 @@
 
     options.forEach(function (opt) {
       // 单字选项（「日」「目」「白」这类形近字）单独放大 —— 一眼看不清的字
-      // 会让孩子靠猜，而不是靠辨认
-      var single = (opt.text || '').length === 1;
+      // 会让孩子靠猜，而不是靠辨认。
+      //
+      // 必须限定「是一个汉字」，不能只看长度：数学题的选项也是短的，
+      // 「7」和「70」混在一道题里，只把「7」放大到 50px 会让这一排
+      // 高低不平，看起来像是排版坏了。
+      var single = HAN_RE.test(opt.text || '');
 
       var btn = G.el('button', {
         class: 'option' + (single ? ' option-single' : ''),
         'data-id': opt.id,
+        // 关掉全局的「嗒」声：选项有自己的对/错音效（见 05-ui.js 的
+        // feedback），两个叠在一起会糊成一团。
+        'data-sfx-off': '1',
         onclick: function () { choose(opt); }
       }, [G.el('span', { class: 'option-text', text: opt.text })]);
 
@@ -86,6 +114,9 @@
         buttons[id].classList.add('locked');
         if (id === q.answer) buttons[id].classList.add('is-answer');
       });
+
+      // 答案已经亮出来了，这时才放出「听一遍」
+      if (lateSpeaker) lateSpeaker.classList.remove('hidden');
 
       if (!correct) {
         showExplain(q.explain);

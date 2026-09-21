@@ -201,8 +201,8 @@
     }
     box.appendChild(section('待确认兑换', pendBox));
 
-    /* --- 识字范围 --- */
-    box.appendChild(section('识字范围', buildZibiaoPanel(save)));
+    /* --- 语文认字范围 --- */
+    box.appendChild(section('语文认字范围', buildZibiaoPanel(save)));
 
     /* --- 学习数据 --- */
     box.appendChild(section('学习数据', buildStats(save)));
@@ -252,12 +252,12 @@
       return wrap;
     }
 
-    var g1 = zb.chars.filter(function (c) { return c.grade === 1; }).length;
     wrap.appendChild(G.el('div', {
       class: 'muted',
-      text: '题库共 ' + G.Bank.all().length + ' 道题，全部出自下面这张字表（' +
-            zb.chars.length + ' 字：一年级 ' + g1 + ' · 二年级 ' + (zb.chars.length - g1) + '）。' +
-            '题目和干扰项都不会超出这个范围。'
+      text: '题库共 ' + G.Bank.all().length + ' 道题（语文 ' + G.Bank.of('chinese').length +
+            ' · 数学 ' + G.Bank.of('math').length + ' · 英语 ' + G.Bank.of('english').length + '）。' +
+            '语文的每一个字都出自下面这张一年级字表（' + zb.chars.length + ' 字），' +
+            '题干和四个选项都不会超纲。'
     }));
 
     // 还没掌握的字。只从「答案是一个汉字」的题里统计 —— 数笔画题的答案是
@@ -314,14 +314,24 @@
   function buildStats(save) {
     var wrap = G.el('div', { class: 'stat-card' });
 
-    // 按题型统计（看拼音选字 / 数笔画 / 反义词 …）
-    var bucket = save.progress.chinese.byTag;
-    var tags = Object.keys(bucket);
-    if (tags.length) {
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL.chinese + ' · 按题型' }));
-      tags.sort(function (a, b) { return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen); })
-        .forEach(function (t) { wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen)); });
-    }
+    // 按题型统计，三科分开列（语文：归类 / 笔画…；数学：拆数 / 比大小…；
+    // 英语：听音选词 / 词族归类…）。合在一起列的话，家长看不出到底是
+    // 哪一科弱 —— 而这正是他翻到这个页面想知道的。
+    G.SUBJECTS.forEach(function (s) {
+      var bucket = (save.progress[s] && save.progress[s].byTag) || {};
+      var tags = Object.keys(bucket);
+      if (!tags.length) return;
+      wrap.appendChild(G.el('div', {
+        class: 'stat-title',
+        text: (G.SUBJECT_LABEL[s] || s) + ' · 按题型'
+      }));
+      // 正确率低的排前面：家长要的是「先补哪个」
+      tags.sort(function (a, b) {
+        return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen);
+      }).forEach(function (t) {
+        wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen));
+      });
+    });
 
     // 错题本
     var wrong = save.wrongBook.filter(function (w) { return !w.cleared; })
@@ -356,7 +366,9 @@
   function findQuestion(qid) {
     if (!_qIndex) {
       _qIndex = {};
-      ((window.G.DATA && window.G.DATA.chinese) || []).forEach(function (q) { _qIndex[q.id] = q; });
+      // 用 G.Bank.all() 而不是 window.G.DATA.chinese —— 三科都要能查到。
+      // 只查语文的话，错题本里每道数学题都会显示成一串 qid。
+      G.Bank.all().forEach(function (q) { _qIndex[q.id] = q; });
     }
     return _qIndex[qid];
   }

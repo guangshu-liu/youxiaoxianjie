@@ -17,8 +17,8 @@
  * 不这么做的话，孩子会被永久钉在第一次打开的版本上。
  */
 
-var VERSION = 'yxjx-32aae47cd4';
-var PRECACHE = ["index.html", "app.css", "data.js", "app.js", "manifest.webmanifest", "icons/favicon-32.png", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "audio/ui/spin.wav", "audio/ui/win.wav"];
+var VERSION = 'yxjx-826f64d4b8';
+var PRECACHE = ["index.html", "app.css", "data.js", "app.js", "manifest.webmanifest", "icons/favicon-32.png", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "audio/en/bag.m4a", "audio/en/bed.m4a", "audio/en/big.m4a", "audio/en/can.m4a", "audio/en/cat.m4a", "audio/en/cot.m4a", "audio/en/dad.m4a", "audio/en/did.m4a", "audio/en/fin.m4a", "audio/en/gun.m4a", "audio/en/ham.m4a", "audio/en/hid.m4a", "audio/en/hit.m4a", "audio/en/hug.m4a", "audio/en/jam.m4a", "audio/en/jug.m4a", "audio/en/lap.m4a", "audio/en/led.m4a", "audio/en/lip.m4a", "audio/en/mad.m4a", "audio/en/man.m4a", "audio/en/mop.m4a", "audio/en/pen.m4a", "audio/en/pop.m4a", "audio/en/pot.m4a", "audio/en/rag.m4a", "audio/en/rat.m4a", "audio/en/sad.m4a", "audio/en/sip.m4a", "audio/en/sit.m4a", "audio/en/sun.m4a", "audio/en/tap.m4a", "audio/en/ten.m4a", "audio/en/van.m4a", "audio/en/vet.m4a", "audio/en/wag.m4a", "audio/en/wet.m4a", "audio/en/wig.m4a", "audio/en/win.m4a", "audio/en/yam.m4a", "audio/en/sentence/01.m4a", "audio/en/sentence/02.m4a", "audio/en/sentence/03.m4a", "audio/en/sentence/04.m4a", "audio/en/sentence/05.m4a", "audio/en/sentence/06.m4a", "audio/en/sentence/07.m4a", "audio/en/sentence/08.m4a", "audio/en/sentence/09.m4a", "audio/en/sentence/10.m4a", "audio/en/sentence/11.m4a", "audio/en/sentence/12.m4a", "audio/en/sentence/13.m4a", "audio/en/sentence/14.m4a", "audio/en/sentence/15.m4a", "audio/en/sentence/16.m4a", "audio/en/sentence/17.m4a", "audio/en/sentence/18.m4a", "audio/en/sentence/19.m4a", "audio/en/sentence/20.m4a", "audio/en/sentence/21.m4a", "audio/en/sentence/22.m4a", "audio/en/sentence/23.m4a", "audio/en/sentence/24.m4a", "audio/en/sentence/25.m4a", "audio/en/sentence/26.m4a", "audio/en/sentence/27.m4a"];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

@@ -90,7 +90,16 @@
         G.Audio.play(ids[0]).then(function (played) {
           record('端到端播放内置音频', played ? 'pass' : 'fail',
             played ? ('已播放 ' + ids[0]) : '解码或播放失败');
-          log.textContent = played ? ('✅ 播放成功：' + ids[0]) : '❌ 播放失败';
+
+          // 合成音效走的是另一条路径（G.Sfx，不经解码），
+          // 而它现在是孩子点每个按钮都能听到的声音 —— 单独测一条。
+          var sfxOk = G.Sfx ? G.Sfx.play('ui.correct') : false;
+          record('合成音效（按钮/对错反馈）', sfxOk ? 'pass' : 'fail',
+            sfxOk ? '已播放 ui.correct（三连上行音）'
+                  : '合成失败 —— 检查 AudioContext 是否已解锁');
+
+          log.textContent = (played ? '✅ 播放成功：' + ids[0] : '❌ 播放失败') +
+            '　' + (sfxOk ? '✅ 音效正常' : '❌ 音效异常');
           render();
         });
       }).catch(function (e) {

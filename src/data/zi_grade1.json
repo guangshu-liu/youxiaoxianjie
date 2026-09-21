@@ -1,0 +1,1498 @@
+{
+  "_comment": "幼小衔接识字范围（小学一年级）。由 tools/gen_ziku.py 生成，不要手改。这里的 pinyin 只给家长看 —— 题库里一道拼音题都没有，出题一律绕开读音。",
+  "chars": [
+    {
+      "char": "一",
+      "pinyin": "yī",
+      "strokes": 1,
+      "radical": "一",
+      "words": [
+        "一个",
+        "一起"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "七",
+      "pinyin": "qī",
+      "strokes": 2,
+      "radical": "一",
+      "words": [
+        "七月",
+        "七天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "万",
+      "pinyin": "wàn",
+      "strokes": 3,
+      "radical": "一",
+      "words": [
+        "万一",
+        "千万"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "三",
+      "pinyin": "sān",
+      "strokes": 3,
+      "radical": "一",
+      "words": [
+        "三个",
+        "三天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "上",
+      "pinyin": "shàng",
+      "strokes": 3,
+      "radical": "一",
+      "words": [
+        "上山",
+        "上下"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "下",
+      "pinyin": "xià",
+      "strokes": 3,
+      "radical": "一",
+      "words": [
+        "下雨",
+        "上下"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "东",
+      "pinyin": "dōng",
+      "strokes": 5,
+      "radical": "一",
+      "words": [
+        "东西",
+        "东方"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "中",
+      "pinyin": "zhōng",
+      "strokes": 4,
+      "radical": "丨",
+      "words": [
+        "中间",
+        "中国"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "九",
+      "pinyin": "jiǔ",
+      "strokes": 2,
+      "radical": "丿",
+      "words": [
+        "九月",
+        "九个"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "书",
+      "pinyin": "shū",
+      "strokes": 4,
+      "radical": "乙",
+      "words": [
+        "看书",
+        "书本"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "二",
+      "pinyin": "èr",
+      "strokes": 2,
+      "radical": "二",
+      "words": [
+        "二月",
+        "十二"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "云",
+      "pinyin": "yún",
+      "strokes": 4,
+      "radical": "二",
+      "words": [
+        "白云",
+        "云朵"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "五",
+      "pinyin": "wǔ",
+      "strokes": 4,
+      "radical": "二",
+      "words": [
+        "五个",
+        "五月"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "人",
+      "pinyin": "rén",
+      "strokes": 2,
+      "radical": "人",
+      "words": [
+        "大人",
+        "人口"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "今",
+      "pinyin": "jīn",
+      "strokes": 4,
+      "radical": "人",
+      "words": [
+        "今天",
+        "今年"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "他",
+      "pinyin": "tā",
+      "strokes": 5,
+      "radical": "亻",
+      "words": [
+        "他们"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "你",
+      "pinyin": "nǐ",
+      "strokes": 7,
+      "radical": "亻",
+      "words": [
+        "你好",
+        "你们"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "入",
+      "pinyin": "rù",
+      "strokes": 2,
+      "radical": "入",
+      "words": [
+        "入口",
+        "出入"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "八",
+      "pinyin": "bā",
+      "strokes": 2,
+      "radical": "八",
+      "words": [
+        "八月",
+        "八个"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "六",
+      "pinyin": "liù",
+      "strokes": 4,
+      "radical": "八",
+      "words": [
+        "六月",
+        "六个"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "关",
+      "pinyin": "guān",
+      "strokes": 6,
+      "radical": "丷",
+      "words": [
+        "关门",
+        "开关"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "冬",
+      "pinyin": "dōng",
+      "strokes": 5,
+      "radical": "夂",
+      "words": [
+        "冬天",
+        "冬日"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "冷",
+      "pinyin": "lěng",
+      "strokes": 7,
+      "radical": "冫",
+      "words": [
+        "冷水",
+        "寒冷"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "刀",
+      "pinyin": "dāo",
+      "strokes": 2,
+      "radical": "刀",
+      "words": [
+        "小刀",
+        "刀子"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "分",
+      "pinyin": "fēn",
+      "strokes": 4,
+      "radical": "八",
+      "words": [
+        "分开",
+        "十分"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "力",
+      "pinyin": "lì",
+      "strokes": 2,
+      "radical": "力",
+      "words": [
+        "力气",
+        "用力"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "十",
+      "pinyin": "shí",
+      "strokes": 2,
+      "radical": "十",
+      "words": [
+        "十个",
+        "十天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "午",
+      "pinyin": "wǔ",
+      "strokes": 4,
+      "radical": "十",
+      "words": [
+        "中午",
+        "午睡"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "去",
+      "pinyin": "qù",
+      "strokes": 5,
+      "radical": "厶",
+      "words": [
+        "回去",
+        "出去"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "友",
+      "pinyin": "yǒu",
+      "strokes": 4,
+      "radical": "又",
+      "words": [
+        "朋友",
+        "友好"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "口",
+      "pinyin": "kǒu",
+      "strokes": 3,
+      "radical": "口",
+      "words": [
+        "开口",
+        "口水"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "右",
+      "pinyin": "yòu",
+      "strokes": 5,
+      "radical": "口",
+      "words": [
+        "左右",
+        "右手"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "吃",
+      "pinyin": "chī",
+      "strokes": 6,
+      "radical": "口",
+      "words": [
+        "吃饭",
+        "好吃"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "听",
+      "pinyin": "tīng",
+      "strokes": 7,
+      "radical": "口",
+      "words": [
+        "听见",
+        "听话"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "喝",
+      "pinyin": "hē",
+      "strokes": 12,
+      "radical": "口",
+      "words": [
+        "喝水",
+        "喝茶"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "四",
+      "pinyin": "sì",
+      "strokes": 5,
+      "radical": "囗",
+      "words": [
+        "四月",
+        "四方"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "回",
+      "pinyin": "huí",
+      "strokes": 6,
+      "radical": "囗",
+      "words": [
+        "回来",
+        "回家"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "国",
+      "pinyin": "guó",
+      "strokes": 8,
+      "radical": "囗",
+      "words": [
+        "中国",
+        "国王"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "土",
+      "pinyin": "tǔ",
+      "strokes": 3,
+      "radical": "土",
+      "words": [
+        "土地",
+        "水土"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "地",
+      "pinyin": "dì",
+      "strokes": 6,
+      "radical": "土",
+      "words": [
+        "大地",
+        "土地"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "声",
+      "pinyin": "shēng",
+      "strokes": 7,
+      "radical": "士",
+      "words": [
+        "大声",
+        "声音"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "夏",
+      "pinyin": "xià",
+      "strokes": 10,
+      "radical": "夂",
+      "words": [
+        "夏天",
+        "夏日"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "多",
+      "pinyin": "duō",
+      "strokes": 6,
+      "radical": "夕",
+      "words": [
+        "多少",
+        "很多"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "大",
+      "pinyin": "dà",
+      "strokes": 3,
+      "radical": "大",
+      "words": [
+        "大人",
+        "大山"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "天",
+      "pinyin": "tiān",
+      "strokes": 4,
+      "radical": "大",
+      "words": [
+        "天空",
+        "白天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "太",
+      "pinyin": "tài",
+      "strokes": 4,
+      "radical": "大",
+      "words": [
+        "太阳",
+        "太大"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "头",
+      "pinyin": "tóu",
+      "strokes": 5,
+      "radical": "大",
+      "words": [
+        "头发",
+        "石头"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "女",
+      "pinyin": "nǚ",
+      "strokes": 3,
+      "radical": "女",
+      "words": [
+        "女人",
+        "男女"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "好",
+      "pinyin": "hǎo",
+      "strokes": 6,
+      "radical": "女",
+      "words": [
+        "好吃",
+        "好看"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "妈",
+      "pinyin": "mā",
+      "strokes": 6,
+      "radical": "女",
+      "words": [
+        "妈妈",
+        "大妈"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "妹",
+      "pinyin": "mèi",
+      "strokes": 8,
+      "radical": "女",
+      "words": [
+        "妹妹",
+        "小妹"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "字",
+      "pinyin": "zì",
+      "strokes": 6,
+      "radical": "子",
+      "words": [
+        "写字",
+        "生字"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "学",
+      "pinyin": "xué",
+      "strokes": 8,
+      "radical": "子",
+      "words": [
+        "学习",
+        "上学"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "家",
+      "pinyin": "jiā",
+      "strokes": 10,
+      "radical": "宀",
+      "words": [
+        "回家",
+        "家里"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "小",
+      "pinyin": "xiǎo",
+      "strokes": 3,
+      "radical": "小",
+      "words": [
+        "小鸟",
+        "小马"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "少",
+      "pinyin": "shǎo",
+      "strokes": 4,
+      "radical": "小",
+      "words": [
+        "多少",
+        "少数"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "尺",
+      "pinyin": "chǐ",
+      "strokes": 4,
+      "radical": "尸",
+      "words": [
+        "尺子"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "山",
+      "pinyin": "shān",
+      "strokes": 3,
+      "radical": "山",
+      "words": [
+        "大山",
+        "上山"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "工",
+      "pinyin": "gōng",
+      "strokes": 3,
+      "radical": "工",
+      "words": [
+        "工人",
+        "工作"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "左",
+      "pinyin": "zuǒ",
+      "strokes": 5,
+      "radical": "工",
+      "words": [
+        "左右",
+        "左手"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "巾",
+      "pinyin": "jīn",
+      "strokes": 3,
+      "radical": "巾",
+      "words": [
+        "毛巾",
+        "手巾"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "年",
+      "pinyin": "nián",
+      "strokes": 6,
+      "radical": "干",
+      "words": [
+        "今年",
+        "年月"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "开",
+      "pinyin": "kāi",
+      "strokes": 4,
+      "radical": "廾",
+      "words": [
+        "开心",
+        "开门"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "心",
+      "pinyin": "xīn",
+      "strokes": 4,
+      "radical": "心",
+      "words": [
+        "开心",
+        "小心"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "快",
+      "pinyin": "kuài",
+      "strokes": 7,
+      "radical": "忄",
+      "words": [
+        "快走",
+        "快乐"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "想",
+      "pinyin": "xiǎng",
+      "strokes": 13,
+      "radical": "心",
+      "words": [
+        "想念",
+        "思想"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "我",
+      "pinyin": "wǒ",
+      "strokes": 7,
+      "radical": "戈",
+      "words": [
+        "我们"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "手",
+      "pinyin": "shǒu",
+      "strokes": 4,
+      "radical": "手",
+      "words": [
+        "手心",
+        "小手"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "打",
+      "pinyin": "dǎ",
+      "strokes": 5,
+      "radical": "扌",
+      "words": [
+        "打球",
+        "打鼓"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "拿",
+      "pinyin": "ná",
+      "strokes": 10,
+      "radical": "手",
+      "words": [
+        "拿来",
+        "拿走"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "文",
+      "pinyin": "wén",
+      "strokes": 4,
+      "radical": "文",
+      "words": [
+        "语文",
+        "文字"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "日",
+      "pinyin": "rì",
+      "strokes": 4,
+      "radical": "日",
+      "words": [
+        "日出",
+        "生日"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "早",
+      "pinyin": "zǎo",
+      "strokes": 6,
+      "radical": "日",
+      "words": [
+        "早上",
+        "早起"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "时",
+      "pinyin": "shí",
+      "strokes": 7,
+      "radical": "日",
+      "words": [
+        "时间",
+        "小时"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "明",
+      "pinyin": "míng",
+      "strokes": 8,
+      "radical": "日",
+      "words": [
+        "明天",
+        "明白"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "星",
+      "pinyin": "xīng",
+      "strokes": 9,
+      "radical": "日",
+      "words": [
+        "星星",
+        "星光"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "春",
+      "pinyin": "chūn",
+      "strokes": 9,
+      "radical": "日",
+      "words": [
+        "春天",
+        "春风"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "晚",
+      "pinyin": "wǎn",
+      "strokes": 11,
+      "radical": "日",
+      "words": [
+        "晚上",
+        "晚安"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "晴",
+      "pinyin": "qíng",
+      "strokes": 12,
+      "radical": "日",
+      "words": [
+        "晴天",
+        "晴朗"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "月",
+      "pinyin": "yuè",
+      "strokes": 4,
+      "radical": "月",
+      "words": [
+        "月亮",
+        "月光"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "有",
+      "pinyin": "yǒu",
+      "strokes": 6,
+      "radical": "月",
+      "words": [
+        "有人",
+        "没有"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "服",
+      "pinyin": "fú",
+      "strokes": 8,
+      "radical": "月",
+      "words": [
+        "衣服",
+        "服气"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "木",
+      "pinyin": "mù",
+      "strokes": 4,
+      "radical": "木",
+      "words": [
+        "木头",
+        "树木"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "本",
+      "pinyin": "běn",
+      "strokes": 5,
+      "radical": "木",
+      "words": [
+        "书本",
+        "本子"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "来",
+      "pinyin": "lái",
+      "strokes": 7,
+      "radical": "木",
+      "words": [
+        "回来",
+        "出来"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "树",
+      "pinyin": "shù",
+      "strokes": 9,
+      "radical": "木",
+      "words": [
+        "大树",
+        "树叶"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "校",
+      "pinyin": "xiào",
+      "strokes": 10,
+      "radical": "木",
+      "words": [
+        "学校",
+        "校门"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "桌",
+      "pinyin": "zhuō",
+      "strokes": 10,
+      "radical": "木",
+      "words": [
+        "桌子",
+        "书桌"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "毛",
+      "pinyin": "máo",
+      "strokes": 4,
+      "radical": "毛",
+      "words": [
+        "毛巾",
+        "毛笔"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "水",
+      "pinyin": "shuǐ",
+      "strokes": 4,
+      "radical": "水",
+      "words": [
+        "水果",
+        "喝水"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "清",
+      "pinyin": "qīng",
+      "strokes": 11,
+      "radical": "氵",
+      "words": [
+        "清水",
+        "清白"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "火",
+      "pinyin": "huǒ",
+      "strokes": 4,
+      "radical": "火",
+      "words": [
+        "火车",
+        "大火"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "热",
+      "pinyin": "rè",
+      "strokes": 10,
+      "radical": "灬",
+      "words": [
+        "热水",
+        "热天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "爸",
+      "pinyin": "bà",
+      "strokes": 8,
+      "radical": "父",
+      "words": [
+        "爸爸",
+        "爸妈"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "牙",
+      "pinyin": "yá",
+      "strokes": 4,
+      "radical": "牙",
+      "words": [
+        "牙齿",
+        "刷牙"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "牛",
+      "pinyin": "niú",
+      "strokes": 4,
+      "radical": "牛",
+      "words": [
+        "小牛",
+        "牛奶"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "生",
+      "pinyin": "shēng",
+      "strokes": 5,
+      "radical": "生",
+      "words": [
+        "生日",
+        "生字"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "田",
+      "pinyin": "tián",
+      "strokes": 5,
+      "radical": "田",
+      "words": [
+        "田地",
+        "水田"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "男",
+      "pinyin": "nán",
+      "strokes": 7,
+      "radical": "田",
+      "words": [
+        "男人",
+        "男女"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "画",
+      "pinyin": "huà",
+      "strokes": 8,
+      "radical": "田",
+      "words": [
+        "画画",
+        "图画"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "白",
+      "pinyin": "bái",
+      "strokes": 5,
+      "radical": "白",
+      "words": [
+        "白云",
+        "白天"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "目",
+      "pinyin": "mù",
+      "strokes": 5,
+      "radical": "目",
+      "words": [
+        "目光",
+        "耳目"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "看",
+      "pinyin": "kàn",
+      "strokes": 9,
+      "radical": "目",
+      "words": [
+        "看见",
+        "看书"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "睡",
+      "pinyin": "shuì",
+      "strokes": 13,
+      "radical": "目",
+      "words": [
+        "睡觉",
+        "午睡"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "石",
+      "pinyin": "shí",
+      "strokes": 5,
+      "radical": "石",
+      "words": [
+        "石头",
+        "石子"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "禾",
+      "pinyin": "hé",
+      "strokes": 5,
+      "radical": "禾",
+      "words": [
+        "禾苗",
+        "禾田"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "秋",
+      "pinyin": "qiū",
+      "strokes": 9,
+      "radical": "禾",
+      "words": [
+        "秋天",
+        "秋风"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "竹",
+      "pinyin": "zhú",
+      "strokes": 6,
+      "radical": "竹",
+      "words": [
+        "竹子",
+        "竹叶"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "笑",
+      "pinyin": "xiào",
+      "strokes": 10,
+      "radical": "竹",
+      "words": [
+        "笑话",
+        "大笑"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "笔",
+      "pinyin": "bǐ",
+      "strokes": 10,
+      "radical": "竹",
+      "words": [
+        "铅笔",
+        "毛笔"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "米",
+      "pinyin": "mǐ",
+      "strokes": 6,
+      "radical": "米",
+      "words": [
+        "大米",
+        "小米"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "红",
+      "pinyin": "hóng",
+      "strokes": 6,
+      "radical": "纟",
+      "words": [
+        "红花",
+        "火红"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "纸",
+      "pinyin": "zhǐ",
+      "strokes": 7,
+      "radical": "纟",
+      "words": [
+        "白纸",
+        "纸片"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "羊",
+      "pinyin": "yáng",
+      "strokes": 6,
+      "radical": "羊",
+      "words": [
+        "小羊",
+        "山羊"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "耳",
+      "pinyin": "ěr",
+      "strokes": 6,
+      "radical": "耳",
+      "words": [
+        "耳朵",
+        "木耳"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "自",
+      "pinyin": "zì",
+      "strokes": 6,
+      "radical": "自",
+      "words": [
+        "自己",
+        "自大"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "花",
+      "pinyin": "huā",
+      "strokes": 7,
+      "radical": "艹",
+      "words": [
+        "花朵",
+        "开花"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "草",
+      "pinyin": "cǎo",
+      "strokes": 9,
+      "radical": "艹",
+      "words": [
+        "小草",
+        "草地"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "虫",
+      "pinyin": "chóng",
+      "strokes": 6,
+      "radical": "虫",
+      "words": [
+        "虫子",
+        "小虫"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "衣",
+      "pinyin": "yī",
+      "strokes": 6,
+      "radical": "衣",
+      "words": [
+        "衣服",
+        "雨衣"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "说",
+      "pinyin": "shuō",
+      "strokes": 9,
+      "radical": "讠",
+      "words": [
+        "说话",
+        "说明"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "请",
+      "pinyin": "qǐng",
+      "strokes": 10,
+      "radical": "讠",
+      "words": [
+        "请坐",
+        "请问"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "走",
+      "pinyin": "zǒu",
+      "strokes": 7,
+      "radical": "走",
+      "words": [
+        "走路",
+        "快走"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "起",
+      "pinyin": "qǐ",
+      "strokes": 10,
+      "radical": "走",
+      "words": [
+        "起来",
+        "早起"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "车",
+      "pinyin": "chē",
+      "strokes": 4,
+      "radical": "车",
+      "words": [
+        "火车",
+        "汽车"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "里",
+      "pinyin": "lǐ",
+      "strokes": 7,
+      "radical": "里",
+      "words": [
+        "里面",
+        "家里"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "长",
+      "pinyin": "cháng",
+      "strokes": 4,
+      "radical": "长",
+      "words": [
+        "长江",
+        "长短"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "门",
+      "pinyin": "mén",
+      "strokes": 3,
+      "radical": "门",
+      "words": [
+        "开门",
+        "大门"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "雨",
+      "pinyin": "yǔ",
+      "strokes": 8,
+      "radical": "雨",
+      "words": [
+        "下雨",
+        "雨衣"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "青",
+      "pinyin": "qīng",
+      "strokes": 8,
+      "radical": "青",
+      "words": [
+        "青草",
+        "青山"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "风",
+      "pinyin": "fēng",
+      "strokes": 4,
+      "radical": "风",
+      "words": [
+        "大风",
+        "风筝"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "飞",
+      "pinyin": "fēi",
+      "strokes": 3,
+      "radical": "飞",
+      "words": [
+        "飞机",
+        "飞鸟"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "马",
+      "pinyin": "mǎ",
+      "strokes": 3,
+      "radical": "马",
+      "words": [
+        "小马",
+        "木马"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "鱼",
+      "pinyin": "yú",
+      "strokes": 8,
+      "radical": "鱼",
+      "words": [
+        "小鱼",
+        "金鱼"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "鸟",
+      "pinyin": "niǎo",
+      "strokes": 5,
+      "radical": "鸟",
+      "words": [
+        "小鸟",
+        "鸟叫"
+      ],
+      "grade": 1
+    },
+    {
+      "char": "黄",
+      "pinyin": "huáng",
+      "strokes": 11,
+      "radical": "黄",
+      "words": [
+        "黄色",
+        "黄牛"
+      ],
+      "grade": 1
+    }
+  ]
+}

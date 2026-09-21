@@ -1,14 +1,18 @@
 {
-  "name": "识字闯关",
-  "short_name": "识字闯关",
-  "description": "给幼小衔接阶段孩子的识字闯关游戏：一局 10 个字，答对转盘，离线可玩。",
+  "name": "幼小衔接闯关",
+  "short_name": "幼小衔接",
+  "description": "给幼小衔接阶段孩子的闯关游戏：一局 10 题（语文 3 · 数学 3 · 英语 4），答对转盘，离线可玩。",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#FFF8E7",
   "theme_color": "#FFF8E7",
-  "categories": ["education", "kids", "games"],
+  "categories": [
+    "education",
+    "kids",
+    "games"
+  ],
   "icons": [
     {
       "src": "icons/icon-192.png",

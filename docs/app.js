@@ -11,34 +11,66 @@
   G.VERSION = '1.0.0';
 
   /* ---------- 常量 ----------
-   * 整个游戏只有识字一科。原来是语文/数学/英语三科混排，英语还挂着一套
-   * OPW2 自然拼读体系；现在全部收成一件事：认字。
+   * 三科：语文（一年级认字）、数学（100 以内加减 + 数学思维）、
+   * 英语（牛津自然拼读 2 阶段的词和句）。题库合计 300 道，配比 3:3:4。
    */
-  G.SUBJECTS = ['chinese'];
+  G.SUBJECTS = ['chinese', 'math', 'english'];
 
-  G.SUBJECT_LABEL = { chinese: '识字' };
+  G.SUBJECT_LABEL = { chinese: '语文', math: '数学', english: '英语' };
 
-  // 一局 10 道，全是识字题
-  G.DEFAULT_MIX = { chinese: 10 };
+  /* 一局的固定构成：语文 3 + 数学 3 + 英语 4 = 10。
+   *
+   * **不能在这里写死** —— 它是从产物里的 G.DATA.mix 读进来的，
+   * 而那个值是 tools/build.py 从 qbank.py 的 SUBJECT_MIX 推出来的。
+   * 题库配比和每局构成必须是同一个数：题库按 3:3:4 出，一局却按 1:1:1 抽，
+   * 那语文 90 道会被更快抽完、更早开始重复。
+   * 这里的 3:3:4 只是 data 缺席时的兜底（比如直接开 index.html 调试）。 */
+  G.DEFAULT_MIX = { chinese: 3, math: 3, english: 4 };
 
-  G.ROUND_SIZE = 10;
+  /** 一局的题数 = 配比之和。G.sum 要等这个文件下面才定义，所以这里自己算。 */
+  function mixTotal(mix) {
+    var n = 0;
+    for (var i = 0; i < G.SUBJECTS.length; i++) n += mix[G.SUBJECTS[i]];
+    return n;
+  }
+
+  G.ROUND_SIZE = mixTotal(G.DEFAULT_MIX);
+
+  /** 用产物里的真值覆盖兜底值。boot 时调一次。 */
+  G.applyMix = function (mix) {
+    if (!mix) return;
+    var ok = G.SUBJECTS.every(function (s) { return typeof mix[s] === 'number' && mix[s] > 0; });
+    if (!ok) {
+      G.log('G.DATA.mix 不合法，沿用兜底配比', mix);
+      return;
+    }
+    G.DEFAULT_MIX = mix;
+    G.ROUND_SIZE = mixTotal(mix);
+  };
 
   // 转盘奖项。概率和为 100。
   // 'none' 是空奖：中了就是「谢谢参与」，当场结束，**不重转**。
   // 它曾经是「再来一次」（占 20%，可重转最多 3 次，次数用完兜底送 1 分）——
   // 但重转会把一次抽奖拖成几轮，孩子盯着转盘的时间比答题还长，
   // 而且「兜底送分」让空奖实际上不存在。现在它就是明明白白的不中。
+  //
+  // face 是**盘面上**那行字，label 是结算条上那行字，两者不一样：
+  //   盘面上最窄的扇区只占 18°（动画片，权重 5），在半径 76px 处弧长
+  //   不到 24px —— 竖排一行最多站住一个字。「动画片 10 分钟」在这里
+  //   无论怎么排都会糊成一团，所以盘面用「📺 10分钟」这种短形式，
+  //   结算条有整行宽度，再用完整说法把话说清楚。
   G.PRIZES = [
-    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
-    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           kind: 'points' },
-    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           kind: 'points' },
-    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           kind: 'points' },
-    { id: 'p10',  points: 10, weight: 10, label: '10 分',          kind: 'points' },
-    { id: 'none', points: 0,  weight: 20, label: '下次好运',       kind: 'none' }
+    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', face: '📺 10分钟', kind: 'tv' },
+    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           face: '1分',   kind: 'points' },
+    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           face: '2分',   kind: 'points' },
+    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           face: '5分',   kind: 'points' },
+    { id: 'p10',  points: 10, weight: 10, label: '10 分',          face: '10分',  kind: 'points' },
+    { id: 'none', points: 0,  weight: 20, label: '下次好运',       face: '下次好运', kind: 'none' }
   ];
 
-  // 空奖在盘面上写「下次好运」（84px 的扇区贴不下更长），
-  // 结算条上写全 —— 那里有整行宽度，也把话说清楚。
+  // 每个奖项有两个名字：face 写在盘面上，label 写在结算条上。
+  // 盘面标签是 72px 宽、沿半径方向排的（见 50-wheel.js），只能放两三个字；
+  // 结算条有整行宽度，那里把话说完整。
   G.NO_PRIZE_TEXT = '无奖励，下次好运';
 
   // 兑换项。500 分兑 1 元（原需求 50 分，期望值算下来 20 题 1 元，成本失控）。
@@ -259,6 +291,11 @@
       node.classList.add('shake');
       setTimeout(function () { node.classList.remove('shake'); }, 480);
     }
+    // 这个音效一直写在注释里，但从来没有实现过 ——
+    // 视觉反馈有（绿脉冲/抖动），听觉反馈没有，所以试玩反馈是
+    // 「点了没声音」。视觉 + 听觉要成对出现：孩子低头看选项的时候，
+    // 声音是唯一能确认「我点到了」的东西。
+    if (G.Audio) G.Audio.play(correct ? 'ui.correct' : 'ui.wrong');
     setTimeout(function () {
       node.classList.remove('fb-ok', 'fb-bad');
     }, 700);
@@ -355,10 +392,12 @@
       // balance 和 lifetime 独立累加，是防作弊审计的基础（见 70-parent.js）
       points: { balance: 0, lifetime: 0 },
 
-      // 只有识字一科。老存档里的 progress.english / progress.math 不再写也不再读，
-      // 留着不动 —— 删掉它们对游戏没有任何影响，却会让「导入旧备份」多一次改动。
+      // 三科各记一份 byTag 掌握度，家长面板按科目分开看。
+      // 结构由 G.SUBJECTS 推出来，加科目不用改这里。
       progress: {
-        chinese: { byTag: {} }
+        chinese: { byTag: {} },
+        math: { byTag: {} },
+        english: { byTag: {} }
       },
 
       // 错题本是唯一真相源。cleared 的条件是 rightStreak >= 2。
@@ -376,10 +415,13 @@
 
       settings: {
         audioEnabled: true,
-        mix: JSON.parse(JSON.stringify(G.DEFAULT_MIX)),
         mutedAudio: [],
         weakMode: false
       },
+      // settings.mix 删掉了：它存了一份一局配比的副本，但从头到尾没人读。
+      // 配比的唯一真相源是 tools/qbank.py 的 SUBJECT_MIX → 产物里的
+      // G.DATA.mix → 运行时的 G.DEFAULT_MIX。在存档里再存一份，
+      // 只会变成「改了配比，老用户的存档还是旧配比」这种查不出来的问题。
 
       integrity: {
         maxSeenTs: now,
@@ -441,10 +483,13 @@
       if (save.limits[k] === undefined) save.limits[k] = def.limits[k];
     });
 
-    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（三科时代）也有
-    // progress.chinese.byTag，正常不会缺；但手工改过的备份可能缺。
-    if (!save.progress.chinese) save.progress.chinese = { byTag: {} };
-    if (!save.progress.chinese.byTag) save.progress.chinese.byTag = {};
+    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（识字一科时代）
+    // 只有 progress.chinese，导入备份后 math/english 会缺 ——
+    // 缺了不会崩，但那一科的掌握度会一直是空的，家长面板上看不出来是坏了。
+    G.SUBJECTS.forEach(function (s) {
+      if (!save.progress[s]) save.progress[s] = { byTag: {} };
+      if (!save.progress[s].byTag) save.progress[s].byTag = {};
+    });
 
     return save;
   }
@@ -829,6 +874,14 @@
     opts = opts || {};
     rebuildIfNeeded();
 
+    // 合成音效优先。ui.tap / ui.correct 这些根本没有对应文件 ——
+    // 它们是 21-sfx.js 用振荡器现场合成的（见那里的注释：为什么音效不走文件）。
+    // 放前面是因为合成音效不需要解码、不会失败，能立刻出声。
+    if (G.Sfx && G.Sfx.has(audioId)) {
+      var ok = G.Sfx.play(audioId);
+      return Promise.resolve(ok);
+    }
+
     return resolve(audioId).then(function (hit) {
       if (!hit) return false;
 
@@ -871,6 +924,7 @@
   }
 
   function has(audioId) {
+    if (G.Sfx && G.Sfx.has(audioId)) return true;      // 合成音效，永远可用
     return !!(overrides[audioId] || (G.AUDIO_MAP && G.AUDIO_MAP[audioId]));
   }
 
@@ -1197,6 +1251,9 @@
     watchVisibility();
     loadOverrideIndex();
 
+    // 全局按钮反馈音。放在这里而不是各页面里 —— 见 21-sfx.js 的注释。
+    if (G.Sfx && G.Sfx.installTap) G.Sfx.installTap();
+
     // 微信内置浏览器更严。WeixinJSBridgeReady 是微信最早可用的时机。
     if (G.env.isWeChat) {
       document.addEventListener('WeixinJSBridgeReady', function () {
@@ -1209,6 +1266,20 @@
       rebuildIfNeeded();
       if (!unlocked) unlock();
     }, { passive: true });
+
+    // 三重保险：pointerdown 在少数环境下拿不到手势授权 ——
+    // 微信 X5 内核、部分安卓 WebView、以及 iOS 上「从后台切回来」后的
+    // 第一次点击，都可能出现 pointerdown 到了但 resume() 被拒的情况。
+    // 加 touchend 和 click 是因为它们**同样算真实手势**，但触发时机和
+    // 事件路径都不同；多一条路径，就少一次「家长说没声音」。
+    // 已解锁时是空转（unlocked 判断在 unlock() 之前），不产生开销。
+    ['touchend', 'click'].forEach(function (type) {
+      document.addEventListener(type, function () {
+        if (unlocked) return;
+        rebuildIfNeeded();
+        unlock();
+      }, { passive: true });
+    });
   }
 
   G.Audio = {
@@ -1232,53 +1303,320 @@
 
     // 调试用
     _buffers: function () { return buffers; },
-    _ctx: function () { return ctx; }
+    _ctx: function () { return ctx; },
+    // 21-sfx.js 用这个拿 context —— 它必须复用同一个实例。
+    // 各建一个的话，音效那个永远停在 suspended，症状又是「点了没声音」。
+    _ensureCtx: getCtx
   };
 
 })(window);
 
-/* ===== 30-bank.js ===== */
-/* 30-bank.js — 识字题库：加权抽题
+/* ===== 21-sfx.js ===== */
+/* 21-sfx.js — 音效层（全部用振荡器现场合成，一个音频文件都不需要）
  *
- * 这个文件以前是 30-curriculum.js，装的是 OPW2 自然拼读课程表、词族解锁、
- * 最小对立对干扰项生成。英语模块下线后，真正还需要留下的只有一件事：
- * 从题库里挑题，且挑得有讲究。
+ * 为什么不用音频文件：
+ *   以前 audio/ui/ 下放着两个 12 KB 的占位蜂鸣音，manifest 里标着
+ *   _placeholder: true —— 那是「先占位，回头再录」，然后就没有回头了。
+ *   结果是整个游戏只有转盘那一声「嘀」，孩子点任何地方都没反馈，
+ *   试玩反馈就是「音频异常，点击无声音」。
  *
- * 挑题的讲究只有一条 —— **不均匀随机**。均匀随机会让孩子已经滚瓜烂熟的字
- * 反复出现（浪费时间），而总写错的字永远轮不到（得不到练习）。所以按
- * 错题本加权：没掌握的加权重出，连对两次的降权。
+ *   而这种音效（短促的「嗒」「叮」「嗡」）用振荡器合成只需要几行，
+ *   好处是实打实的：
+ *     · 零字节，单文件版不用为它多扛一份 base64
+ *     · 不会解码失败 —— 音频文件在 iOS 上因为采样率/编码不合规放不出声，
+ *       是这个项目里最难查的一类 bug（放不出声但不报错）
+ *     · 可以随时调音（音高、时长、波形都是参数）
  *
- * 干扰项不在这里生成。识字题的选项是「同音字 / 形近字」，属于内容问题，
- * 已经由 tools/gen_ziku.py 在构建期算好并写进题库 —— 运行时不猜。
+ *   真正需要「人声」的只有英语单词，那部分走 20-audio.js 的
+ *   G.AUDIO_MAP + 预生成语音文件，和这里不冲突。
+ *
+ * 音效表（id 全部带 ui. 前缀 —— 和 G.AUDIO_MAP 的命名规则一致，
+ * 也让 G.Audio.play() 能一眼看出哪些走合成、哪些走文件）：
+ *   ui.tap      按钮反馈        ui.correct  答对
+ *   ui.wrong    答错            ui.spin     转盘转动（会响 3.4 秒）
+ *   ui.win      中奖            ui.lose     空奖（要温柔，不能让孩子难受）
+ *   ui.star     攒够分/里程碑
  */
 (function (window) {
   'use strict';
 
   var G = window.G;
 
-  var questions = [];
+  function ctxOf() {
+    // 复用 20-audio.js 的 AudioContext —— 一个页面只能有一个，
+    // 而且那个已经被 user gesture 解锁过了。这里自己 new 一个的话，
+    // 会得到一个永远 suspended 的 context，症状又是「没声音」。
+    if (G.Audio && G.Audio._ensureCtx) return G.Audio._ensureCtx();
+    return null;
+  }
+
+  function enabled() {
+    try {
+      var s = G.Store && G.Store.load();
+      if (s && s.settings && s.settings.audioEnabled === false) return false;
+    } catch (e) { /* store 还没起来时按有声处理 */ }
+    return true;
+  }
+
+  /* ---------- 发声原语 ---------- */
+
+  /**
+   * 一个音符。t0 是相对当前时间的偏移（秒），不是绝对时间 ——
+   * 调用方只关心「这几个音依次隔多久」，不关心 ctx.currentTime 走到哪了。
+   */
+  function note(c, opt) {
+    var t0 = c.currentTime + (opt.at || 0);
+    var dur = opt.dur || 0.12;
+    var osc = c.createOscillator();
+    var gain = c.createGain();
+
+    osc.type = opt.type || 'sine';
+    osc.frequency.setValueAtTime(opt.freq, t0);
+    if (opt.to) osc.frequency.exponentialRampToValueAtTime(opt.to, t0 + dur);
+
+    // 包络：瞬间起音 + 指数衰减。
+    // 直接 gain=1 然后 stop() 会「啪」一声（波形被硬切），所以尾巴一定要收。
+    var vol = (opt.vol === undefined ? 0.25 : opt.vol);
+    gain.gain.setValueAtTime(0.0001, t0);
+    gain.gain.exponentialRampToValueAtTime(vol, t0 + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+
+    osc.connect(gain);
+    gain.connect(c.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }
+
+  /** 扫频噪声，用来做「唰」「咔」这类没有明确音高的声音。 */
+  function noise(c, opt) {
+    var t0 = c.currentTime + (opt.at || 0);
+    var dur = opt.dur || 0.08;
+    var len = Math.max(1, Math.floor(c.sampleRate * dur));
+    var buf = c.createBuffer(1, len, c.sampleRate);
+    var d = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) {
+      // 后面衰减得更快，听起来像敲击而不是白噪
+      d[i] = (Math.random() * 2 - 1) * (1 - i / len) * (1 - i / len);
+    }
+    var src = c.createBufferSource();
+    src.buffer = buf;
+
+    var filt = c.createBiquadFilter();
+    filt.type = opt.filter || 'bandpass';
+    filt.frequency.value = opt.freq || 1800;
+    filt.Q.value = opt.q === undefined ? 1.2 : opt.q;
+
+    var gain = c.createGain();
+    gain.gain.value = opt.vol === undefined ? 0.3 : opt.vol;
+
+    src.connect(filt);
+    filt.connect(gain);
+    gain.connect(c.destination);
+    src.start(t0);
+  }
+
+  /* ---------- 音效定义 ---------- */
+
+  var RECIPES = {
+    // 按钮「嗒」。用方波，短到 60ms —— 长一点就会拖慢答题节奏，
+    // 一局 10 道题要按几十次，每次多 100ms 就很烦。
+    'ui.tap': function (c) {
+      note(c, { freq: 880, dur: 0.05, type: 'square', vol: 0.10 });
+    },
+
+    // 答对：C5-E5-G5 上行。上行音阶是跨文化通用的「对了」。
+    'ui.correct': function (c) {
+      note(c, { freq: 523.25, dur: 0.11, type: 'triangle', at: 0,    vol: 0.22 });
+      note(c, { freq: 659.25, dur: 0.11, type: 'triangle', at: 0.09, vol: 0.22 });
+      note(c, { freq: 783.99, dur: 0.22, type: 'triangle', at: 0.18, vol: 0.26 });
+    },
+
+    // 答错：两个下行音，音量压低。
+    // 故意不用「嗡嗡」的刺耳低频 —— 6 岁孩子答错本来就挫败，
+    // 音效再凶一点，下一题他就不敢点了。
+    'ui.wrong': function (c) {
+      note(c, { freq: 392.00, dur: 0.13, type: 'sine', at: 0,   vol: 0.18 });
+      note(c, { freq: 311.13, dur: 0.24, type: 'sine', at: 0.11, vol: 0.16 });
+    },
+
+    // 转盘：棘轮声。26 下，间隔从 45ms 渐增到 260ms ——
+    // 和 50-wheel.js 里 3.4s 的 cubic-bezier 减速曲线大致对得上，
+    // 孩子听到「咔、咔、咔…… 咔」慢下来，就知道快停了。
+    'ui.spin': function (c) {
+      var n = 26, t = 0;
+      for (var i = 0; i < n; i++) {
+        var k = i / (n - 1);
+        noise(c, { at: t, dur: 0.035, freq: 2400 - k * 900, vol: 0.10 + k * 0.06, q: 3 });
+        t += 0.045 + k * k * 0.215;
+      }
+    },
+
+    // 中奖：C5-E5-G5-C6 小号式收尾。最后一个音拉长，给「中了！」留出时间。
+    'ui.win': function (c) {
+      note(c, { freq: 523.25, dur: 0.12, type: 'triangle', at: 0,    vol: 0.24 });
+      note(c, { freq: 659.25, dur: 0.12, type: 'triangle', at: 0.10, vol: 0.24 });
+      note(c, { freq: 783.99, dur: 0.12, type: 'triangle', at: 0.20, vol: 0.24 });
+      note(c, { freq: 1046.5, dur: 0.42, type: 'triangle', at: 0.30, vol: 0.30 });
+      note(c, { freq: 523.25, dur: 0.42, type: 'sine',     at: 0.30, vol: 0.14 });
+    },
+
+    // 空奖：两个下行长音，柔和。
+    // 「下次好运」是明明白白的不中，但孩子已经答对了一道题 ——
+    // 这里要收住，不能像是惩罚。
+    'ui.lose': function (c) {
+      note(c, { freq: 440.00, dur: 0.20, type: 'sine', at: 0,    vol: 0.16 });
+      note(c, { freq: 349.23, dur: 0.40, type: 'sine', at: 0.17, vol: 0.14 });
+    },
+
+    'ui.star': function (c) {
+      note(c, { freq: 1046.5, dur: 0.09, type: 'sine', at: 0,    vol: 0.20 });
+      note(c, { freq: 1318.5, dur: 0.09, type: 'sine', at: 0.07, vol: 0.20 });
+      note(c, { freq: 1568.0, dur: 0.28, type: 'sine', at: 0.14, vol: 0.24 });
+    }
+  };
+
+  /* ---------- 对外 ---------- */
+
+  function has(id) { return Object.prototype.hasOwnProperty.call(RECIPES, id); }
+
+  function play(id) {
+    if (!enabled()) return false;
+    if (!has(id)) return false;
+
+    var c = ctxOf();
+    if (!c) return false;
+
+    // 还没解锁时直接放弃，不排队。
+    // 排队看着更「对」，但音效是即时反馈 —— 攒到解锁后一起放出来
+    // 只会变成一串错位的怪声，不如不放。
+    if (c.state !== 'running') {
+      G.log('sfx 跳过（context 未解锁）', id);
+      return false;
+    }
+
+    try {
+      RECIPES[id](c);
+      return true;
+    } catch (e) {
+      // 音效永远不能把游戏搞崩
+      G.log('sfx 合成失败', id, e);
+      return false;
+    }
+  }
+
+  /* ---------- 全局按钮「嗒」声 ---------- */
+
+  /**
+   * 用事件委托给所有按钮加反馈音，而不是在每个 onclick 里各写一行。
+   *
+   * 为什么值得这么绕：这个游戏里绝大多数点击是「翻页/开始/继续」这类
+   * 没有对错的动作，它们也必须有声音 —— 6 岁孩子判断「我点到了没有」
+   * 靠的就是这一下响。逐个按钮去加，一定会漏；漏掉的那个正好就是
+   * 「点了没反应」，也就是这次试玩反馈的问题。
+   *
+   * 用捕获阶段（第三个参数 true）：在业务 handler 跑之前出声，
+   * 手感更跟手；也避免业务 handler 里 stopPropagation 把它吃掉。
+   */
+  function installTap() {
+    document.addEventListener('click', function (e) {
+      var el = e.target;
+      if (!el || !el.closest) return;
+
+      var btn = el.closest('button, .tap');
+      if (!btn || btn.disabled || btn.classList.contains('locked')) return;
+      if (btn.hasAttribute('data-sfx-off')) return;
+
+      play('ui.tap');
+    }, true);
+  }
+
+  G.Sfx = {
+    play: play,
+    has: has,
+    installTap: installTap,
+    list: function () { return Object.keys(RECIPES); }
+  };
+
+})(window);
+
+/* ===== 30-bank.js ===== */
+/* 30-bank.js — 题库：三科分仓 + 加权抽题
+ *
+ * 从 300 道题里挑一局 10 道，挑得有讲究。
+ *
+ * 讲究一：**三科分开抽，不混在一起抽**。
+ *   如果按 3:3:4 的比例做一张 300 道的加权表然后连抽 10 次，抽出来的
+ *   科目分布会随题库大小和权重浮动 —— 语文 90 道、英语 120 道，均匀抽的话
+ *   英语天然就多，再叠上错题加权，很可能一局里 8 道英语、1 道语文。
+ *   「一局里三科各出几道」是产品要求，不是概率结果，所以按科目配额抽满为止。
+ *
+ * 讲究二：**科目内不均匀随机**（这部分和以前一样）。
+ *   均匀随机会让孩子已经滚瓜烂熟的字反复出现（浪费时间），而总写错的字
+ *   永远轮不到（得不到练习）。所以按错题本加权：没掌握的加权重出，
+ *   连对两次的降权。
+ *
+ * 干扰项不在这里生成。所有科目的选项都是内容问题，已经在构建期由
+ * tools/gen_*.py 算好写进题库 —— 运行时不猜。
+ */
+(function (window) {
+  'use strict';
+
+  var G = window.G;
+
+  var banks = {};        // { chinese: [q, ...], math: [...], english: [...] }
   var zibiao = null;
 
   /* ---------- 加载 ---------- */
 
   function init(data) {
-    questions = (data.chinese || []).slice();
+    banks = {};
+    var missing = [];
+
+    G.SUBJECTS.forEach(function (s) {
+      var list = (data[s] || []).slice();
+      if (!list.length) missing.push(G.SUBJECT_LABEL[s] || s);
+      banks[s] = list;
+    });
+
     zibiao = data.zibiao || null;
 
-    if (!questions.length) throw new Error('缺少识字题库（src/data/chinese.json）');
+    // 缺一科就让构建期挡住，运行时不带病上线。
+    // 少一科的后果不是「少几道题」——是那一局的 10 个坑里空出 3 个，
+    // 表现成一局只出 7 道题，而且不报错。
+    if (missing.length) {
+      throw new Error('缺少题库：' + missing.join('、') + '（跑一次 npm run qbank）');
+    }
 
-    G.log('识字题库已加载', questions.length, '道题',
+    G.log('题库已加载',
+          G.SUBJECTS.map(function (s) {
+            return (G.SUBJECT_LABEL[s] || s) + ' ' + banks[s].length;
+          }).join(' · '),
           zibiao ? ('，字表 ' + zibiao.chars.length + ' 字') : '');
   }
 
-  function all() { return questions; }
-  function zibiaoData() { return zibiao; }
+  function of(subject) { return banks[subject] || []; }
+
+  /** 全部题目，三科拼一起。给家长页做统计用。 */
+  function all() {
+    return G.SUBJECTS.reduce(function (acc, s) { return acc.concat(banks[s] || []); }, []);
+  }
 
   function byId(id) {
-    for (var i = 0; i < questions.length; i++) {
-      if (questions[i].id === id) return questions[i];
+    for (var i = 0; i < G.SUBJECTS.length; i++) {
+      var list = banks[G.SUBJECTS[i]] || [];
+      for (var j = 0; j < list.length; j++) {
+        if (list[j].id === id) return list[j];
+      }
     }
     return null;
+  }
+
+  function zibiaoData() { return zibiao; }
+
+  /** 某道题是哪一科的 —— 家长页按科目分组统计时要用。 */
+  function subjectOf(id) {
+    var q = byId(id);
+    return q ? q.subject : null;
   }
 
   /* ---------- 加权 ---------- */
@@ -1304,20 +1642,25 @@
   }
 
   /**
-   * 抽一道题。excludeIds 用来保证一局之内不重复。
+   * 从指定科目抽一道题。excludeIds 用来保证一局之内不重复。
    * @param {object} save
+   * @param {string} subject
    * @param {string[]} excludeIds
    * @param {function} rng  可选，注入固定随机源便于测试
    */
-  function drawOne(save, excludeIds, rng) {
+  function drawOne(save, subject, excludeIds, rng) {
     rng = rng || Math.random;
+    var pool = banks[subject] || [];
+    if (!pool.length) return null;
+
     var excluded = {};
     (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-    var avail = questions.filter(function (q) { return !excluded[q.id]; });
-    // 兜底：题库被抽空时允许重复，也不让一局短题
-    if (!avail.length) avail = questions;
-    if (!avail.length) return null;
+    var avail = pool.filter(function (q) { return !excluded[q.id]; });
+    // 兜底：本科目的题被抽空时允许重复，也不让一局短题。
+    // 一局只要 3~4 道，而每个科目至少 90 道，正常永远走不到这里；
+    // 但题库被裁剪成十几道时就会 —— 那时候「重复一道」也比「少一道」好。
+    if (!avail.length) avail = pool;
 
     var wrongIndex = wrongIndexOf(save);
     var weights = avail.map(function (q) { return weightOf(q, wrongIndex); });
@@ -1334,8 +1677,10 @@
 
   G.Bank = {
     init: init,
+    of: of,
     all: all,
     byId: byId,
+    subjectOf: subjectOf,
     zibiao: zibiaoData,
     weightOf: weightOf,
     drawOne: drawOne
@@ -1384,26 +1729,33 @@
    * 也依赖「刚答错的题立刻变得更常出」，日种子会把这条反馈延迟到明天。
    */
   function buildRound(save) {
-    var total = G.DEFAULT_MIX.chinese || G.ROUND_SIZE;
     var used = [];
     var picked = [];
 
-    for (var i = 0; i < total; i++) {
-      var q = G.Bank.drawOne(save, used);
-      if (!q) break;
-      used.push(q.id);
-      picked.push(q);
-    }
+    // **按科目配额抽满，而不是一起抽再按比例挑。**
+    // 一起抽的话，科目分布是概率结果不是配额：英语 120 道本来就比语文的
+    // 90 道更容易被抽中，再叠上错题加权，一局很可能 8 道英语 1 道语文。
+    // 「一局里三科各出几道」是产品要求，得用配额保证。
+    G.SUBJECTS.forEach(function (s) {
+      var want = G.DEFAULT_MIX[s] || 0;
+      for (var i = 0; i < want; i++) {
+        var q = G.Bank.drawOne(save, s, used);
+        if (!q) break;
+        used.push(q.id);
+        picked.push(q);
+      }
+    });
 
-    // 兜底。正常抽不到这一步（296 道题 >> 10），只有题库被改小到一局以内
-    // 才会走到：那时先试着再抽一道没出过的，实在没有才允许重复 ——
+    // 兜底。正常抽不到这一步（每科至少 90 道 >> 一局要的 3~4 道），
+    // 只有题库被裁剪到一局以内才会走到：那时允许重复 ——
     // 宁可出现重题，也不要让一局变成半局。
-    while (picked.length < total) {
-      var extra = G.Bank.drawOne(save, used);
+    while (picked.length < G.ROUND_SIZE) {
+      var extra = null;
+      for (var k = 0; k < G.SUBJECTS.length && !extra; k++) {
+        extra = G.Bank.drawOne(save, G.SUBJECTS[k], used);
+      }
       if (!extra) break;
-      if (used.indexOf(extra.id) >= 0) extra = G.Bank.drawOne(save, []);
-      else used.push(extra.id);
-      if (!extra) break;
+      used.push(extra.id);
       picked.push(extra);
     }
 
@@ -1416,7 +1768,7 @@
   /**
    * 排位置：
    *   1. 最可能答对的两道，分给第 1 题和第 10 题
-   *   2. 剩下的打散，且不让同一题型挨着
+   *   2. 剩下的打散，且相邻两题尽量不同科、同科内尽量不同题型
    */
   function arrange(questions, save) {
     if (questions.length <= 2) return questions.slice();
@@ -1427,9 +1779,9 @@
 
     var first = ranked[0];
     var last = ranked[1];
-    var middle = G.shuffle(ranked.slice(2), Math.random);
+    var middle = spread(ranked.slice(2), first, last);
 
-    return [first].concat(orderByTag(middle, tagOf(first), tagOf(last)), [last]);
+    return [first].concat(middle, [last]);
   }
 
   function tagOf(q) {
@@ -1437,41 +1789,72 @@
   }
 
   /**
-   * 按题型交错排列：每次从剩下的题里挑一道和上一题**不同题型**的，并且优先
-   * 挑剩余数量最多的那个题型 —— 先把大堆消耗掉，小堆才不会剩到最后被迫相邻。
+   * 把中间几道排开：每次从剩下的题里挑一道最「不重样」的放进去。
    *
-   * 「看拼音选字」占了题库的三分之一，一局 10 题里通常有 3 道；不做这一步，
-   * 它们会以相当高的概率挨在一起，一局看起来就像只有两种题。
+   * 为什么要重排而不是直接打散：
+   *   一局 10 道是 3 语文 + 3 数学 + 4 英语。纯随机打散的话，出现
+   *   「连着 3 道英语」甚至「连着 4 道英语」的概率相当高 —— 一局 10 道里
+   *   连着刷 4 道英语，孩子感觉就是「这局全是英语」。
    *
-   * 这是软约束，不是排序目标：某个题型一旦过半（现在没有），相邻就躲不掉，
-   * 那时按原样排下去，不为了满足约束把题目弄丢。
+   * 打分是字典序的，优先级从高到低：
+   *   ① 科目和上一题不同     ② 题型和上一题不同
+   *   ③ 科目不和末题撞       ④ 题型不和末题撞（只有剩最后一道时才起作用）
+   *   ⑤ 该科目剩下最多       ⑥ 该题型剩下最多
+   * 前四条是「别挨着」，后两条是经典的「先消耗大堆」—— 不先消耗大堆，
+   * 小堆会剩到最后被迫相邻，前面白排了。
+   *
+   * 这是软约束：真到了只剩同一科的地步，①拿不到分，就按⑤⑥继续排下去，
+   * 不为了满足约束把题目弄丢。
    */
-  function orderByTag(items, prevTag, tailTag) {
-    var pool = items.slice();
+  function spread(items, head, tail) {
+    var pool = G.shuffle(items.slice(), Math.random);
     var out = [];
+    var prevSub = head.subject;
+    var prevTag = tagOf(head);
+    var tailSub = tail.subject;
+    var tailTag = tagOf(tail);
 
     while (pool.length) {
-      var count = {};
+      var bySub = {};
+      var bySubTag = {};
       pool.forEach(function (q) {
-        var t = tagOf(q);
-        count[t] = (count[t] || 0) + 1;
+        bySub[q.subject] = (bySub[q.subject] || 0) + 1;
+        var k = q.subject + '/' + tagOf(q);
+        bySubTag[k] = (bySubTag[k] || 0) + 1;
       });
 
-      var pick = -1;
-      var best = -1;
-      for (var i = 0; i < pool.length; i++) {
-        var t = tagOf(pool[i]);
-        if (t === prevTag) continue;
-        // 最后一道还要避开末题的题型，否则会在末尾撞上
-        if (pool.length === 1 && t === tailTag) continue;
-        if (count[t] > best) { best = count[t]; pick = i; }
-      }
-      if (pick < 0) pick = 0;               // 只剩同题型了，认了
+      var isLast = (pool.length === 1);
+      var pick = 0;
+      var best = null;
 
-      prevTag = tagOf(pool[pick]);
-      out.push(pool.splice(pick, 1)[0]);
+      for (var i = 0; i < pool.length; i++) {
+        var q = pool[i];
+        var t = tagOf(q);
+        var score = [
+          q.subject === prevSub ? 0 : 1,
+          t === prevTag ? 0 : 1,
+          (isLast && q.subject === tailSub) ? 0 : 1,
+          (isLast && t === tailTag) ? 0 : 1,
+          bySub[q.subject] || 0,
+          bySubTag[q.subject + '/' + t] || 0
+        ];
+        if (best === null || lexGreater(score, best)) { best = score; pick = i; }
+      }
+
+      var chosen = pool.splice(pick, 1)[0];
+      prevSub = chosen.subject;
+      prevTag = tagOf(chosen);
+      out.push(chosen);
     }
     return out;
+  }
+
+  /** 字典序比较：从前往后，第一个不相等的分量决定胜负。 */
+  function lexGreater(a, b) {
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return a[i] > b[i];
+    }
+    return false;
   }
 
   /* ---------- 答题结算 ---------- */
@@ -1506,7 +1889,10 @@
     }
 
     // --- 按知识点统计（家长面板用）---
-    var bucket = save.progress.chinese.byTag;
+    // 记到自己那一科下面。三科的题型名天然不重叠（归类 / 拆数 / 听音选词），
+    // 但分开记才看得出「数学应用题弱、语文笔画弱」这种分科结论。
+    var prog = save.progress[q.subject] || (save.progress[q.subject] = { byTag: {} });
+    var bucket = prog.byTag;
     (q.tags || []).forEach(function (tag) {
       var t = bucket[tag] || (bucket[tag] = { seen: 0, correct: 0 });
       t.seen++; if (correct) t.correct++;
@@ -1572,13 +1958,12 @@
 /* ===== 41-render-choice.js ===== */
 /* 41-render-choice.js — 选择题渲染器
  *
- * 整个题库现在只有一种题型：choice（题干 + 4 个选项）。曾经还有个 listen
- * 渲染分支（听音选词，走 OPW2 自然拼读），英语下线后一起删了 —— 留着就是
- * 一段永远跑不到、也没人测的代码。
+ * 三科 300 道题全部是 choice（题干 + 4 个选项），所以只有一个渲染分支。
+ * 差异全在数据里：stem.layout 决定选项排布，stem.audio 决定要不要喇叭。
  *
- * rendererFor 也放在这里。它原来在 44-render-realword.js，那个文件承载的
- * 是「看图选词 / 排序 / 拼词」三种英语题型；三种都没了，只剩下「按 type
- * 找渲染器」这一件小事，没必要为它单开一个文件。
+ * rendererFor 也放在这里。它原来在 44-render-realword.js —— 那个文件承载的
+ * 是「看图选词 / 排序 / 拼词」三种看图题型，都删了，只剩下「按 type 找
+ * 渲染器」这一件小事，没必要为它单开一个文件。
  */
 (function (window) {
   'use strict';
@@ -1586,6 +1971,9 @@
   var G = window.G;
 
   G.Renderers = G.Renderers || {};
+
+  /** 单个汉字。用来判断「这是不是识字题的单字选项」。 */
+  var HAN_RE = /^[一-鿿]$/;
 
   /**
    * 按题型取渲染器。目前只有 choice 一种，未知题型兜底也给它 ——
@@ -1600,21 +1988,40 @@
     var layout = (q.stem && q.stem.layout) || (options.length <= 2 ? 'row' : 'grid');
     var answered = false;
 
-    var root = G.el('div', { class: 'q q-choice' });
+    // 布局类别挂在根上，题干和选项都能按它取样式
+    // （math 的 big-number 要连题干一起放大，只给选项加类做不到）。
+    var root = G.el('div', { class: 'q q-choice q-layout-' + layout });
 
     // ---- 题干 ----
     var stem = G.el('div', { class: 'stem' });
 
-    if (q.stem && q.stem.audio) {
-      // 有语音的题干（「这个字读什么？」读一遍给孩子听）。
-      // 现在的识字题库没有音频题干，这条留给以后加真人读音时用。
-      if (q.stem.prompt) {
-        stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
-      }
-      stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    var hasAudio = !!(q.stem && q.stem.audio);
+    // 语音会不会念出答案（句子填空念的是填好空的那句）。
+    // 会的话，喇叭按钮要等答完再出现 —— 否则孩子一点就听见答案了。
+    var audioReveals = !!(q.stem && q.stem.audioReveals);
 
-    } else if (q.stem && q.stem.text) {
+    if (q.stem && q.stem.prompt) {
+      stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
+    }
+
+    // 题干文字和喇叭按钮**不是二选一**：英语的听音选词两者都有
+    // （「听一听，选出你听到的词」+ 音频），句子填空也是（整句 + 音频）。
+    // 早先这里写成了 if/else if，结果是 67 道英语题的文字题干全都不显示，
+    // 句子填空连要填的句子都看不见。
+    if (q.stem && q.stem.text) {
       stem.appendChild(G.el('div', { class: 'stem-text', text: q.stem.text }));
+    }
+
+    if (hasAudio && !audioReveals) {
+      stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    }
+
+    // 答完后才放出来的喇叭（答案已经在屏幕上了，这时听是复习不是作弊）
+    var lateSpeaker = null;
+    if (hasAudio && audioReveals) {
+      lateSpeaker = G.UI.speakerButton(q.stem.audio, '听一遍', { small: true });
+      lateSpeaker.classList.add('hidden');
+      stem.appendChild(lateSpeaker);
     }
 
     root.appendChild(stem);
@@ -1625,12 +2032,19 @@
 
     options.forEach(function (opt) {
       // 单字选项（「日」「目」「白」这类形近字）单独放大 —— 一眼看不清的字
-      // 会让孩子靠猜，而不是靠辨认
-      var single = (opt.text || '').length === 1;
+      // 会让孩子靠猜，而不是靠辨认。
+      //
+      // 必须限定「是一个汉字」，不能只看长度：数学题的选项也是短的，
+      // 「7」和「70」混在一道题里，只把「7」放大到 50px 会让这一排
+      // 高低不平，看起来像是排版坏了。
+      var single = HAN_RE.test(opt.text || '');
 
       var btn = G.el('button', {
         class: 'option' + (single ? ' option-single' : ''),
         'data-id': opt.id,
+        // 关掉全局的「嗒」声：选项有自己的对/错音效（见 05-ui.js 的
+        // feedback），两个叠在一起会糊成一团。
+        'data-sfx-off': '1',
         onclick: function () { choose(opt); }
       }, [G.el('span', { class: 'option-text', text: opt.text })]);
 
@@ -1658,6 +2072,9 @@
         buttons[id].classList.add('locked');
         if (id === q.answer) buttons[id].classList.add('is-answer');
       });
+
+      // 答案已经亮出来了，这时才放出「听一遍」
+      if (lateSpeaker) lateSpeaker.classList.remove('hidden');
 
       if (!correct) {
         showExplain(q.explain);
@@ -1730,15 +2147,54 @@
     return 'conic-gradient(from -90deg, ' + stops.join(', ') + ')';
   }
 
+  // 扇区配色。**白字压在浅色上等于没字** —— 原来 p5 是 #FFD54F（亮黄）
+  // 配白字，那个扇区基本是空的。这里每个色都压到能承住白色小字的深度，
+  // 六个色相仍然分得开。
   function colorFor(id) {
     return {
-      tv10: '#FF8A65',
-      p1: '#81C784',
-      p2: '#4FC3F7',
-      p5: '#FFD54F',
-      p10: '#BA68C8',
-      none: '#B0BEC5'
-    }[id] || '#B0BEC5';
+      tv10: '#E4572E',
+      p1: '#2E9E5B',
+      p2: '#2A7FD4',
+      p5: '#C9860A',
+      p10: '#8E44AD',
+      none: '#78909C'
+    }[id] || '#78909C';
+  }
+
+  /* 标签中心到盘心的半径（px）。
+   * 盘面 280px、白边 9px、box-sizing:border-box → 盘内半径 131px。
+   * 标签宽 72px，所以它占 76±36 = 40px ~ 112px 这一段：
+   *   外沿 112 < 131，不会压到白边；内沿 40 > 中心轴半径 23，不会被轴盖住。 */
+  var LABEL_R = 76;
+
+  /**
+   * 盘面上的一个奖名。
+   *
+   * 为什么文字要转 90° 顺着半径排，而不是横着贴：
+   *   六个奖项的权重是 5/30/20/15/10/20，摊到 360° 就是 18°/108°/72°/54°/36°/72°。
+   *   最宽的和最窄的差了 6 倍。横排的话，18° 那个扇区在半径 100px 处只有
+   *   31px 弧长，一行放不下两个字，必然和隔壁扇区叠在一起（这正是原来
+   *   「转盘上看不清奖励」的原因之一）。
+   *   转成径向之后，受角度限制的只剩行高（13px），而文字长度沿半径展开，
+   *   有 72px 可用 —— 每个扇区都放得下。
+   *
+   * 上半圈从下往上读、下半圈翻过来从上往下读，都是正的，不会倒着。
+   */
+  function faceLabel(s) {
+    var label = G.el('span', { class: 'wheel-label', text: s.prize.face || s.prize.label });
+
+    // 变换链从左到右依次作用：
+    //   translate(-50%,-50%) 先把标签自身中心对到盘心
+    //   rotate(center)       绕盘心转到本扇区的角度
+    //   translateY(-R)       沿这个方向推到半径 R
+    //   rotate(±90deg)       把文字转成顺着半径读
+    // 前两步一起等价于「把标签放到扇区中心」，后两步是让它在那个位置上可读。
+    var text = (s.center > 180) ? 90 : -90;
+    label.style.transform =
+      'translate(-50%, -50%) rotate(' + s.center + 'deg)' +
+      ' translateY(-' + LABEL_R + 'px) rotate(' + text + 'deg)';
+
+    return label;
   }
 
   /**
@@ -1761,9 +2217,7 @@
 
       // 奖名贴在盘面上
       segments.forEach(function (s) {
-        var label = G.el('span', { class: 'wheel-label', text: s.prize.label });
-        label.style.transform = 'rotate(' + s.center + 'deg) translateY(-38%)';
-        wheel.appendChild(label);
+        wheel.appendChild(faceLabel(s));
       });
 
       var pointer = G.el('div', { class: 'wheel-pointer' });
@@ -1809,7 +2263,10 @@
       });
 
       function finish(prize) {
-        G.Audio.play('ui.win');
+        // 空奖有专门的音效。原来不管中没中都放 ui.win ——
+        // 「下次好运」配一段中奖号角，孩子会先高兴一下再发现什么都没有，
+        // 比直接给个温和的下行音更让人失望。
+        G.Audio.play(prize.kind === 'none' ? 'ui.lose' : 'ui.win');
 
         var r = G.Runner.awardPoints(save, prize.points);
         var extra = '';
@@ -2299,8 +2756,8 @@
     }
     box.appendChild(section('待确认兑换', pendBox));
 
-    /* --- 识字范围 --- */
-    box.appendChild(section('识字范围', buildZibiaoPanel(save)));
+    /* --- 语文认字范围 --- */
+    box.appendChild(section('语文认字范围', buildZibiaoPanel(save)));
 
     /* --- 学习数据 --- */
     box.appendChild(section('学习数据', buildStats(save)));
@@ -2350,12 +2807,12 @@
       return wrap;
     }
 
-    var g1 = zb.chars.filter(function (c) { return c.grade === 1; }).length;
     wrap.appendChild(G.el('div', {
       class: 'muted',
-      text: '题库共 ' + G.Bank.all().length + ' 道题，全部出自下面这张字表（' +
-            zb.chars.length + ' 字：一年级 ' + g1 + ' · 二年级 ' + (zb.chars.length - g1) + '）。' +
-            '题目和干扰项都不会超出这个范围。'
+      text: '题库共 ' + G.Bank.all().length + ' 道题（语文 ' + G.Bank.of('chinese').length +
+            ' · 数学 ' + G.Bank.of('math').length + ' · 英语 ' + G.Bank.of('english').length + '）。' +
+            '语文的每一个字都出自下面这张一年级字表（' + zb.chars.length + ' 字），' +
+            '题干和四个选项都不会超纲。'
     }));
 
     // 还没掌握的字。只从「答案是一个汉字」的题里统计 —— 数笔画题的答案是
@@ -2412,14 +2869,24 @@
   function buildStats(save) {
     var wrap = G.el('div', { class: 'stat-card' });
 
-    // 按题型统计（看拼音选字 / 数笔画 / 反义词 …）
-    var bucket = save.progress.chinese.byTag;
-    var tags = Object.keys(bucket);
-    if (tags.length) {
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL.chinese + ' · 按题型' }));
-      tags.sort(function (a, b) { return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen); })
-        .forEach(function (t) { wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen)); });
-    }
+    // 按题型统计，三科分开列（语文：归类 / 笔画…；数学：拆数 / 比大小…；
+    // 英语：听音选词 / 词族归类…）。合在一起列的话，家长看不出到底是
+    // 哪一科弱 —— 而这正是他翻到这个页面想知道的。
+    G.SUBJECTS.forEach(function (s) {
+      var bucket = (save.progress[s] && save.progress[s].byTag) || {};
+      var tags = Object.keys(bucket);
+      if (!tags.length) return;
+      wrap.appendChild(G.el('div', {
+        class: 'stat-title',
+        text: (G.SUBJECT_LABEL[s] || s) + ' · 按题型'
+      }));
+      // 正确率低的排前面：家长要的是「先补哪个」
+      tags.sort(function (a, b) {
+        return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen);
+      }).forEach(function (t) {
+        wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen));
+      });
+    });
 
     // 错题本
     var wrong = save.wrongBook.filter(function (w) { return !w.cleared; })
@@ -2454,7 +2921,9 @@
   function findQuestion(qid) {
     if (!_qIndex) {
       _qIndex = {};
-      ((window.G.DATA && window.G.DATA.chinese) || []).forEach(function (q) { _qIndex[q.id] = q; });
+      // 用 G.Bank.all() 而不是 window.G.DATA.chinese —— 三科都要能查到。
+      // 只查语文的话，错题本里每道数学题都会显示成一串 qid。
+      G.Bank.all().forEach(function (q) { _qIndex[q.id] = q; });
     }
     return _qIndex[qid];
   }
@@ -2593,6 +3062,12 @@
 
   function boot(data) {
     root = G.$('#app');
+
+    // 配比必须在 Store.load() **之前**落定：save.settings 里不再存配比，
+    // 但一局的题数是从 G.ROUND_SIZE 读的，而它由配比推出来。
+    // 顺序反了的话，首次进入游戏的那一局会用兜底配比。
+    G.applyMix(data && data.mix);
+
     save = G.Store.load();
 
     G.Bank.init(data);
@@ -2659,8 +3134,15 @@
 
     var s = G.UI.screen('screen-home');
 
-    s.appendChild(G.el('div', { class: 'home-title', text: '识字闯关' }));
-    s.appendChild(G.el('div', { class: 'home-sub', text: '一局 10 个字，答对就转盘' }));
+    s.appendChild(G.el('div', { class: 'home-title', text: '幼小衔接闯关' }));
+    s.appendChild(G.el('div', {
+      class: 'home-sub',
+      // 副标题把一局的构成说清楚。家长和孩子都该在开始前知道
+      // 「这一局要做什么」，而不是玩到第 4 题才发现有数学。
+      text: '一局 ' + G.ROUND_SIZE + ' 题：' + G.SUBJECTS.map(function (sub) {
+        return (G.SUBJECT_LABEL[sub] || sub) + ' ' + (G.DEFAULT_MIX[sub] || 0);
+      }).join(' · ') + '，答对就转盘'
+    }));
 
     var stats = G.el('div', { class: 'home-stats' }, [
       G.el('div', { class: 'home-points', text: String(save.points.balance) }),
@@ -2840,7 +3322,10 @@
     }));
 
     root.appendChild(s);
-    G.Audio.play('ui.win');
+    // 一局结束用 ui.star（轻快上行），不用 ui.win（中奖号角）——
+    // ui.win 留给转盘真的中奖那一刻。同样是「结束了」，一个是每局都有，
+    // 一个是偶尔才有；共用一个音，中奖就不再特别了。
+    G.Audio.play('ui.star');
   }
 
   /* ---------- 导出给入口 ---------- */
@@ -2942,7 +3427,16 @@
         G.Audio.play(ids[0]).then(function (played) {
           record('端到端播放内置音频', played ? 'pass' : 'fail',
             played ? ('已播放 ' + ids[0]) : '解码或播放失败');
-          log.textContent = played ? ('✅ 播放成功：' + ids[0]) : '❌ 播放失败';
+
+          // 合成音效走的是另一条路径（G.Sfx，不经解码），
+          // 而它现在是孩子点每个按钮都能听到的声音 —— 单独测一条。
+          var sfxOk = G.Sfx ? G.Sfx.play('ui.correct') : false;
+          record('合成音效（按钮/对错反馈）', sfxOk ? 'pass' : 'fail',
+            sfxOk ? '已播放 ui.correct（三连上行音）'
+                  : '合成失败 —— 检查 AudioContext 是否已解锁');
+
+          log.textContent = (played ? '✅ 播放成功：' + ids[0] : '❌ 播放失败') +
+            '　' + (sfxOk ? '✅ 音效正常' : '❌ 音效异常');
           render();
         });
       }).catch(function (e) {

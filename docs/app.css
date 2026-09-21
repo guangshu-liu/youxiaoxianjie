@@ -492,6 +492,10 @@ body {
 .speaker:active { transform: translateY(4px); box-shadow: 0 2px 0 #29A8DC; }
 .speaker-icon { font-size: 52px; line-height: 1; }
 
+/* 会念出答案的语音（句子填空）：答完之前藏起来。
+   .hidden 在本项目里不是全局类，每个用到的地方各写一条 —— 见下方 .explain.hidden。 */
+.speaker.hidden { display: none; }
+
 .speaker.playing { animation: pulse .55s infinite; }
 
 .speaker-sm {
@@ -507,6 +511,20 @@ body {
 
 .options-grid    { grid-template-columns: 1fr 1fr; }
 .options-row     { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+
+/* 数学的算式题（66 + 4 = ?）。
+   算式本身很短，如果按默认尺寸排，题干一个「66 + 4 = ?」缩在屏幕中间、
+   四个两位数选项还没有题干大，孩子要凑近才看得清。
+   算式题的重点是「算」，字号就是可读性 —— 题干和选项一起放大。
+   仍然是 2×2：四个两位数摊成一排，在手机上每个只剩 80px 左右，
+   60px 的字会挤在一起，「70」和「10」反而更容易看错。 */
+.options-big-number { grid-template-columns: 1fr 1fr; }
+.options-big-number .option-text { font-size: 46px; letter-spacing: 2px; }
+
+.q-layout-big-number .stem-text {
+  font-size: 52px;
+  letter-spacing: 4px;
+}
 
 .option {
   position: relative;
@@ -652,20 +670,36 @@ body {
   will-change: transform;
 }
 
+/* 盘面上的奖名。
+ *
+ * 定位完全由 50-wheel.js 的 faceLabel() 用 transform 算好
+ * （translate → rotate → translateY → rotate），这里只管长什么样。
+ * 所以**不要**在这里写 transform —— 会被内联样式整个盖掉，
+ * 改了也不生效，只会让人以为样式没加载。
+ *
+ * width 固定 72px：文字是顺着半径排的，这个宽度就是「文字能有多长」，
+ * 和 50-wheel.js 里 LABEL_R 的取值是配套的（见那边的注释）。
+ * text-align 居中是因为 translate(-50%) 按元素宽度算，
+ * 元素宽度固定时文字必须自己居中，否则会偏出扇区。
+ */
 .wheel-label {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 84px;
-  margin-left: -42px;
-  font-size: 12px;
-  font-weight: 700;
+  width: 72px;
+  font-size: 13px;
+  font-weight: 800;
+  /* 行高必须是 1：文字转成径向之后，行高就是它「占多宽的角度」。
+     最窄的 18° 扇区（动画片）在标签内端只有 9° 半角可用，
+     行高 1.1 时半高 7.15px 会差半个角度压到隔壁扇区，压到 1 就正好让开。 */
+  line-height: 1;
   color: #fff;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0,0,0,.42);
-  transform-origin: center center;
+  white-space: nowrap;
+  /* 两道阴影：近处一道勾字形轮廓，远处一道做底衬。
+     白字压在六个不同深浅的色块上，只靠一道阴影总有色块会糊。 */
+  text-shadow: 0 1px 2px rgba(0,0,0,.55), 0 0 7px rgba(0,0,0,.32);
   pointer-events: none;
-  line-height: 1.15;
 }
 
 /* 指针在 12 点方向。conic-gradient 从 -90deg 起算，正好对上。 */

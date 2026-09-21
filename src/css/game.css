@@ -106,6 +106,10 @@
 .speaker:active { transform: translateY(4px); box-shadow: 0 2px 0 #29A8DC; }
 .speaker-icon { font-size: 52px; line-height: 1; }
 
+/* 会念出答案的语音（句子填空）：答完之前藏起来。
+   .hidden 在本项目里不是全局类，每个用到的地方各写一条 —— 见下方 .explain.hidden。 */
+.speaker.hidden { display: none; }
+
 .speaker.playing { animation: pulse .55s infinite; }
 
 .speaker-sm {
@@ -121,6 +125,20 @@
 
 .options-grid    { grid-template-columns: 1fr 1fr; }
 .options-row     { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+
+/* 数学的算式题（66 + 4 = ?）。
+   算式本身很短，如果按默认尺寸排，题干一个「66 + 4 = ?」缩在屏幕中间、
+   四个两位数选项还没有题干大，孩子要凑近才看得清。
+   算式题的重点是「算」，字号就是可读性 —— 题干和选项一起放大。
+   仍然是 2×2：四个两位数摊成一排，在手机上每个只剩 80px 左右，
+   60px 的字会挤在一起，「70」和「10」反而更容易看错。 */
+.options-big-number { grid-template-columns: 1fr 1fr; }
+.options-big-number .option-text { font-size: 46px; letter-spacing: 2px; }
+
+.q-layout-big-number .stem-text {
+  font-size: 52px;
+  letter-spacing: 4px;
+}
 
 .option {
   position: relative;

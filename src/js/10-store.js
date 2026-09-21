@@ -26,10 +26,12 @@
       // balance 和 lifetime 独立累加，是防作弊审计的基础（见 70-parent.js）
       points: { balance: 0, lifetime: 0 },
 
-      // 只有识字一科。老存档里的 progress.english / progress.math 不再写也不再读，
-      // 留着不动 —— 删掉它们对游戏没有任何影响，却会让「导入旧备份」多一次改动。
+      // 三科各记一份 byTag 掌握度，家长面板按科目分开看。
+      // 结构由 G.SUBJECTS 推出来，加科目不用改这里。
       progress: {
-        chinese: { byTag: {} }
+        chinese: { byTag: {} },
+        math: { byTag: {} },
+        english: { byTag: {} }
       },
 
       // 错题本是唯一真相源。cleared 的条件是 rightStreak >= 2。
@@ -47,10 +49,13 @@
 
       settings: {
         audioEnabled: true,
-        mix: JSON.parse(JSON.stringify(G.DEFAULT_MIX)),
         mutedAudio: [],
         weakMode: false
       },
+      // settings.mix 删掉了：它存了一份一局配比的副本，但从头到尾没人读。
+      // 配比的唯一真相源是 tools/qbank.py 的 SUBJECT_MIX → 产物里的
+      // G.DATA.mix → 运行时的 G.DEFAULT_MIX。在存档里再存一份，
+      // 只会变成「改了配比，老用户的存档还是旧配比」这种查不出来的问题。
 
       integrity: {
         maxSeenTs: now,
@@ -112,10 +117,13 @@
       if (save.limits[k] === undefined) save.limits[k] = def.limits[k];
     });
 
-    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（三科时代）也有
-    // progress.chinese.byTag，正常不会缺；但手工改过的备份可能缺。
-    if (!save.progress.chinese) save.progress.chinese = { byTag: {} };
-    if (!save.progress.chinese.byTag) save.progress.chinese.byTag = {};
+    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（识字一科时代）
+    // 只有 progress.chinese，导入备份后 math/english 会缺 ——
+    // 缺了不会崩，但那一科的掌握度会一直是空的，家长面板上看不出来是坏了。
+    G.SUBJECTS.forEach(function (s) {
+      if (!save.progress[s]) save.progress[s] = { byTag: {} };
+      if (!save.progress[s].byTag) save.progress[s].byTag = {};
+    });
 
     return save;
   }

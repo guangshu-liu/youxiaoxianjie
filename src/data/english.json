@@ -1,0 +1,4296 @@
+[
+  {
+    "id": "en-0001",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.yam",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "ram"
+      },
+      {
+        "id": "b",
+        "text": "ham"
+      },
+      {
+        "id": "c",
+        "text": "yam"
+      },
+      {
+        "id": "d",
+        "text": "jam"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 yam。"
+  },
+  {
+    "id": "en-0002",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.man",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "man"
+      },
+      {
+        "id": "b",
+        "text": "can"
+      },
+      {
+        "id": "c",
+        "text": "fan"
+      },
+      {
+        "id": "d",
+        "text": "van"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 man。"
+  },
+  {
+    "id": "en-0003",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.sad",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sad"
+      },
+      {
+        "id": "b",
+        "text": "dad"
+      },
+      {
+        "id": "c",
+        "text": "mad"
+      },
+      {
+        "id": "d",
+        "text": "pad"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 sad。"
+  },
+  {
+    "id": "en-0004",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.rag",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bag"
+      },
+      {
+        "id": "b",
+        "text": "tag"
+      },
+      {
+        "id": "c",
+        "text": "rag"
+      },
+      {
+        "id": "d",
+        "text": "wag"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 rag。"
+  },
+  {
+    "id": "en-0005",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.lap",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "map"
+      },
+      {
+        "id": "b",
+        "text": "lap"
+      },
+      {
+        "id": "c",
+        "text": "cap"
+      },
+      {
+        "id": "d",
+        "text": "tap"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 lap。"
+  },
+  {
+    "id": "en-0006",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.cat",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hat"
+      },
+      {
+        "id": "b",
+        "text": "mat"
+      },
+      {
+        "id": "c",
+        "text": "bat"
+      },
+      {
+        "id": "d",
+        "text": "cat"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 cat。"
+  },
+  {
+    "id": "en-0007",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.vet",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "net"
+      },
+      {
+        "id": "b",
+        "text": "wet"
+      },
+      {
+        "id": "c",
+        "text": "vet"
+      },
+      {
+        "id": "d",
+        "text": "pet"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 vet。"
+  },
+  {
+    "id": "en-0008",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.ten",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "men"
+      },
+      {
+        "id": "b",
+        "text": "den"
+      },
+      {
+        "id": "c",
+        "text": "hen"
+      },
+      {
+        "id": "d",
+        "text": "ten"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 ten。"
+  },
+  {
+    "id": "en-0009",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.bed",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "red"
+      },
+      {
+        "id": "b",
+        "text": "wed"
+      },
+      {
+        "id": "c",
+        "text": "bed"
+      },
+      {
+        "id": "d",
+        "text": "led"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 bed。"
+  },
+  {
+    "id": "en-0010",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.sip",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sip"
+      },
+      {
+        "id": "b",
+        "text": "rip"
+      },
+      {
+        "id": "c",
+        "text": "zip"
+      },
+      {
+        "id": "d",
+        "text": "tip"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 sip。"
+  },
+  {
+    "id": "en-0011",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.hid",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lid"
+      },
+      {
+        "id": "b",
+        "text": "rid"
+      },
+      {
+        "id": "c",
+        "text": "did"
+      },
+      {
+        "id": "d",
+        "text": "hid"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 hid。"
+  },
+  {
+    "id": "en-0012",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.fin",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bin"
+      },
+      {
+        "id": "b",
+        "text": "fin"
+      },
+      {
+        "id": "c",
+        "text": "pin"
+      },
+      {
+        "id": "d",
+        "text": "win"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 fin。"
+  },
+  {
+    "id": "en-0013",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.wig",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wig"
+      },
+      {
+        "id": "b",
+        "text": "dig"
+      },
+      {
+        "id": "c",
+        "text": "pig"
+      },
+      {
+        "id": "d",
+        "text": "big"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 wig。"
+  },
+  {
+    "id": "en-0014",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.hit",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hit"
+      },
+      {
+        "id": "b",
+        "text": "sit"
+      },
+      {
+        "id": "c",
+        "text": "bit"
+      },
+      {
+        "id": "d",
+        "text": "pit"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 hit。"
+  },
+  {
+    "id": "en-0015",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.pot",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lot"
+      },
+      {
+        "id": "b",
+        "text": "dot"
+      },
+      {
+        "id": "c",
+        "text": "cot"
+      },
+      {
+        "id": "d",
+        "text": "pot"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 pot。"
+  },
+  {
+    "id": "en-0016",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.mop",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "top"
+      },
+      {
+        "id": "b",
+        "text": "hop"
+      },
+      {
+        "id": "c",
+        "text": "mop"
+      },
+      {
+        "id": "d",
+        "text": "cop"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 mop。"
+  },
+  {
+    "id": "en-0017",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.hug",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "jug"
+      },
+      {
+        "id": "b",
+        "text": "rug"
+      },
+      {
+        "id": "c",
+        "text": "hug"
+      },
+      {
+        "id": "d",
+        "text": "mug"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 hug。"
+  },
+  {
+    "id": "en-0018",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.gun",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sun"
+      },
+      {
+        "id": "b",
+        "text": "bun"
+      },
+      {
+        "id": "c",
+        "text": "run"
+      },
+      {
+        "id": "d",
+        "text": "gun"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 gun。"
+  },
+  {
+    "id": "en-0019",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.ham",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "jam"
+      },
+      {
+        "id": "b",
+        "text": "ham"
+      },
+      {
+        "id": "c",
+        "text": "dam"
+      },
+      {
+        "id": "d",
+        "text": "yam"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 ham。"
+  },
+  {
+    "id": "en-0020",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.van",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pan"
+      },
+      {
+        "id": "b",
+        "text": "fan"
+      },
+      {
+        "id": "c",
+        "text": "van"
+      },
+      {
+        "id": "d",
+        "text": "can"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 van。"
+  },
+  {
+    "id": "en-0021",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.dad",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sad"
+      },
+      {
+        "id": "b",
+        "text": "mad"
+      },
+      {
+        "id": "c",
+        "text": "dad"
+      },
+      {
+        "id": "d",
+        "text": "pad"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 dad。"
+  },
+  {
+    "id": "en-0022",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.wag",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tag"
+      },
+      {
+        "id": "b",
+        "text": "wag"
+      },
+      {
+        "id": "c",
+        "text": "rag"
+      },
+      {
+        "id": "d",
+        "text": "bag"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 wag。"
+  },
+  {
+    "id": "en-0023",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.tap",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tap"
+      },
+      {
+        "id": "b",
+        "text": "nap"
+      },
+      {
+        "id": "c",
+        "text": "map"
+      },
+      {
+        "id": "d",
+        "text": "cap"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 tap。"
+  },
+  {
+    "id": "en-0024",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.rat",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "rat"
+      },
+      {
+        "id": "b",
+        "text": "mat"
+      },
+      {
+        "id": "c",
+        "text": "cat"
+      },
+      {
+        "id": "d",
+        "text": "bat"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 rat。"
+  },
+  {
+    "id": "en-0025",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.wet",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "net"
+      },
+      {
+        "id": "b",
+        "text": "pet"
+      },
+      {
+        "id": "c",
+        "text": "wet"
+      },
+      {
+        "id": "d",
+        "text": "vet"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 wet。"
+  },
+  {
+    "id": "en-0026",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.pen",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "den"
+      },
+      {
+        "id": "b",
+        "text": "ten"
+      },
+      {
+        "id": "c",
+        "text": "men"
+      },
+      {
+        "id": "d",
+        "text": "pen"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 pen。"
+  },
+  {
+    "id": "en-0027",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.led",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "red"
+      },
+      {
+        "id": "b",
+        "text": "fed"
+      },
+      {
+        "id": "c",
+        "text": "led"
+      },
+      {
+        "id": "d",
+        "text": "wed"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 led。"
+  },
+  {
+    "id": "en-0028",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.lip",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "rip"
+      },
+      {
+        "id": "b",
+        "text": "zip"
+      },
+      {
+        "id": "c",
+        "text": "lip"
+      },
+      {
+        "id": "d",
+        "text": "sip"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 lip。"
+  },
+  {
+    "id": "en-0029",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.did",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "rid"
+      },
+      {
+        "id": "b",
+        "text": "kid"
+      },
+      {
+        "id": "c",
+        "text": "lid"
+      },
+      {
+        "id": "d",
+        "text": "did"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 did。"
+  },
+  {
+    "id": "en-0030",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.win",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fin"
+      },
+      {
+        "id": "b",
+        "text": "pin"
+      },
+      {
+        "id": "c",
+        "text": "bin"
+      },
+      {
+        "id": "d",
+        "text": "win"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 win。"
+  },
+  {
+    "id": "en-0031",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.big",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wig"
+      },
+      {
+        "id": "b",
+        "text": "fig"
+      },
+      {
+        "id": "c",
+        "text": "big"
+      },
+      {
+        "id": "d",
+        "text": "dig"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 big。"
+  },
+  {
+    "id": "en-0032",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.sit",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bit"
+      },
+      {
+        "id": "b",
+        "text": "sit"
+      },
+      {
+        "id": "c",
+        "text": "pit"
+      },
+      {
+        "id": "d",
+        "text": "fit"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 sit。"
+  },
+  {
+    "id": "en-0033",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.cot",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "cot"
+      },
+      {
+        "id": "b",
+        "text": "dot"
+      },
+      {
+        "id": "c",
+        "text": "hot"
+      },
+      {
+        "id": "d",
+        "text": "pot"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 cot。"
+  },
+  {
+    "id": "en-0034",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.pop",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "top"
+      },
+      {
+        "id": "b",
+        "text": "hop"
+      },
+      {
+        "id": "c",
+        "text": "cop"
+      },
+      {
+        "id": "d",
+        "text": "pop"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 pop。"
+  },
+  {
+    "id": "en-0035",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.jug",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "mug"
+      },
+      {
+        "id": "b",
+        "text": "rug"
+      },
+      {
+        "id": "c",
+        "text": "bug"
+      },
+      {
+        "id": "d",
+        "text": "jug"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 jug。"
+  },
+  {
+    "id": "en-0036",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.sun",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sun"
+      },
+      {
+        "id": "b",
+        "text": "run"
+      },
+      {
+        "id": "c",
+        "text": "fun"
+      },
+      {
+        "id": "d",
+        "text": "bun"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 sun。"
+  },
+  {
+    "id": "en-0037",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.jam",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "dam"
+      },
+      {
+        "id": "b",
+        "text": "jam"
+      },
+      {
+        "id": "c",
+        "text": "yam"
+      },
+      {
+        "id": "d",
+        "text": "ram"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 jam。"
+  },
+  {
+    "id": "en-0038",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.can",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fan"
+      },
+      {
+        "id": "b",
+        "text": "man"
+      },
+      {
+        "id": "c",
+        "text": "van"
+      },
+      {
+        "id": "d",
+        "text": "can"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 can。"
+  },
+  {
+    "id": "en-0039",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.mad",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sad"
+      },
+      {
+        "id": "b",
+        "text": "mad"
+      },
+      {
+        "id": "c",
+        "text": "dad"
+      },
+      {
+        "id": "d",
+        "text": "pad"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 mad。"
+  },
+  {
+    "id": "en-0040",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选词"
+    ],
+    "stem": {
+      "text": "听一听，选出你听到的词",
+      "audio": "en.bag",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tag"
+      },
+      {
+        "id": "b",
+        "text": "bag"
+      },
+      {
+        "id": "c",
+        "text": "rag"
+      },
+      {
+        "id": "d",
+        "text": "wag"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 bag。"
+  },
+  {
+    "id": "en-0041",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 ram 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lap"
+      },
+      {
+        "id": "b",
+        "text": "mat"
+      },
+      {
+        "id": "c",
+        "text": "nap"
+      },
+      {
+        "id": "d",
+        "text": "jam"
+      }
+    ],
+    "answer": "d",
+    "explain": "ram 和 jam 的结尾都是 -am。"
+  },
+  {
+    "id": "en-0042",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 fan 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "ham"
+      },
+      {
+        "id": "b",
+        "text": "man"
+      },
+      {
+        "id": "c",
+        "text": "map"
+      },
+      {
+        "id": "d",
+        "text": "dad"
+      }
+    ],
+    "answer": "b",
+    "explain": "fan 和 man 的结尾都是 -an。"
+  },
+  {
+    "id": "en-0043",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 dad 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tap"
+      },
+      {
+        "id": "b",
+        "text": "pad"
+      },
+      {
+        "id": "c",
+        "text": "tag"
+      },
+      {
+        "id": "d",
+        "text": "mat"
+      }
+    ],
+    "answer": "b",
+    "explain": "dad 和 pad 的结尾都是 -ad。"
+  },
+  {
+    "id": "en-0044",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 bag 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "nap"
+      },
+      {
+        "id": "b",
+        "text": "hat"
+      },
+      {
+        "id": "c",
+        "text": "ham"
+      },
+      {
+        "id": "d",
+        "text": "rag"
+      }
+    ],
+    "answer": "d",
+    "explain": "bag 和 rag 的结尾都是 -ag。"
+  },
+  {
+    "id": "en-0045",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 cap 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "map"
+      },
+      {
+        "id": "b",
+        "text": "bad"
+      },
+      {
+        "id": "c",
+        "text": "hat"
+      },
+      {
+        "id": "d",
+        "text": "yam"
+      }
+    ],
+    "answer": "a",
+    "explain": "cap 和 map 的结尾都是 -ap。"
+  },
+  {
+    "id": "en-0046",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 bat 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "rat"
+      },
+      {
+        "id": "b",
+        "text": "lap"
+      },
+      {
+        "id": "c",
+        "text": "dam"
+      },
+      {
+        "id": "d",
+        "text": "map"
+      }
+    ],
+    "answer": "a",
+    "explain": "bat 和 rat 的结尾都是 -at。"
+  },
+  {
+    "id": "en-0047",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 jet 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "net"
+      },
+      {
+        "id": "b",
+        "text": "fed"
+      },
+      {
+        "id": "c",
+        "text": "pen"
+      },
+      {
+        "id": "d",
+        "text": "hen"
+      }
+    ],
+    "answer": "a",
+    "explain": "jet 和 net 的结尾都是 -et。"
+  },
+  {
+    "id": "en-0048",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 hen 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "led"
+      },
+      {
+        "id": "b",
+        "text": "pen"
+      },
+      {
+        "id": "c",
+        "text": "wet"
+      },
+      {
+        "id": "d",
+        "text": "fed"
+      }
+    ],
+    "answer": "b",
+    "explain": "hen 和 pen 的结尾都是 -en。"
+  },
+  {
+    "id": "en-0049",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 red 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "net"
+      },
+      {
+        "id": "b",
+        "text": "bed"
+      },
+      {
+        "id": "c",
+        "text": "den"
+      },
+      {
+        "id": "d",
+        "text": "jet"
+      }
+    ],
+    "answer": "b",
+    "explain": "red 和 bed 的结尾都是 -ed。"
+  },
+  {
+    "id": "en-0050",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 lip 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tip"
+      },
+      {
+        "id": "b",
+        "text": "fin"
+      },
+      {
+        "id": "c",
+        "text": "pig"
+      },
+      {
+        "id": "d",
+        "text": "lid"
+      }
+    ],
+    "answer": "a",
+    "explain": "lip 和 tip 的结尾都是 -ip。"
+  },
+  {
+    "id": "en-0051",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 rib 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "big"
+      },
+      {
+        "id": "b",
+        "text": "bib"
+      },
+      {
+        "id": "c",
+        "text": "lip"
+      },
+      {
+        "id": "d",
+        "text": "fix"
+      }
+    ],
+    "answer": "b",
+    "explain": "rib 和 bib 的结尾都是 -ib。"
+  },
+  {
+    "id": "en-0052",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 hid 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fix"
+      },
+      {
+        "id": "b",
+        "text": "mix"
+      },
+      {
+        "id": "c",
+        "text": "pit"
+      },
+      {
+        "id": "d",
+        "text": "kid"
+      }
+    ],
+    "answer": "d",
+    "explain": "hid 和 kid 的结尾都是 -id。"
+  },
+  {
+    "id": "en-0053",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 pin 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bib"
+      },
+      {
+        "id": "b",
+        "text": "fin"
+      },
+      {
+        "id": "c",
+        "text": "pit"
+      },
+      {
+        "id": "d",
+        "text": "fit"
+      }
+    ],
+    "answer": "b",
+    "explain": "pin 和 fin 的结尾都是 -in。"
+  },
+  {
+    "id": "en-0054",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 fig 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kid"
+      },
+      {
+        "id": "b",
+        "text": "wig"
+      },
+      {
+        "id": "c",
+        "text": "rip"
+      },
+      {
+        "id": "d",
+        "text": "tin"
+      }
+    ],
+    "answer": "b",
+    "explain": "fig 和 wig 的结尾都是 -ig。"
+  },
+  {
+    "id": "en-0055",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 pit 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "dig"
+      },
+      {
+        "id": "b",
+        "text": "hit"
+      },
+      {
+        "id": "c",
+        "text": "zip"
+      },
+      {
+        "id": "d",
+        "text": "sip"
+      }
+    ],
+    "answer": "b",
+    "explain": "pit 和 hit 的结尾都是 -it。"
+  },
+  {
+    "id": "en-0056",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 six 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "rib"
+      },
+      {
+        "id": "b",
+        "text": "fix"
+      },
+      {
+        "id": "c",
+        "text": "rid"
+      },
+      {
+        "id": "d",
+        "text": "bin"
+      }
+    ],
+    "answer": "b",
+    "explain": "six 和 fix 的结尾都是 -ix。"
+  },
+  {
+    "id": "en-0057",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 pot 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "top"
+      },
+      {
+        "id": "b",
+        "text": "mop"
+      },
+      {
+        "id": "c",
+        "text": "cop"
+      },
+      {
+        "id": "d",
+        "text": "hot"
+      }
+    ],
+    "answer": "d",
+    "explain": "pot 和 hot 的结尾都是 -ot。"
+  },
+  {
+    "id": "en-0058",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 top 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lot"
+      },
+      {
+        "id": "b",
+        "text": "mop"
+      },
+      {
+        "id": "c",
+        "text": "pot"
+      },
+      {
+        "id": "d",
+        "text": "dot"
+      }
+    ],
+    "answer": "b",
+    "explain": "top 和 mop 的结尾都是 -op。"
+  },
+  {
+    "id": "en-0059",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 jug 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "gun"
+      },
+      {
+        "id": "b",
+        "text": "sum"
+      },
+      {
+        "id": "c",
+        "text": "mug"
+      },
+      {
+        "id": "d",
+        "text": "gum"
+      }
+    ],
+    "answer": "c",
+    "explain": "jug 和 mug 的结尾都是 -ug。"
+  },
+  {
+    "id": "en-0060",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 bud 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bug"
+      },
+      {
+        "id": "b",
+        "text": "fun"
+      },
+      {
+        "id": "c",
+        "text": "mud"
+      },
+      {
+        "id": "d",
+        "text": "sun"
+      }
+    ],
+    "answer": "c",
+    "explain": "bud 和 mud 的结尾都是 -ud。"
+  },
+  {
+    "id": "en-0061",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 cup 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "gum"
+      },
+      {
+        "id": "b",
+        "text": "hum"
+      },
+      {
+        "id": "c",
+        "text": "mug"
+      },
+      {
+        "id": "d",
+        "text": "pup"
+      }
+    ],
+    "answer": "d",
+    "explain": "cup 和 pup 的结尾都是 -up。"
+  },
+  {
+    "id": "en-0062",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 nut 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hum"
+      },
+      {
+        "id": "b",
+        "text": "mud"
+      },
+      {
+        "id": "c",
+        "text": "rug"
+      },
+      {
+        "id": "d",
+        "text": "hut"
+      }
+    ],
+    "answer": "d",
+    "explain": "nut 和 hut 的结尾都是 -ut。"
+  },
+  {
+    "id": "en-0063",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 cub 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hum"
+      },
+      {
+        "id": "b",
+        "text": "tub"
+      },
+      {
+        "id": "c",
+        "text": "bug"
+      },
+      {
+        "id": "d",
+        "text": "pup"
+      }
+    ],
+    "answer": "b",
+    "explain": "cub 和 tub 的结尾都是 -ub。"
+  },
+  {
+    "id": "en-0064",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 gum 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hum"
+      },
+      {
+        "id": "b",
+        "text": "tub"
+      },
+      {
+        "id": "c",
+        "text": "cub"
+      },
+      {
+        "id": "d",
+        "text": "hug"
+      }
+    ],
+    "answer": "a",
+    "explain": "gum 和 hum 的结尾都是 -um。"
+  },
+  {
+    "id": "en-0065",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 bun 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "sun"
+      },
+      {
+        "id": "b",
+        "text": "hut"
+      },
+      {
+        "id": "c",
+        "text": "hug"
+      },
+      {
+        "id": "d",
+        "text": "rug"
+      }
+    ],
+    "answer": "a",
+    "explain": "bun 和 sun 的结尾都是 -un。"
+  },
+  {
+    "id": "en-0066",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 jam 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wag"
+      },
+      {
+        "id": "b",
+        "text": "tap"
+      },
+      {
+        "id": "c",
+        "text": "van"
+      },
+      {
+        "id": "d",
+        "text": "yam"
+      }
+    ],
+    "answer": "d",
+    "explain": "jam 和 yam 的结尾都是 -am。"
+  },
+  {
+    "id": "en-0067",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 man 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pan"
+      },
+      {
+        "id": "b",
+        "text": "map"
+      },
+      {
+        "id": "c",
+        "text": "yam"
+      },
+      {
+        "id": "d",
+        "text": "mad"
+      }
+    ],
+    "answer": "a",
+    "explain": "man 和 pan 的结尾都是 -an。"
+  },
+  {
+    "id": "en-0068",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "词族归类"
+    ],
+    "stem": {
+      "text": "下面哪个词和 pad 的结尾音一样？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lap"
+      },
+      {
+        "id": "b",
+        "text": "sad"
+      },
+      {
+        "id": "c",
+        "text": "fan"
+      },
+      {
+        "id": "d",
+        "text": "tap"
+      }
+    ],
+    "answer": "b",
+    "explain": "pad 和 sad 的结尾都是 -ad。"
+  },
+  {
+    "id": "en-0069",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ hat is on the mat.",
+      "audio": "en.sentence.01",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fed"
+      },
+      {
+        "id": "b",
+        "text": "bed"
+      },
+      {
+        "id": "c",
+        "text": "red"
+      },
+      {
+        "id": "d",
+        "text": "led"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the red hat is on the mat.」。"
+  },
+  {
+    "id": "en-0070",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ bug is in the mud.",
+      "audio": "en.sentence.02",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wig"
+      },
+      {
+        "id": "b",
+        "text": "dig"
+      },
+      {
+        "id": "c",
+        "text": "fig"
+      },
+      {
+        "id": "d",
+        "text": "big"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the big bug is in the mud.」。"
+  },
+  {
+    "id": "en-0071",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ cat is on the bed.",
+      "audio": "en.sentence.03",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "dig"
+      },
+      {
+        "id": "b",
+        "text": "fig"
+      },
+      {
+        "id": "c",
+        "text": "wig"
+      },
+      {
+        "id": "d",
+        "text": "big"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the big cat is on the bed.」。"
+  },
+  {
+    "id": "en-0072",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ pot is on the mat.",
+      "audio": "en.sentence.04",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lot"
+      },
+      {
+        "id": "b",
+        "text": "dot"
+      },
+      {
+        "id": "c",
+        "text": "hot"
+      },
+      {
+        "id": "d",
+        "text": "cot"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the hot pot is on the mat.」。"
+  },
+  {
+    "id": "en-0073",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "my ___ hat is in the bag.",
+      "audio": "en.sentence.05",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "net"
+      },
+      {
+        "id": "b",
+        "text": "jet"
+      },
+      {
+        "id": "c",
+        "text": "pet"
+      },
+      {
+        "id": "d",
+        "text": "wet"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「my wet hat is in the bag.」。"
+  },
+  {
+    "id": "en-0074",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ jam is on the mat.",
+      "audio": "en.sentence.06",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "led"
+      },
+      {
+        "id": "b",
+        "text": "red"
+      },
+      {
+        "id": "c",
+        "text": "fed"
+      },
+      {
+        "id": "d",
+        "text": "bed"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the red jam is on the mat.」。"
+  },
+  {
+    "id": "en-0075",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ pig is in the tub.",
+      "audio": "en.sentence.07",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "big"
+      },
+      {
+        "id": "b",
+        "text": "dig"
+      },
+      {
+        "id": "c",
+        "text": "wig"
+      },
+      {
+        "id": "d",
+        "text": "fig"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the big pig is in the tub.」。"
+  },
+  {
+    "id": "en-0076",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the hen can see a ___ bug.",
+      "audio": "en.sentence.08",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "big"
+      },
+      {
+        "id": "b",
+        "text": "wig"
+      },
+      {
+        "id": "c",
+        "text": "dig"
+      },
+      {
+        "id": "d",
+        "text": "fig"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the hen can see a big bug.」。"
+  },
+  {
+    "id": "en-0077",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the man can see a ___ hat.",
+      "audio": "en.sentence.09",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bed"
+      },
+      {
+        "id": "b",
+        "text": "wed"
+      },
+      {
+        "id": "c",
+        "text": "fed"
+      },
+      {
+        "id": "d",
+        "text": "red"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the man can see a red hat.」。"
+  },
+  {
+    "id": "en-0078",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the cat has a ___ hat.",
+      "audio": "en.sentence.10",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bed"
+      },
+      {
+        "id": "b",
+        "text": "red"
+      },
+      {
+        "id": "c",
+        "text": "fed"
+      },
+      {
+        "id": "d",
+        "text": "wed"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the cat has a red hat.」。"
+  },
+  {
+    "id": "en-0079",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the pen is ___.",
+      "audio": "en.sentence.11",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "red"
+      },
+      {
+        "id": "b",
+        "text": "fed"
+      },
+      {
+        "id": "c",
+        "text": "bed"
+      },
+      {
+        "id": "d",
+        "text": "wed"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the pen is red.」。"
+  },
+  {
+    "id": "en-0080",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the sun is ___.",
+      "audio": "en.sentence.12",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pot"
+      },
+      {
+        "id": "b",
+        "text": "dot"
+      },
+      {
+        "id": "c",
+        "text": "hot"
+      },
+      {
+        "id": "d",
+        "text": "cot"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the sun is hot.」。"
+  },
+  {
+    "id": "en-0081",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the mud is ___.",
+      "audio": "en.sentence.13",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wet"
+      },
+      {
+        "id": "b",
+        "text": "jet"
+      },
+      {
+        "id": "c",
+        "text": "vet"
+      },
+      {
+        "id": "d",
+        "text": "net"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the mud is wet.」。"
+  },
+  {
+    "id": "en-0082",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see.",
+      "audio": "en.sentence.14",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "ten"
+      },
+      {
+        "id": "b",
+        "text": "hen"
+      },
+      {
+        "id": "c",
+        "text": "den"
+      },
+      {
+        "id": "d",
+        "text": "pen"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the hen can see.」。"
+  },
+  {
+    "id": "en-0083",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see the sun.",
+      "audio": "en.sentence.15",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kid"
+      },
+      {
+        "id": "b",
+        "text": "lid"
+      },
+      {
+        "id": "c",
+        "text": "hid"
+      },
+      {
+        "id": "d",
+        "text": "did"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the kid can see the sun.」。"
+  },
+  {
+    "id": "en-0084",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see the cat.",
+      "audio": "en.sentence.16",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "tub"
+      },
+      {
+        "id": "b",
+        "text": "pup"
+      },
+      {
+        "id": "c",
+        "text": "gum"
+      },
+      {
+        "id": "d",
+        "text": "cup"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the pup can see the cat.」。"
+  },
+  {
+    "id": "en-0085",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see the mud.",
+      "audio": "en.sentence.17",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "bug"
+      },
+      {
+        "id": "b",
+        "text": "rug"
+      },
+      {
+        "id": "c",
+        "text": "mug"
+      },
+      {
+        "id": "d",
+        "text": "jug"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the bug can see the mud.」。"
+  },
+  {
+    "id": "en-0086",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see my hat.",
+      "audio": "en.sentence.18",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "van"
+      },
+      {
+        "id": "b",
+        "text": "pan"
+      },
+      {
+        "id": "c",
+        "text": "man"
+      },
+      {
+        "id": "d",
+        "text": "fan"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the man can see my hat.」。"
+  },
+  {
+    "id": "en-0087",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ can see my bed.",
+      "audio": "en.sentence.19",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fig"
+      },
+      {
+        "id": "b",
+        "text": "pig"
+      },
+      {
+        "id": "c",
+        "text": "dig"
+      },
+      {
+        "id": "d",
+        "text": "wig"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the pig can see my bed.」。"
+  },
+  {
+    "id": "en-0088",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ has a red hat.",
+      "audio": "en.sentence.20",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fig"
+      },
+      {
+        "id": "b",
+        "text": "dig"
+      },
+      {
+        "id": "c",
+        "text": "wig"
+      },
+      {
+        "id": "d",
+        "text": "pig"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the pig has a red hat.」。"
+  },
+  {
+    "id": "en-0089",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ has a big hat.",
+      "audio": "en.sentence.21",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "van"
+      },
+      {
+        "id": "b",
+        "text": "fan"
+      },
+      {
+        "id": "c",
+        "text": "pan"
+      },
+      {
+        "id": "d",
+        "text": "man"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the man has a big hat.」。"
+  },
+  {
+    "id": "en-0090",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ has a red cup.",
+      "audio": "en.sentence.22",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "hid"
+      },
+      {
+        "id": "b",
+        "text": "did"
+      },
+      {
+        "id": "c",
+        "text": "lid"
+      },
+      {
+        "id": "d",
+        "text": "kid"
+      }
+    ],
+    "answer": "d",
+    "explain": "这一句是「the kid has a red cup.」。"
+  },
+  {
+    "id": "en-0091",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ has a big mug.",
+      "audio": "en.sentence.23",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pup"
+      },
+      {
+        "id": "b",
+        "text": "gum"
+      },
+      {
+        "id": "c",
+        "text": "jug"
+      },
+      {
+        "id": "d",
+        "text": "tub"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the pup has a big mug.」。"
+  },
+  {
+    "id": "en-0092",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ has a red van.",
+      "audio": "en.sentence.24",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "fan"
+      },
+      {
+        "id": "b",
+        "text": "can"
+      },
+      {
+        "id": "c",
+        "text": "man"
+      },
+      {
+        "id": "d",
+        "text": "pan"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the man has a red van.」。"
+  },
+  {
+    "id": "en-0093",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the kid can see ___ men.",
+      "audio": "en.sentence.25",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "den"
+      },
+      {
+        "id": "b",
+        "text": "hen"
+      },
+      {
+        "id": "c",
+        "text": "ten"
+      },
+      {
+        "id": "d",
+        "text": "pen"
+      }
+    ],
+    "answer": "c",
+    "explain": "这一句是「the kid can see ten men.」。"
+  },
+  {
+    "id": "en-0094",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ is in the cup.",
+      "audio": "en.sentence.26",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "win"
+      },
+      {
+        "id": "b",
+        "text": "pin"
+      },
+      {
+        "id": "c",
+        "text": "tin"
+      },
+      {
+        "id": "d",
+        "text": "bin"
+      }
+    ],
+    "answer": "b",
+    "explain": "这一句是「the pin is in the cup.」。"
+  },
+  {
+    "id": "en-0095",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "句子填空"
+    ],
+    "stem": {
+      "text": "the ___ is in the pot.",
+      "audio": "en.sentence.27",
+      "audioReveals": true,
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "nut"
+      },
+      {
+        "id": "b",
+        "text": "cut"
+      },
+      {
+        "id": "c",
+        "text": "tub"
+      },
+      {
+        "id": "d",
+        "text": "hut"
+      }
+    ],
+    "answer": "a",
+    "explain": "这一句是「the nut is in the pot.」。"
+  },
+  {
+    "id": "en-0096",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wam"
+      },
+      {
+        "id": "b",
+        "text": "mam"
+      },
+      {
+        "id": "c",
+        "text": "zam"
+      },
+      {
+        "id": "d",
+        "text": "jam"
+      }
+    ],
+    "answer": "d",
+    "explain": "jam 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0097",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kad"
+      },
+      {
+        "id": "b",
+        "text": "mad"
+      },
+      {
+        "id": "c",
+        "text": "jad"
+      },
+      {
+        "id": "d",
+        "text": "vad"
+      }
+    ],
+    "answer": "b",
+    "explain": "mad 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0098",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "yag"
+      },
+      {
+        "id": "b",
+        "text": "wag"
+      },
+      {
+        "id": "c",
+        "text": "kag"
+      },
+      {
+        "id": "d",
+        "text": "pag"
+      }
+    ],
+    "answer": "b",
+    "explain": "wag 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0099",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kap"
+      },
+      {
+        "id": "b",
+        "text": "fap"
+      },
+      {
+        "id": "c",
+        "text": "zap"
+      },
+      {
+        "id": "d",
+        "text": "cap"
+      }
+    ],
+    "answer": "d",
+    "explain": "cap 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0100",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "det"
+      },
+      {
+        "id": "b",
+        "text": "net"
+      },
+      {
+        "id": "c",
+        "text": "zet"
+      },
+      {
+        "id": "d",
+        "text": "tet"
+      }
+    ],
+    "answer": "b",
+    "explain": "net 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0101",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "zen"
+      },
+      {
+        "id": "b",
+        "text": "den"
+      },
+      {
+        "id": "c",
+        "text": "nen"
+      },
+      {
+        "id": "d",
+        "text": "cen"
+      }
+    ],
+    "answer": "b",
+    "explain": "den 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0102",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "ded"
+      },
+      {
+        "id": "b",
+        "text": "hed"
+      },
+      {
+        "id": "c",
+        "text": "med"
+      },
+      {
+        "id": "d",
+        "text": "red"
+      }
+    ],
+    "answer": "d",
+    "explain": "red 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0103",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "jip"
+      },
+      {
+        "id": "b",
+        "text": "bip"
+      },
+      {
+        "id": "c",
+        "text": "tip"
+      },
+      {
+        "id": "d",
+        "text": "wip"
+      }
+    ],
+    "answer": "c",
+    "explain": "tip 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0104",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "vib"
+      },
+      {
+        "id": "b",
+        "text": "wib"
+      },
+      {
+        "id": "c",
+        "text": "bib"
+      },
+      {
+        "id": "d",
+        "text": "pib"
+      }
+    ],
+    "answer": "c",
+    "explain": "bib 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0105",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "cid"
+      },
+      {
+        "id": "b",
+        "text": "yid"
+      },
+      {
+        "id": "c",
+        "text": "pid"
+      },
+      {
+        "id": "d",
+        "text": "kid"
+      }
+    ],
+    "answer": "d",
+    "explain": "kid 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0106",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pin"
+      },
+      {
+        "id": "b",
+        "text": "cin"
+      },
+      {
+        "id": "c",
+        "text": "zin"
+      },
+      {
+        "id": "d",
+        "text": "jin"
+      }
+    ],
+    "answer": "a",
+    "explain": "pin 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0107",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "lig"
+      },
+      {
+        "id": "b",
+        "text": "fig"
+      },
+      {
+        "id": "c",
+        "text": "vig"
+      },
+      {
+        "id": "d",
+        "text": "kig"
+      }
+    ],
+    "answer": "b",
+    "explain": "fig 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0108",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "yit"
+      },
+      {
+        "id": "b",
+        "text": "pit"
+      },
+      {
+        "id": "c",
+        "text": "zit"
+      },
+      {
+        "id": "d",
+        "text": "jit"
+      }
+    ],
+    "answer": "b",
+    "explain": "pit 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0109",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "cix"
+      },
+      {
+        "id": "b",
+        "text": "tix"
+      },
+      {
+        "id": "c",
+        "text": "hix"
+      },
+      {
+        "id": "d",
+        "text": "fix"
+      }
+    ],
+    "answer": "d",
+    "explain": "fix 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0110",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kot"
+      },
+      {
+        "id": "b",
+        "text": "hot"
+      },
+      {
+        "id": "c",
+        "text": "vot"
+      },
+      {
+        "id": "d",
+        "text": "zot"
+      }
+    ],
+    "answer": "b",
+    "explain": "hot 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0111",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "cop"
+      },
+      {
+        "id": "b",
+        "text": "vop"
+      },
+      {
+        "id": "c",
+        "text": "gop"
+      },
+      {
+        "id": "d",
+        "text": "rop"
+      }
+    ],
+    "answer": "a",
+    "explain": "cop 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0112",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "nug"
+      },
+      {
+        "id": "b",
+        "text": "zug"
+      },
+      {
+        "id": "c",
+        "text": "sug"
+      },
+      {
+        "id": "d",
+        "text": "mug"
+      }
+    ],
+    "answer": "d",
+    "explain": "mug 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0113",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "mud"
+      },
+      {
+        "id": "b",
+        "text": "nud"
+      },
+      {
+        "id": "c",
+        "text": "vud"
+      },
+      {
+        "id": "d",
+        "text": "tud"
+      }
+    ],
+    "answer": "a",
+    "explain": "mud 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0114",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "pup"
+      },
+      {
+        "id": "b",
+        "text": "kup"
+      },
+      {
+        "id": "c",
+        "text": "vup"
+      },
+      {
+        "id": "d",
+        "text": "yup"
+      }
+    ],
+    "answer": "a",
+    "explain": "pup 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0115",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "dut"
+      },
+      {
+        "id": "b",
+        "text": "kut"
+      },
+      {
+        "id": "c",
+        "text": "nut"
+      },
+      {
+        "id": "d",
+        "text": "mut"
+      }
+    ],
+    "answer": "c",
+    "explain": "nut 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0116",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "wub"
+      },
+      {
+        "id": "b",
+        "text": "kub"
+      },
+      {
+        "id": "c",
+        "text": "vub"
+      },
+      {
+        "id": "d",
+        "text": "rub"
+      }
+    ],
+    "answer": "d",
+    "explain": "rub 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0117",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "yum"
+      },
+      {
+        "id": "b",
+        "text": "wum"
+      },
+      {
+        "id": "c",
+        "text": "zum"
+      },
+      {
+        "id": "d",
+        "text": "gum"
+      }
+    ],
+    "answer": "d",
+    "explain": "gum 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0118",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "vun"
+      },
+      {
+        "id": "b",
+        "text": "bun"
+      },
+      {
+        "id": "c",
+        "text": "cun"
+      },
+      {
+        "id": "d",
+        "text": "jun"
+      }
+    ],
+    "answer": "b",
+    "explain": "bun 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0119",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "vam"
+      },
+      {
+        "id": "b",
+        "text": "yam"
+      },
+      {
+        "id": "c",
+        "text": "mam"
+      },
+      {
+        "id": "d",
+        "text": "kam"
+      }
+    ],
+    "answer": "b",
+    "explain": "yam 是真词，另外三个不是。"
+  },
+  {
+    "id": "en-0120",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "找真词"
+    ],
+    "stem": {
+      "text": "下面哪个是真词？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "kad"
+      },
+      {
+        "id": "b",
+        "text": "nad"
+      },
+      {
+        "id": "c",
+        "text": "bad"
+      },
+      {
+        "id": "d",
+        "text": "vad"
+      }
+    ],
+    "answer": "c",
+    "explain": "bad 是真词，另外三个不是。"
+  }
+]

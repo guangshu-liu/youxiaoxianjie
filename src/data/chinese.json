@@ -7,24 +7,24 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「yī」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "力"
+        "text": "心"
       },
       {
         "id": "b",
-        "text": "一"
+        "text": "鸟"
       },
       {
         "id": "c",
-        "text": "你"
+        "text": "八"
       },
       {
         "id": "d",
@@ -32,7 +32,7 @@
       }
     ],
     "answer": "b",
-    "explain": "「一」读 yī，可以组词「一个」。"
+    "explain": "「鸟」是动物。"
   },
   {
     "id": "zi-0002",
@@ -42,32 +42,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「qī」是哪个字？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "你"
+        "text": "妈"
       },
       {
         "id": "b",
-        "text": "一"
+        "text": "八"
       },
       {
         "id": "c",
-        "text": "起"
+        "text": "虫"
       },
       {
         "id": "d",
-        "text": "七"
+        "text": "鱼"
       }
     ],
-    "answer": "d",
-    "explain": "「七」读 qī，可以组词「七月」。"
+    "answer": "b",
+    "explain": "「八」是数字。"
   },
   {
     "id": "zi-0003",
@@ -77,32 +77,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「wàn」是哪个字？",
+      "text": "下面哪个字说的是身体的一部分？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "晚"
+        "text": "牛"
       },
       {
         "id": "b",
-        "text": "三"
+        "text": "手"
       },
       {
         "id": "c",
-        "text": "山"
+        "text": "十"
       },
       {
         "id": "d",
-        "text": "万"
+        "text": "男"
       }
     ],
-    "answer": "d",
-    "explain": "「万」读 wàn，可以组词「万一」。"
+    "answer": "b",
+    "explain": "「手」是身体。"
   },
   {
     "id": "zi-0004",
@@ -112,32 +112,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「sān」是哪个字？",
+      "text": "下面哪个字说的是家里人？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "万"
+        "text": "口"
       },
       {
         "id": "b",
-        "text": "山"
+        "text": "妈"
       },
       {
         "id": "c",
-        "text": "慢"
+        "text": "耳"
       },
       {
         "id": "d",
-        "text": "三"
+        "text": "五"
       }
     ],
-    "answer": "d",
-    "explain": "「三」读 sān，可以组词「三个」。"
+    "answer": "b",
+    "explain": "「妈」是家人。"
   },
   {
     "id": "zi-0005",
@@ -147,32 +147,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「shàng」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "书"
+        "text": "三"
       },
       {
         "id": "b",
-        "text": "唱"
+        "text": "六"
       },
       {
         "id": "c",
-        "text": "羊"
+        "text": "牛"
       },
       {
         "id": "d",
-        "text": "上"
+        "text": "二"
       }
     ],
-    "answer": "d",
-    "explain": "「上」读 shàng，可以组词「上山」。"
+    "answer": "c",
+    "explain": "「牛」是动物。"
   },
   {
     "id": "zi-0006",
@@ -182,32 +182,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「xià」是哪个字？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "下"
+        "text": "毛"
       },
       {
         "id": "b",
-        "text": "写"
+        "text": "牙"
       },
       {
         "id": "c",
-        "text": "学"
+        "text": "七"
       },
       {
         "id": "d",
-        "text": "家"
+        "text": "男"
       }
     ],
-    "answer": "a",
-    "explain": "「下」读 xià，可以组词「下雨」。"
+    "answer": "c",
+    "explain": "「七」是数字。"
   },
   {
     "id": "zi-0007",
@@ -217,32 +217,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「dōng」是哪个字？",
+      "text": "下面哪个字说的是身体的一部分？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "红"
+        "text": "鱼"
       },
       {
         "id": "b",
-        "text": "工"
+        "text": "一"
       },
       {
         "id": "c",
-        "text": "东"
+        "text": "耳"
       },
       {
         "id": "d",
-        "text": "虫"
+        "text": "马"
       }
     ],
     "answer": "c",
-    "explain": "「东」读 dōng，可以组词「东西」。"
+    "explain": "「耳」是身体。"
   },
   {
     "id": "zi-0008",
@@ -252,32 +252,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「jiǔ」是哪个字？",
+      "text": "下面哪个字说的是家里人？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "牛"
+        "text": "心"
       },
       {
         "id": "b",
-        "text": "九"
+        "text": "牙"
       },
       {
         "id": "c",
-        "text": "旧"
+        "text": "男"
       },
       {
         "id": "d",
-        "text": "六"
+        "text": "牛"
       }
     ],
-    "answer": "b",
-    "explain": "「九」读 jiǔ，可以组词「九月」。"
+    "answer": "c",
+    "explain": "「男」是家人。"
   },
   {
     "id": "zi-0009",
@@ -287,32 +287,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「shū」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "书"
+        "text": "妹"
       },
       {
         "id": "b",
-        "text": "入"
+        "text": "六"
       },
       {
         "id": "c",
-        "text": "树"
+        "text": "马"
       },
       {
         "id": "d",
-        "text": "五"
+        "text": "三"
       }
     ],
-    "answer": "a",
-    "explain": "「书」读 shū，可以组词「看书」。"
+    "answer": "c",
+    "explain": "「马」是动物。"
   },
   {
     "id": "zi-0010",
@@ -322,32 +322,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「yún」是哪个字？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "云"
+        "text": "牛"
       },
       {
         "id": "b",
-        "text": "春"
+        "text": "目"
       },
       {
         "id": "c",
-        "text": "一"
+        "text": "万"
       },
       {
         "id": "d",
-        "text": "友"
+        "text": "男"
       }
     ],
-    "answer": "a",
-    "explain": "「云」读 yún，可以组词「白云」。"
+    "answer": "c",
+    "explain": "「万」是数字。"
   },
   {
     "id": "zi-0011",
@@ -357,32 +357,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「wǔ」是哪个字？",
+      "text": "下面哪个字说的是身体的一部分？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "书"
+        "text": "四"
       },
       {
         "id": "b",
-        "text": "去"
+        "text": "八"
       },
       {
         "id": "c",
-        "text": "五"
+        "text": "目"
       },
       {
         "id": "d",
-        "text": "入"
+        "text": "马"
       }
     ],
     "answer": "c",
-    "explain": "「五」读 wǔ，可以组词「五个」。"
+    "explain": "「目」是身体。"
   },
   {
     "id": "zi-0012",
@@ -392,32 +392,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「rén」是哪个字？",
+      "text": "下面哪个字说的是家里人？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "本"
+        "text": "耳"
       },
       {
         "id": "b",
-        "text": "门"
+        "text": "马"
       },
       {
         "id": "c",
-        "text": "文"
+        "text": "爸"
       },
       {
         "id": "d",
-        "text": "人"
+        "text": "十"
       }
     ],
-    "answer": "d",
-    "explain": "「人」读 rén，可以组词「大人」。"
+    "answer": "c",
+    "explain": "「爸」是家人。"
   },
   {
     "id": "zi-0013",
@@ -427,32 +427,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「jīn」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "心"
+        "text": "男"
       },
       {
         "id": "b",
-        "text": "今"
+        "text": "万"
       },
       {
         "id": "c",
-        "text": "新"
+        "text": "虫"
       },
       {
         "id": "d",
-        "text": "九"
+        "text": "女"
       }
     ],
-    "answer": "b",
-    "explain": "「今」读 jīn，可以组词「今天」。"
+    "answer": "c",
+    "explain": "「虫」是动物。"
   },
   {
     "id": "zi-0014",
@@ -462,32 +462,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「tā」是哪个字？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "他"
+        "text": "目"
       },
       {
         "id": "b",
-        "text": "打"
+        "text": "牛"
       },
       {
         "id": "c",
-        "text": "妈"
+        "text": "一"
       },
       {
         "id": "d",
-        "text": "八"
+        "text": "口"
       }
     ],
-    "answer": "a",
-    "explain": "「他」读 tā，可以组词「他们」。"
+    "answer": "c",
+    "explain": "「一」是数字。"
   },
   {
     "id": "zi-0015",
@@ -497,32 +497,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「nǐ」是哪个字？",
+      "text": "下面哪个字说的是身体的一部分？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "力"
+        "text": "五"
       },
       {
         "id": "b",
-        "text": "你"
+        "text": "八"
       },
       {
         "id": "c",
-        "text": "七"
+        "text": "头"
       },
       {
         "id": "d",
-        "text": "一"
+        "text": "六"
       }
     ],
-    "answer": "b",
-    "explain": "「你」读 nǐ，可以组词「你好」。"
+    "answer": "c",
+    "explain": "「头」是身体。"
   },
   {
     "id": "zi-0016",
@@ -532,32 +532,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「rù」是哪个字？",
+      "text": "下面哪个字说的是家里人？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "入"
+        "text": "毛"
       },
       {
         "id": "b",
-        "text": "午"
+        "text": "手"
       },
       {
         "id": "c",
-        "text": "书"
+        "text": "妹"
       },
       {
         "id": "d",
-        "text": "五"
+        "text": "虫"
       }
     ],
-    "answer": "a",
-    "explain": "「入」读 rù，可以组词「入口」。"
+    "answer": "c",
+    "explain": "「妹」是家人。"
   },
   {
     "id": "zi-0017",
@@ -567,32 +567,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「bā」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "妈"
+        "text": "六"
       },
       {
         "id": "b",
-        "text": "八"
+        "text": "二"
       },
       {
         "id": "c",
-        "text": "爸"
+        "text": "八"
       },
       {
         "id": "d",
-        "text": "他"
+        "text": "鱼"
       }
     ],
-    "answer": "b",
-    "explain": "「八」读 bā，可以组词「八月」。"
+    "answer": "d",
+    "explain": "「鱼」是动物。"
   },
   {
     "id": "zi-0018",
@@ -602,32 +602,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「liù」是哪个字？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "牛"
+        "text": "女"
       },
       {
         "id": "b",
-        "text": "旧"
+        "text": "鸟"
       },
       {
         "id": "c",
-        "text": "九"
+        "text": "目"
       },
       {
         "id": "d",
-        "text": "六"
+        "text": "二"
       }
     ],
     "answer": "d",
-    "explain": "「六」读 liù，可以组词「六月」。"
+    "explain": "「二」是数字。"
   },
   {
     "id": "zi-0019",
@@ -637,67 +637,67 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「guān」是哪个字？",
+      "text": "下面哪个字说的是身体的一部分？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "短"
+        "text": "鱼"
       },
       {
         "id": "b",
-        "text": "国"
+        "text": "爸"
       },
       {
         "id": "c",
-        "text": "哥"
+        "text": "二"
       },
       {
         "id": "d",
-        "text": "关"
+        "text": "毛"
       }
     ],
     "answer": "d",
-    "explain": "「关」读 guān，可以组词「关门」。"
+    "explain": "「毛」是身体。"
   },
   {
     "id": "zi-0020",
     "subject": "chinese",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「xiě」是哪个字？",
+      "text": "下面哪个字说的是家里人？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "写"
+        "text": "五"
       },
       {
         "id": "b",
-        "text": "夏"
+        "text": "毛"
       },
       {
         "id": "c",
-        "text": "下"
+        "text": "三"
       },
       {
         "id": "d",
-        "text": "姐"
+        "text": "女"
       }
     ],
-    "answer": "a",
-    "explain": "「写」读 xiě，可以组词「写字」。"
+    "answer": "d",
+    "explain": "「女」是家人。"
   },
   {
     "id": "zi-0021",
@@ -707,32 +707,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
+      "归类"
     ],
     "stem": {
-      "text": "「dōng」是哪个字？",
+      "text": "下面哪个字说的是动物？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "虫"
+        "text": "羊"
       },
       {
         "id": "b",
-        "text": "冬"
+        "text": "妈"
       },
       {
         "id": "c",
-        "text": "红"
+        "text": "毛"
       },
       {
         "id": "d",
-        "text": "工"
+        "text": "一"
       }
     ],
-    "answer": "b",
-    "explain": "「冬」读 dōng，可以组词「冬天」。"
+    "answer": "a",
+    "explain": "「羊」是动物。"
   },
   {
     "id": "zi-0022",
@@ -742,6071 +742,16 @@
     "unit": null,
     "family": null,
     "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「lěng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "冷"
-      },
-      {
-        "id": "b",
-        "text": "生"
-      },
-      {
-        "id": "c",
-        "text": "声"
-      },
-      {
-        "id": "d",
-        "text": "朋"
-      }
-    ],
-    "answer": "a",
-    "explain": "「冷」读 lěng，可以组词「冷水」。"
-  },
-  {
-    "id": "zi-0023",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「dāo」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "猫"
-      },
-      {
-        "id": "b",
-        "text": "刀"
-      },
-      {
-        "id": "c",
-        "text": "早"
-      },
-      {
-        "id": "d",
-        "text": "毛"
-      }
-    ],
-    "answer": "b",
-    "explain": "「刀」读 dāo，可以组词「小刀」。"
-  },
-  {
-    "id": "zi-0024",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「qián」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "年"
-      },
-      {
-        "id": "c",
-        "text": "天"
-      },
-      {
-        "id": "d",
-        "text": "前"
-      }
-    ],
-    "answer": "d",
-    "explain": "「前」读 qián，可以组词「前面」。"
-  },
-  {
-    "id": "zi-0025",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「lì」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "一"
-      },
-      {
-        "id": "b",
-        "text": "七"
-      },
-      {
-        "id": "c",
-        "text": "里"
-      },
-      {
-        "id": "d",
-        "text": "力"
-      }
-    ],
-    "answer": "d",
-    "explain": "「力」读 lì，可以组词「力气」。"
-  },
-  {
-    "id": "zi-0026",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shí」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "你"
-      },
-      {
-        "id": "b",
-        "text": "七"
-      },
-      {
-        "id": "c",
-        "text": "一"
-      },
-      {
-        "id": "d",
-        "text": "十"
-      }
-    ],
-    "answer": "d",
-    "explain": "「十」读 shí，可以组词「十个」。"
-  },
-  {
-    "id": "zi-0027",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「qiān」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "年"
-      },
-      {
-        "id": "b",
-        "text": "天"
-      },
-      {
-        "id": "c",
-        "text": "千"
-      },
-      {
-        "id": "d",
-        "text": "前"
-      }
-    ],
-    "answer": "c",
-    "explain": "「千」读 qiān，可以组词「一千」。"
-  },
-  {
-    "id": "zi-0028",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「wǔ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "书"
-      },
-      {
-        "id": "b",
-        "text": "入"
-      },
-      {
-        "id": "c",
-        "text": "去"
-      },
-      {
-        "id": "d",
-        "text": "午"
-      }
-    ],
-    "answer": "d",
-    "explain": "「午」读 wǔ，可以组词「中午」。"
-  },
-  {
-    "id": "zi-0029",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「qù」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "五"
-      },
-      {
-        "id": "b",
-        "text": "书"
-      },
-      {
-        "id": "c",
-        "text": "入"
-      },
-      {
-        "id": "d",
-        "text": "去"
-      }
-    ],
-    "answer": "d",
-    "explain": "「去」读 qù，可以组词「回去」。"
-  },
-  {
-    "id": "zi-0030",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「yǒu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "后"
-      },
-      {
-        "id": "c",
-        "text": "友"
-      },
-      {
-        "id": "d",
-        "text": "口"
-      }
-    ],
-    "answer": "c",
-    "explain": "「友」读 yǒu，可以组词「朋友」。"
-  },
-  {
-    "id": "zi-0031",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「kǒu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "后"
-      },
-      {
-        "id": "c",
-        "text": "口"
-      },
-      {
-        "id": "d",
-        "text": "友"
-      }
-    ],
-    "answer": "c",
-    "explain": "「口」读 kǒu，可以组词「开口」。"
-  },
-  {
-    "id": "zi-0032",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「yòu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "有"
-      },
-      {
-        "id": "b",
-        "text": "右"
-      },
-      {
-        "id": "c",
-        "text": "口"
-      },
-      {
-        "id": "d",
-        "text": "友"
-      }
-    ],
-    "answer": "b",
-    "explain": "「右」读 yòu，可以组词「左右」。"
-  },
-  {
-    "id": "zi-0033",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「chī」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "吃"
-      },
-      {
-        "id": "b",
-        "text": "七"
-      },
-      {
-        "id": "c",
-        "text": "一"
-      },
-      {
-        "id": "d",
-        "text": "尺"
-      }
-    ],
-    "answer": "a",
-    "explain": "「吃」读 chī，可以组词「吃饭」。"
-  },
-  {
-    "id": "zi-0034",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「míng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "听"
-      },
-      {
-        "id": "b",
-        "text": "晴"
-      },
-      {
-        "id": "c",
-        "text": "星"
-      },
-      {
-        "id": "d",
-        "text": "名"
-      }
-    ],
-    "answer": "d",
-    "explain": "「名」读 míng，可以组词「名字」。"
-  },
-  {
-    "id": "zi-0035",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「hòu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "口"
-      },
-      {
-        "id": "b",
-        "text": "友"
-      },
-      {
-        "id": "c",
-        "text": "右"
-      },
-      {
-        "id": "d",
-        "text": "后"
-      }
-    ],
-    "answer": "d",
-    "explain": "「后」读 hòu，可以组词「后面」。"
-  },
-  {
-    "id": "zi-0036",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「tīng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "名"
-      },
-      {
-        "id": "b",
-        "text": "明"
-      },
-      {
-        "id": "c",
-        "text": "星"
-      },
-      {
-        "id": "d",
-        "text": "听"
-      }
-    ],
-    "answer": "d",
-    "explain": "「听」读 tīng，可以组词「听见」。"
-  },
-  {
-    "id": "zi-0037",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「gē」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "哥"
-      },
-      {
-        "id": "b",
-        "text": "河"
-      },
-      {
-        "id": "c",
-        "text": "喝"
-      },
-      {
-        "id": "d",
-        "text": "热"
-      }
-    ],
-    "answer": "a",
-    "explain": "「哥」读 gē，可以组词「哥哥」。"
-  },
-  {
-    "id": "zi-0038",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「chàng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "吃"
-      },
-      {
-        "id": "b",
-        "text": "羊"
-      },
-      {
-        "id": "c",
-        "text": "上"
-      },
-      {
-        "id": "d",
-        "text": "唱"
-      }
-    ],
-    "answer": "d",
-    "explain": "「唱」读 chàng，可以组词「唱歌」。"
-  },
-  {
-    "id": "zi-0039",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「hē」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "河"
-      },
-      {
-        "id": "b",
-        "text": "哥"
-      },
-      {
-        "id": "c",
-        "text": "禾"
-      },
-      {
-        "id": "d",
-        "text": "喝"
-      }
-    ],
-    "answer": "d",
-    "explain": "「喝」读 hē，可以组词「喝水」。"
-  },
-  {
-    "id": "zi-0040",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「sì」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "七"
-      },
-      {
-        "id": "b",
-        "text": "你"
-      },
-      {
-        "id": "c",
-        "text": "一"
-      },
-      {
-        "id": "d",
-        "text": "四"
-      }
-    ],
-    "answer": "d",
-    "explain": "「四」读 sì，可以组词「四月」。"
-  },
-  {
-    "id": "zi-0041",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「huí」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "睡"
-      },
-      {
-        "id": "b",
-        "text": "后"
-      },
-      {
-        "id": "c",
-        "text": "回"
-      },
-      {
-        "id": "d",
-        "text": "水"
-      }
-    ],
-    "answer": "c",
-    "explain": "「回」读 huí，可以组词「回来」。"
-  },
-  {
-    "id": "zi-0042",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「guó」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "多"
-      },
-      {
-        "id": "b",
-        "text": "桌"
-      },
-      {
-        "id": "c",
-        "text": "左"
-      },
-      {
-        "id": "d",
-        "text": "国"
-      }
-    ],
-    "answer": "d",
-    "explain": "「国」读 guó，可以组词「中国」。"
-  },
-  {
-    "id": "zi-0043",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「tǔ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "入"
-      },
-      {
-        "id": "b",
-        "text": "五"
-      },
-      {
-        "id": "c",
-        "text": "书"
-      },
-      {
-        "id": "d",
-        "text": "土"
-      }
-    ],
-    "answer": "d",
-    "explain": "「土」读 tǔ，可以组词「土地」。"
-  },
-  {
-    "id": "zi-0044",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shēng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "朋"
-      },
-      {
-        "id": "b",
-        "text": "冷"
-      },
-      {
-        "id": "c",
-        "text": "声"
-      },
-      {
-        "id": "d",
-        "text": "风"
-      }
-    ],
-    "answer": "c",
-    "explain": "「声」读 shēng，可以组词「大声」。"
-  },
-  {
-    "id": "zi-0045",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xià」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "夏"
-      },
-      {
-        "id": "b",
-        "text": "家"
-      },
-      {
-        "id": "c",
-        "text": "写"
-      },
-      {
-        "id": "d",
-        "text": "学"
-      }
-    ],
-    "answer": "a",
-    "explain": "「夏」读 xià，可以组词「夏天」。"
-  },
-  {
-    "id": "zi-0046",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「wài」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "外"
-      },
-      {
-        "id": "b",
-        "text": "来"
-      },
-      {
-        "id": "c",
-        "text": "太"
-      },
-      {
-        "id": "d",
-        "text": "开"
-      }
-    ],
-    "answer": "a",
-    "explain": "「外」读 wài，可以组词「外面」。"
-  },
-  {
-    "id": "zi-0047",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「duō」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "左"
-      },
-      {
-        "id": "b",
-        "text": "多"
-      },
-      {
-        "id": "c",
-        "text": "国"
-      },
-      {
-        "id": "d",
-        "text": "桌"
-      }
-    ],
-    "answer": "b",
-    "explain": "「多」读 duō，可以组词「多少」。"
-  },
-  {
-    "id": "zi-0048",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「tiān」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "田"
-      },
-      {
-        "id": "c",
-        "text": "天"
-      },
-      {
-        "id": "d",
-        "text": "前"
-      }
-    ],
-    "answer": "c",
-    "explain": "「天」读 tiān，可以组词「天空」。"
-  },
-  {
-    "id": "zi-0049",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「tài」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "外"
-      },
-      {
-        "id": "b",
-        "text": "太"
-      },
-      {
-        "id": "c",
-        "text": "来"
-      },
-      {
-        "id": "d",
-        "text": "开"
-      }
-    ],
-    "answer": "b",
-    "explain": "「太」读 tài，可以组词「太阳」。"
-  },
-  {
-    "id": "zi-0050",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「tóu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "友"
-      },
-      {
-        "id": "c",
-        "text": "口"
-      },
-      {
-        "id": "d",
-        "text": "头"
-      }
-    ],
-    "answer": "d",
-    "explain": "「头」读 tóu，可以组词「头发」。"
-  },
-  {
-    "id": "zi-0051",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「nǚ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "绿"
-      },
-      {
-        "id": "b",
-        "text": "你"
-      },
-      {
-        "id": "c",
-        "text": "年"
-      },
-      {
-        "id": "d",
-        "text": "女"
-      }
-    ],
-    "answer": "d",
-    "explain": "「女」读 nǚ，可以组词「女人」。"
-  },
-  {
-    "id": "zi-0052",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「mā」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "妈"
-      },
-      {
-        "id": "b",
-        "text": "他"
-      },
-      {
-        "id": "c",
-        "text": "八"
-      },
-      {
-        "id": "d",
-        "text": "马"
-      }
-    ],
-    "answer": "a",
-    "explain": "「妈」读 mā，可以组词「妈妈」。"
-  },
-  {
-    "id": "zi-0053",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「mèi」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "黑"
-      },
-      {
-        "id": "b",
-        "text": "妹"
-      },
-      {
-        "id": "c",
-        "text": "名"
-      },
-      {
-        "id": "d",
-        "text": "飞"
-      }
-    ],
-    "answer": "b",
-    "explain": "「妹」读 mèi，可以组词「妹妹」。"
-  },
-  {
-    "id": "zi-0054",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「jiě」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "写"
-      },
-      {
-        "id": "b",
-        "text": "姐"
-      },
-      {
-        "id": "c",
-        "text": "今"
-      },
-      {
-        "id": "d",
-        "text": "九"
-      }
-    ],
-    "answer": "b",
-    "explain": "「姐」读 jiě，可以组词「姐姐」。"
-  },
-  {
-    "id": "zi-0055",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「zì」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "七"
-      },
-      {
-        "id": "b",
-        "text": "你"
-      },
-      {
-        "id": "c",
-        "text": "字"
-      },
-      {
-        "id": "d",
-        "text": "一"
-      }
-    ],
-    "answer": "c",
-    "explain": "「字」读 zì，可以组词「写字」。"
-  },
-  {
-    "id": "zi-0056",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xué」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "写"
-      },
-      {
-        "id": "b",
-        "text": "学"
-      },
-      {
-        "id": "c",
-        "text": "月"
-      },
-      {
-        "id": "d",
-        "text": "下"
-      }
-    ],
-    "answer": "b",
-    "explain": "「学」读 xué，可以组词「学习」。"
-  },
-  {
-    "id": "zi-0057",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「jiā」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "家"
-      },
-      {
-        "id": "b",
-        "text": "下"
-      },
-      {
-        "id": "c",
-        "text": "九"
-      },
-      {
-        "id": "d",
-        "text": "夏"
-      }
-    ],
-    "answer": "a",
-    "explain": "「家」读 jiā，可以组词「回家」。"
-  },
-  {
-    "id": "zi-0058",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xiǎo」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "校"
-      },
-      {
-        "id": "b",
-        "text": "笑"
-      },
-      {
-        "id": "c",
-        "text": "小"
-      },
-      {
-        "id": "d",
-        "text": "跳"
-      }
-    ],
-    "answer": "c",
-    "explain": "「小」读 xiǎo，可以组词「小鸟」。"
-  },
-  {
-    "id": "zi-0059",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「chǐ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "尺"
-      },
-      {
-        "id": "b",
-        "text": "一"
-      },
-      {
-        "id": "c",
-        "text": "吃"
-      },
-      {
-        "id": "d",
-        "text": "七"
-      }
-    ],
-    "answer": "a",
-    "explain": "「尺」读 chǐ，可以组词「尺子」。"
-  },
-  {
-    "id": "zi-0060",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shān」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "万"
-      },
-      {
-        "id": "b",
-        "text": "慢"
-      },
-      {
-        "id": "c",
-        "text": "山"
-      },
-      {
-        "id": "d",
-        "text": "三"
-      }
-    ],
-    "answer": "c",
-    "explain": "「山」读 shān，可以组词「大山」。"
-  },
-  {
-    "id": "zi-0061",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「gōng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "红"
-      },
-      {
-        "id": "b",
-        "text": "东"
-      },
-      {
-        "id": "c",
-        "text": "工"
-      },
-      {
-        "id": "d",
-        "text": "冬"
-      }
-    ],
-    "answer": "c",
-    "explain": "「工」读 gōng，可以组词「工人」。"
-  },
-  {
-    "id": "zi-0062",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「zuǒ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "国"
-      },
-      {
-        "id": "b",
-        "text": "左"
-      },
-      {
-        "id": "c",
-        "text": "桌"
-      },
-      {
-        "id": "d",
-        "text": "多"
-      }
-    ],
-    "answer": "b",
-    "explain": "「左」读 zuǒ，可以组词「左右」。"
-  },
-  {
-    "id": "zi-0063",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「jīn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "巾"
-      },
-      {
-        "id": "b",
-        "text": "心"
-      },
-      {
-        "id": "c",
-        "text": "新"
-      },
-      {
-        "id": "d",
-        "text": "九"
-      }
-    ],
-    "answer": "a",
-    "explain": "「巾」读 jīn，可以组词「毛巾」。"
-  },
-  {
-    "id": "zi-0064",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「nián」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "年"
-      },
-      {
-        "id": "c",
-        "text": "前"
-      },
-      {
-        "id": "d",
-        "text": "天"
-      }
-    ],
-    "answer": "b",
-    "explain": "「年」读 nián，可以组词「今年」。"
-  },
-  {
-    "id": "zi-0065",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「kāi」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "太"
-      },
-      {
-        "id": "b",
-        "text": "外"
-      },
-      {
-        "id": "c",
-        "text": "开"
-      },
-      {
-        "id": "d",
-        "text": "来"
-      }
-    ],
-    "answer": "c",
-    "explain": "「开」读 kāi，可以组词「开心」。"
-  },
-  {
-    "id": "zi-0066",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「dì」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "一"
-      },
-      {
-        "id": "b",
-        "text": "七"
-      },
-      {
-        "id": "c",
-        "text": "你"
-      },
-      {
-        "id": "d",
-        "text": "弟"
-      }
-    ],
-    "answer": "d",
-    "explain": "「弟」读 dì，可以组词「弟弟」。"
-  },
-  {
-    "id": "zi-0067",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xīn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "下"
-      },
-      {
-        "id": "b",
-        "text": "今"
-      },
-      {
-        "id": "c",
-        "text": "巾"
-      },
-      {
-        "id": "d",
-        "text": "心"
-      }
-    ],
-    "answer": "d",
-    "explain": "「心」读 xīn，可以组词「开心」。"
-  },
-  {
-    "id": "zi-0068",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xiǎng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "想"
-      },
-      {
-        "id": "b",
-        "text": "江"
-      },
-      {
-        "id": "c",
-        "text": "下"
-      },
-      {
-        "id": "d",
-        "text": "写"
-      }
-    ],
-    "answer": "a",
-    "explain": "「想」读 xiǎng，可以组词「想念」。"
-  },
-  {
-    "id": "zi-0069",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「màn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "万"
-      },
-      {
-        "id": "b",
-        "text": "慢"
-      },
-      {
-        "id": "c",
-        "text": "三"
-      },
-      {
-        "id": "d",
-        "text": "山"
-      }
-    ],
-    "answer": "b",
-    "explain": "「慢」读 màn，可以组词「慢走」。"
-  },
-  {
-    "id": "zi-0070",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「wǒ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "万"
-      },
-      {
-        "id": "b",
-        "text": "五"
-      },
-      {
-        "id": "c",
-        "text": "午"
-      },
-      {
-        "id": "d",
-        "text": "我"
-      }
-    ],
-    "answer": "d",
-    "explain": "「我」读 wǒ，可以组词「我们」。"
-  },
-  {
-    "id": "zi-0071",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shǒu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "手"
-      },
-      {
-        "id": "b",
-        "text": "口"
-      },
-      {
-        "id": "c",
-        "text": "友"
-      },
-      {
-        "id": "d",
-        "text": "右"
-      }
-    ],
-    "answer": "a",
-    "explain": "「手」读 shǒu，可以组词「手心」。"
-  },
-  {
-    "id": "zi-0072",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「dǎ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "八"
-      },
-      {
-        "id": "b",
-        "text": "打"
-      },
-      {
-        "id": "c",
-        "text": "他"
-      },
-      {
-        "id": "d",
-        "text": "妈"
-      }
-    ],
-    "answer": "b",
-    "explain": "「打」读 dǎ，可以组词「打球」。"
-  },
-  {
-    "id": "zi-0073",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「ná」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "拿"
-      },
-      {
-        "id": "b",
-        "text": "他"
-      },
-      {
-        "id": "c",
-        "text": "八"
-      },
-      {
-        "id": "d",
-        "text": "妈"
-      }
-    ],
-    "answer": "a",
-    "explain": "「拿」读 ná，可以组词「拿来」。"
-  },
-  {
-    "id": "zi-0074",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「wén」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "文"
-      },
-      {
-        "id": "b",
-        "text": "本"
-      },
-      {
-        "id": "c",
-        "text": "门"
-      },
-      {
-        "id": "d",
-        "text": "人"
-      }
-    ],
-    "answer": "a",
-    "explain": "「文」读 wén，可以组词「语文」。"
-  },
-  {
-    "id": "zi-0075",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xīn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "巾"
-      },
-      {
-        "id": "b",
-        "text": "新"
-      },
-      {
-        "id": "c",
-        "text": "下"
-      },
-      {
-        "id": "d",
-        "text": "今"
-      }
-    ],
-    "answer": "b",
-    "explain": "「新」读 xīn，可以组词「新年」。"
-  },
-  {
-    "id": "zi-0076",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「rì」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "你"
-      },
-      {
-        "id": "b",
-        "text": "日"
-      },
-      {
-        "id": "c",
-        "text": "七"
-      },
-      {
-        "id": "d",
-        "text": "一"
-      }
-    ],
-    "answer": "b",
-    "explain": "「日」读 rì，可以组词「日出」。"
-  },
-  {
-    "id": "zi-0077",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「jiù」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "六"
-      },
-      {
-        "id": "b",
-        "text": "九"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "旧"
-      }
-    ],
-    "answer": "d",
-    "explain": "「旧」读 jiù，可以组词「旧书」。"
-  },
-  {
-    "id": "zi-0078",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「zǎo」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "猫"
-      },
-      {
-        "id": "b",
-        "text": "早"
-      },
-      {
-        "id": "c",
-        "text": "毛"
-      },
-      {
-        "id": "d",
-        "text": "刀"
-      }
-    ],
-    "answer": "b",
-    "explain": "「早」读 zǎo，可以组词「早上」。"
-  },
-  {
-    "id": "zi-0079",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shí」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "你"
-      },
-      {
-        "id": "b",
-        "text": "七"
-      },
-      {
-        "id": "c",
-        "text": "时"
-      },
-      {
-        "id": "d",
-        "text": "一"
-      }
-    ],
-    "answer": "c",
-    "explain": "「时」读 shí，可以组词「时间」。"
-  },
-  {
-    "id": "zi-0080",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「míng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "听"
-      },
-      {
-        "id": "b",
-        "text": "晴"
-      },
-      {
-        "id": "c",
-        "text": "明"
-      },
-      {
-        "id": "d",
-        "text": "星"
-      }
-    ],
-    "answer": "c",
-    "explain": "「明」读 míng，可以组词「明天」。"
-  },
-  {
-    "id": "zi-0081",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xīng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "明"
-      },
-      {
-        "id": "b",
-        "text": "名"
-      },
-      {
-        "id": "c",
-        "text": "星"
-      },
-      {
-        "id": "d",
-        "text": "听"
-      }
-    ],
-    "answer": "c",
-    "explain": "「星」读 xīng，可以组词「星星」。"
-  },
-  {
-    "id": "zi-0082",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「chūn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "吃"
-      },
-      {
-        "id": "b",
-        "text": "春"
-      },
-      {
-        "id": "c",
-        "text": "唱"
-      },
-      {
-        "id": "d",
-        "text": "云"
-      }
-    ],
-    "answer": "b",
-    "explain": "「春」读 chūn，可以组词「春天」。"
-  },
-  {
-    "id": "zi-0083",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「wǎn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "晚"
-      },
-      {
-        "id": "b",
-        "text": "山"
-      },
-      {
-        "id": "c",
-        "text": "万"
-      },
-      {
-        "id": "d",
-        "text": "三"
-      }
-    ],
-    "answer": "a",
-    "explain": "「晚」读 wǎn，可以组词「晚上」。"
-  },
-  {
-    "id": "zi-0084",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「qíng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "请"
-      },
-      {
-        "id": "b",
-        "text": "晴"
-      },
-      {
-        "id": "c",
-        "text": "清"
-      },
-      {
-        "id": "d",
-        "text": "青"
-      }
-    ],
-    "answer": "b",
-    "explain": "「晴」读 qíng，可以组词「晴天」。"
-  },
-  {
-    "id": "zi-0085",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「yuè」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "一"
-      },
-      {
-        "id": "b",
-        "text": "学"
-      },
-      {
-        "id": "c",
-        "text": "云"
-      },
-      {
-        "id": "d",
-        "text": "月"
-      }
-    ],
-    "answer": "d",
-    "explain": "「月」读 yuè，可以组词「月亮」。"
-  },
-  {
-    "id": "zi-0086",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「yǒu」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "有"
-      },
-      {
-        "id": "c",
-        "text": "口"
-      },
-      {
-        "id": "d",
-        "text": "后"
-      }
-    ],
-    "answer": "b",
-    "explain": "「有」读 yǒu，可以组词「有人」。"
-  },
-  {
-    "id": "zi-0087",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「péng」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "朋"
-      },
-      {
-        "id": "b",
-        "text": "声"
-      },
-      {
-        "id": "c",
-        "text": "冷"
-      },
-      {
-        "id": "d",
-        "text": "生"
-      }
-    ],
-    "answer": "a",
-    "explain": "「朋」读 péng，可以组词「朋友」。"
-  },
-  {
-    "id": "zi-0088",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「fú」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "五"
-      },
-      {
-        "id": "b",
-        "text": "服"
-      },
-      {
-        "id": "c",
-        "text": "入"
-      },
-      {
-        "id": "d",
-        "text": "书"
-      }
-    ],
-    "answer": "b",
-    "explain": "「服」读 fú，可以组词「衣服」。"
-  },
-  {
-    "id": "zi-0089",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「mù」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "五"
-      },
-      {
-        "id": "b",
-        "text": "木"
-      },
-      {
-        "id": "c",
-        "text": "入"
-      },
-      {
-        "id": "d",
-        "text": "书"
-      }
-    ],
-    "answer": "b",
-    "explain": "「木」读 mù，可以组词「木头」。"
-  },
-  {
-    "id": "zi-0090",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「běn」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "门"
-      },
-      {
-        "id": "b",
-        "text": "文"
-      },
-      {
-        "id": "c",
-        "text": "本"
-      },
-      {
-        "id": "d",
-        "text": "人"
-      }
-    ],
-    "answer": "c",
-    "explain": "「本」读 běn，可以组词「书本」。"
-  },
-  {
-    "id": "zi-0091",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「lái」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "来"
-      },
-      {
-        "id": "b",
-        "text": "太"
-      },
-      {
-        "id": "c",
-        "text": "开"
-      },
-      {
-        "id": "d",
-        "text": "外"
-      }
-    ],
-    "answer": "a",
-    "explain": "「来」读 lái，可以组词「回来」。"
-  },
-  {
-    "id": "zi-0092",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shù」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "书"
-      },
-      {
-        "id": "b",
-        "text": "树"
-      },
-      {
-        "id": "c",
-        "text": "入"
-      },
-      {
-        "id": "d",
-        "text": "五"
-      }
-    ],
-    "answer": "b",
-    "explain": "「树」读 shù，可以组词「大树」。"
-  },
-  {
-    "id": "zi-0093",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「xiào」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "校"
-      },
-      {
-        "id": "b",
-        "text": "鸟"
-      },
-      {
-        "id": "c",
-        "text": "跳"
-      },
-      {
-        "id": "d",
-        "text": "小"
-      }
-    ],
-    "answer": "a",
-    "explain": "「校」读 xiào，可以组词「学校」。"
-  },
-  {
-    "id": "zi-0094",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「zhuō」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "国"
-      },
-      {
-        "id": "b",
-        "text": "桌"
-      },
-      {
-        "id": "c",
-        "text": "多"
-      },
-      {
-        "id": "d",
-        "text": "左"
-      }
-    ],
-    "answer": "b",
-    "explain": "「桌」读 zhuō，可以组词「桌子」。"
-  },
-  {
-    "id": "zi-0095",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「máo」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "刀"
-      },
-      {
-        "id": "b",
-        "text": "猫"
-      },
-      {
-        "id": "c",
-        "text": "毛"
-      },
-      {
-        "id": "d",
-        "text": "早"
-      }
-    ],
-    "answer": "c",
-    "explain": "「毛」读 máo，可以组词「毛巾」。"
-  },
-  {
-    "id": "zi-0096",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看拼音选字"
-    ],
-    "stem": {
-      "text": "「shuǐ」是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "回"
-      },
-      {
-        "id": "b",
-        "text": "上"
-      },
-      {
-        "id": "c",
-        "text": "睡"
-      },
-      {
-        "id": "d",
-        "text": "水"
-      }
-    ],
-    "answer": "d",
-    "explain": "「水」读 shuǐ，可以组词「水果」。"
-  },
-  {
-    "id": "zi-0097",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「一」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "yì"
-      },
-      {
-        "id": "b",
-        "text": "yí"
-      },
-      {
-        "id": "c",
-        "text": "yǐ"
-      },
-      {
-        "id": "d",
-        "text": "yī"
-      }
-    ],
-    "answer": "d",
-    "explain": "「一」读 yī，可以组词「一个」。"
-  },
-  {
-    "id": "zi-0098",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「七」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "qī"
-      },
-      {
-        "id": "b",
-        "text": "nǐ"
-      },
-      {
-        "id": "c",
-        "text": "yī"
-      },
-      {
-        "id": "d",
-        "text": "qián"
-      }
-    ],
-    "answer": "a",
-    "explain": "「七」读 qī，可以组词「七月」。"
-  },
-  {
-    "id": "zi-0099",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「万」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "wān"
-      },
-      {
-        "id": "b",
-        "text": "wán"
-      },
-      {
-        "id": "c",
-        "text": "wǎn"
-      },
-      {
-        "id": "d",
-        "text": "wàn"
-      }
-    ],
-    "answer": "d",
-    "explain": "「万」读 wàn，可以组词「万一」。"
-  },
-  {
-    "id": "zi-0100",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「三」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shān"
-      },
-      {
-        "id": "b",
-        "text": "sì"
-      },
-      {
-        "id": "c",
-        "text": "sān"
-      },
-      {
-        "id": "d",
-        "text": "wàn"
-      }
-    ],
-    "answer": "c",
-    "explain": "「三」读 sān，可以组词「三个」。"
-  },
-  {
-    "id": "zi-0101",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「上」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shǎng"
-      },
-      {
-        "id": "b",
-        "text": "shāng"
-      },
-      {
-        "id": "c",
-        "text": "shàng"
-      },
-      {
-        "id": "d",
-        "text": "sháng"
-      }
-    ],
-    "answer": "c",
-    "explain": "「上」读 shàng，可以组词「上山」。"
-  },
-  {
-    "id": "zi-0102",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「下」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "xué"
-      },
-      {
-        "id": "b",
-        "text": "xià"
-      },
-      {
-        "id": "c",
-        "text": "jiā"
-      },
-      {
-        "id": "d",
-        "text": "xiě"
-      }
-    ],
-    "answer": "b",
-    "explain": "「下」读 xià，可以组词「下雨」。"
-  },
-  {
-    "id": "zi-0103",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「东」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "dōng"
-      },
-      {
-        "id": "b",
-        "text": "dǒng"
-      },
-      {
-        "id": "c",
-        "text": "dòng"
-      },
-      {
-        "id": "d",
-        "text": "dóng"
-      }
-    ],
-    "answer": "a",
-    "explain": "「东」读 dōng，可以组词「东西」。"
-  },
-  {
-    "id": "zi-0104",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「九」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "jiǔ"
-      },
-      {
-        "id": "b",
-        "text": "liù"
-      },
-      {
-        "id": "c",
-        "text": "jiě"
-      },
-      {
-        "id": "d",
-        "text": "jīn"
-      }
-    ],
-    "answer": "a",
-    "explain": "「九」读 jiǔ，可以组词「九月」。"
-  },
-  {
-    "id": "zi-0105",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「书」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shù"
-      },
-      {
-        "id": "b",
-        "text": "shū"
-      },
-      {
-        "id": "c",
-        "text": "shú"
-      },
-      {
-        "id": "d",
-        "text": "shǔ"
-      }
-    ],
-    "answer": "b",
-    "explain": "「书」读 shū，可以组词「看书」。"
-  },
-  {
-    "id": "zi-0106",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「云」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "yǒu"
-      },
-      {
-        "id": "b",
-        "text": "yòu"
-      },
-      {
-        "id": "c",
-        "text": "yún"
-      },
-      {
-        "id": "d",
-        "text": "yī"
-      }
-    ],
-    "answer": "c",
-    "explain": "「云」读 yún，可以组词「白云」。"
-  },
-  {
-    "id": "zi-0107",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「五」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "wú"
-      },
-      {
-        "id": "b",
-        "text": "wù"
-      },
-      {
-        "id": "c",
-        "text": "wū"
-      },
-      {
-        "id": "d",
-        "text": "wǔ"
-      }
-    ],
-    "answer": "d",
-    "explain": "「五」读 wǔ，可以组词「五个」。"
-  },
-  {
-    "id": "zi-0108",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「人」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "rén"
-      },
-      {
-        "id": "b",
-        "text": "rì"
-      },
-      {
-        "id": "c",
-        "text": "wén"
-      },
-      {
-        "id": "d",
-        "text": "rù"
-      }
-    ],
-    "answer": "a",
-    "explain": "「人」读 rén，可以组词「大人」。"
-  },
-  {
-    "id": "zi-0109",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「今」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "jìn"
-      },
-      {
-        "id": "b",
-        "text": "jīn"
-      },
-      {
-        "id": "c",
-        "text": "jǐn"
-      },
-      {
-        "id": "d",
-        "text": "jín"
-      }
-    ],
-    "answer": "b",
-    "explain": "「今」读 jīn，可以组词「今天」。"
-  },
-  {
-    "id": "zi-0110",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「他」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "tā"
-      },
-      {
-        "id": "b",
-        "text": "bā"
-      },
-      {
-        "id": "c",
-        "text": "tīng"
-      },
-      {
-        "id": "d",
-        "text": "tǔ"
-      }
-    ],
-    "answer": "a",
-    "explain": "「他」读 tā，可以组词「他们」。"
-  },
-  {
-    "id": "zi-0111",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「你」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "nī"
-      },
-      {
-        "id": "b",
-        "text": "ní"
-      },
-      {
-        "id": "c",
-        "text": "nǐ"
-      },
-      {
-        "id": "d",
-        "text": "nì"
-      }
-    ],
-    "answer": "c",
-    "explain": "「你」读 nǐ，可以组词「你好」。"
-  },
-  {
-    "id": "zi-0112",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「入」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "rén"
-      },
-      {
-        "id": "b",
-        "text": "wǔ"
-      },
-      {
-        "id": "c",
-        "text": "shū"
-      },
-      {
-        "id": "d",
-        "text": "rù"
-      }
-    ],
-    "answer": "d",
-    "explain": "「入」读 rù，可以组词「入口」。"
-  },
-  {
-    "id": "zi-0113",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「八」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "bá"
-      },
-      {
-        "id": "b",
-        "text": "bà"
-      },
-      {
-        "id": "c",
-        "text": "bǎ"
-      },
-      {
-        "id": "d",
-        "text": "bā"
-      }
-    ],
-    "answer": "d",
-    "explain": "「八」读 bā，可以组词「八月」。"
-  },
-  {
-    "id": "zi-0114",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「六」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "jiǔ"
-      },
-      {
-        "id": "b",
-        "text": "liù"
-      },
-      {
-        "id": "c",
-        "text": "lì"
-      },
-      {
-        "id": "d",
-        "text": "lěng"
-      }
-    ],
-    "answer": "b",
-    "explain": "「六」读 liù，可以组词「六月」。"
-  },
-  {
-    "id": "zi-0115",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「关」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "guàn"
-      },
-      {
-        "id": "b",
-        "text": "guán"
-      },
-      {
-        "id": "c",
-        "text": "guān"
-      },
-      {
-        "id": "d",
-        "text": "guǎn"
-      }
-    ],
-    "answer": "c",
-    "explain": "「关」读 guān，可以组词「关门」。"
-  },
-  {
-    "id": "zi-0116",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「写」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "xià"
-      },
-      {
-        "id": "b",
-        "text": "jiě"
-      },
-      {
-        "id": "c",
-        "text": "xiě"
-      },
-      {
-        "id": "d",
-        "text": "xué"
-      }
-    ],
-    "answer": "c",
-    "explain": "「写」读 xiě，可以组词「写字」。"
-  },
-  {
-    "id": "zi-0117",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「冬」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "dóng"
-      },
-      {
-        "id": "b",
-        "text": "dōng"
-      },
-      {
-        "id": "c",
-        "text": "dǒng"
-      },
-      {
-        "id": "d",
-        "text": "dòng"
-      }
-    ],
-    "answer": "b",
-    "explain": "「冬」读 dōng，可以组词「冬天」。"
-  },
-  {
-    "id": "zi-0118",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「冷」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shēng"
-      },
-      {
-        "id": "b",
-        "text": "liù"
-      },
-      {
-        "id": "c",
-        "text": "lì"
-      },
-      {
-        "id": "d",
-        "text": "lěng"
-      }
-    ],
-    "answer": "d",
-    "explain": "「冷」读 lěng，可以组词「冷水」。"
-  },
-  {
-    "id": "zi-0119",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「刀」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "dǎo"
-      },
-      {
-        "id": "b",
-        "text": "dào"
-      },
-      {
-        "id": "c",
-        "text": "dáo"
-      },
-      {
-        "id": "d",
-        "text": "dāo"
-      }
-    ],
-    "answer": "d",
-    "explain": "「刀」读 dāo，可以组词「小刀」。"
-  },
-  {
-    "id": "zi-0120",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「前」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "qī"
-      },
-      {
-        "id": "b",
-        "text": "qián"
-      },
-      {
-        "id": "c",
-        "text": "tiān"
-      },
-      {
-        "id": "d",
-        "text": "qù"
-      }
-    ],
-    "answer": "b",
-    "explain": "「前」读 qián，可以组词「前面」。"
-  },
-  {
-    "id": "zi-0121",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「力」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "lì"
-      },
-      {
-        "id": "b",
-        "text": "lī"
-      },
-      {
-        "id": "c",
-        "text": "lǐ"
-      },
-      {
-        "id": "d",
-        "text": "lí"
-      }
-    ],
-    "answer": "a",
-    "explain": "「力」读 lì，可以组词「力气」。"
-  },
-  {
-    "id": "zi-0122",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「十」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shàng"
-      },
-      {
-        "id": "b",
-        "text": "shí"
-      },
-      {
-        "id": "c",
-        "text": "yī"
-      },
-      {
-        "id": "d",
-        "text": "qī"
-      }
-    ],
-    "answer": "b",
-    "explain": "「十」读 shí，可以组词「十个」。"
-  },
-  {
-    "id": "zi-0123",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「千」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "qiān"
-      },
-      {
-        "id": "b",
-        "text": "qiǎn"
-      },
-      {
-        "id": "c",
-        "text": "qián"
-      },
-      {
-        "id": "d",
-        "text": "qiàn"
-      }
-    ],
-    "answer": "a",
-    "explain": "「千」读 qiān，可以组词「一千」。"
-  },
-  {
-    "id": "zi-0124",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「午」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "wǔ"
-      },
-      {
-        "id": "b",
-        "text": "rù"
-      },
-      {
-        "id": "c",
-        "text": "wàn"
-      },
-      {
-        "id": "d",
-        "text": "shū"
-      }
-    ],
-    "answer": "a",
-    "explain": "「午」读 wǔ，可以组词「中午」。"
-  },
-  {
-    "id": "zi-0125",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「去」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "qǔ"
-      },
-      {
-        "id": "b",
-        "text": "qù"
-      },
-      {
-        "id": "c",
-        "text": "qū"
-      },
-      {
-        "id": "d",
-        "text": "qú"
-      }
-    ],
-    "answer": "b",
-    "explain": "「去」读 qù，可以组词「回去」。"
-  },
-  {
-    "id": "zi-0126",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「友」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "kǒu"
-      },
-      {
-        "id": "b",
-        "text": "yī"
-      },
-      {
-        "id": "c",
-        "text": "yǒu"
-      },
-      {
-        "id": "d",
-        "text": "yún"
-      }
-    ],
-    "answer": "c",
-    "explain": "「友」读 yǒu，可以组词「朋友」。"
-  },
-  {
-    "id": "zi-0127",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「口」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "kōu"
-      },
-      {
-        "id": "b",
-        "text": "kòu"
-      },
-      {
-        "id": "c",
-        "text": "kǒu"
-      },
-      {
-        "id": "d",
-        "text": "kóu"
-      }
-    ],
-    "answer": "c",
-    "explain": "「口」读 kǒu，可以组词「开口」。"
-  },
-  {
-    "id": "zi-0128",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「右」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "yòu"
-      },
-      {
-        "id": "b",
-        "text": "yún"
-      },
-      {
-        "id": "c",
-        "text": "kǒu"
-      },
-      {
-        "id": "d",
-        "text": "yī"
-      }
-    ],
-    "answer": "a",
-    "explain": "「右」读 yòu，可以组词「左右」。"
-  },
-  {
-    "id": "zi-0129",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「吃」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "chì"
-      },
-      {
-        "id": "b",
-        "text": "chī"
-      },
-      {
-        "id": "c",
-        "text": "chǐ"
-      },
-      {
-        "id": "d",
-        "text": "chí"
-      }
-    ],
-    "answer": "b",
-    "explain": "「吃」读 chī，可以组词「吃饭」。"
-  },
-  {
-    "id": "zi-0130",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「名」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "mèi"
-      },
-      {
-        "id": "b",
-        "text": "tīng"
-      },
-      {
-        "id": "c",
-        "text": "mā"
-      },
-      {
-        "id": "d",
-        "text": "míng"
-      }
-    ],
-    "answer": "d",
-    "explain": "「名」读 míng，可以组词「名字」。"
-  },
-  {
-    "id": "zi-0131",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「后」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "hóu"
-      },
-      {
-        "id": "b",
-        "text": "hōu"
-      },
-      {
-        "id": "c",
-        "text": "hǒu"
-      },
-      {
-        "id": "d",
-        "text": "hòu"
-      }
-    ],
-    "answer": "d",
-    "explain": "「后」读 hòu，可以组词「后面」。"
-  },
-  {
-    "id": "zi-0132",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「听」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "tā"
-      },
-      {
-        "id": "b",
-        "text": "míng"
-      },
-      {
-        "id": "c",
-        "text": "tǔ"
-      },
-      {
-        "id": "d",
-        "text": "tīng"
-      }
-    ],
-    "answer": "d",
-    "explain": "「听」读 tīng，可以组词「听见」。"
-  },
-  {
-    "id": "zi-0133",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「哥」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "gē"
-      },
-      {
-        "id": "b",
-        "text": "gě"
-      },
-      {
-        "id": "c",
-        "text": "gé"
-      },
-      {
-        "id": "d",
-        "text": "gè"
-      }
-    ],
-    "answer": "a",
-    "explain": "「哥」读 gē，可以组词「哥哥」。"
-  },
-  {
-    "id": "zi-0134",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「唱」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "chī"
-      },
-      {
-        "id": "b",
-        "text": "chàng"
-      },
-      {
-        "id": "c",
-        "text": "chǐ"
-      },
-      {
-        "id": "d",
-        "text": "shàng"
-      }
-    ],
-    "answer": "b",
-    "explain": "「唱」读 chàng，可以组词「唱歌」。"
-  },
-  {
-    "id": "zi-0135",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「喝」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "hè"
-      },
-      {
-        "id": "b",
-        "text": "hě"
-      },
-      {
-        "id": "c",
-        "text": "hé"
-      },
-      {
-        "id": "d",
-        "text": "hē"
-      }
-    ],
-    "answer": "d",
-    "explain": "「喝」读 hē，可以组词「喝水」。"
-  },
-  {
-    "id": "zi-0136",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「四」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "qī"
-      },
-      {
-        "id": "b",
-        "text": "sì"
-      },
-      {
-        "id": "c",
-        "text": "sān"
-      },
-      {
-        "id": "d",
-        "text": "yī"
-      }
-    ],
-    "answer": "b",
-    "explain": "「四」读 sì，可以组词「四月」。"
-  },
-  {
-    "id": "zi-0137",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「回」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "huǐ"
-      },
-      {
-        "id": "b",
-        "text": "huì"
-      },
-      {
-        "id": "c",
-        "text": "huí"
-      },
-      {
-        "id": "d",
-        "text": "huī"
-      }
-    ],
-    "answer": "c",
-    "explain": "「回」读 huí，可以组词「回来」。"
-  },
-  {
-    "id": "zi-0138",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「国」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "guān"
-      },
-      {
-        "id": "b",
-        "text": "duō"
-      },
-      {
-        "id": "c",
-        "text": "gē"
-      },
-      {
-        "id": "d",
-        "text": "guó"
-      }
-    ],
-    "answer": "d",
-    "explain": "「国」读 guó，可以组词「中国」。"
-  },
-  {
-    "id": "zi-0139",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「土」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "tù"
-      },
-      {
-        "id": "b",
-        "text": "tú"
-      },
-      {
-        "id": "c",
-        "text": "tū"
-      },
-      {
-        "id": "d",
-        "text": "tǔ"
-      }
-    ],
-    "answer": "d",
-    "explain": "「土」读 tǔ，可以组词「土地」。"
-  },
-  {
-    "id": "zi-0140",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「声」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shàng"
-      },
-      {
-        "id": "b",
-        "text": "shū"
-      },
-      {
-        "id": "c",
-        "text": "shēng"
-      },
-      {
-        "id": "d",
-        "text": "lěng"
-      }
-    ],
-    "answer": "c",
-    "explain": "「声」读 shēng，可以组词「大声」。"
-  },
-  {
-    "id": "zi-0141",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「夏」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "xiǎ"
-      },
-      {
-        "id": "b",
-        "text": "xiā"
-      },
-      {
-        "id": "c",
-        "text": "xiá"
-      },
-      {
-        "id": "d",
-        "text": "xià"
-      }
-    ],
-    "answer": "d",
-    "explain": "「夏」读 xià，可以组词「夏天」。"
-  },
-  {
-    "id": "zi-0142",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「外」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "wǔ"
-      },
-      {
-        "id": "b",
-        "text": "wài"
-      },
-      {
-        "id": "c",
-        "text": "wàn"
-      },
-      {
-        "id": "d",
-        "text": "tài"
-      }
-    ],
-    "answer": "b",
-    "explain": "「外」读 wài，可以组词「外面」。"
-  },
-  {
-    "id": "zi-0143",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「多」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "duō"
-      },
-      {
-        "id": "b",
-        "text": "duǒ"
-      },
-      {
-        "id": "c",
-        "text": "duó"
-      },
-      {
-        "id": "d",
-        "text": "duò"
-      }
-    ],
-    "answer": "a",
-    "explain": "「多」读 duō，可以组词「多少」。"
-  },
-  {
-    "id": "zi-0144",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「天」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "tā"
-      },
-      {
-        "id": "b",
-        "text": "tiān"
-      },
-      {
-        "id": "c",
-        "text": "qiān"
-      },
-      {
-        "id": "d",
-        "text": "qián"
-      }
-    ],
-    "answer": "b",
-    "explain": "「天」读 tiān，可以组词「天空」。"
-  },
-  {
-    "id": "zi-0145",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「太」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "tài"
-      },
-      {
-        "id": "b",
-        "text": "tāi"
-      },
-      {
-        "id": "c",
-        "text": "tǎi"
-      },
-      {
-        "id": "d",
-        "text": "tái"
-      }
-    ],
-    "answer": "a",
-    "explain": "「太」读 tài，可以组词「太阳」。"
-  },
-  {
-    "id": "zi-0146",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「头」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "kǒu"
-      },
-      {
-        "id": "b",
-        "text": "tā"
-      },
-      {
-        "id": "c",
-        "text": "tóu"
-      },
-      {
-        "id": "d",
-        "text": "yǒu"
-      }
-    ],
-    "answer": "c",
-    "explain": "「头」读 tóu，可以组词「头发」。"
-  },
-  {
-    "id": "zi-0147",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「女」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "nǖ"
-      },
-      {
-        "id": "b",
-        "text": "nǜ"
-      },
-      {
-        "id": "c",
-        "text": "nǚ"
-      },
-      {
-        "id": "d",
-        "text": "nǘ"
-      }
-    ],
-    "answer": "c",
-    "explain": "「女」读 nǚ，可以组词「女人」。"
-  },
-  {
-    "id": "zi-0148",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「妈」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "mā"
-      },
-      {
-        "id": "b",
-        "text": "bā"
-      },
-      {
-        "id": "c",
-        "text": "tā"
-      },
-      {
-        "id": "d",
-        "text": "míng"
-      }
-    ],
-    "answer": "a",
-    "explain": "「妈」读 mā，可以组词「妈妈」。"
-  },
-  {
-    "id": "zi-0149",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「妹」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "mēi"
-      },
-      {
-        "id": "b",
-        "text": "mèi"
-      },
-      {
-        "id": "c",
-        "text": "méi"
-      },
-      {
-        "id": "d",
-        "text": "měi"
-      }
-    ],
-    "answer": "b",
-    "explain": "「妹」读 mèi，可以组词「妹妹」。"
-  },
-  {
-    "id": "zi-0150",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「姐」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "jīn"
-      },
-      {
-        "id": "b",
-        "text": "jiǔ"
-      },
-      {
-        "id": "c",
-        "text": "xiě"
-      },
-      {
-        "id": "d",
-        "text": "jiě"
-      }
-    ],
-    "answer": "d",
-    "explain": "「姐」读 jiě，可以组词「姐姐」。"
-  },
-  {
-    "id": "zi-0151",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「字」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "zí"
-      },
-      {
-        "id": "b",
-        "text": "zì"
-      },
-      {
-        "id": "c",
-        "text": "zī"
-      },
-      {
-        "id": "d",
-        "text": "zǐ"
-      }
-    ],
-    "answer": "b",
-    "explain": "「字」读 zì，可以组词「写字」。"
-  },
-  {
-    "id": "zi-0152",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「学」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "xiǎo"
-      },
-      {
-        "id": "b",
-        "text": "xià"
-      },
-      {
-        "id": "c",
-        "text": "xiě"
-      },
-      {
-        "id": "d",
-        "text": "xué"
-      }
-    ],
-    "answer": "d",
-    "explain": "「学」读 xué，可以组词「学习」。"
-  },
-  {
-    "id": "zi-0153",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「家」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "jiá"
-      },
-      {
-        "id": "b",
-        "text": "jiǎ"
-      },
-      {
-        "id": "c",
-        "text": "jià"
-      },
-      {
-        "id": "d",
-        "text": "jiā"
-      }
-    ],
-    "answer": "d",
-    "explain": "「家」读 jiā，可以组词「回家」。"
-  },
-  {
-    "id": "zi-0154",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「小」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "xiě"
-      },
-      {
-        "id": "b",
-        "text": "xiǎo"
-      },
-      {
-        "id": "c",
-        "text": "xué"
-      },
-      {
-        "id": "d",
-        "text": "xià"
-      }
-    ],
-    "answer": "b",
-    "explain": "「小」读 xiǎo，可以组词「小鸟」。"
-  },
-  {
-    "id": "zi-0155",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「尺」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "chǐ"
-      },
-      {
-        "id": "b",
-        "text": "chí"
-      },
-      {
-        "id": "c",
-        "text": "chì"
-      },
-      {
-        "id": "d",
-        "text": "chī"
-      }
-    ],
-    "answer": "a",
-    "explain": "「尺」读 chǐ，可以组词「尺子」。"
-  },
-  {
-    "id": "zi-0156",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「山」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "shàng"
-      },
-      {
-        "id": "b",
-        "text": "sān"
-      },
-      {
-        "id": "c",
-        "text": "shān"
-      },
-      {
-        "id": "d",
-        "text": "wàn"
-      }
-    ],
-    "answer": "c",
-    "explain": "「山」读 shān，可以组词「大山」。"
-  },
-  {
-    "id": "zi-0157",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「工」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "gǒng"
-      },
-      {
-        "id": "b",
-        "text": "gòng"
-      },
-      {
-        "id": "c",
-        "text": "gōng"
-      },
-      {
-        "id": "d",
-        "text": "góng"
-      }
-    ],
-    "answer": "c",
-    "explain": "「工」读 gōng，可以组词「工人」。"
-  },
-  {
-    "id": "zi-0158",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "看字选拼音"
-    ],
-    "stem": {
-      "text": "「左」读什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "zuǒ"
-      },
-      {
-        "id": "b",
-        "text": "guó"
-      },
-      {
-        "id": "c",
-        "text": "zì"
-      },
-      {
-        "id": "d",
-        "text": "duō"
-      }
-    ],
-    "answer": "a",
-    "explain": "「左」读 zuǒ，可以组词「左右」。"
-  },
-  {
-    "id": "zi-0159",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）出」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "自"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "白"
-      },
-      {
-        "id": "d",
-        "text": "日"
-      }
-    ],
-    "answer": "d",
-    "explain": "是「日」，读 rì，不要和「目」「自」写混。"
-  },
-  {
-    "id": "zi-0160",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）云」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "百"
-      },
-      {
-        "id": "b",
-        "text": "日"
-      },
-      {
-        "id": "c",
-        "text": "白"
-      },
-      {
-        "id": "d",
-        "text": "自"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「白」，读 bái，不要和「百」「日」写混。"
-  },
-  {
-    "id": "zi-0161",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）己」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "自"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "日"
-      },
-      {
-        "id": "d",
-        "text": "白"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「自」，读 zì，不要和「日」「目」写混。"
-  },
-  {
-    "id": "zi-0162",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「耳（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "自"
-      },
-      {
-        "id": "b",
-        "text": "月"
-      },
-      {
-        "id": "c",
-        "text": "目"
-      },
-      {
-        "id": "d",
-        "text": "日"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「目」，读 mù，不要和「日」「月」写混。"
-  },
-  {
-    "id": "zi-0163",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）空」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "木"
-      },
-      {
-        "id": "b",
-        "text": "米"
-      },
-      {
-        "id": "c",
-        "text": "天"
-      },
-      {
-        "id": "d",
-        "text": "田"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「天」，读 tiān，不要和「田」「木」写混。"
-  },
-  {
-    "id": "zi-0164",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）阳」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "大"
-      },
-      {
-        "id": "b",
-        "text": "太"
-      },
-      {
-        "id": "c",
-        "text": "人"
-      },
-      {
-        "id": "d",
-        "text": "天"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「太」，读 tài，不要和「天」「大」写混。"
-  },
-  {
-    "id": "zi-0165",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）人」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "人"
-      },
-      {
-        "id": "b",
-        "text": "天"
-      },
-      {
-        "id": "c",
-        "text": "太"
-      },
-      {
-        "id": "d",
-        "text": "大"
-      }
-    ],
-    "answer": "d",
-    "explain": "是「大」，读 dà，不要和「太」「天」写混。"
-  },
-  {
-    "id": "zi-0166",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「出（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "人"
-      },
-      {
-        "id": "b",
-        "text": "八"
-      },
-      {
-        "id": "c",
-        "text": "入"
-      },
-      {
-        "id": "d",
-        "text": "大"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「入」，读 rù，不要和「八」「人」写混。"
-  },
-  {
-    "id": "zi-0167",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）头」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "米"
-      },
-      {
-        "id": "b",
-        "text": "木"
-      },
-      {
-        "id": "c",
-        "text": "本"
-      },
-      {
-        "id": "d",
-        "text": "禾"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「木」，读 mù，不要和「本」「禾」写混。"
-  },
-  {
-    "id": "zi-0168",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）子」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "米"
-      },
-      {
-        "id": "b",
-        "text": "本"
-      },
-      {
-        "id": "c",
-        "text": "禾"
-      },
-      {
-        "id": "d",
-        "text": "木"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「本」，读 běn，不要和「木」「禾」写混。"
-  },
-  {
-    "id": "zi-0169",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）苗」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "禾"
-      },
-      {
-        "id": "b",
-        "text": "米"
-      },
-      {
-        "id": "c",
-        "text": "本"
-      },
-      {
-        "id": "d",
-        "text": "木"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「禾」，读 hé，不要和「木」「本」写混。"
-  },
-  {
-    "id": "zi-0170",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「大（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "禾"
-      },
-      {
-        "id": "b",
-        "text": "米"
-      },
-      {
-        "id": "c",
-        "text": "木"
-      },
-      {
-        "id": "d",
-        "text": "本"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「米」，读 mǐ，不要和「木」「本」写混。"
-  },
-  {
-    "id": "zi-0171",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）奶」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "毛"
-      },
-      {
-        "id": "b",
-        "text": "午"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "手"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「牛」，读 niú，不要和「午」「手」写混。"
-  },
-  {
-    "id": "zi-0172",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「中（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "牛"
-      },
-      {
-        "id": "b",
-        "text": "毛"
-      },
-      {
-        "id": "c",
-        "text": "午"
-      },
-      {
-        "id": "d",
-        "text": "手"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「午」，读 wǔ，不要和「牛」「手」写混。"
-  },
-  {
-    "id": "zi-0173",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）心」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "手"
-      },
-      {
-        "id": "b",
-        "text": "毛"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "午"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「手」，读 shǒu，不要和「毛」「牛」写混。"
-  },
-  {
-    "id": "zi-0174",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「羊（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "手"
-      },
-      {
-        "id": "b",
-        "text": "毛"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "午"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「毛」，读 máo，不要和「手」「牛」写混。"
-  },
-  {
-    "id": "zi-0175",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）头」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "田"
-      },
-      {
-        "id": "b",
-        "text": "名"
-      },
-      {
-        "id": "c",
-        "text": "右"
-      },
-      {
-        "id": "d",
-        "text": "石"
-      }
-    ],
-    "answer": "d",
-    "explain": "是「石」，读 shí，不要和「右」「名」写混。"
-  },
-  {
-    "id": "zi-0176",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「左（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "石"
-      },
-      {
-        "id": "b",
-        "text": "名"
-      },
-      {
-        "id": "c",
-        "text": "田"
-      },
-      {
-        "id": "d",
-        "text": "右"
-      }
-    ],
-    "answer": "d",
-    "explain": "是「右」，读 yòu，不要和「石」「名」写混。"
-  },
-  {
-    "id": "zi-0177",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「有（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "石"
-      },
-      {
-        "id": "c",
-        "text": "田"
-      },
-      {
-        "id": "d",
-        "text": "名"
-      }
-    ],
-    "answer": "d",
-    "explain": "是「名」，读 míng，不要和「石」「右」写混。"
-  },
-  {
-    "id": "zi-0178",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）地」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "右"
-      },
-      {
-        "id": "b",
-        "text": "名"
-      },
-      {
-        "id": "c",
-        "text": "田"
-      },
-      {
-        "id": "d",
-        "text": "石"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「田」，读 tián，不要和「石」「右」写混。"
-  },
-  {
-    "id": "zi-0179",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）亮」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "耳"
-      },
-      {
-        "id": "b",
-        "text": "月"
-      },
-      {
-        "id": "c",
-        "text": "自"
-      },
-      {
-        "id": "d",
-        "text": "目"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「月」，读 yuè，不要和「目」「耳」写混。"
-  },
-  {
-    "id": "zi-0180",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）朵」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "耳"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "自"
-      },
-      {
-        "id": "d",
-        "text": "月"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「耳」，读 ěr，不要和「目」「月」写混。"
-  },
-  {
-    "id": "zi-0181",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「读（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "画"
-      },
-      {
-        "id": "b",
-        "text": "书"
-      },
-      {
-        "id": "c",
-        "text": "学"
-      },
-      {
-        "id": "d",
-        "text": "字"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「书」，读 shū，不要和「画」「字」写混。"
-  },
-  {
-    "id": "zi-0182",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）笔」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "字"
-      },
-      {
-        "id": "b",
-        "text": "书"
-      },
-      {
-        "id": "c",
-        "text": "画"
-      },
-      {
-        "id": "d",
-        "text": "学"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「画」，读 huà，不要和「书」「字」写混。"
-  },
-  {
-    "id": "zi-0183",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「生（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "学"
-      },
-      {
-        "id": "b",
-        "text": "字"
-      },
-      {
-        "id": "c",
-        "text": "书"
-      },
-      {
-        "id": "d",
-        "text": "画"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「字」，读 zì，不要和「书」「画」写混。"
-  },
-  {
-    "id": "zi-0184",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）习」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "书"
-      },
-      {
-        "id": "b",
-        "text": "学"
-      },
-      {
-        "id": "c",
-        "text": "画"
-      },
-      {
-        "id": "d",
-        "text": "字"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「学」，读 xué，不要和「书」「画」写混。"
-  },
-  {
-    "id": "zi-0185",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「回（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "土"
-      },
-      {
-        "id": "b",
-        "text": "云"
-      },
-      {
-        "id": "c",
-        "text": "去"
-      },
-      {
-        "id": "d",
-        "text": "工"
-      }
-    ],
-    "answer": "c",
-    "explain": "是「去」，读 qù，不要和「云」「土」写混。"
-  },
-  {
-    "id": "zi-0186",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「水（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "云"
-      },
-      {
-        "id": "b",
-        "text": "土"
-      },
-      {
-        "id": "c",
-        "text": "去"
-      },
-      {
-        "id": "d",
-        "text": "工"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「土」，读 tǔ，不要和「云」「去」写混。"
-  },
-  {
-    "id": "zi-0187",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）人」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "工"
-      },
-      {
-        "id": "b",
-        "text": "云"
-      },
-      {
-        "id": "c",
-        "text": "土"
-      },
-      {
-        "id": "d",
-        "text": "去"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「工」，读 gōng，不要和「云」「去」写混。"
-  },
-  {
-    "id": "zi-0188",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「（　）气」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "女"
-      },
-      {
-        "id": "b",
-        "text": "力"
-      },
-      {
-        "id": "c",
-        "text": "九"
-      },
-      {
-        "id": "d",
-        "text": "刀"
-      }
-    ],
-    "answer": "b",
-    "explain": "是「力」，读 lì，不要和「刀」「九」写混。"
-  },
-  {
-    "id": "zi-0189",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "形近字辨析"
-    ],
-    "stem": {
-      "text": "「小（　）」里应该填哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "刀"
-      },
-      {
-        "id": "b",
-        "text": "女"
-      },
-      {
-        "id": "c",
-        "text": "九"
-      },
-      {
-        "id": "d",
-        "text": "力"
-      }
-    ],
-    "answer": "a",
-    "explain": "是「刀」，读 dāo，不要和「力」「九」写混。"
-  },
-  {
-    "id": "zi-0190",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
       "归类"
     ],
     "stem": {
-      "text": "下面哪个字说的是动物？",
+      "text": "下面哪个字说的是数字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "百"
-      },
-      {
-        "id": "b",
-        "text": "鸟"
-      },
-      {
-        "id": "c",
-        "text": "二"
-      },
-      {
-        "id": "d",
-        "text": "手"
-      }
-    ],
-    "answer": "b",
-    "explain": "「鸟」是动物。"
-  },
-  {
-    "id": "zi-0191",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "耳"
-      },
-      {
-        "id": "b",
-        "text": "红"
-      },
-      {
-        "id": "c",
-        "text": "马"
-      },
-      {
-        "id": "d",
         "text": "五"
-      }
-    ],
-    "answer": "c",
-    "explain": "「马」是动物。"
-  },
-  {
-    "id": "zi-0192",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "白"
-      },
-      {
-        "id": "b",
-        "text": "手"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "心"
-      }
-    ],
-    "answer": "c",
-    "explain": "「牛」是动物。"
-  },
-  {
-    "id": "zi-0193",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "红"
-      },
-      {
-        "id": "b",
-        "text": "毛"
-      },
-      {
-        "id": "c",
-        "text": "羊"
-      },
-      {
-        "id": "d",
-        "text": "女"
-      }
-    ],
-    "answer": "c",
-    "explain": "「羊」是动物。"
-  },
-  {
-    "id": "zi-0194",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "一"
-      },
-      {
-        "id": "b",
-        "text": "心"
-      },
-      {
-        "id": "c",
-        "text": "二"
-      },
-      {
-        "id": "d",
-        "text": "虫"
-      }
-    ],
-    "answer": "d",
-    "explain": "「虫」是动物。"
-  },
-  {
-    "id": "zi-0195",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "鱼"
       },
       {
         "id": "b",
@@ -6814,1208 +759,18 @@
       },
       {
         "id": "c",
-        "text": "千"
+        "text": "女"
       },
       {
         "id": "d",
-        "text": "爸"
-      }
-    ],
-    "answer": "a",
-    "explain": "「鱼」是动物。"
-  },
-  {
-    "id": "zi-0196",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "绿"
-      },
-      {
-        "id": "b",
-        "text": "三"
-      },
-      {
-        "id": "c",
-        "text": "狗"
-      },
-      {
-        "id": "d",
-        "text": "牙"
-      }
-    ],
-    "answer": "c",
-    "explain": "「狗」是动物。"
-  },
-  {
-    "id": "zi-0197",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是动物？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "猫"
-      },
-      {
-        "id": "c",
-        "text": "目"
-      },
-      {
-        "id": "d",
-        "text": "心"
-      }
-    ],
-    "answer": "b",
-    "explain": "「猫」是动物。"
-  },
-  {
-    "id": "zi-0198",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是颜色？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "白"
-      },
-      {
-        "id": "b",
-        "text": "男"
-      },
-      {
-        "id": "c",
-        "text": "猫"
-      },
-      {
-        "id": "d",
-        "text": "四"
-      }
-    ],
-    "answer": "a",
-    "explain": "「白」是颜色。"
-  },
-  {
-    "id": "zi-0199",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是颜色？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "耳"
-      },
-      {
-        "id": "b",
         "text": "口"
-      },
-      {
-        "id": "c",
-        "text": "黑"
-      },
-      {
-        "id": "d",
-        "text": "五"
-      }
-    ],
-    "answer": "c",
-    "explain": "「黑」是颜色。"
-  },
-  {
-    "id": "zi-0200",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是颜色？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "姐"
-      },
-      {
-        "id": "b",
-        "text": "爸"
-      },
-      {
-        "id": "c",
-        "text": "红"
-      },
-      {
-        "id": "d",
-        "text": "六"
-      }
-    ],
-    "answer": "c",
-    "explain": "「红」是颜色。"
-  },
-  {
-    "id": "zi-0201",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是颜色？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "黄"
-      },
-      {
-        "id": "b",
-        "text": "弟"
-      },
-      {
-        "id": "c",
-        "text": "妹"
-      },
-      {
-        "id": "d",
-        "text": "虫"
       }
     ],
     "answer": "a",
-    "explain": "「黄」是颜色。"
-  },
-  {
-    "id": "zi-0202",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是颜色？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "七"
-      },
-      {
-        "id": "b",
-        "text": "绿"
-      },
-      {
-        "id": "c",
-        "text": "鸟"
-      },
-      {
-        "id": "d",
-        "text": "八"
-      }
-    ],
-    "answer": "b",
-    "explain": "「绿」是颜色。"
-  },
-  {
-    "id": "zi-0203",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "足"
-      },
-      {
-        "id": "b",
-        "text": "一"
-      },
-      {
-        "id": "c",
-        "text": "心"
-      },
-      {
-        "id": "d",
-        "text": "耳"
-      }
-    ],
-    "answer": "b",
-    "explain": "「一」是数字。"
-  },
-  {
-    "id": "zi-0204",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "头"
-      },
-      {
-        "id": "b",
-        "text": "黑"
-      },
-      {
-        "id": "c",
-        "text": "二"
-      },
-      {
-        "id": "d",
-        "text": "红"
-      }
-    ],
-    "answer": "c",
-    "explain": "「二」是数字。"
-  },
-  {
-    "id": "zi-0205",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "牙"
-      },
-      {
-        "id": "b",
-        "text": "三"
-      },
-      {
-        "id": "c",
-        "text": "羊"
-      },
-      {
-        "id": "d",
-        "text": "鱼"
-      }
-    ],
-    "answer": "b",
-    "explain": "「三」是数字。"
-  },
-  {
-    "id": "zi-0206",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "四"
-      },
-      {
-        "id": "b",
-        "text": "绿"
-      },
-      {
-        "id": "c",
-        "text": "妈"
-      },
-      {
-        "id": "d",
-        "text": "狗"
-      }
-    ],
-    "answer": "a",
-    "explain": "「四」是数字。"
-  },
-  {
-    "id": "zi-0207",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "心"
-      },
-      {
-        "id": "b",
-        "text": "姐"
-      },
-      {
-        "id": "c",
-        "text": "虫"
-      },
-      {
-        "id": "d",
-        "text": "五"
-      }
-    ],
-    "answer": "d",
     "explain": "「五」是数字。"
   },
   {
-    "id": "zi-0208",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "六"
-      },
-      {
-        "id": "b",
-        "text": "毛"
-      },
-      {
-        "id": "c",
-        "text": "妈"
-      },
-      {
-        "id": "d",
-        "text": "狗"
-      }
-    ],
-    "answer": "a",
-    "explain": "「六」是数字。"
-  },
-  {
-    "id": "zi-0209",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "足"
-      },
-      {
-        "id": "b",
-        "text": "弟"
-      },
-      {
-        "id": "c",
-        "text": "白"
-      },
-      {
-        "id": "d",
-        "text": "七"
-      }
-    ],
-    "answer": "d",
-    "explain": "「七」是数字。"
-  },
-  {
-    "id": "zi-0210",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "毛"
-      },
-      {
-        "id": "b",
-        "text": "爸"
-      },
-      {
-        "id": "c",
-        "text": "黑"
-      },
-      {
-        "id": "d",
-        "text": "八"
-      }
-    ],
-    "answer": "d",
-    "explain": "「八」是数字。"
-  },
-  {
-    "id": "zi-0211",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "姐"
-      },
-      {
-        "id": "b",
-        "text": "男"
-      },
-      {
-        "id": "c",
-        "text": "九"
-      },
-      {
-        "id": "d",
-        "text": "鱼"
-      }
-    ],
-    "answer": "c",
-    "explain": "「九」是数字。"
-  },
-  {
-    "id": "zi-0212",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "羊"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "十"
-      },
-      {
-        "id": "d",
-        "text": "虫"
-      }
-    ],
-    "answer": "c",
-    "explain": "「十」是数字。"
-  },
-  {
-    "id": "zi-0213",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "百"
-      },
-      {
-        "id": "b",
-        "text": "红"
-      },
-      {
-        "id": "c",
-        "text": "姐"
-      },
-      {
-        "id": "d",
-        "text": "牛"
-      }
-    ],
-    "answer": "a",
-    "explain": "「百」是数字。"
-  },
-  {
-    "id": "zi-0214",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "心"
-      },
-      {
-        "id": "b",
-        "text": "千"
-      },
-      {
-        "id": "c",
-        "text": "头"
-      },
-      {
-        "id": "d",
-        "text": "手"
-      }
-    ],
-    "answer": "b",
-    "explain": "「千」是数字。"
-  },
-  {
-    "id": "zi-0215",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是数字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "心"
-      },
-      {
-        "id": "b",
-        "text": "万"
-      },
-      {
-        "id": "c",
-        "text": "耳"
-      },
-      {
-        "id": "d",
-        "text": "姐"
-      }
-    ],
-    "answer": "b",
-    "explain": "「万」是数字。"
-  },
-  {
-    "id": "zi-0216",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "百"
-      },
-      {
-        "id": "b",
-        "text": "一"
-      },
-      {
-        "id": "c",
-        "text": "口"
-      },
-      {
-        "id": "d",
-        "text": "弟"
-      }
-    ],
-    "answer": "c",
-    "explain": "「口」是身体。"
-  },
-  {
-    "id": "zi-0217",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "白"
-      },
-      {
-        "id": "c",
-        "text": "手"
-      },
-      {
-        "id": "d",
-        "text": "哥"
-      }
-    ],
-    "answer": "c",
-    "explain": "「手」是身体。"
-  },
-  {
-    "id": "zi-0218",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "毛"
-      },
-      {
-        "id": "b",
-        "text": "千"
-      },
-      {
-        "id": "c",
-        "text": "八"
-      },
-      {
-        "id": "d",
-        "text": "鱼"
-      }
-    ],
-    "answer": "a",
-    "explain": "「毛」是身体。"
-  },
-  {
-    "id": "zi-0219",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "足"
-      },
-      {
-        "id": "b",
-        "text": "哥"
-      },
-      {
-        "id": "c",
-        "text": "男"
-      },
-      {
-        "id": "d",
-        "text": "女"
-      }
-    ],
-    "answer": "a",
-    "explain": "「足」是身体。"
-  },
-  {
-    "id": "zi-0220",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "八"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "牛"
-      },
-      {
-        "id": "d",
-        "text": "红"
-      }
-    ],
-    "answer": "b",
-    "explain": "「目」是身体。"
-  },
-  {
-    "id": "zi-0221",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "千"
-      },
-      {
-        "id": "b",
-        "text": "羊"
-      },
-      {
-        "id": "c",
-        "text": "耳"
-      },
-      {
-        "id": "d",
-        "text": "绿"
-      }
-    ],
-    "answer": "c",
-    "explain": "「耳」是身体。"
-  },
-  {
-    "id": "zi-0222",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "白"
-      },
-      {
-        "id": "b",
-        "text": "鱼"
-      },
-      {
-        "id": "c",
-        "text": "头"
-      },
-      {
-        "id": "d",
-        "text": "黑"
-      }
-    ],
-    "answer": "c",
-    "explain": "「头」是身体。"
-  },
-  {
-    "id": "zi-0223",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "黑"
-      },
-      {
-        "id": "b",
-        "text": "黄"
-      },
-      {
-        "id": "c",
-        "text": "弟"
-      },
-      {
-        "id": "d",
-        "text": "心"
-      }
-    ],
-    "answer": "d",
-    "explain": "「心」是身体。"
-  },
-  {
-    "id": "zi-0224",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是身体的一部分？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "马"
-      },
-      {
-        "id": "b",
-        "text": "百"
-      },
-      {
-        "id": "c",
-        "text": "虫"
-      },
-      {
-        "id": "d",
-        "text": "牙"
-      }
-    ],
-    "answer": "d",
-    "explain": "「牙」是身体。"
-  },
-  {
-    "id": "zi-0225",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是家里人？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "手"
-      },
-      {
-        "id": "b",
-        "text": "十"
-      },
-      {
-        "id": "c",
-        "text": "羊"
-      },
-      {
-        "id": "d",
-        "text": "爸"
-      }
-    ],
-    "answer": "d",
-    "explain": "「爸」是家人。"
-  },
-  {
-    "id": "zi-0226",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是家里人？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "妈"
-      },
-      {
-        "id": "b",
-        "text": "足"
-      },
-      {
-        "id": "c",
-        "text": "鱼"
-      },
-      {
-        "id": "d",
-        "text": "红"
-      }
-    ],
-    "answer": "a",
-    "explain": "「妈」是家人。"
-  },
-  {
-    "id": "zi-0227",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是家里人？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "猫"
-      },
-      {
-        "id": "b",
-        "text": "万"
-      },
-      {
-        "id": "c",
-        "text": "哥"
-      },
-      {
-        "id": "d",
-        "text": "牛"
-      }
-    ],
-    "answer": "c",
-    "explain": "「哥」是家人。"
-  },
-  {
-    "id": "zi-0228",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是家里人？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "毛"
-      },
-      {
-        "id": "b",
-        "text": "心"
-      },
-      {
-        "id": "c",
-        "text": "姐"
-      },
-      {
-        "id": "d",
-        "text": "白"
-      }
-    ],
-    "answer": "c",
-    "explain": "「姐」是家人。"
-  },
-  {
-    "id": "zi-0229",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "归类"
-    ],
-    "stem": {
-      "text": "下面哪个字说的是家里人？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "毛"
-      },
-      {
-        "id": "b",
-        "text": "羊"
-      },
-      {
-        "id": "c",
-        "text": "绿"
-      },
-      {
-        "id": "d",
-        "text": "弟"
-      }
-    ],
-    "answer": "d",
-    "explain": "「弟」是家人。"
-  },
-  {
-    "id": "zi-0230",
+    "id": "zi-0023",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8031,7 +786,7 @@
     "options": [
       {
         "id": "a",
-        "text": "热"
+        "text": "地"
       },
       {
         "id": "b",
@@ -8039,18 +794,53 @@
       },
       {
         "id": "c",
-        "text": "男"
+        "text": "上"
       },
       {
         "id": "d",
-        "text": "外"
+        "text": "来"
       }
     ],
     "answer": "b",
     "explain": "「大」和「小」意思相反。"
   },
   {
-    "id": "zi-0231",
+    "id": "zi-0024",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「小」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "天"
+      },
+      {
+        "id": "b",
+        "text": "大"
+      },
+      {
+        "id": "c",
+        "text": "地"
+      },
+      {
+        "id": "d",
+        "text": "来"
+      }
+    ],
+    "answer": "b",
+    "explain": "「小」和「大」意思相反。"
+  },
+  {
+    "id": "zi-0025",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8066,7 +856,7 @@
     "options": [
       {
         "id": "a",
-        "text": "新"
+        "text": "左"
       },
       {
         "id": "b",
@@ -8074,18 +864,53 @@
       },
       {
         "id": "c",
-        "text": "去"
+        "text": "关"
       },
       {
         "id": "d",
-        "text": "高"
+        "text": "开"
       }
     ],
     "answer": "b",
     "explain": "「多」和「少」意思相反。"
   },
   {
-    "id": "zi-0232",
+    "id": "zi-0026",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「少」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "早"
+      },
+      {
+        "id": "b",
+        "text": "多"
+      },
+      {
+        "id": "c",
+        "text": "男"
+      },
+      {
+        "id": "d",
+        "text": "开"
+      }
+    ],
+    "answer": "b",
+    "explain": "「少」和「多」意思相反。"
+  },
+  {
+    "id": "zi-0027",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8101,11 +926,11 @@
     "options": [
       {
         "id": "a",
-        "text": "后"
+        "text": "热"
       },
       {
         "id": "b",
-        "text": "里"
+        "text": "开"
       },
       {
         "id": "c",
@@ -8113,14 +938,49 @@
       },
       {
         "id": "d",
-        "text": "少"
+        "text": "地"
       }
     ],
     "answer": "c",
     "explain": "「上」和「下」意思相反。"
   },
   {
-    "id": "zi-0233",
+    "id": "zi-0028",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「下」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "大"
+      },
+      {
+        "id": "b",
+        "text": "天"
+      },
+      {
+        "id": "c",
+        "text": "上"
+      },
+      {
+        "id": "d",
+        "text": "早"
+      }
+    ],
+    "answer": "c",
+    "explain": "「下」和「上」意思相反。"
+  },
+  {
+    "id": "zi-0029",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8136,7 +996,7 @@
     "options": [
       {
         "id": "a",
-        "text": "里"
+        "text": "小"
       },
       {
         "id": "b",
@@ -8144,18 +1004,18 @@
       },
       {
         "id": "c",
-        "text": "新"
+        "text": "少"
       },
       {
         "id": "d",
-        "text": "关"
+        "text": "来"
       }
     ],
     "answer": "b",
     "explain": "「左」和「右」意思相反。"
   },
   {
-    "id": "zi-0234",
+    "id": "zi-0030",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8165,32 +1025,32 @@
       "反义词"
     ],
     "stem": {
-      "text": "「长」的反义词是哪个字？",
+      "text": "「右」的反义词是哪个字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "短"
+        "text": "冷"
       },
       {
         "id": "b",
-        "text": "上"
+        "text": "左"
       },
       {
         "id": "c",
-        "text": "后"
+        "text": "早"
       },
       {
         "id": "d",
-        "text": "大"
+        "text": "男"
       }
     ],
-    "answer": "a",
-    "explain": "「长」和「短」意思相反。"
+    "answer": "b",
+    "explain": "「右」和「左」意思相反。"
   },
   {
-    "id": "zi-0235",
+    "id": "zi-0031",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8206,26 +1066,26 @@
     "options": [
       {
         "id": "a",
-        "text": "开"
-      },
-      {
-        "id": "b",
         "text": "晚"
       },
       {
+        "id": "b",
+        "text": "天"
+      },
+      {
         "id": "c",
-        "text": "长"
+        "text": "大"
       },
       {
         "id": "d",
-        "text": "大"
+        "text": "少"
       }
     ],
-    "answer": "b",
+    "answer": "a",
     "explain": "「早」和「晚」意思相反。"
   },
   {
-    "id": "zi-0236",
+    "id": "zi-0032",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8235,32 +1095,32 @@
       "反义词"
     ],
     "stem": {
-      "text": "「白」的反义词是哪个字？",
+      "text": "「晚」的反义词是哪个字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "前"
+        "text": "早"
       },
       {
         "id": "b",
-        "text": "大"
+        "text": "热"
       },
       {
         "id": "c",
-        "text": "黑"
+        "text": "来"
       },
       {
         "id": "d",
-        "text": "关"
+        "text": "右"
       }
     ],
-    "answer": "c",
-    "explain": "「白」和「黑」意思相反。"
+    "answer": "a",
+    "explain": "「晚」和「早」意思相反。"
   },
   {
-    "id": "zi-0237",
+    "id": "zi-0033",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8276,26 +1136,61 @@
     "options": [
       {
         "id": "a",
-        "text": "快"
+        "text": "右"
       },
       {
         "id": "b",
-        "text": "长"
+        "text": "去"
       },
       {
         "id": "c",
-        "text": "去"
+        "text": "上"
+      },
+      {
+        "id": "d",
+        "text": "左"
+      }
+    ],
+    "answer": "b",
+    "explain": "「来」和「去」意思相反。"
+  },
+  {
+    "id": "zi-0034",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「去」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "早"
+      },
+      {
+        "id": "b",
+        "text": "来"
+      },
+      {
+        "id": "c",
+        "text": "冷"
       },
       {
         "id": "d",
         "text": "天"
       }
     ],
-    "answer": "c",
-    "explain": "「来」和「去」意思相反。"
+    "answer": "b",
+    "explain": "「去」和「来」意思相反。"
   },
   {
-    "id": "zi-0238",
+    "id": "zi-0035",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8311,26 +1206,61 @@
     "options": [
       {
         "id": "a",
-        "text": "关"
+        "text": "来"
       },
       {
         "id": "b",
-        "text": "晚"
+        "text": "左"
       },
       {
         "id": "c",
-        "text": "白"
+        "text": "关"
       },
       {
         "id": "d",
-        "text": "女"
+        "text": "天"
       }
     ],
-    "answer": "a",
+    "answer": "c",
     "explain": "「开」和「关」意思相反。"
   },
   {
-    "id": "zi-0239",
+    "id": "zi-0036",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「关」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "小"
+      },
+      {
+        "id": "b",
+        "text": "多"
+      },
+      {
+        "id": "c",
+        "text": "开"
+      },
+      {
+        "id": "d",
+        "text": "男"
+      }
+    ],
+    "answer": "c",
+    "explain": "「关」和「开」意思相反。"
+  },
+  {
+    "id": "zi-0037",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8346,26 +1276,61 @@
     "options": [
       {
         "id": "a",
-        "text": "地"
+        "text": "男"
       },
       {
         "id": "b",
-        "text": "外"
+        "text": "开"
       },
       {
         "id": "c",
-        "text": "早"
+        "text": "地"
       },
       {
         "id": "d",
-        "text": "高"
+        "text": "来"
       }
     ],
-    "answer": "a",
+    "answer": "c",
     "explain": "「天」和「地」意思相反。"
   },
   {
-    "id": "zi-0240",
+    "id": "zi-0038",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "反义词"
+    ],
+    "stem": {
+      "text": "「地」的反义词是哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "大"
+      },
+      {
+        "id": "b",
+        "text": "去"
+      },
+      {
+        "id": "c",
+        "text": "天"
+      },
+      {
+        "id": "d",
+        "text": "开"
+      }
+    ],
+    "answer": "c",
+    "explain": "「地」和「天」意思相反。"
+  },
+  {
+    "id": "zi-0039",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8381,42 +1346,7 @@
     "options": [
       {
         "id": "a",
-        "text": "小"
-      },
-      {
-        "id": "b",
-        "text": "男"
-      },
-      {
-        "id": "c",
         "text": "热"
-      },
-      {
-        "id": "d",
-        "text": "高"
-      }
-    ],
-    "answer": "c",
-    "explain": "「冷」和「热」意思相反。"
-  },
-  {
-    "id": "zi-0241",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "反义词"
-    ],
-    "stem": {
-      "text": "「男」的反义词是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "关"
       },
       {
         "id": "b",
@@ -8424,158 +1354,18 @@
       },
       {
         "id": "c",
-        "text": "后"
+        "text": "大"
       },
       {
         "id": "d",
-        "text": "女"
-      }
-    ],
-    "answer": "d",
-    "explain": "「男」和「女」意思相反。"
-  },
-  {
-    "id": "zi-0242",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "反义词"
-    ],
-    "stem": {
-      "text": "「新」的反义词是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "晚"
-      },
-      {
-        "id": "b",
-        "text": "冷"
-      },
-      {
-        "id": "c",
-        "text": "少"
-      },
-      {
-        "id": "d",
-        "text": "旧"
-      }
-    ],
-    "answer": "d",
-    "explain": "「新」和「旧」意思相反。"
-  },
-  {
-    "id": "zi-0243",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "反义词"
-    ],
-    "stem": {
-      "text": "「高」的反义词是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "热"
-      },
-      {
-        "id": "b",
-        "text": "上"
-      },
-      {
-        "id": "c",
-        "text": "矮"
-      },
-      {
-        "id": "d",
-        "text": "新"
-      }
-    ],
-    "answer": "c",
-    "explain": "「高」和「矮」意思相反。"
-  },
-  {
-    "id": "zi-0244",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "反义词"
-    ],
-    "stem": {
-      "text": "「里」的反义词是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "女"
-      },
-      {
-        "id": "b",
-        "text": "慢"
-      },
-      {
-        "id": "c",
-        "text": "外"
-      },
-      {
-        "id": "d",
-        "text": "冷"
-      }
-    ],
-    "answer": "c",
-    "explain": "「里」和「外」意思相反。"
-  },
-  {
-    "id": "zi-0245",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 1,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "反义词"
-    ],
-    "stem": {
-      "text": "「前」的反义词是哪个字？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "后"
-      },
-      {
-        "id": "b",
-        "text": "高"
-      },
-      {
-        "id": "c",
-        "text": "长"
-      },
-      {
-        "id": "d",
-        "text": "天"
+        "text": "开"
       }
     ],
     "answer": "a",
-    "explain": "「前」和「后」意思相反。"
+    "explain": "「冷」和「热」意思相反。"
   },
   {
-    "id": "zi-0246",
+    "id": "zi-0040",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 1,
@@ -8585,32 +1375,32 @@
       "反义词"
     ],
     "stem": {
-      "text": "「快」的反义词是哪个字？",
+      "text": "「热」的反义词是哪个字？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "多"
+        "text": "冷"
       },
       {
         "id": "b",
-        "text": "慢"
+        "text": "晚"
       },
       {
         "id": "c",
-        "text": "矮"
+        "text": "左"
       },
       {
         "id": "d",
-        "text": "前"
+        "text": "地"
       }
     ],
-    "answer": "b",
-    "explain": "「快」和「慢」意思相反。"
+    "answer": "a",
+    "explain": "「热」和「冷」意思相反。"
   },
   {
-    "id": "zi-0247",
+    "id": "zi-0041",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8645,7 +1435,7 @@
     "explain": "「一」是 1 笔，部首是「一」。"
   },
   {
-    "id": "zi-0248",
+    "id": "zi-0042",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8680,7 +1470,7 @@
     "explain": "「日」是 4 笔，部首是「日」。"
   },
   {
-    "id": "zi-0249",
+    "id": "zi-0043",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8715,7 +1505,7 @@
     "explain": "「七」是 2 笔，部首是「一」。"
   },
   {
-    "id": "zi-0250",
+    "id": "zi-0044",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8750,7 +1540,7 @@
     "explain": "「月」是 4 笔，部首是「月」。"
   },
   {
-    "id": "zi-0251",
+    "id": "zi-0045",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8785,7 +1575,7 @@
     "explain": "「十」是 2 笔，部首是「十」。"
   },
   {
-    "id": "zi-0252",
+    "id": "zi-0046",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8820,7 +1610,7 @@
     "explain": "「口」是 3 笔，部首是「口」。"
   },
   {
-    "id": "zi-0253",
+    "id": "zi-0047",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8855,7 +1645,7 @@
     "explain": "「人」是 2 笔，部首是「人」。"
   },
   {
-    "id": "zi-0254",
+    "id": "zi-0048",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8890,7 +1680,7 @@
     "explain": "「水」是 4 笔，部首是「水」。"
   },
   {
-    "id": "zi-0255",
+    "id": "zi-0049",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8925,7 +1715,7 @@
     "explain": "「八」是 2 笔，部首是「八」。"
   },
   {
-    "id": "zi-0256",
+    "id": "zi-0050",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8960,7 +1750,7 @@
     "explain": "「山」是 3 笔，部首是「山」。"
   },
   {
-    "id": "zi-0257",
+    "id": "zi-0051",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -8995,7 +1785,7 @@
     "explain": "「三」是 3 笔，部首是「一」。"
   },
   {
-    "id": "zi-0258",
+    "id": "zi-0052",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9030,7 +1820,7 @@
     "explain": "「大」是 3 笔，部首是「大」。"
   },
   {
-    "id": "zi-0259",
+    "id": "zi-0053",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9065,7 +1855,7 @@
     "explain": "「九」是 2 笔，部首是「丿」。"
   },
   {
-    "id": "zi-0260",
+    "id": "zi-0054",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9100,7 +1890,7 @@
     "explain": "「木」是 4 笔，部首是「木」。"
   },
   {
-    "id": "zi-0261",
+    "id": "zi-0055",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9135,7 +1925,7 @@
     "explain": "「土」是 3 笔，部首是「土」。"
   },
   {
-    "id": "zi-0262",
+    "id": "zi-0056",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9170,7 +1960,7 @@
     "explain": "「天」是 4 笔，部首是「大」。"
   },
   {
-    "id": "zi-0263",
+    "id": "zi-0057",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9205,7 +1995,7 @@
     "explain": "「五」是 4 笔，部首是「二」。"
   },
   {
-    "id": "zi-0264",
+    "id": "zi-0058",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9240,147 +2030,7 @@
     "explain": "「手」是 4 笔，部首是「手」。"
   },
   {
-    "id": "zi-0265",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "笔画"
-    ],
-    "stem": {
-      "text": "「六」一共有几笔？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "6 笔"
-      },
-      {
-        "id": "b",
-        "text": "3 笔"
-      },
-      {
-        "id": "c",
-        "text": "5 笔"
-      },
-      {
-        "id": "d",
-        "text": "4 笔"
-      }
-    ],
-    "answer": "d",
-    "explain": "「六」是 4 笔，部首是「八」。"
-  },
-  {
-    "id": "zi-0266",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "笔画"
-    ],
-    "stem": {
-      "text": "「心」一共有几笔？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "4 笔"
-      },
-      {
-        "id": "b",
-        "text": "5 笔"
-      },
-      {
-        "id": "c",
-        "text": "6 笔"
-      },
-      {
-        "id": "d",
-        "text": "3 笔"
-      }
-    ],
-    "answer": "a",
-    "explain": "「心」是 4 笔，部首是「心」。"
-  },
-  {
-    "id": "zi-0267",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "笔画"
-    ],
-    "stem": {
-      "text": "「门」一共有几笔？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "4 笔"
-      },
-      {
-        "id": "b",
-        "text": "5 笔"
-      },
-      {
-        "id": "c",
-        "text": "3 笔"
-      },
-      {
-        "id": "d",
-        "text": "2 笔"
-      }
-    ],
-    "answer": "c",
-    "explain": "「门」是 3 笔，部首是「门」。"
-  },
-  {
-    "id": "zi-0268",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "笔画"
-    ],
-    "stem": {
-      "text": "「牙」一共有几笔？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "4 笔"
-      },
-      {
-        "id": "b",
-        "text": "3 笔"
-      },
-      {
-        "id": "c",
-        "text": "6 笔"
-      },
-      {
-        "id": "d",
-        "text": "5 笔"
-      }
-    ],
-    "answer": "a",
-    "explain": "「牙」是 4 笔，部首是「牙」。"
-  },
-  {
-    "id": "zi-0269",
+    "id": "zi-0059",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9415,7 +2065,7 @@
     "explain": "「妈」的部首是「女」，可以组词「妈妈」。"
   },
   {
-    "id": "zi-0270",
+    "id": "zi-0060",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9450,42 +2100,7 @@
     "explain": "「花」的部首是「艹」，可以组词「花朵」。"
   },
   {
-    "id": "zi-0271",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「河」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "火"
-      },
-      {
-        "id": "b",
-        "text": "日"
-      },
-      {
-        "id": "c",
-        "text": "氵"
-      },
-      {
-        "id": "d",
-        "text": "宀"
-      }
-    ],
-    "answer": "c",
-    "explain": "「河」的部首是「氵」，可以组词「小河」。"
-  },
-  {
-    "id": "zi-0272",
+    "id": "zi-0061",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9501,11 +2116,11 @@
     "options": [
       {
         "id": "a",
-        "text": "犭"
+        "text": "水"
       },
       {
         "id": "b",
-        "text": "水"
+        "text": "犭"
       },
       {
         "id": "c",
@@ -9520,42 +2135,7 @@
     "explain": "「说」的部首是「讠」，可以组词「说话」。"
   },
   {
-    "id": "zi-0273",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「跑」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "足"
-      },
-      {
-        "id": "b",
-        "text": "力"
-      },
-      {
-        "id": "c",
-        "text": "讠"
-      },
-      {
-        "id": "d",
-        "text": "工"
-      }
-    ],
-    "answer": "a",
-    "explain": "「跑」的部首是「足」，可以组词「跑步」。"
-  },
-  {
-    "id": "zi-0274",
+    "id": "zi-0062",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9575,22 +2155,22 @@
       },
       {
         "id": "b",
-        "text": "口"
+        "text": "鸟"
       },
       {
         "id": "c",
-        "text": "扌"
+        "text": "口"
       },
       {
         "id": "d",
-        "text": "鸟"
+        "text": "扌"
       }
     ],
-    "answer": "b",
+    "answer": "c",
     "explain": "「吃」的部首是「口」，可以组词「吃饭」。"
   },
   {
-    "id": "zi-0275",
+    "id": "zi-0063",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9614,18 +2194,18 @@
       },
       {
         "id": "c",
-        "text": "艹"
+        "text": "人"
       },
       {
         "id": "d",
-        "text": "人"
+        "text": "艹"
       }
     ],
     "answer": "a",
     "explain": "「明」的部首是「日」，可以组词「明天」。"
   },
   {
-    "id": "zi-0276",
+    "id": "zi-0064",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9641,26 +2221,26 @@
     "options": [
       {
         "id": "a",
-        "text": "手"
+        "text": "目"
       },
       {
         "id": "b",
-        "text": "虫"
-      },
-      {
-        "id": "c",
         "text": "父"
       },
       {
+        "id": "c",
+        "text": "虫"
+      },
+      {
         "id": "d",
-        "text": "目"
+        "text": "手"
       }
     ],
-    "answer": "c",
+    "answer": "b",
     "explain": "「爸」的部首是「父」，可以组词「爸爸」。"
   },
   {
-    "id": "zi-0277",
+    "id": "zi-0065",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9676,96 +2256,26 @@
     "options": [
       {
         "id": "a",
-        "text": "田"
-      },
-      {
-        "id": "b",
-        "text": "工"
-      },
-      {
-        "id": "c",
         "text": "扌"
       },
       {
-        "id": "d",
+        "id": "b",
         "text": "雨"
-      }
-    ],
-    "answer": "c",
-    "explain": "「打」的部首是「扌」，可以组词「打球」。"
-  },
-  {
-    "id": "zi-0278",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「读」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
+      },
       {
-        "id": "a",
+        "id": "c",
+        "text": "田"
+      },
+      {
+        "id": "d",
         "text": "工"
-      },
-      {
-        "id": "b",
-        "text": "讠"
-      },
-      {
-        "id": "c",
-        "text": "心"
-      },
-      {
-        "id": "d",
-        "text": "鱼"
-      }
-    ],
-    "answer": "b",
-    "explain": "「读」的部首是「讠」，可以组词「读书」。"
-  },
-  {
-    "id": "zi-0279",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「跳」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "足"
-      },
-      {
-        "id": "b",
-        "text": "宀"
-      },
-      {
-        "id": "c",
-        "text": "水"
-      },
-      {
-        "id": "d",
-        "text": "竹"
       }
     ],
     "answer": "a",
-    "explain": "「跳」的部首是「足」，可以组词「跳高」。"
+    "explain": "「打」的部首是「扌」，可以组词「打球」。"
   },
   {
-    "id": "zi-0280",
+    "id": "zi-0066",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9781,11 +2291,11 @@
     "options": [
       {
         "id": "a",
-        "text": "扌"
+        "text": "人"
       },
       {
         "id": "b",
-        "text": "人"
+        "text": "木"
       },
       {
         "id": "c",
@@ -9793,49 +2303,14 @@
       },
       {
         "id": "d",
-        "text": "木"
+        "text": "扌"
       }
     ],
     "answer": "c",
     "explain": "「喝」的部首是「口」，可以组词「喝水」。"
   },
   {
-    "id": "zi-0281",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「唱」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "口"
-      },
-      {
-        "id": "b",
-        "text": "心"
-      },
-      {
-        "id": "c",
-        "text": "鱼"
-      },
-      {
-        "id": "d",
-        "text": "女"
-      }
-    ],
-    "answer": "a",
-    "explain": "「唱」的部首是「口」，可以组词「唱歌」。"
-  },
-  {
-    "id": "zi-0282",
+    "id": "zi-0067",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9851,26 +2326,26 @@
     "options": [
       {
         "id": "a",
-        "text": "日"
-      },
-      {
-        "id": "b",
         "text": "氵"
       },
       {
-        "id": "c",
+        "id": "b",
         "text": "讠"
+      },
+      {
+        "id": "c",
+        "text": "日"
       },
       {
         "id": "d",
         "text": "禾"
       }
     ],
-    "answer": "a",
+    "answer": "c",
     "explain": "「时」的部首是「日」，可以组词「时间」。"
   },
   {
-    "id": "zi-0283",
+    "id": "zi-0068",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9890,92 +2365,22 @@
       },
       {
         "id": "b",
-        "text": "讠"
-      },
-      {
-        "id": "c",
         "text": "日"
       },
       {
-        "id": "d",
+        "id": "c",
         "text": "禾"
+      },
+      {
+        "id": "d",
+        "text": "讠"
       }
     ],
-    "answer": "c",
+    "answer": "b",
     "explain": "「晚」的部首是「日」，可以组词「晚上」。"
   },
   {
-    "id": "zi-0284",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「猫」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "犭"
-      },
-      {
-        "id": "b",
-        "text": "目"
-      },
-      {
-        "id": "c",
-        "text": "人"
-      },
-      {
-        "id": "d",
-        "text": "山"
-      }
-    ],
-    "answer": "a",
-    "explain": "「猫」的部首是「犭」，可以组词「小猫」。"
-  },
-  {
-    "id": "zi-0285",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "部首"
-    ],
-    "stem": {
-      "text": "「狗」的部首是什么？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "犭"
-      },
-      {
-        "id": "b",
-        "text": "小"
-      },
-      {
-        "id": "c",
-        "text": "目"
-      },
-      {
-        "id": "d",
-        "text": "手"
-      }
-    ],
-    "answer": "a",
-    "explain": "「狗」的部首是「犭」，可以组词「小狗」。"
-  },
-  {
-    "id": "zi-0286",
+    "id": "zi-0069",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -9991,11 +2396,46 @@
     "options": [
       {
         "id": "a",
-        "text": "刀"
+        "text": "竹"
       },
       {
         "id": "b",
+        "text": "石"
+      },
+      {
+        "id": "c",
         "text": "鱼"
+      },
+      {
+        "id": "d",
+        "text": "刀"
+      }
+    ],
+    "answer": "a",
+    "explain": "「笔」的部首是「竹」，可以组词「铅笔」。"
+  },
+  {
+    "id": "zi-0070",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "部首"
+    ],
+    "stem": {
+      "text": "「笑」的部首是什么？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "田"
+      },
+      {
+        "id": "b",
+        "text": "纟"
       },
       {
         "id": "c",
@@ -10003,14 +2443,434 @@
       },
       {
         "id": "d",
-        "text": "石"
+        "text": "虫"
       }
     ],
     "answer": "c",
-    "explain": "「笔」的部首是「竹」，可以组词「铅笔」。"
+    "explain": "「笑」的部首是「竹」，可以组词「笑话」。"
   },
   {
-    "id": "zi-0287",
+    "id": "zi-0071",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "部首"
+    ],
+    "stem": {
+      "text": "「想」的部首是什么？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "心"
+      },
+      {
+        "id": "b",
+        "text": "手"
+      },
+      {
+        "id": "c",
+        "text": "田"
+      },
+      {
+        "id": "d",
+        "text": "禾"
+      }
+    ],
+    "answer": "a",
+    "explain": "「想」的部首是「心」，可以组词「想念」。"
+  },
+  {
+    "id": "zi-0072",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "部首"
+    ],
+    "stem": {
+      "text": "「拿」的部首是什么？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "手"
+      },
+      {
+        "id": "b",
+        "text": "目"
+      },
+      {
+        "id": "c",
+        "text": "大"
+      },
+      {
+        "id": "d",
+        "text": "亻"
+      }
+    ],
+    "answer": "a",
+    "explain": "「拿」的部首是「手」，可以组词「拿来」。"
+  },
+  {
+    "id": "zi-0073",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "加一笔"
+    ],
+    "stem": {
+      "text": "「人」加一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "飞"
+      },
+      {
+        "id": "b",
+        "text": "大"
+      },
+      {
+        "id": "c",
+        "text": "小"
+      },
+      {
+        "id": "d",
+        "text": "上"
+      }
+    ],
+    "answer": "b",
+    "explain": "「人」加一笔是「大」。"
+  },
+  {
+    "id": "zi-0074",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "减一笔"
+    ],
+    "stem": {
+      "text": "「中」减一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "工"
+      },
+      {
+        "id": "b",
+        "text": "大"
+      },
+      {
+        "id": "c",
+        "text": "下"
+      },
+      {
+        "id": "d",
+        "text": "口"
+      }
+    ],
+    "answer": "d",
+    "explain": "「中」减一笔是「口」。"
+  },
+  {
+    "id": "zi-0075",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "加一笔"
+    ],
+    "stem": {
+      "text": "「十」加一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "飞"
+      },
+      {
+        "id": "b",
+        "text": "万"
+      },
+      {
+        "id": "c",
+        "text": "女"
+      },
+      {
+        "id": "d",
+        "text": "土"
+      }
+    ],
+    "answer": "d",
+    "explain": "「十」加一笔是「土」。"
+  },
+  {
+    "id": "zi-0076",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "减一笔"
+    ],
+    "stem": {
+      "text": "「土」减一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "刀"
+      },
+      {
+        "id": "b",
+        "text": "九"
+      },
+      {
+        "id": "c",
+        "text": "力"
+      },
+      {
+        "id": "d",
+        "text": "十"
+      }
+    ],
+    "answer": "d",
+    "explain": "「土」减一笔是「十」。"
+  },
+  {
+    "id": "zi-0077",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "加一笔"
+    ],
+    "stem": {
+      "text": "「口」加一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "六"
+      },
+      {
+        "id": "b",
+        "text": "牛"
+      },
+      {
+        "id": "c",
+        "text": "天"
+      },
+      {
+        "id": "d",
+        "text": "中"
+      }
+    ],
+    "answer": "d",
+    "explain": "「口」加一笔是「中」。"
+  },
+  {
+    "id": "zi-0078",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "减一笔"
+    ],
+    "stem": {
+      "text": "「大」减一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "十"
+      },
+      {
+        "id": "b",
+        "text": "七"
+      },
+      {
+        "id": "c",
+        "text": "二"
+      },
+      {
+        "id": "d",
+        "text": "人"
+      }
+    ],
+    "answer": "d",
+    "explain": "「大」减一笔是「人」。"
+  },
+  {
+    "id": "zi-0079",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "加一笔"
+    ],
+    "stem": {
+      "text": "「大」加一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "书"
+      },
+      {
+        "id": "b",
+        "text": "分"
+      },
+      {
+        "id": "c",
+        "text": "云"
+      },
+      {
+        "id": "d",
+        "text": "天"
+      }
+    ],
+    "answer": "d",
+    "explain": "「大」加一笔是「天」。"
+  },
+  {
+    "id": "zi-0080",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "减一笔"
+    ],
+    "stem": {
+      "text": "「天」减一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "飞"
+      },
+      {
+        "id": "b",
+        "text": "大"
+      },
+      {
+        "id": "c",
+        "text": "门"
+      },
+      {
+        "id": "d",
+        "text": "下"
+      }
+    ],
+    "answer": "b",
+    "explain": "「天」减一笔是「大」。"
+  },
+  {
+    "id": "zi-0081",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "加一笔"
+    ],
+    "stem": {
+      "text": "「小」加一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "少"
+      },
+      {
+        "id": "b",
+        "text": "午"
+      },
+      {
+        "id": "c",
+        "text": "分"
+      },
+      {
+        "id": "d",
+        "text": "云"
+      }
+    ],
+    "answer": "a",
+    "explain": "「小」加一笔是「少」。"
+  },
+  {
+    "id": "zi-0082",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "减一笔"
+    ],
+    "stem": {
+      "text": "「太」减一笔，变成下面哪个字？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "下"
+      },
+      {
+        "id": "b",
+        "text": "大"
+      },
+      {
+        "id": "c",
+        "text": "工"
+      },
+      {
+        "id": "d",
+        "text": "门"
+      }
+    ],
+    "answer": "b",
+    "explain": "「太」减一笔是「大」。"
+  },
+  {
+    "id": "zi-0083",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10030,22 +2890,22 @@
       },
       {
         "id": "b",
-        "text": "大"
+        "text": "东"
       },
       {
         "id": "c",
-        "text": "春"
+        "text": "大"
       },
       {
         "id": "d",
-        "text": "猫"
+        "text": "春"
       }
     ],
     "answer": "a",
     "explain": "「树」是「木」字旁。"
   },
   {
-    "id": "zi-0288",
+    "id": "zi-0084",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10061,26 +2921,26 @@
     "options": [
       {
         "id": "a",
-        "text": "力"
+        "text": "晚"
       },
       {
         "id": "b",
-        "text": "写"
+        "text": "牛"
       },
       {
         "id": "c",
-        "text": "喝"
+        "text": "牙"
       },
       {
         "id": "d",
-        "text": "江"
+        "text": "清"
       }
     ],
     "answer": "d",
-    "explain": "「江」是「氵」字旁。"
+    "explain": "「清」是「氵」字旁。"
   },
   {
-    "id": "zi-0289",
+    "id": "zi-0085",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10115,7 +2975,7 @@
     "explain": "「花」是「艹」字旁。"
   },
   {
-    "id": "zi-0290",
+    "id": "zi-0086",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10135,11 +2995,11 @@
       },
       {
         "id": "b",
-        "text": "五"
+        "text": "喝"
       },
       {
         "id": "c",
-        "text": "窗"
+        "text": "五"
       },
       {
         "id": "d",
@@ -10150,7 +3010,7 @@
     "explain": "「妈」是「女」字旁。"
   },
   {
-    "id": "zi-0291",
+    "id": "zi-0087",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10185,42 +3045,7 @@
     "explain": "「吃」是「口」字旁。"
   },
   {
-    "id": "zi-0292",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "偏旁"
-    ],
-    "stem": {
-      "text": "下面哪个字是「犭」字旁？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "树"
-      },
-      {
-        "id": "b",
-        "text": "猫"
-      },
-      {
-        "id": "c",
-        "text": "我"
-      },
-      {
-        "id": "d",
-        "text": "笑"
-      }
-    ],
-    "answer": "b",
-    "explain": "「猫」是「犭」字旁。"
-  },
-  {
-    "id": "zi-0293",
+    "id": "zi-0088",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10240,57 +3065,22 @@
       },
       {
         "id": "b",
-        "text": "大"
-      },
-      {
-        "id": "c",
         "text": "明"
       },
       {
+        "id": "c",
+        "text": "大"
+      },
+      {
         "id": "d",
-        "text": "猫"
+        "text": "中"
       }
     ],
-    "answer": "c",
+    "answer": "b",
     "explain": "「明」是「日」字旁。"
   },
   {
-    "id": "zi-0294",
-    "subject": "chinese",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "偏旁"
-    ],
-    "stem": {
-      "text": "下面哪个字是「足」字旁？",
-      "layout": "grid"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "跑"
-      },
-      {
-        "id": "b",
-        "text": "六"
-      },
-      {
-        "id": "c",
-        "text": "火"
-      },
-      {
-        "id": "d",
-        "text": "马"
-      }
-    ],
-    "answer": "a",
-    "explain": "「跑」是「足」字旁。"
-  },
-  {
-    "id": "zi-0295",
+    "id": "zi-0089",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10306,26 +3096,26 @@
     "options": [
       {
         "id": "a",
-        "text": "打"
+        "text": "爸"
       },
       {
         "id": "b",
-        "text": "吃"
-      },
-      {
-        "id": "c",
         "text": "画"
       },
       {
+        "id": "c",
+        "text": "打"
+      },
+      {
         "id": "d",
-        "text": "爸"
+        "text": "吃"
       }
     ],
-    "answer": "a",
+    "answer": "c",
     "explain": "「打」是「扌」字旁。"
   },
   {
-    "id": "zi-0296",
+    "id": "zi-0090",
     "subject": "chinese",
     "type": "choice",
     "difficulty": 2,
@@ -10353,7 +3143,7 @@
       },
       {
         "id": "d",
-        "text": "百"
+        "text": "白"
       }
     ],
     "answer": "a",

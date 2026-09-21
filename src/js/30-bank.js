@@ -1,44 +1,80 @@
-/* 30-bank.js — 识字题库：加权抽题
+/* 30-bank.js — 题库：三科分仓 + 加权抽题
  *
- * 这个文件以前是 30-curriculum.js，装的是 OPW2 自然拼读课程表、词族解锁、
- * 最小对立对干扰项生成。英语模块下线后，真正还需要留下的只有一件事：
- * 从题库里挑题，且挑得有讲究。
+ * 从 300 道题里挑一局 10 道，挑得有讲究。
  *
- * 挑题的讲究只有一条 —— **不均匀随机**。均匀随机会让孩子已经滚瓜烂熟的字
- * 反复出现（浪费时间），而总写错的字永远轮不到（得不到练习）。所以按
- * 错题本加权：没掌握的加权重出，连对两次的降权。
+ * 讲究一：**三科分开抽，不混在一起抽**。
+ *   如果按 3:3:4 的比例做一张 300 道的加权表然后连抽 10 次，抽出来的
+ *   科目分布会随题库大小和权重浮动 —— 语文 90 道、英语 120 道，均匀抽的话
+ *   英语天然就多，再叠上错题加权，很可能一局里 8 道英语、1 道语文。
+ *   「一局里三科各出几道」是产品要求，不是概率结果，所以按科目配额抽满为止。
  *
- * 干扰项不在这里生成。识字题的选项是「同音字 / 形近字」，属于内容问题，
- * 已经由 tools/gen_ziku.py 在构建期算好并写进题库 —— 运行时不猜。
+ * 讲究二：**科目内不均匀随机**（这部分和以前一样）。
+ *   均匀随机会让孩子已经滚瓜烂熟的字反复出现（浪费时间），而总写错的字
+ *   永远轮不到（得不到练习）。所以按错题本加权：没掌握的加权重出，
+ *   连对两次的降权。
+ *
+ * 干扰项不在这里生成。所有科目的选项都是内容问题，已经在构建期由
+ * tools/gen_*.py 算好写进题库 —— 运行时不猜。
  */
 (function (window) {
   'use strict';
 
   var G = window.G;
 
-  var questions = [];
+  var banks = {};        // { chinese: [q, ...], math: [...], english: [...] }
   var zibiao = null;
 
   /* ---------- 加载 ---------- */
 
   function init(data) {
-    questions = (data.chinese || []).slice();
+    banks = {};
+    var missing = [];
+
+    G.SUBJECTS.forEach(function (s) {
+      var list = (data[s] || []).slice();
+      if (!list.length) missing.push(G.SUBJECT_LABEL[s] || s);
+      banks[s] = list;
+    });
+
     zibiao = data.zibiao || null;
 
-    if (!questions.length) throw new Error('缺少识字题库（src/data/chinese.json）');
+    // 缺一科就让构建期挡住，运行时不带病上线。
+    // 少一科的后果不是「少几道题」——是那一局的 10 个坑里空出 3 个，
+    // 表现成一局只出 7 道题，而且不报错。
+    if (missing.length) {
+      throw new Error('缺少题库：' + missing.join('、') + '（跑一次 npm run qbank）');
+    }
 
-    G.log('识字题库已加载', questions.length, '道题',
+    G.log('题库已加载',
+          G.SUBJECTS.map(function (s) {
+            return (G.SUBJECT_LABEL[s] || s) + ' ' + banks[s].length;
+          }).join(' · '),
           zibiao ? ('，字表 ' + zibiao.chars.length + ' 字') : '');
   }
 
-  function all() { return questions; }
-  function zibiaoData() { return zibiao; }
+  function of(subject) { return banks[subject] || []; }
+
+  /** 全部题目，三科拼一起。给家长页做统计用。 */
+  function all() {
+    return G.SUBJECTS.reduce(function (acc, s) { return acc.concat(banks[s] || []); }, []);
+  }
 
   function byId(id) {
-    for (var i = 0; i < questions.length; i++) {
-      if (questions[i].id === id) return questions[i];
+    for (var i = 0; i < G.SUBJECTS.length; i++) {
+      var list = banks[G.SUBJECTS[i]] || [];
+      for (var j = 0; j < list.length; j++) {
+        if (list[j].id === id) return list[j];
+      }
     }
     return null;
+  }
+
+  function zibiaoData() { return zibiao; }
+
+  /** 某道题是哪一科的 —— 家长页按科目分组统计时要用。 */
+  function subjectOf(id) {
+    var q = byId(id);
+    return q ? q.subject : null;
   }
 
   /* ---------- 加权 ---------- */
@@ -64,20 +100,25 @@
   }
 
   /**
-   * 抽一道题。excludeIds 用来保证一局之内不重复。
+   * 从指定科目抽一道题。excludeIds 用来保证一局之内不重复。
    * @param {object} save
+   * @param {string} subject
    * @param {string[]} excludeIds
    * @param {function} rng  可选，注入固定随机源便于测试
    */
-  function drawOne(save, excludeIds, rng) {
+  function drawOne(save, subject, excludeIds, rng) {
     rng = rng || Math.random;
+    var pool = banks[subject] || [];
+    if (!pool.length) return null;
+
     var excluded = {};
     (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-    var avail = questions.filter(function (q) { return !excluded[q.id]; });
-    // 兜底：题库被抽空时允许重复，也不让一局短题
-    if (!avail.length) avail = questions;
-    if (!avail.length) return null;
+    var avail = pool.filter(function (q) { return !excluded[q.id]; });
+    // 兜底：本科目的题被抽空时允许重复，也不让一局短题。
+    // 一局只要 3~4 道，而每个科目至少 90 道，正常永远走不到这里；
+    // 但题库被裁剪成十几道时就会 —— 那时候「重复一道」也比「少一道」好。
+    if (!avail.length) avail = pool;
 
     var wrongIndex = wrongIndexOf(save);
     var weights = avail.map(function (q) { return weightOf(q, wrongIndex); });
@@ -94,8 +135,10 @@
 
   G.Bank = {
     init: init,
+    of: of,
     all: all,
     byId: byId,
+    subjectOf: subjectOf,
     zibiao: zibiaoData,
     weightOf: weightOf,
     drawOne: drawOne

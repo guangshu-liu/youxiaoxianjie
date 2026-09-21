@@ -10,34 +10,66 @@
   G.VERSION = '1.0.0';
 
   /* ---------- 常量 ----------
-   * 整个游戏只有识字一科。原来是语文/数学/英语三科混排，英语还挂着一套
-   * OPW2 自然拼读体系；现在全部收成一件事：认字。
+   * 三科：语文（一年级认字）、数学（100 以内加减 + 数学思维）、
+   * 英语（牛津自然拼读 2 阶段的词和句）。题库合计 300 道，配比 3:3:4。
    */
-  G.SUBJECTS = ['chinese'];
+  G.SUBJECTS = ['chinese', 'math', 'english'];
 
-  G.SUBJECT_LABEL = { chinese: '识字' };
+  G.SUBJECT_LABEL = { chinese: '语文', math: '数学', english: '英语' };
 
-  // 一局 10 道，全是识字题
-  G.DEFAULT_MIX = { chinese: 10 };
+  /* 一局的固定构成：语文 3 + 数学 3 + 英语 4 = 10。
+   *
+   * **不能在这里写死** —— 它是从产物里的 G.DATA.mix 读进来的，
+   * 而那个值是 tools/build.py 从 qbank.py 的 SUBJECT_MIX 推出来的。
+   * 题库配比和每局构成必须是同一个数：题库按 3:3:4 出，一局却按 1:1:1 抽，
+   * 那语文 90 道会被更快抽完、更早开始重复。
+   * 这里的 3:3:4 只是 data 缺席时的兜底（比如直接开 index.html 调试）。 */
+  G.DEFAULT_MIX = { chinese: 3, math: 3, english: 4 };
 
-  G.ROUND_SIZE = 10;
+  /** 一局的题数 = 配比之和。G.sum 要等这个文件下面才定义，所以这里自己算。 */
+  function mixTotal(mix) {
+    var n = 0;
+    for (var i = 0; i < G.SUBJECTS.length; i++) n += mix[G.SUBJECTS[i]];
+    return n;
+  }
+
+  G.ROUND_SIZE = mixTotal(G.DEFAULT_MIX);
+
+  /** 用产物里的真值覆盖兜底值。boot 时调一次。 */
+  G.applyMix = function (mix) {
+    if (!mix) return;
+    var ok = G.SUBJECTS.every(function (s) { return typeof mix[s] === 'number' && mix[s] > 0; });
+    if (!ok) {
+      G.log('G.DATA.mix 不合法，沿用兜底配比', mix);
+      return;
+    }
+    G.DEFAULT_MIX = mix;
+    G.ROUND_SIZE = mixTotal(mix);
+  };
 
   // 转盘奖项。概率和为 100。
   // 'none' 是空奖：中了就是「谢谢参与」，当场结束，**不重转**。
   // 它曾经是「再来一次」（占 20%，可重转最多 3 次，次数用完兜底送 1 分）——
   // 但重转会把一次抽奖拖成几轮，孩子盯着转盘的时间比答题还长，
   // 而且「兜底送分」让空奖实际上不存在。现在它就是明明白白的不中。
+  //
+  // face 是**盘面上**那行字，label 是结算条上那行字，两者不一样：
+  //   盘面上最窄的扇区只占 18°（动画片，权重 5），在半径 76px 处弧长
+  //   不到 24px —— 竖排一行最多站住一个字。「动画片 10 分钟」在这里
+  //   无论怎么排都会糊成一团，所以盘面用「📺 10分钟」这种短形式，
+  //   结算条有整行宽度，再用完整说法把话说清楚。
   G.PRIZES = [
-    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
-    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           kind: 'points' },
-    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           kind: 'points' },
-    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           kind: 'points' },
-    { id: 'p10',  points: 10, weight: 10, label: '10 分',          kind: 'points' },
-    { id: 'none', points: 0,  weight: 20, label: '下次好运',       kind: 'none' }
+    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', face: '📺 10分钟', kind: 'tv' },
+    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           face: '1分',   kind: 'points' },
+    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           face: '2分',   kind: 'points' },
+    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           face: '5分',   kind: 'points' },
+    { id: 'p10',  points: 10, weight: 10, label: '10 分',          face: '10分',  kind: 'points' },
+    { id: 'none', points: 0,  weight: 20, label: '下次好运',       face: '下次好运', kind: 'none' }
   ];
 
-  // 空奖在盘面上写「下次好运」（84px 的扇区贴不下更长），
-  // 结算条上写全 —— 那里有整行宽度，也把话说清楚。
+  // 每个奖项有两个名字：face 写在盘面上，label 写在结算条上。
+  // 盘面标签是 72px 宽、沿半径方向排的（见 50-wheel.js），只能放两三个字；
+  // 结算条有整行宽度，那里把话说完整。
   G.NO_PRIZE_TEXT = '无奖励，下次好运';
 
   // 兑换项。500 分兑 1 元（原需求 50 分，期望值算下来 20 题 1 元，成本失控）。

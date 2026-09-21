@@ -104,26 +104,33 @@ def load_json(name, empty=None):
 
 
 def load_zibiao():
-    """字表白名单。题库里的每一个汉字都必须出自它 —— 这就是「字的范围」那条约束。"""
-    return load_json('zi_grade12.json', empty={'chars': []})
+    """字表白名单。识字题里的每一个汉字都必须出自它 —— 这就是「字的范围」那条约束。"""
+    return load_json('zi_grade1.json', empty={'chars': []})
 
 
 def build_data_js():
-    """生成 window.G.DATA = {chinese: [...], zibiao: {...}}。
+    """生成 window.G.DATA = {chinese, math, english, zibiao, mix}。
 
-    整个游戏只有识字一科，数据也就只有两份：题库和它背后的字表。
+    mix 一并内联进去，是因为「一局里三科各出几道」这件事必须和题库的
+    配比是同一个数 —— 它写在 tools/qbank.py 的 SUBJECT_MIX 里，由这里
+    落到产物，运行时直接读，两边不会各存一份各自漂移。
     """
     data = {
         'chinese': load_json('chinese.json', empty=[]),
+        'math': load_json('math.json', empty=[]),
+        'english': load_json('english.json', empty=[]),
         'zibiao': load_zibiao(),
+        'mix': SUBJECT_MIX,
     }
     # ensure_ascii=False 让中文在产物里保持可读，便于调试
     js = ('window.G = window.G || {};\n'
           'window.G.DATA = %s;\n'
           % json.dumps(data, ensure_ascii=False, separators=(',', ':')))
 
-    log('  题库：识字 %d 道 · 字表 %d 字'
-        % (len(data['chinese']), len(data['zibiao'].get('chars', []))))
+    log('  题库：语文 %d · 数学 %d · 英语 %d · 合计 %d 道 · 字表 %d 字'
+        % (len(data['chinese']), len(data['math']), len(data['english']),
+           len(data['chinese']) + len(data['math']) + len(data['english']),
+           len(data['zibiao'].get('chars', []))))
     return js
 
 
@@ -215,9 +222,20 @@ def template():
 # 题量上限。需求是「控制在 300 以内」，这里是它的机器版本。
 QUESTION_LIMIT = 300
 
+# 三科的配比，3:3:4。**这是配比的唯一真相源** —— 生成器的 BUILDERS 上限
+# 之和、这里对题库的校验、以及产物里内联给运行时的 G.DATA.mix，全都由它
+# 推出来，不存在「改了这里忘了改那里」。
+SUBJECT_MIX = {'chinese': 3, 'math': 3, 'english': 4}
+
+SUBJECT_LABEL = {'chinese': '语文', 'math': '数学', 'english': '英语'}
+
 # 选项里会出现偏旁（氵 艹 扌…）而不是汉字的题型。这些字符本来就不单独成字，
 # 不在字表里是正常的。
 RADICAL_TAGS = {'部首', '偏旁'}
+
+# 拼音检测。识字题库里一个拼音都不许有 —— 这是这次改版的硬要求，
+# 而拼音最容易从 explain 里漏出来（「「一」读 yī」这种）。
+LATIN_RE = re.compile(r'[A-Za-zÀ-ɏɐ-ʯ]')
 
 
 def is_han(c):
@@ -225,14 +243,34 @@ def is_han(c):
     return chr(0x4E00) <= c <= chr(0x9FFF)
 
 
+def expected_counts(total):
+    """按 SUBJECT_MIX 把 total 道题分给三科。
+
+    用最大余数法，保证分出来的和**正好**等于 total —— 直接四舍五入会
+    出现 90+90+119=299 这种差一道的结果。
+    """
+    weight = sum(SUBJECT_MIX.values())
+    exact = {s: total * w / weight for s, w in SUBJECT_MIX.items()}
+    out = {s: int(v) for s, v in exact.items()}
+    rest = total - sum(out.values())
+    for s in sorted(exact, key=lambda s: -(exact[s] - int(exact[s]))):
+        if rest <= 0:
+            break
+        out[s] += 1
+        rest -= 1
+    return out
+
+
 def validate(entries):
     """构建前的自检。
 
-    题库是生成出来的（tools/gen_ziku.py），所以这里不重复生成器的那些断言
-    （唯一正确答案之类，见 gen_ziku.py 的 selfcheck），只查生成器管不到、
+    题库是生成出来的（tools/gen_ziku.py / gen_shuxue.py / gen_yingyu.py），
+    所以这里不重复生成器那些断言（唯一正确答案之类），只查生成器管不到、
     或者一旦出错就会静默生效的东西：
-      · 题量是否超限
-      · 每个选项里的汉字是否真在字表白名单内 —— 「字的范围」这条需求
+      · 题量与三科配比
+      · 识字题里的汉字是否真在字表白名单内 —— 「只认一年级字」这条需求
+      · 识字题里是否混进了拼音
+      · 每一条被引用的音频是否真的存在
     """
     errors = []
     warnings = []
@@ -240,70 +278,142 @@ def validate(entries):
     audio_ids = set(e['id'] for e in entries)
     chars = set(c['char'] for c in load_zibiao().get('chars', []))
     if not chars:
-        errors.append('字表 zi_grade12.json 是空的，无法校验出题范围')
+        errors.append('字表 zi_grade1.json 是空的，无法校验出题范围')
 
-    questions = load_json('chinese.json', empty=[])
+    banks = {s: load_json('%s.json' % s, empty=[]) for s in SUBJECT_MIX}
+    total = sum(len(v) for v in banks.values())
 
-    if len(questions) > QUESTION_LIMIT:
-        errors.append('题库 %d 道，超过上限 %d' % (len(questions), QUESTION_LIMIT))
+    if not total:
+        errors.append('题库是空的（chinese/math/english 都读不到）')
+        return errors, warnings
 
+    if total > QUESTION_LIMIT:
+        errors.append('题库合计 %d 道，超过上限 %d' % (total, QUESTION_LIMIT))
+
+    # ---- 配比 ----
+    # 需求是「三类知识题量控制在 300，比例 3:3:4」。允许误差 ±1 道 —— 但
+    # 这是为了让 expected_counts 的取整有余地，不是让人随便调。
+    want = expected_counts(total)
+    for s, n in sorted(banks.items()):
+        if abs(len(n) - want[s]) > 1:
+            errors.append('配比不对：%s 应约 %d 道（%d:%d:%d），实际 %d 道'
+                          % (SUBJECT_LABEL[s], want[s],
+                             SUBJECT_MIX['chinese'], SUBJECT_MIX['math'],
+                             SUBJECT_MIX['english'], len(n)))
+
+    # ---- 逐题 ----
     all_ids = set()
-    for q in questions:
-        qid = q.get('id', '<无 id>')
-        qtype = q.get('type')
+    for subject, questions in sorted(banks.items()):
+        label = SUBJECT_LABEL[subject]
+        for q in questions:
+            qid = q.get('id', '<无 id>')
+            if qid in all_ids:
+                errors.append('%s：id 重复' % qid)
+            all_ids.add(qid)
 
-        if qid in all_ids:
-            errors.append('%s：id 重复' % qid)
-        all_ids.add(qid)
+            if q.get('subject') != subject:
+                errors.append('%s：subject 应为 %s，实际 %s'
+                              % (qid, subject, q.get('subject')))
+            if q.get('type') != 'choice':
+                errors.append('%s：type 应为 choice，实际 %s' % (qid, q.get('type')))
 
-        if q.get('subject') != 'chinese':
-            errors.append('%s：subject 应为 chinese，实际 %s' % (qid, q.get('subject')))
+            opts = q.get('options', [])
+            ids = [o.get('id') for o in opts]
+            if len(ids) != len(set(ids)):
+                errors.append('%s：选项 id 重复' % qid)
+            texts = [o.get('text') for o in opts]
+            if len(set(texts)) != len(texts):
+                errors.append('%s：选项文字重复 %s' % (qid, texts))
 
-        opts = q.get('options', [])
-        ids = [o.get('id') for o in opts]
-        if len(ids) != len(set(ids)):
-            errors.append('%s：选项 id 重复' % qid)
+            ans = q.get('answer')
+            if ans not in ids:
+                errors.append('%s：answer "%s" 不在选项里' % (qid, ans))
 
-        ans = q.get('answer')
-        if ans not in ids:
-            errors.append('%s：answer "%s" 不在选项里' % (qid, ans))
+            if not opts:
+                errors.append('%s：没有选项' % qid)
+            if not q.get('explain'):
+                errors.append('%s：缺少 explain（答错时孩子看不到讲解）' % qid)
 
-        if not opts:
-            errors.append('%s：没有选项' % qid)
+            stem = q.get('stem') or {}
+            if not stem.get('text') and not stem.get('audio'):
+                errors.append('%s：题干既没有文字也没有音频' % qid)
 
-        if not q.get('explain'):
-            errors.append('%s：缺少 explain（答错时孩子看不到讲解）' % qid)
+            # ---- 识字题的专属约束 ----
+            if subject == 'chinese':
+                tags = q.get('tags') or []
 
-        # ---- 字的范围 ----
-        # 只看「答案是一个汉字」的题还不够 —— 干扰项跑出范围同样有害：
-        # 孩子会在选项里见到三年级的字，甚至把那个字当成正确答案记下来。
-        tags = q.get('tags') or []
-        if not (set(tags) & RADICAL_TAGS):
-            for o in opts:
-                for c in (o.get('text') or ''):
-                    if is_han(c) and c not in chars:
-                        errors.append('%s：选项「%s」不在字表内' % (qid, o.get('text')))
+                # 字的范围。只看「答案是一个汉字」的题还不够 —— 干扰项跑出
+                # 范围同样有害：孩子会在选项里见到二年级的字，甚至把那个字
+                # 当成正确的记下来。
+                if not (set(tags) & RADICAL_TAGS):
+                    for o in opts:
+                        for c in (o.get('text') or ''):
+                            if is_han(c) and c not in chars:
+                                errors.append('%s：选项「%s」不在字表内'
+                                              % (qid, o.get('text')))
 
-        # 音频引用必须存在
-        for a in (q.get('audio') or []):
-            aid = a if isinstance(a, str) else a.get('id')
-            if not aid:
-                continue
-            key = aid.replace('.mp3', '').replace('.wav', '').replace('/', '.')
-            if key not in audio_ids:
-                warnings.append('%s：引用的音频 %s 不存在' % (qid, aid))
+                # 全库不许出现拼音
+                blob = ' '.join([stem.get('text') or '', q.get('explain') or ''] + texts)
+                m = LATIN_RE.search(blob)
+                if m:
+                    errors.append('%s：识字题里出现了拼音/拉丁字母「%s」'
+                                  % (qid, m.group(0)))
 
-    # 题型分布。某一种题型只剩一两道时，一局 10 题必然反复出它，很单调。
-    by_tag = {}
-    for q in questions:
-        tag = (q.get('tags') or [q.get('type') or '?'])[0]
-        by_tag[tag] = by_tag.get(tag, 0) + 1
-    thin = [t for t, n in by_tag.items() if n < 8]
-    if thin:
-        warnings.append('这些题型不足 8 道，一局里会重复出现：%s'
-                        % ' '.join('%s(%d)' % (t, by_tag[t]) for t in thin))
+            # 音频引用必须存在
+            for aid in audio_refs(q):
+                if aid not in audio_ids:
+                    errors.append('%s：引用的音频 %s 不存在（跑 npm run audio）'
+                                  % (qid, aid))
+
+    # ---- 题型分布 ----
+    # 一局是定量的：每科只出 SUBJECT_MIX[subject] 道，而且 40-runner.js 的
+    # 抽题排除了本局已用的 id，所以同一道题一局里绝不会出现两次。
+    # 「某题型会不会在一局里重复」因此取决于**它够不够填满这一科的配额**：
+    # 语文一局 3 道，只要有 3 道就不重复；不足 3 道时，3 个位置必然被它占掉
+    # 多个。原先这里写死 6（一局的总题数），语文的加一笔(5) 减一笔(5) 因此
+    # 一直在报「一局里会重复出现」，但它们各 5 道、语文本就只有 3 个位置，
+    # 根本重复不了 —— 阈值按科目配额来算。
+    for subject, questions in sorted(banks.items()):
+        by_tag = {}
+        for q in questions:
+            tag = (q.get('tags') or [q.get('type') or '?'])[0]
+            by_tag[tag] = by_tag.get(tag, 0) + 1
+        quota = SUBJECT_MIX.get(subject, 0)
+        thin = sorted(t for t, n in by_tag.items() if n < quota)
+        if thin:
+            warnings.append('%s：一局出 %d 道，这些题型不足 %d 道，一局里会重复出现：%s'
+                            % (SUBJECT_LABEL[subject], quota, quota,
+                               ' '.join('%s(%d)' % (t, by_tag[t]) for t in thin)))
+
+    # ---- 没人引用的音频 ----
+    # 占位音时代留下的孤儿文件会在单文件版里白占体积，这里报出来。
+    used = set()
+    for questions in banks.values():
+        for q in questions:
+            used |= set(audio_refs(q))
+    orphan = sorted(audio_ids - used)
+    if orphan:
+        warnings.append('audio/ 里有 %d 条没人引用的音频：%s'
+                        % (len(orphan), ' '.join(orphan[:6])))
 
     return errors, warnings
+
+
+def audio_refs(q):
+    """一道题引用到的所有音频 id。
+
+    两个地方会有：题干语音（听音选词的 stem.audio）和旧格式的顶层 audio。
+    """
+    out = []
+    stem = q.get('stem') or {}
+    for v in (stem.get('audio'), stem.get('promptAudio')):
+        if isinstance(v, str) and v:
+            out.append(v)
+    for a in (q.get('audio') or []):
+        aid = a if isinstance(a, str) else a.get('id')
+        if aid:
+            out.append(aid.replace('.mp3', '').replace('.wav', '').replace('/', '.'))
+    return out
 
 
 # ---------------------------------------------------------------- 产物

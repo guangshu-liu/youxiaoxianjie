@@ -61,6 +61,11 @@
       node.classList.add('shake');
       setTimeout(function () { node.classList.remove('shake'); }, 480);
     }
+    // 这个音效一直写在注释里，但从来没有实现过 ——
+    // 视觉反馈有（绿脉冲/抖动），听觉反馈没有，所以试玩反馈是
+    // 「点了没声音」。视觉 + 听觉要成对出现：孩子低头看选项的时候，
+    // 声音是唯一能确认「我点到了」的东西。
+    if (G.Audio) G.Audio.play(correct ? 'ui.correct' : 'ui.wrong');
     setTimeout(function () {
       node.classList.remove('fb-ok', 'fb-bad');
     }, 700);

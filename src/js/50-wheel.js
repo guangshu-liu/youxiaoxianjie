@@ -47,15 +47,54 @@
     return 'conic-gradient(from -90deg, ' + stops.join(', ') + ')';
   }
 
+  // 扇区配色。**白字压在浅色上等于没字** —— 原来 p5 是 #FFD54F（亮黄）
+  // 配白字，那个扇区基本是空的。这里每个色都压到能承住白色小字的深度，
+  // 六个色相仍然分得开。
   function colorFor(id) {
     return {
-      tv10: '#FF8A65',
-      p1: '#81C784',
-      p2: '#4FC3F7',
-      p5: '#FFD54F',
-      p10: '#BA68C8',
-      none: '#B0BEC5'
-    }[id] || '#B0BEC5';
+      tv10: '#E4572E',
+      p1: '#2E9E5B',
+      p2: '#2A7FD4',
+      p5: '#C9860A',
+      p10: '#8E44AD',
+      none: '#78909C'
+    }[id] || '#78909C';
+  }
+
+  /* 标签中心到盘心的半径（px）。
+   * 盘面 280px、白边 9px、box-sizing:border-box → 盘内半径 131px。
+   * 标签宽 72px，所以它占 76±36 = 40px ~ 112px 这一段：
+   *   外沿 112 < 131，不会压到白边；内沿 40 > 中心轴半径 23，不会被轴盖住。 */
+  var LABEL_R = 76;
+
+  /**
+   * 盘面上的一个奖名。
+   *
+   * 为什么文字要转 90° 顺着半径排，而不是横着贴：
+   *   六个奖项的权重是 5/30/20/15/10/20，摊到 360° 就是 18°/108°/72°/54°/36°/72°。
+   *   最宽的和最窄的差了 6 倍。横排的话，18° 那个扇区在半径 100px 处只有
+   *   31px 弧长，一行放不下两个字，必然和隔壁扇区叠在一起（这正是原来
+   *   「转盘上看不清奖励」的原因之一）。
+   *   转成径向之后，受角度限制的只剩行高（13px），而文字长度沿半径展开，
+   *   有 72px 可用 —— 每个扇区都放得下。
+   *
+   * 上半圈从下往上读、下半圈翻过来从上往下读，都是正的，不会倒着。
+   */
+  function faceLabel(s) {
+    var label = G.el('span', { class: 'wheel-label', text: s.prize.face || s.prize.label });
+
+    // 变换链从左到右依次作用：
+    //   translate(-50%,-50%) 先把标签自身中心对到盘心
+    //   rotate(center)       绕盘心转到本扇区的角度
+    //   translateY(-R)       沿这个方向推到半径 R
+    //   rotate(±90deg)       把文字转成顺着半径读
+    // 前两步一起等价于「把标签放到扇区中心」，后两步是让它在那个位置上可读。
+    var text = (s.center > 180) ? 90 : -90;
+    label.style.transform =
+      'translate(-50%, -50%) rotate(' + s.center + 'deg)' +
+      ' translateY(-' + LABEL_R + 'px) rotate(' + text + 'deg)';
+
+    return label;
   }
 
   /**
@@ -78,9 +117,7 @@
 
       // 奖名贴在盘面上
       segments.forEach(function (s) {
-        var label = G.el('span', { class: 'wheel-label', text: s.prize.label });
-        label.style.transform = 'rotate(' + s.center + 'deg) translateY(-38%)';
-        wheel.appendChild(label);
+        wheel.appendChild(faceLabel(s));
       });
 
       var pointer = G.el('div', { class: 'wheel-pointer' });
@@ -126,7 +163,10 @@
       });
 
       function finish(prize) {
-        G.Audio.play('ui.win');
+        // 空奖有专门的音效。原来不管中没中都放 ui.win ——
+        // 「下次好运」配一段中奖号角，孩子会先高兴一下再发现什么都没有，
+        // 比直接给个温和的下行音更让人失望。
+        G.Audio.play(prize.kind === 'none' ? 'ui.lose' : 'ui.win');
 
         var r = G.Runner.awardPoints(save, prize.points);
         var extra = '';

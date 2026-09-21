@@ -1,0 +1,340 @@
+{
+  "comment": "英语题库引用的语音。由 tools/gen_yingyu.py 生成，不要手改。",
+  "entries": [
+    {
+      "id": "en.bag",
+      "text": "bag",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.bed",
+      "text": "bed",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.big",
+      "text": "big",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.can",
+      "text": "can",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.cat",
+      "text": "cat",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.cot",
+      "text": "cot",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.dad",
+      "text": "dad",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.did",
+      "text": "did",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.fin",
+      "text": "fin",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.gun",
+      "text": "gun",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.ham",
+      "text": "ham",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.hid",
+      "text": "hid",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.hit",
+      "text": "hit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.hug",
+      "text": "hug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.jam",
+      "text": "jam",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.jug",
+      "text": "jug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.lap",
+      "text": "lap",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.led",
+      "text": "led",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.lip",
+      "text": "lip",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.mad",
+      "text": "mad",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.man",
+      "text": "man",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.mop",
+      "text": "mop",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pen",
+      "text": "pen",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pop",
+      "text": "pop",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pot",
+      "text": "pot",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.rag",
+      "text": "rag",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.rat",
+      "text": "rat",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sad",
+      "text": "sad",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sip",
+      "text": "sip",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sit",
+      "text": "sit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sun",
+      "text": "sun",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.tap",
+      "text": "tap",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.ten",
+      "text": "ten",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.van",
+      "text": "van",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.vet",
+      "text": "vet",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.wag",
+      "text": "wag",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.wet",
+      "text": "wet",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.wig",
+      "text": "wig",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.win",
+      "text": "win",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.yam",
+      "text": "yam",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.01",
+      "text": "the red hat is on the mat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.02",
+      "text": "the big bug is in the mud.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.03",
+      "text": "the big cat is on the bed.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.04",
+      "text": "the hot pot is on the mat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.05",
+      "text": "my wet hat is in the bag.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.06",
+      "text": "the red jam is on the mat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.07",
+      "text": "the big pig is in the tub.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.08",
+      "text": "the hen can see a big bug.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.09",
+      "text": "the man can see a red hat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.10",
+      "text": "the cat has a red hat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.11",
+      "text": "the pen is red.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.12",
+      "text": "the sun is hot.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.13",
+      "text": "the mud is wet.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.14",
+      "text": "the hen can see.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.15",
+      "text": "the kid can see the sun.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.16",
+      "text": "the pup can see the cat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.17",
+      "text": "the bug can see the mud.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.18",
+      "text": "the man can see my hat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.19",
+      "text": "the pig can see my bed.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.20",
+      "text": "the pig has a red hat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.21",
+      "text": "the man has a big hat.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.22",
+      "text": "the kid has a red cup.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.23",
+      "text": "the pup has a big mug.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.24",
+      "text": "the man has a red van.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.25",
+      "text": "the kid can see ten men.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.26",
+      "text": "the pin is in the cup.",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sentence.27",
+      "text": "the nut is in the pot.",
+      "voice": "Samantha"
+    }
+  ]
+}

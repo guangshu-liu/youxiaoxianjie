@@ -38,26 +38,33 @@
    * 也依赖「刚答错的题立刻变得更常出」，日种子会把这条反馈延迟到明天。
    */
   function buildRound(save) {
-    var total = G.DEFAULT_MIX.chinese || G.ROUND_SIZE;
     var used = [];
     var picked = [];
 
-    for (var i = 0; i < total; i++) {
-      var q = G.Bank.drawOne(save, used);
-      if (!q) break;
-      used.push(q.id);
-      picked.push(q);
-    }
+    // **按科目配额抽满，而不是一起抽再按比例挑。**
+    // 一起抽的话，科目分布是概率结果不是配额：英语 120 道本来就比语文的
+    // 90 道更容易被抽中，再叠上错题加权，一局很可能 8 道英语 1 道语文。
+    // 「一局里三科各出几道」是产品要求，得用配额保证。
+    G.SUBJECTS.forEach(function (s) {
+      var want = G.DEFAULT_MIX[s] || 0;
+      for (var i = 0; i < want; i++) {
+        var q = G.Bank.drawOne(save, s, used);
+        if (!q) break;
+        used.push(q.id);
+        picked.push(q);
+      }
+    });
 
-    // 兜底。正常抽不到这一步（296 道题 >> 10），只有题库被改小到一局以内
-    // 才会走到：那时先试着再抽一道没出过的，实在没有才允许重复 ——
+    // 兜底。正常抽不到这一步（每科至少 90 道 >> 一局要的 3~4 道），
+    // 只有题库被裁剪到一局以内才会走到：那时允许重复 ——
     // 宁可出现重题，也不要让一局变成半局。
-    while (picked.length < total) {
-      var extra = G.Bank.drawOne(save, used);
+    while (picked.length < G.ROUND_SIZE) {
+      var extra = null;
+      for (var k = 0; k < G.SUBJECTS.length && !extra; k++) {
+        extra = G.Bank.drawOne(save, G.SUBJECTS[k], used);
+      }
       if (!extra) break;
-      if (used.indexOf(extra.id) >= 0) extra = G.Bank.drawOne(save, []);
-      else used.push(extra.id);
-      if (!extra) break;
+      used.push(extra.id);
       picked.push(extra);
     }
 
@@ -70,7 +77,7 @@
   /**
    * 排位置：
    *   1. 最可能答对的两道，分给第 1 题和第 10 题
-   *   2. 剩下的打散，且不让同一题型挨着
+   *   2. 剩下的打散，且相邻两题尽量不同科、同科内尽量不同题型
    */
   function arrange(questions, save) {
     if (questions.length <= 2) return questions.slice();
@@ -81,9 +88,9 @@
 
     var first = ranked[0];
     var last = ranked[1];
-    var middle = G.shuffle(ranked.slice(2), Math.random);
+    var middle = spread(ranked.slice(2), first, last);
 
-    return [first].concat(orderByTag(middle, tagOf(first), tagOf(last)), [last]);
+    return [first].concat(middle, [last]);
   }
 
   function tagOf(q) {
@@ -91,41 +98,72 @@
   }
 
   /**
-   * 按题型交错排列：每次从剩下的题里挑一道和上一题**不同题型**的，并且优先
-   * 挑剩余数量最多的那个题型 —— 先把大堆消耗掉，小堆才不会剩到最后被迫相邻。
+   * 把中间几道排开：每次从剩下的题里挑一道最「不重样」的放进去。
    *
-   * 「看拼音选字」占了题库的三分之一，一局 10 题里通常有 3 道；不做这一步，
-   * 它们会以相当高的概率挨在一起，一局看起来就像只有两种题。
+   * 为什么要重排而不是直接打散：
+   *   一局 10 道是 3 语文 + 3 数学 + 4 英语。纯随机打散的话，出现
+   *   「连着 3 道英语」甚至「连着 4 道英语」的概率相当高 —— 一局 10 道里
+   *   连着刷 4 道英语，孩子感觉就是「这局全是英语」。
    *
-   * 这是软约束，不是排序目标：某个题型一旦过半（现在没有），相邻就躲不掉，
-   * 那时按原样排下去，不为了满足约束把题目弄丢。
+   * 打分是字典序的，优先级从高到低：
+   *   ① 科目和上一题不同     ② 题型和上一题不同
+   *   ③ 科目不和末题撞       ④ 题型不和末题撞（只有剩最后一道时才起作用）
+   *   ⑤ 该科目剩下最多       ⑥ 该题型剩下最多
+   * 前四条是「别挨着」，后两条是经典的「先消耗大堆」—— 不先消耗大堆，
+   * 小堆会剩到最后被迫相邻，前面白排了。
+   *
+   * 这是软约束：真到了只剩同一科的地步，①拿不到分，就按⑤⑥继续排下去，
+   * 不为了满足约束把题目弄丢。
    */
-  function orderByTag(items, prevTag, tailTag) {
-    var pool = items.slice();
+  function spread(items, head, tail) {
+    var pool = G.shuffle(items.slice(), Math.random);
     var out = [];
+    var prevSub = head.subject;
+    var prevTag = tagOf(head);
+    var tailSub = tail.subject;
+    var tailTag = tagOf(tail);
 
     while (pool.length) {
-      var count = {};
+      var bySub = {};
+      var bySubTag = {};
       pool.forEach(function (q) {
-        var t = tagOf(q);
-        count[t] = (count[t] || 0) + 1;
+        bySub[q.subject] = (bySub[q.subject] || 0) + 1;
+        var k = q.subject + '/' + tagOf(q);
+        bySubTag[k] = (bySubTag[k] || 0) + 1;
       });
 
-      var pick = -1;
-      var best = -1;
-      for (var i = 0; i < pool.length; i++) {
-        var t = tagOf(pool[i]);
-        if (t === prevTag) continue;
-        // 最后一道还要避开末题的题型，否则会在末尾撞上
-        if (pool.length === 1 && t === tailTag) continue;
-        if (count[t] > best) { best = count[t]; pick = i; }
-      }
-      if (pick < 0) pick = 0;               // 只剩同题型了，认了
+      var isLast = (pool.length === 1);
+      var pick = 0;
+      var best = null;
 
-      prevTag = tagOf(pool[pick]);
-      out.push(pool.splice(pick, 1)[0]);
+      for (var i = 0; i < pool.length; i++) {
+        var q = pool[i];
+        var t = tagOf(q);
+        var score = [
+          q.subject === prevSub ? 0 : 1,
+          t === prevTag ? 0 : 1,
+          (isLast && q.subject === tailSub) ? 0 : 1,
+          (isLast && t === tailTag) ? 0 : 1,
+          bySub[q.subject] || 0,
+          bySubTag[q.subject + '/' + t] || 0
+        ];
+        if (best === null || lexGreater(score, best)) { best = score; pick = i; }
+      }
+
+      var chosen = pool.splice(pick, 1)[0];
+      prevSub = chosen.subject;
+      prevTag = tagOf(chosen);
+      out.push(chosen);
     }
     return out;
+  }
+
+  /** 字典序比较：从前往后，第一个不相等的分量决定胜负。 */
+  function lexGreater(a, b) {
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) return a[i] > b[i];
+    }
+    return false;
   }
 
   /* ---------- 答题结算 ---------- */
@@ -160,7 +198,10 @@
     }
 
     // --- 按知识点统计（家长面板用）---
-    var bucket = save.progress.chinese.byTag;
+    // 记到自己那一科下面。三科的题型名天然不重叠（归类 / 拆数 / 听音选词），
+    // 但分开记才看得出「数学应用题弱、语文笔画弱」这种分科结论。
+    var prog = save.progress[q.subject] || (save.progress[q.subject] = { byTag: {} });
+    var bucket = prog.byTag;
     (q.tags || []).forEach(function (tag) {
       var t = bucket[tag] || (bucket[tag] = { seen: 0, correct: 0 });
       t.seen++; if (correct) t.correct++;

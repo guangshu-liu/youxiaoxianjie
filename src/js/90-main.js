@@ -18,6 +18,12 @@
 
   function boot(data) {
     root = G.$('#app');
+
+    // 配比必须在 Store.load() **之前**落定：save.settings 里不再存配比，
+    // 但一局的题数是从 G.ROUND_SIZE 读的，而它由配比推出来。
+    // 顺序反了的话，首次进入游戏的那一局会用兜底配比。
+    G.applyMix(data && data.mix);
+
     save = G.Store.load();
 
     G.Bank.init(data);
@@ -84,8 +90,15 @@
 
     var s = G.UI.screen('screen-home');
 
-    s.appendChild(G.el('div', { class: 'home-title', text: '识字闯关' }));
-    s.appendChild(G.el('div', { class: 'home-sub', text: '一局 10 个字，答对就转盘' }));
+    s.appendChild(G.el('div', { class: 'home-title', text: '幼小衔接闯关' }));
+    s.appendChild(G.el('div', {
+      class: 'home-sub',
+      // 副标题把一局的构成说清楚。家长和孩子都该在开始前知道
+      // 「这一局要做什么」，而不是玩到第 4 题才发现有数学。
+      text: '一局 ' + G.ROUND_SIZE + ' 题：' + G.SUBJECTS.map(function (sub) {
+        return (G.SUBJECT_LABEL[sub] || sub) + ' ' + (G.DEFAULT_MIX[sub] || 0);
+      }).join(' · ') + '，答对就转盘'
+    }));
 
     var stats = G.el('div', { class: 'home-stats' }, [
       G.el('div', { class: 'home-points', text: String(save.points.balance) }),
@@ -265,7 +278,10 @@
     }));
 
     root.appendChild(s);
-    G.Audio.play('ui.win');
+    // 一局结束用 ui.star（轻快上行），不用 ui.win（中奖号角）——
+    // ui.win 留给转盘真的中奖那一刻。同样是「结束了」，一个是每局都有，
+    // 一个是偶尔才有；共用一个音，中奖就不再特别了。
+    G.Audio.play('ui.star');
   }
 
   /* ---------- 导出给入口 ---------- */

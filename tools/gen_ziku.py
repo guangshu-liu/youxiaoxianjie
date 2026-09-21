@@ -1,41 +1,53 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-gen_ziku.py — 识字题库生成器（唯一真相源）
+gen_ziku.py — 语文（识字）题库生成器
 
 产出两个文件：
-    src/data/zi_grade12.json    字表（字 / 拼音 / 笔画 / 部首 / 年级 / 词语）
-    src/data/chinese.json       识字题库（≤300 道，全部 choice 题型）
+    src/data/zi_grade1.json     字表（字 / 拼音 / 笔画 / 部首 / 词语）
+    src/data/chinese.json       识字题库（90 道，全部 choice 题型）
 
-为什么用生成器而不是手写 JSON：
-    手写 280 道题的选项，必然出现「answer 指向不存在的选项」「两个选项都
-    说得通」「选项里混进了三年级的字」这三类错，而且靠眼睛查不出来。
-    生成器把「字的范围」变成一条机器可校验的约束 —— 字表里没有的字，
-    根本进不了选项。
+两条硬约束，都由机器保证，不靠眼睛：
 
-    产物必须可复现：同一个字表跑两次，得到逐字节相同的 JSON，`--check`
-    才有意义。所以这里不用 Python 内置的 hash()（它每个进程都换种子），
-    自己写了个 dhash()。
+  1. **只用一年级字。** GRADE_MAX = 1。字表里没有的字，根本进不了选项。
+  2. **全库不出现拼音。** 出题一律绕开读音：考字形（笔画 / 部首 / 偏旁 /
+     加一笔减一笔）和字义（反义词 / 归类）。selfcheck 里有一条断言直接
+     扫题干、选项、解释里有没有拉丁字母和声调符号，出现就构建失败。
+
+     「不以拼音的形式出现」不等于「生成器不能用拼音」—— split_tone 仍在
+     用来判断两个字的声旁关系（形声字的声旁和整字同音，拿它当干扰项会让
+     题目变成猜出题人想考哪个）。拼音只是内部判据，从不落到产物里。
+
+产物必须可复现：同一个字表跑两次，得到逐字节相同的 JSON，`--check`
+才有意义。公共的确定性随机和校验在 tools/qbank.py，三个科目共用。
 
 数据从哪来：
-    字表是**为幼小衔接阶段手工筛选的常用字**，取自统编版语文一、二年级
-    识字表的高频部分，不是任何一个出版社识字表的逐字复制。年级标注表示
-    「这个字通常什么时候学」，用途是让出题有难度梯度，不声称与教材逐字
-    对齐。
+    字表是**为幼小衔接阶段手工筛选的常用字**，取自统编版语文一年级
+    识字表的高频部分，不是任何一个出版社识字表的逐字复制。
 
 用法：
     python3 tools/gen_ziku.py            # 生成
     python3 tools/gen_ziku.py --check    # 只校验产物是否与生成结果一致
 """
 
-import argparse
 import json
 import os
 import re
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA = os.path.join(ROOT, 'src', 'data')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from qbank import (
+    DATA, ROOT, Rng, dhash, interleave, make_choice, run, seeded, write_json,
+)
+
+# 出题只用一年级字。二年级的字留在 CHARS 里（家长面板的字表要看全貌），
+# 但进不了任何一道题的题干或选项。
+GRADE_MAX = 1
+
+# 拼音检测：任何拉丁字母，以及带声调的元音（ā á ǎ à / ǖ ǘ ǚ ǜ / ü）。
+# U+00C0–U+024F 覆盖拉丁字母补充区和扩展 A/B —— 声调符号全在里面。
+LATIN_RE = re.compile(r'[A-Za-zÀ-ɏɐ-ʯ]')
 
 # ---------------------------------------------------------------- 拼音工具
 
@@ -315,47 +327,33 @@ POLYPHONIC = {
     '觉', '得', '空', '发', '还', '种', '着', '只', '行', '为',
 }
 
-# 形近 / 同音辨析题，逐条人工核对过。
+# 「加一笔 / 减一笔」的完整合法答案表。
 #
-# 为什么不像别的题型那样自动生成：挖空题有个自动生成躲不掉的坑 ——
-# 干扰项可能**也**能填进去。比如「（　）鸟」配 马/牛/羊，小马、小牛、
-# 小羊全是词，四个选项都对。没有词典就没法自动判断，只能一条条挑
-# 「剩下那半截字不跟干扰项组词」的搭配。
+# **必须穷举，一条都不能漏。** 这是全部题型里最容易出「两个正确答案」的
+# 一类：「日」加一笔既是「目」也是「白」，还可能是「田」。如果只把「目」
+# 记在这儿、拿「白」去当干扰项，那道题就有两个正确选项，而字面上看不出
+# 任何异常。selfcheck 会拿这张表反过来验 —— 选项里有且只有一个在表内。
 #
-# (完整词语, 要填的字, [干扰字])
-CURATED_SIMILAR = [
-    ('日出', '日', ['目', '自', '白']),
-    ('白云', '白', ['百', '日', '自']),
-    ('自己', '自', ['日', '目', '白']),
-    ('耳目', '目', ['日', '月', '自']),
-    ('天空', '天', ['田', '木', '米']),
-    ('太阳', '太', ['天', '大', '人']),
-    ('大人', '大', ['太', '天', '人']),
-    ('出入', '入', ['八', '人', '大']),
-    ('木头', '木', ['本', '禾', '米']),
-    ('本子', '本', ['木', '禾', '米']),
-    ('禾苗', '禾', ['木', '本', '米']),
-    ('大米', '米', ['木', '本', '禾']),
-    ('牛奶', '牛', ['午', '手', '毛']),
-    ('中午', '午', ['牛', '手', '毛']),
-    ('手心', '手', ['毛', '牛', '午']),
-    ('羊毛', '毛', ['手', '牛', '午']),
-    ('石头', '石', ['右', '名', '田']),
-    ('左右', '右', ['石', '名', '田']),
-    ('有名', '名', ['石', '右', '田']),
-    ('田地', '田', ['石', '右', '名']),
-    ('月亮', '月', ['目', '耳', '自']),
-    ('耳朵', '耳', ['目', '月', '自']),
-    ('读书', '书', ['画', '字', '学']),
-    ('画笔', '画', ['书', '字', '学']),
-    ('生字', '字', ['书', '画', '学']),
-    ('学习', '学', ['书', '画', '字']),
-    ('回去', '去', ['云', '土', '工']),
-    ('水土', '土', ['云', '去', '工']),
-    ('工人', '工', ['云', '去', '土']),
-    ('力气', '力', ['刀', '九', '女']),
-    ('小刀', '刀', ['力', '九', '女']),
-]
+# 有歧义到无法穷举的字（「一」加一笔可以是二/十/七/丁…）直接不收，
+# 收的都是答案集封闭在字表内的。
+PLUS_ONE = {
+    '人': ['大'],
+    '大': ['天', '太'],
+    '小': ['少'],
+    '十': ['土'],
+    '口': ['中', '日'],
+    '木': ['本', '禾'],
+    '日': ['目', '白', '田'],
+    '目': ['自'],
+    '米': ['来'],
+}
+
+# 减一笔 = 加一笔反过来。由 PLUS_ONE 推出，不手写第二张表 ——
+# 两张表对不上，是最难查的一类不一致。
+MINUS_ONE = {}
+for _base, _outs in PLUS_ONE.items():
+    for _o in _outs:
+        MINUS_ONE.setdefault(_o, []).append(_base)
 
 # 归类题用的类别。每个字只归一类，选项跨类别取 —— 答案唯一。
 # (类别名, 题干, [字])
@@ -403,14 +401,16 @@ RADICAL_POOL = [
 ]
 
 # 「同偏旁归类」问的偏旁。都是字形上一眼可辨的。
-RADICAL_ASK = ['木', '氵', '艹', '女', '口', '犭', '日', '足', '扌', '讠']
+# 犭（猫/狗）和 足（跑/跳）去掉了 —— 那四个字全是一年级以外的，
+# 而且这一档问不了「哪个字是犭旁」却用二年级字当答案。
+RADICAL_ASK = ['木', '氵', '艹', '女', '口', '日', '扌', '讠']
 
 # 「下面哪个字是 X 字旁？」的答案。**不能自动取**：按字表顺序取会给「木」
 # 选中「本」——「本」的部首确实是木，但木在里面占的是整个字，孩子看到的
 # 不是一个「字旁」。这里逐个挑的都是偏旁在左边、一眼可辨的字。
 RADICAL_CLASS_ANSWER = {
-    '木': '树', '氵': '江', '艹': '花', '女': '妈', '口': '吃',
-    '犭': '猫', '日': '明', '足': '跑', '扌': '打', '讠': '说',
+    '木': '树', '氵': '清', '艹': '花', '女': '妈',
+    '口': '吃', '日': '明', '扌': '打', '讠': '说',
 }
 
 
@@ -437,222 +437,146 @@ class Rng(object):
         return a
 
 
-def usable(ch):
-    """这个字能不能进读音题的答案位/干扰项。"""
-    return ch in CHARS and ch not in POLYPHONIC
+def in_scope(ch):
+    """这个字能不能进题干或选项。
 
-
-def sound_alike(ch, n=3):
-    """按读音相似度挑干扰项。
-
-    排名：同音节不同调 > 同韵母 > 同声母。
-    **真同音字（音节和声调都相同）必须排除** —— 否则「shí 是哪个字？」
-    的选项会变成 十/石/时，三个都对。这道题就没有答案了。
+    只有一条：在字表里，且年级不超过 GRADE_MAX。二年级的字留在 CHARS 里
+    供家长面板看全貌，但一道题都不出。
     """
-    py = CHARS[ch][0]
-    base, tone = split_tone(py)
-    ini, fin = split_syllable(py)
-
-    scored = []
-    for other in CHARS:
-        if other == ch or not usable(other):
-            continue
-        opy = CHARS[other][0]
-        obase, otone = split_tone(opy)
-        if obase == base and otone == tone:
-            continue                      # 真同音字：不能当干扰项
-        oini, ofin = split_syllable(opy)
-        score = 0
-        if obase == base:
-            score += 100                  # 同音节不同调，最像
-        elif ofin == fin:
-            score += 40
-        elif oini == ini and ini:
-            score += 20
-        if score:
-            scored.append((score, other))
-
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    return [c for _s, c in scored[:n]]
+    return ch in CHARS and CHARS[ch][3] <= GRADE_MAX
 
 
-def look_alike(ch, n=3):
-    """从形近字组里挑干扰项。"""
-    for group in SIMILAR:
-        if ch in group:
-            others = [c for c in group if c != ch and c in CHARS]
-            if len(others) >= n:
-                return others[:n]
-    return []
+def scoped(chars):
+    """把一串字过滤到出题范围内，保持原顺序。"""
+    return [c for c in chars if in_scope(c)]
 
 
-def make_choice(qid, tag, difficulty, stem, answer, distractors, explain):
-    """拼一道选择题。选项打乱，答案位置不固定 —— 否则孩子会背「选 b」。"""
-    opts = [answer] + list(distractors)
-    opts = Rng(dhash(qid) & 0xFFFF).shuffle(opts)
-    letters = 'abcd'
-    options = [{'id': letters[i], 'text': t} for i, t in enumerate(opts)]
-    ans_id = [o['id'] for o in options if o['text'] == answer][0]
-    return {
-        'id': qid,
-        'subject': 'chinese',
-        'type': 'choice',
-        'difficulty': difficulty,
-        'unit': None,
-        'family': None,
-        'tags': [tag],
-        'stem': {'text': stem, 'layout': 'grid'},
-        'options': options,
-        'answer': ans_id,
-        'explain': explain,
-    }
+def sound_alike_initial(ch):
+    """这个字的声母+韵母（不带声调），用来判断它是不是另一个字的声旁。
 
-
-def two_char_word(ch):
-    """挑一个含这个字的双字词，用来挖空。"""
-    for w in CHARS[ch][4]:
-        if len(w) == 2 and ch in w:
-            return w
-    return None
+    只用在部首题里做干扰项过滤，拼音本身从不出现在产物里。
+    """
+    return split_syllable(CHARS[ch][0])
 
 
 # ---------------------------------------------------------------- 各题型
 
-def build_py2zi():
-    """看拼音选字：「mā」是哪个字？"""
-    out = []
-    for ch in sorted(CHARS):
-        if not usable(ch):
+def build_stroke_change():
+    """加一笔 / 减一笔：考字形本身，是这一档最「认字」的一道题。"""
+    # 加一笔和减一笔轮流出，切片的时候不会只剩一种
+    plus, minus = [], []
+
+    for base in sorted(PLUS_ONE):
+        if not in_scope(base):
             continue
-        py, _s, _r, grade, words = CHARS[ch]
-        ds = sound_alike(ch, 3)
+        valid = scoped(PLUS_ONE[base])
+        if not valid:
+            continue
+        answer = valid[0]                       # 有多个合法答案时取第一个
+        # **干扰项必须避开其余合法答案。** 这是这道题唯一会坏的地方：
+        # 「日」加一笔既是目也是白，把白放进选项就有两个正确答案。
+        pool = [c for c in scoped(''.join(sorted(CHARS)))
+                if c not in valid and c != base
+                and CHARS[c][1] == CHARS[base][1] + 1]
+        ds = seeded('plus' + base).shuffle(pool)[:3]
         if len(ds) < 3:
             continue
-        out.append(make_choice(
-            'zi-py2zi-%04d' % (len(out) + 1), '看拼音选字',
-            1 if grade == 1 else 2,
-            '「%s」是哪个字？' % py, ch, ds,
-            '「%s」读 %s，可以组词「%s」。' % (ch, py, words[0]),
+        plus.append(make_choice(
+            'chinese', 'zi-jia-%04d' % (len(plus) + 1), '加一笔', 2,
+            '「%s」加一笔，变成下面哪个字？' % base, answer, ds,
+            '「%s」加一笔是「%s」。' % (base, answer),
         ))
-    return out
 
-
-def build_zi2py():
-    """看字选拼音：「妈」读什么？"""
-    out = []
-    for ch in sorted(CHARS):
-        if not usable(ch):
+    for base in sorted(MINUS_ONE):
+        if not in_scope(base):
             continue
-        py, _s, _r, grade, words = CHARS[ch]
-        base, tone = split_tone(py)
-        if tone == 0:
+        valid = scoped(MINUS_ONE[base])
+        if not valid:
             continue
-
-        n = len(out)
-        if n % 2 == 0:
-            # 考声调：mā → má / mǎ / mà
-            cands = [with_tone(base, t) for t in (1, 2, 3, 4) if t != tone]
-            ds = []
-            for c in cands:
-                if c != py and c not in ds:
-                    ds.append(c)
-        else:
-            # 考声母韵母：从字表里挑读音相近的。
-            # 必须排除读音和答案完全相同的字（夏 xià / 下 xià 都在字表里），
-            # 否则选项里会出现两个正确答案 —— 而字面上它们长得完全一样，
-            # 看起来只是「选项重复」，实际是题目坏了。
-            ini, fin = split_syllable(py)
-            ds = []
-            for other in sorted(CHARS):
-                if not usable(other) or other == ch:
-                    continue
-                opy = CHARS[other][0]
-                ob, ot = split_tone(opy)
-                if ot == 0 or ob == base:
-                    continue
-                oini, ofin = split_syllable(opy)
-                if ((oini and oini == ini) or ofin == fin) and opy not in ds:
-                    ds.append(opy)
-                if len(ds) >= 3:
-                    break
-
+        answer = valid[0]
+        pool = [c for c in scoped(''.join(sorted(CHARS)))
+                if c not in valid and c != base
+                and CHARS[c][1] == CHARS[base][1] - 1]
+        ds = seeded('minus' + base).shuffle(pool)[:3]
         if len(ds) < 3:
             continue
-        out.append(make_choice(
-            'zi-zi2py-%04d' % (n + 1), '看字选拼音',
-            1 if grade == 1 else 2,
-            '「%s」读什么？' % ch, py, ds[:3],
-            '「%s」读 %s，可以组词「%s」。' % (ch, py, words[0]),
+        minus.append(make_choice(
+            'chinese', 'zi-jian-%04d' % (len(minus) + 1), '减一笔', 2,
+            '「%s」减一笔，变成下面哪个字？' % base, answer, ds,
+            '「%s」减一笔是「%s」。' % (base, answer),
         ))
-    return out
 
-
-def build_similar():
-    """形近 / 同音字辨析：给一个词，从几个长得像的字里挑对的。"""
-    out = []
-    for word, ch, ds in CURATED_SIMILAR:
-        if ch not in CHARS:
-            continue
-        ds = [d for d in ds if d in CHARS and d != ch]
-        if len(ds) < 3:
-            continue
-        idx = word.index(ch)
-        blanked = word[:idx] + '（　）' + word[idx + 1:]
-        out.append(make_choice(
-            'zi-bianxi-%04d' % (len(out) + 1), '形近字辨析', 2,
-            '「%s」里应该填哪个字？' % blanked, ch, ds[:3],
-            '是「%s」，读 %s，不要和「%s」写混。'
-            % (ch, CHARS[ch][0], '」「'.join(ds[:2])),
-        ))
-    return out
+    return interleave([plus, minus])
 
 
 def build_category():
     """归类：下面哪个字是动物？选项跨类别取，答案唯一。"""
-    groups = [(name, stem, [c for c in cs if c in CHARS]) for name, stem, cs in CATEGORY]
+    groups = [(name, stem, scoped(cs)) for name, stem, cs in CATEGORY]
     groups = [(n, st, cs) for n, st, cs in groups if len(cs) >= 4]
 
-    out = []
+    # 每个类别内部打散，再按类别轮着抽。不打散的话切片 `[:cap]` 会
+    # 把位置全留给排在前面的类别（数字 11 个字永远排在最前）。
+    by_group = []
     for name, stem, members in groups:
         others = [c for _n, _s, cs in groups if _n != name for c in cs]
-        for ch in members:
-            ds = [c for c in Rng(dhash('cat' + ch) & 0xFFFF).shuffle(others)][:3]
+        qs = []
+        for ch in seeded('cat' + name).shuffle(members):
+            ds = seeded('cat' + ch).shuffle(others)[:3]
             if len(ds) < 3:
                 continue
-            out.append(make_choice(
-                'zi-guilei-%04d' % (len(out) + 1), '归类', 1,
+            qs.append(make_choice(
+                'chinese', 'zi-guilei-%04d' % (len(qs) + 1), '归类', 1,
                 stem, ch, ds,
                 '「%s」是%s。' % (ch, name),
             ))
+        by_group.append(qs)
+
+    out = interleave(by_group)
+    for i, q in enumerate(out):
+        q['id'] = 'zi-guilei-%04d' % (i + 1)
     return out
 
 
 def build_antonym():
-    """反义词。干扰项从其他反义词字里取，比随机字更像回事。"""
-    pool = sorted({c for pair in ANTONYMS for c in pair if c in CHARS})
-    out = []
-    for a, b in ANTONYMS:
-        if a not in CHARS or b not in CHARS or len(pool) < 4:
-            continue
-        ds = [x for x in Rng(dhash('ant' + a) & 0xFFFF).shuffle(pool)
-              if x != a and x != b][:3]
+    """反义词。干扰项从其他反义词字里取，比随机字更像回事。
+
+    每对出两道（正着问一遍、反着问一遍）。10 对一年级反义词只够 10 道题，
+    而这一档要出 18 道 —— 反着问不是凑数：「小」的反义词是哪个字，
+    和「大」的反义词是哪个字，对孩子是两次独立的检索。
+    """
+    pairs = [(a, b) for a, b in ANTONYMS if in_scope(a) and in_scope(b)]
+    pool = sorted({c for pair in pairs for c in pair})
+    if len(pool) < 4:
+        return []
+
+    def one(a, b, n):
+        ds = [x for x in seeded('ant' + a).shuffle(pool) if x != a and x != b][:3]
         if len(ds) < 3:
-            continue
-        out.append(make_choice(
-            'zi-fanyi-%04d' % (len(out) + 1), '反义词', 1,
+            return None
+        return make_choice(
+            'chinese', 'zi-fanyi-%04d' % n, '反义词', 1,
             '「%s」的反义词是哪个字？' % a, b, ds,
             '「%s」和「%s」意思相反。' % (a, b),
-        ))
-    return out
+        )
+
+    forward, backward = [], []
+    for i, (a, b) in enumerate(pairs):
+        q = one(a, b, i + 1)
+        if q:
+            forward.append(q)
+        q = one(b, a, i + 1)
+        if q:
+            backward.append(q)
+    return interleave([forward, backward])
 
 
 def build_strokes():
     """数笔画。干扰项取答案 ±1 / ±2 —— 都是「数错会得到」的数。"""
     out = []
     for ch in STROKE_SAFE:
-        if ch not in CHARS:
+        if not in_scope(ch):
             continue
-        py, strokes, radical, _g, _w = CHARS[ch]
+        _py, strokes, radical, _g, _w = CHARS[ch]
         ds = []
         for c in (strokes + 1, strokes - 1, strokes + 2, strokes - 2, strokes + 3):
             if c > 0 and c != strokes:
@@ -664,7 +588,7 @@ def build_strokes():
         if len(ds) < 3:
             continue
         out.append(make_choice(
-            'zi-bihua-%04d' % (len(out) + 1), '笔画', 2,
+            'chinese', 'zi-bihua-%04d' % (len(out) + 1), '笔画', 2,
             '「%s」一共有几笔？' % ch, '%d 笔' % strokes, ds,
             '「%s」是 %d 笔，部首是「%s」。' % (ch, strokes, radical),
         ))
@@ -675,25 +599,24 @@ def build_radical():
     """部首：「妈」的部首是什么？"""
     out = []
     for ch in RADICAL_SAFE:
-        if ch not in CHARS:
+        if not in_scope(ch):
             continue
-        py, strokes, radical, _g, words = CHARS[ch]
+        py, _s, radical, _g, words = CHARS[ch]
         base = split_tone(py)[0]
 
         # 干扰项不能和题干字同音节。
         # 「妈」的部首是「女」，但「马」是它的声旁 —— 选项里同时出现女和马，
         # 这道题就变成了猜出题人想考哪个，而不是考部首。形声字的声旁通常
-        # 和整字同音节，这条规则正好把它们滤掉（和 sound_alike 里排除
-        # 真同音字是同一个道理）。
+        # 和整字同音节，这条规则正好把它们滤掉。
         # 池子里的「纟」「宀」这类不单独成字，字表里查不到读音 —— 它们不可能
         # 是哪个字的声旁，留着当干扰项没问题。
-        ds = [r for r in Rng(dhash('rad' + ch) & 0xFFFF).shuffle(RADICAL_POOL)
+        ds = [r for r in seeded('rad' + ch).shuffle(RADICAL_POOL)
               if r != radical
               and not (r in CHARS and split_tone(CHARS[r][0])[0] == base)][:3]
         if len(ds) < 3:
             continue
         out.append(make_choice(
-            'zi-bushou-%04d' % (len(out) + 1), '部首', 2,
+            'chinese', 'zi-bushou-%04d' % (len(out) + 1), '部首', 2,
             '「%s」的部首是什么？' % ch, radical, ds,
             '「%s」的部首是「%s」，可以组词「%s」。' % (ch, radical, words[0]),
         ))
@@ -704,7 +627,8 @@ def build_radical_class():
     """同偏旁归类：下面哪个字是木字旁？"""
     by_radical = {}
     for ch in sorted(CHARS):
-        by_radical.setdefault(CHARS[ch][2], []).append(ch)
+        if in_scope(ch):
+            by_radical.setdefault(CHARS[ch][2], []).append(ch)
 
     out = []
     for radical in RADICAL_ASK:
@@ -722,6 +646,8 @@ def build_radical_class():
         ds = []
         used = {radical}
         for other_ch in sorted(CHARS, key=lambda c: dhash(answer + c)):
+            if not in_scope(other_ch):
+                continue
             r = CHARS[other_ch][2]
             if r in used or radical in other_ch:
                 continue
@@ -732,7 +658,7 @@ def build_radical_class():
         if len(ds) < 3:
             continue
         out.append(make_choice(
-            'zi-pianpang-%04d' % (len(out) + 1), '偏旁', 2,
+            'chinese', 'zi-pianpang-%04d' % (len(out) + 1), '偏旁', 2,
             '下面哪个字是「%s」字旁？' % radical, answer, ds,
             '「%s」是「%s」字旁。' % (answer, radical),
         ))
@@ -741,20 +667,21 @@ def build_radical_class():
 
 # ---------------------------------------------------------------- 主流程
 
-# (标签, 构造函数, 上限)。上限之和 > 300，靠 LIMIT 收口 ——
-# 这样调整配比只需要动这里的数字，不用改生成逻辑。
+# (标签, 构造函数, 上限)。上限之和**正好等于** LIMIT —— 这样每类的题量是
+# 有意配的，而不是被切片随机截断的。改配比只动这里的数字。
+#
+# 语文一科占 90 道，是「语文:数学:英语 = 3:3:4」里的那份 3（见 build.py
+# 的 SUBJECT_MIX）。
 BUILDERS = [
-    ('看拼音选字', build_py2zi, 96),
-    ('看字选拼音', build_zi2py, 62),
-    ('形近字辨析', build_similar, 31),
-    ('归类', build_category, 40),
-    ('反义词', build_antonym, 17),
-    ('笔画', build_strokes, 22),
-    ('部首', build_radical, 18),
-    ('偏旁', build_radical_class, 10),
+    ('归类', build_category, 22),
+    ('反义词', build_antonym, 18),
+    ('笔画', build_strokes, 18),
+    ('部首', build_radical, 14),
+    ('加一笔减一笔', build_stroke_change, 10),
+    ('偏旁', build_radical_class, 8),
 ]
 
-LIMIT = 300
+LIMIT = 90
 
 
 # ---------------------------------------------------------------- 自检
@@ -769,66 +696,19 @@ def stem_char(q):
     return m.group(1) if m else None
 
 
+def answer_text(q):
+    """取这道题正确选项的文字。"""
+    return [o['text'] for o in q['options'] if o['id'] == q['answer']][0]
+
+
 def selfcheck(questions):
-    """出题器自己的单元测试。
+    """语文题库自己的语义校验（结构通用校验在 qbank.selfcheck_common）。
 
     这几条断言就是「一道题有没有唯一正确答案」的机器版本 ——
-    内容题最大的风险不是崩溃，是答案错了但没人发现。
+    内容题最大的风险不是崩溃，是答案错了但没人发现。自动生成的选择题
+    尤其危险：错得很安静，四行 JSON 里看不出来。
     """
     errs = []
-    ids = set()
-    by_id = {}
-
-    for q in questions:
-        qid = q['id']
-        if qid in ids:
-            errs.append('%s：id 重复' % qid)
-        ids.add(qid)
-        by_id[qid] = q
-
-        opts = q.get('options', [])
-        texts = [o['text'] for o in opts]
-        if len(opts) != 4:
-            errs.append('%s：选项不是 4 个（%d）' % (qid, len(opts)))
-        if len(set(texts)) != len(texts):
-            errs.append('%s：选项重复 %s' % (qid, texts))
-        if q['answer'] not in [o['id'] for o in opts]:
-            errs.append('%s：answer 不在选项里' % qid)
-        if not q.get('explain'):
-            errs.append('%s：缺少 explain' % qid)
-        if not q.get('stem', {}).get('text'):
-            errs.append('%s：缺少题干' % qid)
-
-        # 选项里的单字必须在字表内 —— 这就是「字的范围」那条硬约束。
-        # 部首题的选项是偏旁（氵 艹 扌…），本来就不是能单独成字的字，
-        # 豁免这一类。
-        if q['tags'][0] in ('部首', '偏旁'):
-            continue
-        for t in texts:
-            for c in t:
-                if '\u4e00' <= c <= '\u9fff' and c not in CHARS:
-                    errs.append('%s：选项里的「%s」不在字表内' % (qid, c))
-
-    # 看拼音选字：选项里必须**有且只有一个**字读这个音
-    for q in questions:
-        if q['tags'] != ['看拼音选字']:
-            continue
-        py = stem_char(q)
-        want = split_tone(py)
-        hits = [o['text'] for o in q['options']
-                if split_tone(CHARS[o['text']][0]) == want]
-        if len(hits) != 1:
-            errs.append('%s：读 %s 的选项有 %d 个（%s）'
-                        % (q['id'], py, len(hits), '/'.join(hits)))
-
-    # 看字选拼音：选项里必须**有且只有一个**等于这个字的读音
-    for q in questions:
-        if q['tags'] != ['看字选拼音']:
-            continue
-        ch = stem_char(q)
-        right = [o['text'] for o in q['options'] if o['text'] == CHARS[ch][0]]
-        if len(right) != 1:
-            errs.append('%s：「%s」的正确读音不在选项里' % (q['id'], ch))
 
     # 反义词：答案必须真的是它的反义词
     pair = {a: b for a, b in ANTONYMS}
@@ -837,31 +717,111 @@ def selfcheck(questions):
         if q['tags'] != ['反义词']:
             continue
         ch = stem_char(q)
-        got = [o['text'] for o in q['options'] if o['id'] == q['answer']][0]
+        got = answer_text(q)
         if pair.get(ch) != got:
             errs.append('%s：「%s」的反义词写成了「%s」' % (q['id'], ch, got))
-
-    # 挖空题：答案必须真的在那个词里
-    for q in questions:
-        if q['tags'] != ['形近字辨析']:
-            continue
-        blanked = stem_char(q)
-        got = [o['text'] for o in q['options'] if o['id'] == q['answer']][0]
-        if blanked.replace('（　）', got) not in [w for w, _c, _d in CURATED_SIMILAR]:
-            errs.append('%s：填「%s」进「%s」不是一个词' % (q['id'], got, blanked))
 
     # 笔画：答案必须等于字表里的笔画数
     for q in questions:
         if q['tags'] != ['笔画']:
             continue
         ch = stem_char(q)
-        got = [o['text'] for o in q['options'] if o['id'] == q['answer']][0]
+        got = answer_text(q)
         if got != '%d 笔' % CHARS[ch][1]:
             errs.append('%s：「%s」的笔画写成了 %s' % (q['id'], ch, got))
 
-    # 全局规模
-    if len(questions) > LIMIT:
-        errs.append('题量 %d 超过上限 %d' % (len(questions), LIMIT))
+    # 部首：答案必须等于字表里的部首
+    for q in questions:
+        if q['tags'] != ['部首']:
+            continue
+        ch = stem_char(q)
+        got = answer_text(q)
+        if got != CHARS[ch][2]:
+            errs.append('%s：「%s」的部首写成了「%s」' % (q['id'], ch, got))
+
+    # 加一笔 / 减一笔：选项里有且只有一个字的笔画数对得上。
+    # 这是全库最容易出「两个正确答案」的一类 —— 「日」加一笔既是「目」
+    # 也是「白」，还可能是「田」。表的完备性由这条断言兜底。
+    for q in questions:
+        if q['tags'] not in (['加一笔'], ['减一笔']):
+            continue
+        base = stem_char(q)
+        table = PLUS_ONE if q['tags'] == ['加一笔'] else MINUS_ONE
+        delta = 1 if q['tags'] == ['加一笔'] else -1
+        texts = [o['text'] for o in q['options']]
+        hits = [t for t in texts if t in table.get(base, [])]
+        if len(hits) != 1:
+            errs.append('%s：「%s」%s的选项里正确答案有 %d 个（%s）'
+                        % (q['id'], base, q['tags'][0], len(hits), '/'.join(hits)))
+        # 顺手验一下笔画数：表写错了（比如「木」加一笔不该是「禾」）
+        # 在这一条上会露出来
+        for t in texts:
+            if t in CHARS and t != answer_text(q) and CHARS[t][1] != CHARS[base][1] + delta:
+                errs.append('%s：「%s」%s一笔不会是「%s」（笔画 %d→%d）'
+                            % (q['id'], base, q['tags'][0], t,
+                               CHARS[base][1], CHARS[t][1]))
+
+    # 归类：答案在类别里，干扰项都不在
+    cat_members = {stem: set(scoped(cs)) for _n, stem, cs in CATEGORY}
+    for q in questions:
+        if q['tags'] != ['归类']:
+            continue
+        members = cat_members.get(q['stem']['text'])
+        if members is None:
+            errs.append('%s：题干不在 CATEGORY 表里' % q['id'])
+            continue
+        got = answer_text(q)
+        if got not in members:
+            errs.append('%s：「%s」不属于「%s」' % (q['id'], got, q['stem']['text']))
+        for o in q['options']:
+            if o['text'] != got and o['text'] in members:
+                errs.append('%s：干扰项「%s」也属于这一类，题目有两个答案'
+                            % (q['id'], o['text']))
+
+    # 偏旁：答案的部首必须真的是它，干扰项的部首必须都不是
+    for q in questions:
+        if q['tags'] != ['偏旁']:
+            continue
+        m = re.search(r'「(.*?)」字旁', q['stem']['text'])
+        radical = m.group(1) if m else None
+        got = answer_text(q)
+        if not radical or CHARS.get(got, (None,) * 5)[2] != radical:
+            errs.append('%s：「%s」的部首不是「%s」' % (q['id'], got, radical))
+        for o in q['options']:
+            if o['text'] != got and CHARS.get(o['text'], (None,) * 5)[2] == radical:
+                errs.append('%s：干扰项「%s」也是「%s」旁，题目有两个答案'
+                            % (q['id'], o['text'], radical))
+
+    # 全库不许出现拼音。
+    # 「不以拼音的形式出现」是这次改版的硬要求，而拼音最容易从 explain
+    # 里漏出来（「「一」读 yī」这种）。这条断言直接扫题干、选项、解释，
+    # 出现任何拉丁字母或声调符号就判定失败。
+    for q in questions:
+        blob = [q['stem'].get('text') or '', q.get('explain') or '']
+        blob += [o['text'] for o in q['options']]
+        hit = LATIN_RE.search(' '.join(blob))
+        if hit:
+            errs.append('%s：出现了拼音/拉丁字母「%s」' % (q['id'], hit.group(0)))
+
+    # 出题范围：**孩子要认的那个字**必须是一年级的。
+    #
+    # 检查的是「选项」和题干里「」中的字，不是题干整句 —— 题干里的
+    # 「下面哪个字是动物？」本身要用到 面/哪/个/是，这些字超纲不影响
+    # 这道题考什么；要认的是那四个选项。
+    for q in questions:
+        # 题干里「」中的字也是要认的字 —— 但只有这几类的「」里装的是字。
+        # 部首/偏旁的「」里是偏旁（氵 艹 扌…），本来就不在字表里。
+        if q['tags'][0] in ('反义词', '笔画', '加一笔', '减一笔'):
+            ch = stem_char(q)
+            if ch and not in_scope(ch):
+                errs.append('%s：题干考的字「%s」超纲' % (q['id'], ch))
+
+        # 部首题的选项是偏旁，不是能单独成字的字，豁免
+        targets = [] if q['tags'] == ['部首'] else [o['text'] for o in q['options']]
+        for t in targets:
+            for c in t:
+                if '一' <= c <= '鿿' and not in_scope(c):
+                    errs.append('%s：选项里的「%s」超纲' % (q['id'], c))
 
     return errs
 
@@ -882,83 +842,56 @@ def generate():
 
 
 def build_zibiao():
-    """字表。既是构建校验的依据，也是给家长看的「这本书学哪些字」。"""
+    """字表。既是构建校验的依据，也是给家长看的「这本书学哪些字」。
+
+    只收一年级 —— 出题范围就到这里，多出来的字列在家长面板里只会让人
+    以为孩子要学。
+    """
     rows = []
-    for ch in sorted(CHARS, key=lambda c: (CHARS[c][3], c)):
+    for ch in sorted(CHARS, key=lambda c: c):
         py, strokes, radical, grade, words = CHARS[ch]
+        if grade > GRADE_MAX:
+            continue
         rows.append({
             'char': ch, 'pinyin': py, 'strokes': strokes,
-            'radical': radical, 'grade': grade, 'words': words,
+            'radical': radical, 'words': words,
+            # grade 一起带上。过滤是这一步做的，但「字表里只有一年级」
+            # 这条约束要能被**下游**独立验一次 —— 否则哪天过滤条件写错，
+            # 产物里多出二年级字，没人看得出来（孩子照样能玩）。
+            'grade': grade,
         })
     return {
-        '_comment': '幼小衔接识字范围。由 tools/gen_ziku.py 生成，不要手改。'
-                    '年级表示「通常什么时候学」，用于难度分级，'
-                    '不代表某个教材的逐字顺序。',
+        '_comment': '幼小衔接识字范围（小学一年级）。由 tools/gen_ziku.py '
+                    '生成，不要手改。这里的 pinyin 只给家长看 —— 题库里'
+                    '一道拼音题都没有，出题一律绕开读音。',
         'chars': rows,
     }
 
 
-def write_json(path, obj):
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
-        f.write('\n')
-
-
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument('--check', action='store_true',
-                    help='只校验产物是否与生成结果一致')
-    args = ap.parse_args()
-
-    questions, report = generate()
-    zibiao = build_zibiao()
-
-    errs = selfcheck(questions)
-    if errs:
-        print('❌ 出题自检未通过：')
-        for e in errs[:25]:
-            print('   · %s' % e)
-        if len(errs) > 25:
-            print('   …… 还有 %d 条' % (len(errs) - 25))
-        return 1
-
     qpath = os.path.join(DATA, 'chinese.json')
-    zpath = os.path.join(DATA, 'zi_grade12.json')
+    zpath = os.path.join(DATA, 'zi_grade1.json')
 
-    if args.check:
-        bad = []
-        for path, want in [(qpath, questions), (zpath, zibiao)]:
-            if not os.path.exists(path):
-                bad.append('缺少 %s' % os.path.relpath(path, ROOT))
-                continue
-            with open(path, 'r', encoding='utf-8') as f:
-                if json.load(f) != want:
-                    bad.append('%s 与生成结果不一致' % os.path.relpath(path, ROOT))
-        if bad:
-            for b in bad:
-                print('❌ %s' % b)
-            print('   跑一次 python3 tools/gen_ziku.py 重新生成')
+    code = run('语文（识字）', 'chinese', qpath, generate, LIMIT,
+               extra_checks=selfcheck,
+               report_extra=lambda qs: '  字表 %d 个字（全部一年级）' % len(build_zibiao()['chars']))
+    if code != 0:
+        return code
+
+    # 字表跟着题库一起走 --check 的一致性检查
+    zibiao = build_zibiao()
+    if '--check' in sys.argv:
+        if not os.path.exists(zpath):
+            print('❌ 缺少 %s' % os.path.relpath(zpath, ROOT))
             return 1
-        print('✅ 题库与字表都是最新的')
+        with open(zpath, 'r', encoding='utf-8') as f:
+            if json.load(f) != zibiao:
+                print('❌ %s 与生成结果不一致' % os.path.relpath(zpath, ROOT))
+                return 1
         return 0
 
-    write_json(qpath, questions)
     write_json(zpath, zibiao)
-
-    print('')
-    print('识字题库已生成')
-    print('=' * 44)
-    for label, c in report:
-        print('  %-12s %3d 道' % (label, c))
-    print('  %-12s %3d 道   (上限 %d)' % ('合计', len(questions), LIMIT))
-    print('')
-    print('  字表 %d 个字（一年级 %d · 二年级 %d）'
-          % (len(zibiao['chars']),
-             sum(1 for r in zibiao['chars'] if r['grade'] == 1),
-             sum(1 for r in zibiao['chars'] if r['grade'] == 2)))
-    print('')
-    print('  → src/data/chinese.json')
-    print('  → src/data/zi_grade12.json')
+    print('  → %s' % os.path.relpath(zpath, ROOT))
     print('')
     return 0
 
