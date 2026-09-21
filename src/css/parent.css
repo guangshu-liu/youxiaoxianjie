@@ -1,0 +1,277 @@
+/* parent.css — 家长面板、门禁、奖励兑换、音频管理 */
+
+/* ---------- 门禁 ---------- */
+
+.gate-q {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--c-primary-d);
+  letter-spacing: 3px;
+  margin: 22px 0;
+}
+
+.gate-input {
+  width: 100%;
+  min-height: 62px;
+  padding: 12px 18px;
+  font-size: 26px;
+  font-family: inherit;
+  text-align: center;
+  color: var(--c-ink);
+  background: #FAFAFA;
+  border: 3px solid var(--c-line);
+  border-radius: var(--r-md);
+  outline: none;
+}
+
+.gate-input:focus { border-color: var(--c-second); background: #fff; }
+
+.gate-err { color: var(--c-bad); font-size: 17px; margin: 10px 0; }
+.gate-err.hidden { display: none; }
+
+.import-area {
+  min-height: 110px;
+  margin: 12px 0;
+  font-size: 15px;
+  text-align: left;
+  resize: vertical;
+}
+
+/* ---------- 面板分区 ---------- */
+
+.p-section { margin-bottom: 26px; }
+
+.p-section-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--c-ink);
+  margin-bottom: 10px;
+  padding-left: 11px;
+  border-left: 5px solid var(--c-primary);
+}
+
+.stat-card,
+.audit-card,
+.warn-card {
+  padding: 16px;
+  background: #FAFAFA;
+  border-radius: var(--r-md);
+}
+
+.warn-card {
+  background: #FFF3E0;
+  border-left: 5px solid var(--c-warn);
+  margin-bottom: 18px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.warn-sub { font-size: 14px; color: var(--c-ink-soft); margin: 6px 0 10px; }
+
+.audit-bad {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #C62828;
+  background: #FFEBEE;
+  border-radius: var(--r-sm);
+}
+
+/* ---------- 待确认兑换 ---------- */
+
+.approve-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.approve-row:last-child { border-bottom: none; }
+.approve-label { font-weight: 700; font-size: 17px; }
+.approve-actions { display: flex; gap: 8px; }
+
+/* ---------- 英语解锁选项 ---------- */
+
+.unlock-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 13px;
+  margin-top: 8px;
+  font-family: inherit;
+  text-align: left;
+  background: #fff;
+  border: 3px solid var(--c-line);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all .16s;
+}
+
+.unlock-opt.unlock-on { border-color: var(--c-second); background: #E1F5FE; }
+.unlock-radio { font-size: 19px; color: var(--c-second); line-height: 1.4; }
+.unlock-label { font-size: 17px; font-weight: 700; }
+.unlock-detail { font-size: 13px; color: var(--c-ink-soft); margin-top: 2px; }
+
+.suggest {
+  margin-top: 12px;
+  padding: 11px 13px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2E7D32;
+  background: #E8F5E9;
+  border-radius: var(--r-sm);
+}
+
+/* ---------- 数据条 ---------- */
+
+.stat-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--c-ink-soft);
+  margin: 16px 0 8px;
+  letter-spacing: 1px;
+}
+
+.stat-title:first-child { margin-top: 0; }
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 15px;
+}
+
+.bar-label { flex: 0 0 108px; color: var(--c-ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.bar-track {
+  flex: 1;
+  height: 13px;
+  background: #E8E0D0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill { display: block; height: 100%; background: linear-gradient(90deg, #7FD8FF, var(--c-second)); border-radius: 999px; }
+.bar-pct { flex: 0 0 44px; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.wrong-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 15px;
+  border-bottom: 1px dashed var(--c-line);
+}
+
+.wrong-count { color: var(--c-bad); white-space: nowrap; font-weight: 700; }
+
+/* ---------- 音频管理 ---------- */
+
+.audio-list {
+  max-height: 320px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 12px 0;
+}
+
+.audio-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.audio-id {
+  font-size: 14px;
+  font-family: ui-monospace, Menlo, monospace;
+  color: var(--c-ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.audio-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+
+.gain-slider { width: 72px; accent-color: var(--c-primary); }
+
+/* ---------- 备份 ---------- */
+
+.backup-hint {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-ink-soft);
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  border-radius: var(--r-sm);
+}
+
+.backup-hint.backup-warn { color: #C62828; background: #FFEBEE; font-weight: 700; }
+
+/* ---------- 奖励兑换 ---------- */
+
+.points-big {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--c-second);
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.reward-list { display: flex; flex-direction: column; gap: 12px; }
+
+.reward-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 84px;
+  padding: 14px 18px;
+  font-family: inherit;
+  text-align: left;
+  background: #fff;
+  border: 3px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 4px 0 rgba(0,0,0,.06);
+  cursor: pointer;
+  transition: transform .1s;
+}
+
+.reward-card:active:not(.disabled) { transform: translateY(3px); }
+.reward-card.disabled { opacity: .45; }
+
+.reward-emoji { font-size: 40px; }
+.reward-info { flex: 1; }
+.reward-label { font-size: 21px; font-weight: 800; }
+.reward-cost { font-size: 15px; color: var(--c-ink-soft); }
+.reward-state { font-size: 14px; color: var(--c-ok); font-weight: 700; }
+
+.pending-box {
+  margin-top: 18px;
+  padding: 14px;
+  background: #FFF3E0;
+  border-radius: var(--r-md);
+  border-left: 5px solid var(--c-warn);
+}
+
+.pending-title { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+.pending-item { font-size: 16px; padding: 4px 0; }
+
+.limits-hint {
+  margin: 18px 0;
+  font-size: 14px;
+  color: var(--c-ink-soft);
+  text-align: center;
+}
+
+.overlay .panel .btn { margin-top: 10px; width: 100%; }
+.overlay .panel .approve-actions .btn,
+.overlay .panel .audio-actions .btn { margin-top: 0; width: auto; }

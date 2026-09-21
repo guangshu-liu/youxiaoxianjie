@@ -1,0 +1,272 @@
+[
+  {
+    "id": "cn-pinyin-0001",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["拼音", "声调"],
+    "stem": { "text": "哪个字读「mā」？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "妈" },
+      { "id": "b", "text": "马" },
+      { "id": "c", "text": "麻" },
+      { "id": "d", "text": "骂" }
+    ],
+    "answer": "a",
+    "explain": "「妈」是第一声，读 mā。"
+  },
+  {
+    "id": "cn-pinyin-0002",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["拼音", "声母韵母"],
+    "stem": { "text": "「p」和「a」拼在一起是？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "pa" },
+      { "id": "b", "text": "ba" },
+      { "id": "c", "text": "ma" },
+      { "id": "d", "text": "fa" }
+    ],
+    "answer": "a",
+    "explain": "p 和 a 拼起来读 pa。"
+  },
+  {
+    "id": "cn-pinyin-0003",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["拼音", "声母韵母"],
+    "stem": { "text": "下面哪个是韵母？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "a" },
+      { "id": "b", "text": "b" },
+      { "id": "c", "text": "m" },
+      { "id": "d", "text": "t" }
+    ],
+    "answer": "a",
+    "explain": "a 是韵母，b、m、t 都是声母。"
+  },
+  {
+    "id": "cn-pinyin-0004",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["拼音", "声调"],
+    "stem": { "text": "「马」是第几声？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "第一声" },
+      { "id": "b", "text": "第二声" },
+      { "id": "c", "text": "第三声" },
+      { "id": "d", "text": "第四声" }
+    ],
+    "answer": "c",
+    "explain": "「马」读 mǎ，是第三声。"
+  },
+  {
+    "id": "cn-pinyin-0005",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["拼音", "整体认读"],
+    "stem": { "text": "「花」的拼音是？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "huā" },
+      { "id": "b", "text": "hā" },
+      { "id": "c", "text": "fā" },
+      { "id": "d", "text": "huá" }
+    ],
+    "answer": "a",
+    "explain": "「花」读 huā，中间有个 u。"
+  },
+  {
+    "id": "cn-zi-0001",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["识字", "字义"],
+    "stem": { "text": "「日」字是什么意思？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "太阳" },
+      { "id": "b", "text": "月亮" },
+      { "id": "c", "text": "水" },
+      { "id": "d", "text": "山" }
+    ],
+    "answer": "a",
+    "explain": "「日」就是太阳，所以「日出」是太阳升起来。"
+  },
+  {
+    "id": "cn-zi-0002",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["识字", "偏旁"],
+    "stem": { "text": "哪个字是「木」字旁？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "林" },
+      { "id": "b", "text": "水" },
+      { "id": "c", "text": "火" },
+      { "id": "d", "text": "土" }
+    ],
+    "answer": "a",
+    "explain": "「林」是两棵树，都是木字旁。"
+  },
+  {
+    "id": "cn-zi-0003",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["识字", "反义词"],
+    "stem": { "text": "「大」的反义词是？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "小" },
+      { "id": "b", "text": "多" },
+      { "id": "c", "text": "高" },
+      { "id": "d", "text": "长" }
+    ],
+    "answer": "a",
+    "explain": "大和小是一对反义词。"
+  },
+  {
+    "id": "cn-zi-0004",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["识字", "加一笔"],
+    "stem": { "text": "「人」加一笔可以变成哪个字？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "大" },
+      { "id": "b", "text": "口" },
+      { "id": "c", "text": "日" },
+      { "id": "d", "text": "山" }
+    ],
+    "answer": "a",
+    "explain": "「人」中间加一横，就变成「大」。"
+  },
+  {
+    "id": "cn-bihua-0001",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["笔画", "数笔画"],
+    "stem": { "text": "「口」字有几笔？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "2 笔" },
+      { "id": "b", "text": "3 笔" },
+      { "id": "c", "text": "4 笔" },
+      { "id": "d", "text": "5 笔" }
+    ],
+    "answer": "b",
+    "explain": "「口」是 3 笔：竖、横折、横。"
+  },
+  {
+    "id": "cn-bihua-0002",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["笔画", "数笔画"],
+    "stem": { "text": "「日」字有几笔？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "3 笔" },
+      { "id": "b", "text": "4 笔" },
+      { "id": "c", "text": "5 笔" },
+      { "id": "d", "text": "6 笔" }
+    ],
+    "answer": "b",
+    "explain": "「日」是 4 笔。"
+  },
+  {
+    "id": "cn-ciyu-0001",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["词语", "组词"],
+    "stem": { "text": "「小」和「鸟」组成什么词？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "小鸟" },
+      { "id": "b", "text": "鸟小" },
+      { "id": "c", "text": "小了" },
+      { "id": "d", "text": "鸟了" }
+    ],
+    "answer": "a",
+    "explain": "「小鸟」是一个词，说的是小小的鸟。"
+  },
+  {
+    "id": "cn-ciyu-0002",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": ["词语", "分类"],
+    "stem": { "text": "下面哪一个是水果？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "苹果" },
+      { "id": "b", "text": "白菜" },
+      { "id": "c", "text": "桌子" },
+      { "id": "d", "text": "铅笔" }
+    ],
+    "answer": "a",
+    "explain": "苹果是水果，白菜是蔬菜。"
+  },
+  {
+    "id": "cn-gushi-0001",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["古诗"],
+    "stem": { "text": "「床前明月光」的下一句是？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "疑是地上霜" },
+      { "id": "b", "text": "低头思故乡" },
+      { "id": "c", "text": "处处闻啼鸟" },
+      { "id": "d", "text": "白日依山尽" }
+    ],
+    "answer": "a",
+    "explain": "这是李白的《静夜思》：床前明月光，疑是地上霜。"
+  },
+  {
+    "id": "cn-gushi-0002",
+    "subject": "chinese",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": ["古诗"],
+    "stem": { "text": "「春眠不觉晓」的下一句是？", "layout": "grid" },
+    "options": [
+      { "id": "a", "text": "处处闻啼鸟" },
+      { "id": "b", "text": "疑是地上霜" },
+      { "id": "c", "text": "夜来风雨声" },
+      { "id": "d", "text": "花落知多少" }
+    ],
+    "answer": "a",
+    "explain": "孟浩然的《春晓》：春眠不觉晓，处处闻啼鸟。"
+  }
+]

@@ -1,0 +1,527 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+build.py — 产出两种产物，零第三方依赖。
+
+  online  → output/online/                分离资产，部署到对象存储
+  single  → output/幼小衔接-v1.0.html      单文件全内联，微信传阅/离线
+
+为什么不用 webpack/vite：单文件化本质就是字符串替换 + base64 编码，
+一个脚本就够。零依赖意味着半年后回来仍能构建成功。
+
+用法：
+    python3 tools/build.py [online|single|all]
+"""
+
+import base64
+import json
+import os
+import re
+import shutil
+import sys
+import hashlib
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import make_icons
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SRC = os.path.join(ROOT, 'src')
+OUT = os.path.join(ROOT, 'output')
+AUDIO = os.path.join(ROOT, 'audio')
+
+# 产物文件名
+SINGLE_NAME = '幼小衔接-v1.0.html'
+
+# CSS 拼接顺序（顺序有意义：变量必须先于使用）
+CSS_ORDER = ['base.css', 'game.css', 'wheel.css', 'parent.css']
+
+# 音频扩展名。Phase 0 的占位音是 WAV，正式内容用 MP3。
+AUDIO_EXT = ['.mp3', '.wav', '.m4a', '.ogg']
+
+MIME = {
+    '.mp3': 'audio/mpeg',
+    '.wav': 'audio/wav',
+    '.m4a': 'audio/mp4',
+    '.ogg': 'audio/ogg',
+}
+
+# 在线版的 PWA 头。全部用相对路径 —— 这样部署在 GitHub Pages 的子路径
+# （https://user.github.io/repo/）下也能正常工作，不需要知道自己的前缀。
+PWA_LINKS = '''<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">'''
+
+# Service Worker 注册。只在 https（或本机调试）下注册 ——
+# file:// 和 http:// 下 SW 不可用，注册会抛异常刷控制台。
+SW_REGISTER = '''<script>
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+  var h = location.hostname;
+  var okProto = location.protocol === 'https:' || h === 'localhost' || h === '127.0.0.1';
+  if (!okProto) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function (e) {
+      console.warn('[sw] 注册失败（不影响在线使用，只影响离线）', e);
+    });
+  });
+})();
+</script>'''
+
+
+def log(msg):
+    print(msg, flush=True)
+
+
+def read(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
+
+
+def write(path, content, binary=False):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    mode = 'wb' if binary else 'w'
+    with open(path, mode, **({} if binary else {'encoding': 'utf-8'})) as f:
+        f.write(content)
+
+
+def fmt_size(n):
+    if n < 1024:
+        return '%d B' % n
+    if n < 1024 * 1024:
+        return '%.1f KB' % (n / 1024)
+    return '%.2f MB' % (n / 1024 / 1024)
+
+
+# ---------------------------------------------------------------- 数据
+
+def load_json(name):
+    path = os.path.join(SRC, 'data', name)
+    if not os.path.exists(path):
+        log('  ⚠️  缺少 %s，按空处理' % name)
+        return [] if name != 'curriculum.json' else {}
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def build_data_js():
+    """生成 window.G.DATA 和 window.G.CURRICULUM_DATA。"""
+    curriculum = load_json('curriculum.json')
+    chinese = load_json('chinese.json')
+    math = load_json('math.json')
+    english = load_json('english.json')
+
+    payload = {
+        'chinese': chinese,
+        'math': math,
+        'english': english,
+    }
+    # ensure_ascii=False 让中文在产物里保持可读，便于调试
+    js = ('window.G = window.G || {};\n'
+          'window.G.DATA = %s;\n'
+          'window.G.CURRICULUM_DATA = %s;\n'
+          % (json.dumps(payload, ensure_ascii=False, separators=(',', ':')),
+             json.dumps(curriculum, ensure_ascii=False, separators=(',', ':'))))
+
+    counts = {k: len(v) for k, v in payload.items()}
+    log('  题库：语文 %d · 数学 %d · 英语 %d' %
+        (counts['chinese'], counts['math'], counts['english']))
+    return js
+
+
+# ---------------------------------------------------------------- 音频
+
+def scan_audio():
+    """扫描 audio/ 生成清单。
+
+    audio id = 相对路径去掉扩展名、'/' 换成 '.' —— 例如
+        audio/word/fan.mp3  →  'word.fan'
+    这样代码引用音频不需要第二张映射表。
+    """
+    entries = []
+    if not os.path.isdir(AUDIO):
+        return entries
+
+    for dirpath, _, filenames in os.walk(AUDIO):
+        for fn in sorted(filenames):
+            ext = os.path.splitext(fn)[1].lower()
+            if ext not in AUDIO_EXT:
+                continue
+            full = os.path.join(dirpath, fn)
+            rel = os.path.relpath(full, AUDIO).replace(os.sep, '/')
+            audio_id = os.path.splitext(rel)[0].replace('/', '.')
+            entries.append({
+                'id': audio_id,
+                'rel': rel,
+                'abs': full,
+                'ext': ext,
+                'bytes': os.path.getsize(full),
+            })
+    return entries
+
+
+def build_audio_js_online(entries):
+    amap = {}
+    for e in entries:
+        amap[e['id']] = {'src': 'audio/' + e['rel']}
+    return ('window.G = window.G || {};\n'
+            'window.G.AUDIO_MAP = %s;\n'
+            % json.dumps(amap, ensure_ascii=False, separators=(',', ':'))), 0
+
+
+def build_audio_js_single(entries):
+    """单文件版：音频以 data URI 内联。这是「1.3 MB 单文件」判断的落地点。"""
+    amap = {}
+    total = 0
+    for e in entries:
+        with open(e['abs'], 'rb') as f:
+            raw = f.read()
+        total += len(raw)
+        b64 = base64.b64encode(raw).decode('ascii')
+        amap[e['id']] = {'src': 'data:%s;base64,%s' % (MIME.get(e['ext'], 'audio/mpeg'), b64)}
+    return ('window.G = window.G || {};\n'
+            'window.G.AUDIO_MAP = %s;\n'
+            % json.dumps(amap, ensure_ascii=False, separators=(',', ':'))), total
+
+
+# ---------------------------------------------------------------- 源码
+
+def read_js():
+    jsdir = os.path.join(SRC, 'js')
+    names = sorted(n for n in os.listdir(jsdir) if n.endswith('.js'))
+    parts = []
+    for n in names:
+        parts.append('/* ===== %s ===== */\n%s' % (n, read(os.path.join(jsdir, n))))
+    return names, '\n'.join(parts)
+
+
+def read_css():
+    cssdir = os.path.join(SRC, 'css')
+    present = [n for n in CSS_ORDER if os.path.exists(os.path.join(cssdir, n))]
+    # 兜底：CSS_ORDER 里没列出但目录里存在的，追加在后面
+    extra = sorted(n for n in os.listdir(cssdir)
+                   if n.endswith('.css') and n not in present)
+    order = present + extra
+    parts = []
+    for n in order:
+        parts.append('/* ===== %s ===== */\n%s' % (n, read(os.path.join(cssdir, n))))
+    return order, '\n'.join(parts)
+
+
+def template():
+    return read(os.path.join(SRC, 'index.html'))
+
+
+# ---------------------------------------------------------------- 校验
+
+# 选项不来自静态 options 数组的题型。三个都是刻意的设计决定，不是数据缺失：
+#   listen   —— 选项每次由 30-curriculum.js 用最小对立对现生成（固定选项会被记住）
+#   realword —— 只有「真词 / 假词」两个按钮，由 44-render-realword.js 写死
+#   sort     —— 选项是 items[]，判定看 bucket 是否命中，没有 answer 字段
+NO_STATIC_OPTIONS = {'listen', 'realword', 'sort'}
+
+
+def validate(entries):
+    """构建前的自检。100 道手工题 + 生成的音频 + 交叉引用必然会出现笔误，
+    这个函数能挡掉 90% 的低级 bug。"""
+    errors = []
+    warnings = []
+
+    audio_ids = set(e['id'] for e in entries)
+    curriculum = load_json('curriculum.json')
+    families = set(curriculum.get('families', {}).keys())
+
+    all_ids = set()
+    for subject, fname in [('chinese', 'chinese.json'),
+                           ('math', 'math.json'),
+                           ('english', 'english.json')]:
+        for q in load_json(fname):
+            qid = q.get('id', '<无 id>')
+            qtype = q.get('type')
+
+            if qid in all_ids:
+                errors.append('%s：id 重复' % qid)
+            all_ids.add(qid)
+
+            if q.get('subject') != subject:
+                errors.append('%s：subject 应为 %s，实际 %s' % (qid, subject, q.get('subject')))
+
+            # 生成题的选项在运行时展开，静态 options/answer 检查对它不适用
+            runtime_opts = bool(q.get('generator')) or qtype in NO_STATIC_OPTIONS
+
+            if not runtime_opts:
+                opts = q.get('options', [])
+                ids = [o.get('id') for o in opts]
+                if len(ids) != len(set(ids)):
+                    errors.append('%s：选项 id 重复' % qid)
+
+                ans = q.get('answer')
+                if ans is not None and ans not in ids:
+                    errors.append('%s：answer "%s" 不在选项里' % (qid, ans))
+
+                if qtype not in NO_STATIC_OPTIONS and not opts:
+                    errors.append('%s：没有选项' % qid)
+
+            # sort 题无论选项怎么来，items 的 bucket 都必须存在
+            if qtype == 'sort':
+                buckets = set(b.get('id') for b in q.get('buckets', []))
+                items = q.get('items', [])
+                if len(buckets) < 2:
+                    errors.append('%s：sort 题至少要有 2 个筐子' % qid)
+                if not items:
+                    errors.append('%s：sort 题没有 items' % qid)
+                for it in items:
+                    if it.get('bucket') not in buckets:
+                        errors.append('%s：item %s 的 bucket "%s" 不存在'
+                                      % (qid, it.get('id'), it.get('bucket')))
+
+            # 英语题的 unit/family 必须非空且在课程表里
+            if subject == 'english':
+                fams = q.get('families') or ([q['family']] if q.get('family') else [])
+                if not fams:
+                    errors.append('%s：英语题缺少 family' % qid)
+                for f in fams:
+                    if f not in families:
+                        errors.append('%s：词族 "%s" 未在 curriculum.json 定义' % (qid, f))
+                if not q.get('unit'):
+                    errors.append('%s：英语题缺少 unit' % qid)
+            else:
+                if q.get('unit') or q.get('family'):
+                    warnings.append('%s：非英语题不应有 unit/family' % qid)
+
+            # 音频引用必须存在
+            for a in (q.get('audio') or []):
+                aid = a if isinstance(a, str) else a.get('id')
+                if not aid:
+                    continue
+                key = aid.replace('.mp3', '').replace('.wav', '').replace('/', '.')
+                if key not in audio_ids:
+                    warnings.append('%s：引用的音频 %s 不存在' % (qid, aid))
+
+    # 词族覆盖率。
+    # 只检查「孩子现在玩得到的」词族 —— 即默认解锁范围以内的。锁定单元没有题是
+    # 正常的（Phase 0 只做了 U1–U2），对它们报警会把真正的缺口淹掉。
+    by_family = {}
+    for q in load_json('english.json'):
+        for f in (q.get('families') or ([q['family']] if q.get('family') else [])):
+            by_family.setdefault(f, []).append(q)
+
+    opts = curriculum.get('unlockOptions') or []
+    frontier = opts[0].get('through') if opts else None
+    reachable, locked = [], []
+    for u in curriculum.get('units', []):
+        (reachable if _unitReached(u['id'], frontier) else locked).extend(u.get('families', []))
+
+    for f in reachable:
+        n = len(by_family.get(f, []))
+        if n == 0:
+            errors.append('词族 -%s 在解锁范围内但没有任何题' % f)
+        elif n < 3:
+            errors.append('词族 -%s 只有 %d 道题，但一局需要 3 道同族题' % (f, n))
+        elif n < 6:
+            warnings.append('词族 -%s 只有 %d 道题，几局后就会重复' % (f, n))
+
+    empty_locked = [f for f in locked if not by_family.get(f)]
+    if empty_locked:
+        warnings.append('解锁范围外 %d 个词族暂无题（正常，Phase 2 补）：%s'
+                        % (len(empty_locked), ' '.join('-' + f for f in empty_locked)))
+
+    return errors, warnings
+
+
+def _unitReached(unit_id, frontier):
+    """UI 的解锁是「到 X 为止」，所以比较的是单元序号而不是字符串。"""
+    if not frontier:
+        return False
+    try:
+        return int(unit_id.lstrip('U')) <= int(frontier.lstrip('U'))
+    except ValueError:
+        return False
+
+
+# ---------------------------------------------------------------- 产物
+
+def build_online(data_js, audio_js, css_names, css_text, js_names, js_text, entries):
+    outdir = os.path.join(OUT, 'online')
+    if os.path.isdir(outdir):
+        shutil.rmtree(outdir)
+    os.makedirs(outdir, exist_ok=True)
+
+    write(os.path.join(outdir, 'app.css'), css_text)
+    write(os.path.join(outdir, 'data.js'), data_js + audio_js)
+    write(os.path.join(outdir, 'app.js'), js_text)
+
+    # 音频资源
+    for e in entries:
+        dest = os.path.join(outdir, 'audio', e['rel'])
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        shutil.copy2(e['abs'], dest)
+
+    # 图标（缺失时自动生成）+ manifest
+    icons_src = os.path.join(SRC, 'icons')
+    make_icons.ensure_icons(icons_src, quiet=True)
+    os.makedirs(os.path.join(outdir, 'icons'), exist_ok=True)
+    for fn in sorted(os.listdir(icons_src)):
+        if fn.endswith('.png'):
+            shutil.copy2(os.path.join(icons_src, fn),
+                         os.path.join(outdir, 'icons', fn))
+    shutil.copy2(os.path.join(SRC, 'manifest.webmanifest'),
+                 os.path.join(outdir, 'manifest.webmanifest'))
+
+    # ---- 预缓存清单 ----
+    # 版本号取全部产物的内容哈希：内容一变缓存名就变，SW 激活时自动清掉旧缓存。
+    # 不这么做的话，孩子会被永久钉在第一次打开的版本上。
+    precache = ['index.html', 'app.css', 'data.js', 'app.js', 'manifest.webmanifest']
+    precache += ['icons/' + fn for fn in sorted(os.listdir(os.path.join(outdir, 'icons')))]
+    precache += ['audio/' + e['rel'] for e in entries]
+
+    h = hashlib.sha1()
+    for rel in sorted(precache):
+        p = os.path.join(outdir, rel)
+        if os.path.exists(p):
+            with open(p, 'rb') as f:
+                h.update(f.read())
+    version = 'yxjx-' + h.hexdigest()[:10]
+
+    sw = read(os.path.join(SRC, 'sw.js'))
+    sw = sw.replace('__SW_VERSION__', version)
+    sw = sw.replace('__SW_PRECACHE__', json.dumps(precache, ensure_ascii=False))
+    write(os.path.join(outdir, 'sw.js'), sw)
+
+    # ---- index.html ----
+    html = template()
+    html = html.replace('<!--@pwa-->', PWA_LINKS)
+    html = html.replace('<!--@inline:css-->',
+                        '<link rel="stylesheet" href="app.css">')
+    html = html.replace('<!--@inline:data-->',
+                        '<script src="data.js"></script>')
+    html = html.replace('<!--@inline:audio-->', '')
+    html = html.replace('<!--@inline:js-->',
+                        '<script src="app.js"></script>')
+    html = html.replace('<!--@sw-->', SW_REGISTER)
+    write(os.path.join(outdir, 'index.html'), html)
+
+    # 预缓存清单里的每一项都必须在磁盘上存在。
+    # 这一条必须硬失败：SW 装不上是完全静默的 —— 在线玩一切正常，
+    # 只有孩子到了没网的地方才会发现，而那时候已经来不及修了。
+    missing = [rel for rel in precache
+               if not os.path.exists(os.path.join(outdir, rel))]
+    if missing:
+        raise SystemExit('预缓存清单里有 %d 个文件不存在，SW 会装不上：\n  %s'
+                         % (len(missing), '\n  '.join(missing)))
+
+    total = 0
+    for dirpath, _, files in os.walk(outdir):
+        for f in files:
+            total += os.path.getsize(os.path.join(dirpath, f))
+
+    log('  output/online/  →  index.html + app.js + app.css + data.js')
+    log('                      + sw.js + manifest + icons/ + audio/')
+    log('    CSS: %s' % ', '.join(css_names))
+    log('    JS:  %s (%d 个文件)' % (', '.join(js_names), len(js_names)))
+    log('    预缓存 %d 个资源，缓存版本 %s' % (len(precache), version))
+    log('    总计 %s' % fmt_size(total))
+    return outdir
+
+
+def build_single(data_js, audio_js, audio_raw_bytes, css_text, js_text, entries):
+    html = template()
+
+    # 单文件版把图标内联成 data URI，保持「一个文件、零外部依赖」
+    icon = os.path.join(SRC, 'icons', 'icon-180.png')
+    if os.path.exists(icon):
+        with open(icon, 'rb') as f:
+            b64 = base64.b64encode(f.read()).decode('ascii')
+        pwa = ('<link rel="apple-touch-icon" href="data:image/png;base64,%s">' % b64)
+    else:
+        pwa = ''
+
+    html = html.replace('<!--@pwa-->', pwa)
+    html = html.replace('<!--@inline:css-->', '<style>\n%s\n</style>' % css_text)
+    html = html.replace('<!--@inline:data-->',
+                        '<script>\n%s\n</script>' % data_js)
+    html = html.replace('<!--@inline:audio-->',
+                        '<script>\n%s\n</script>' % audio_js)
+    html = html.replace('<!--@inline:js-->',
+                        '<script>\n%s\n</script>' % js_text)
+    # 单文件版不注册 SW：file:// 下 SW 不可用，且它本来就是离线的
+    html = html.replace('<!--@sw-->', '')
+
+    outpath = os.path.join(OUT, SINGLE_NAME)
+    write(outpath, html)
+
+    size = os.path.getsize(outpath)
+    raw = sum(e['bytes'] for e in entries)
+
+    log('  output/%s' % SINGLE_NAME)
+    log('    源码 %.1f KB + 音频 %s（base64 后 ≈ %s）'
+        % ((len(css_text) + len(js_text) + len(data_js)) / 1024,
+           fmt_size(raw), fmt_size(raw * 4 / 3)))
+    log('    单文件总计 %s' % fmt_size(size))
+    return outpath
+
+
+# ---------------------------------------------------------------- main
+
+def main():
+    argv = [a for a in sys.argv[1:] if not a.startswith('--')]
+    flags = set(a for a in sys.argv[1:] if a.startswith('--'))
+    mode = argv[0] if argv else 'all'
+
+    if mode not in ('online', 'single', 'all'):
+        log('用法：python3 tools/build.py [online|single|all] [--check-only]')
+        return 1
+    check_only = '--check-only' in flags or '--check' in flags or '-c' in sys.argv[1:]
+
+    log('')
+    log('构建 幼小衔接知识闯关 (%s)' % mode)
+    log('=' * 46)
+
+    entries = scan_audio()
+    log('音频：%d 条，共 %s' % (len(entries), fmt_size(sum(e['bytes'] for e in entries))))
+    if not entries:
+        log('  ⚠️  audio/ 为空。游戏能跑，但没有声音 —— 英语听音题会失效。')
+        log('     先跑 python3 tools/tts_gen.py 生成音频。')
+
+    log('')
+    log('校验')
+    errors, warnings = validate(entries)
+    for w in warnings:
+        log('  ⚠️  %s' % w)
+    if errors:
+        for e in errors:
+            log('  ❌ %s' % e)
+        log('')
+        log('校验未通过，构建中止。')
+        return 1
+    log('  ✅ 通过（%d 条警告）' % len(warnings))
+
+    if check_only:
+        log('')
+        log('--check-only：校验通过，未生成产物。')
+        return 0
+
+    log('')
+    log('生成')
+    data_js = build_data_js()
+    css_names, css_text = read_css()
+    js_names, js_text = read_js()
+
+    if mode in ('online', 'all'):
+        audio_js, _ = build_audio_js_online(entries)
+        build_online(data_js, audio_js, css_names, css_text, js_names, js_text, entries)
+
+    if mode in ('single', 'all'):
+        audio_js, raw = build_audio_js_single(entries)
+        build_single(data_js, audio_js, raw, css_text, js_text, entries)
+
+    log('')
+    log('完成。本地预览：')
+    log('  python3 -m http.server 8080 --directory output/online')
+    log('  然后打开 http://localhost:8080')
+    log('  自检页：http://localhost:8080#selftest')
+    log('')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

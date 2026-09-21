@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="知识闯关">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#FFF8E7">
+<title>知识闯关 · 幼小衔接</title>
+
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div id="app"></div>
+
+<script src="data.js"></script>
+
+
+
+<script src="app.js"></script>
+
+<script>
+(function () {
+  if (!('serviceWorker' in navigator)) return;
+  var h = location.hostname;
+  var okProto = location.protocol === 'https:' || h === 'localhost' || h === '127.0.0.1';
+  if (!okProto) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function (e) {
+      console.warn('[sw] 注册失败（不影响在线使用，只影响离线）', e);
+    });
+  });
+})();
+</script>
+
+<script>
+(function () {
+  // 入口。经典 script，不用 ES Module —— 单文件版要在 file:// 下打开，
+  // <script type="module"> 会被 CORS 拦截。
+  function start() {
+    if (location.hash === '#selftest') {
+      G.SelfTest.run();
+      return;
+    }
+    G.App.boot({
+      curriculum: window.G.CURRICULUM_DATA,
+      chinese: window.G.DATA.chinese,
+      math: window.G.DATA.math,
+      english: window.G.DATA.english
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
+</script>
+
+</body>
+</html>

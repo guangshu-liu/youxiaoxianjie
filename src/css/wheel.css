@@ -1,0 +1,117 @@
+/* wheel.css — 转盘抽奖 */
+
+.wheel-overlay { background: rgba(30,25,20,.62); }
+
+.wheel-box {
+  width: 100%;
+  max-width: 460px;
+  padding: 26px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  background: linear-gradient(180deg, #FFFDF7 0%, #FFF3E0 100%);
+  border-radius: var(--r-xl);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  animation: panel-in .3s cubic-bezier(.2,.9,.3,1.2);
+}
+
+.wheel-title {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--c-primary-d);
+  text-align: center;
+}
+
+/* ---------- 盘面 ---------- */
+
+.wheel-stage {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wheel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 9px solid #fff;
+  box-shadow: 0 0 0 4px var(--c-primary), 0 12px 30px rgba(0,0,0,.22);
+  transform: rotate(0deg);
+  will-change: transform;
+}
+
+.wheel-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 84px;
+  margin-left: -42px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.42);
+  transform-origin: center center;
+  pointer-events: none;
+  line-height: 1.15;
+}
+
+/* 指针在 12 点方向。conic-gradient 从 -90deg 起算，正好对上。 */
+.wheel-pointer {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  margin-left: -16px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 30px solid var(--c-primary-d);
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,.35));
+  z-index: 2;
+}
+
+/* 中心轴 */
+.wheel-stage::after {
+  content: '';
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff, #FFE0B2);
+  box-shadow: 0 3px 10px rgba(0,0,0,.28);
+  z-index: 1;
+}
+
+/* ---------- 结果 ---------- */
+
+.wheel-result {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: var(--r-md);
+  line-height: 1.4;
+}
+
+.wheel-result-win   { color: #2E7D32; background: #E8F5E9; animation: pop-ok .6s ease-out; }
+.wheel-result-again { color: #E8892B; background: #FFF3E0; }
+
+.btn-spin {
+  min-width: 190px;
+  font-size: 30px;
+  min-height: 74px;
+  border-radius: 999px;
+  animation: pulse 1.5s infinite;
+}
+
+.btn-spin.hidden { display: none; }

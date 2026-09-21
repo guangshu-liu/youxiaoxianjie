@@ -1,0 +1,32 @@
+{
+  "name": "幼小衔接知识闯关",
+  "short_name": "知识闯关",
+  "description": "给 6 岁孩子的语文 / 数学 / 自然拼读闯关游戏，离线可玩。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FFF8E7",
+  "theme_color": "#FFF8E7",
+  "categories": ["education", "kids", "games"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

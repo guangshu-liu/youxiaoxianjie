@@ -1,0 +1,129 @@
+/* 05-ui.js — 共享 UI 组件：提示条、进度点、对错反馈 */
+(function (window) {
+  'use strict';
+
+  var G = window.G;
+
+  var toastEl = null;
+  var toastTimer = null;
+
+  function toast(msg, ms) {
+    if (toastEl && toastEl.parentNode) toastEl.parentNode.removeChild(toastEl);
+    toastEl = G.el('div', { class: 'toast', text: msg });
+    document.body.appendChild(toastEl);
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      if (toastEl && toastEl.parentNode) toastEl.parentNode.removeChild(toastEl);
+      toastEl = null;
+    }, ms || 2400);
+  }
+
+  var bannerEl = null;
+
+  function banner(msg, kind) {
+    if (bannerEl) return;
+    bannerEl = G.el('div', {
+      class: 'banner banner-' + (kind || 'info'),
+      onclick: function () { dismissBanner(); }
+    }, [G.el('span', { text: msg }), G.el('span', { class: 'banner-x', text: '✕' })]);
+    document.body.appendChild(bannerEl);
+  }
+
+  function dismissBanner() {
+    if (bannerEl && bannerEl.parentNode) bannerEl.parentNode.removeChild(bannerEl);
+    bannerEl = null;
+  }
+
+  /* ---------- 进度点 ---------- */
+
+  function progressDots(total, current, results) {
+    var wrap = G.el('div', { class: 'dots' });
+    for (var i = 0; i < total; i++) {
+      var cls = 'dot';
+      if (results && results[i] === true) cls += ' dot-ok';
+      else if (results && results[i] === false) cls += ' dot-bad';
+      else if (i === current) cls += ' dot-now';
+      wrap.appendChild(G.el('span', { class: cls }));
+    }
+    return wrap;
+  }
+
+  /* ---------- 对错反馈 ---------- */
+
+  /**
+   * 答对：绿色脉冲 + 音效。
+   * 答错：抖动 + 显示正确答案，绝不惩罚性动画（6 岁孩子的挫败感阈值很低）。
+   */
+  function feedback(node, correct) {
+    node.classList.add(correct ? 'fb-ok' : 'fb-bad');
+    if (!correct) {
+      // 抖动
+      node.classList.add('shake');
+      setTimeout(function () { node.classList.remove('shake'); }, 480);
+    }
+    setTimeout(function () {
+      node.classList.remove('fb-ok', 'fb-bad');
+    }, 700);
+  }
+
+  function confetti(container) {
+    var n = 18;
+    for (var i = 0; i < n; i++) {
+      var p = G.el('span', { class: 'confetti' });
+      p.style.left = (10 + Math.random() * 80) + '%';
+      p.style.animationDelay = (Math.random() * 0.25) + 's';
+      p.style.background = ['#FFD54F', '#4FC3F7', '#FF8A65', '#81C784', '#BA68C8'][i % 5];
+      container.appendChild(p);
+      (function (node) {
+        setTimeout(function () {
+          if (node.parentNode) node.parentNode.removeChild(node);
+        }, 1400);
+      })(p);
+    }
+  }
+
+  /* ---------- 通用页面外壳 ---------- */
+
+  function screen(extraClass) {
+    return G.el('div', { class: 'screen ' + (extraClass || '') });
+  }
+
+  /**
+   * 大喇叭按钮。英语听音题的题干就是它。
+   * 可重复点 —— 6 岁孩子会反复听，不能只让听一次。
+   */
+  function speakerButton(audioId, label, opts) {
+    opts = opts || {};
+    var btn = G.el('button', {
+      class: 'speaker' + (opts.small ? ' speaker-sm' : ''),
+      onclick: function () {
+        btn.classList.add('playing');
+        G.Audio.play(audioId).then(function () {
+          btn.classList.remove('playing');
+        });
+      }
+    }, [
+      G.el('span', { class: 'speaker-icon', text: '🔊' }),
+      label ? G.el('span', { class: 'speaker-label', text: label }) : null
+    ]);
+
+    if (opts.autoplay) setTimeout(function () { btn.click(); }, 350);
+    return btn;
+  }
+
+  G.UI = {
+    toast: toast,
+    banner: banner,
+    dismissBanner: dismissBanner,
+    progressDots: progressDots,
+    feedback: feedback,
+    confetti: confetti,
+    screen: screen,
+    speakerButton: speakerButton
+  };
+
+  // 供 10-store / 20-audio 里的降级路径调用
+  G.toast = toast;
+  G.banner = banner;
+
+})(window);
