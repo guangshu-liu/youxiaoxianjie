@@ -216,10 +216,8 @@ function loadData(sandbox) {
   const dir = path.join(SRC, 'data');
   const read = (f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
   return {
-    curriculum: read('curriculum.json'),
     chinese: read('chinese.json'),
-    math: read('math.json'),
-    english: read('english.json'),
+    zibiao: read('zi_grade12.json'),
   };
 }
 
@@ -249,13 +247,13 @@ console.log('已加载：' + loaded.join(', '));
 let data;
 if (fromBuild) {
   const D = G && G.DATA;
-  if (!D || !G.CURRICULUM_DATA) {
-    console.log('\x1b[31m产物里没有 G.DATA / G.CURRICULUM_DATA\x1b[0m');
+  if (!D || !D.chinese || !D.zibiao) {
+    console.log('\x1b[31m产物里没有 G.DATA.chinese / G.DATA.zibiao\x1b[0m');
     process.exit(1);
   }
-  data = { curriculum: G.CURRICULUM_DATA, chinese: D.chinese, math: D.math, english: D.english };
-  console.log('内联题库：语文 ' + data.chinese.length + ' · 数学 ' + data.math.length +
-              ' · 英语 ' + data.english.length);
+  data = { chinese: D.chinese, zibiao: D.zibiao };
+  console.log('内联题库：识字 ' + data.chinese.length + ' 道 · 字表 ' +
+              data.zibiao.chars.length + ' 字');
   console.log('内联音频：' + Object.keys(G.AUDIO_MAP || {}).length + ' 条');
 } else {
   data = loadData(sandbox);
@@ -265,8 +263,18 @@ if (fromBuild) {
 section('1. 核心工具（00-core.js）');
 ok(!!G, 'G 命名空间存在');
 eq(G.PRIZES.reduce((s, p) => s + p.weight, 0), 100, '转盘权重总和 = 100');
-ok(G.DEFAULT_MIX.chinese + G.DEFAULT_MIX.math + G.DEFAULT_MIX.english === 10, '一局题数 = 10');
-eq(G.limits ? 'has' : 'has', 'has', '（G.LIMITS 挂在 G 上）');
+eq(G.DEFAULT_MIX.chinese, G.ROUND_SIZE, '一局题数 = 10');
+eq(G.SUBJECTS.join(','), 'chinese', '只有识字一科');
+
+{
+  // 空奖必须是真空白：不重转、不兜底送分，也不带任何「再来一次」的痕迹
+  const none = G.PRIZES.filter((p) => p.kind === 'none');
+  eq(none.length, 1, '有且只有一个空奖项');
+  eq(none[0].points, 0, '空奖不给分');
+  ok(!/再来/.test(none[0].label), '盘面上的空奖不写「再来一次」', none[0].label);
+  ok(/无奖励/.test(G.NO_PRIZE_TEXT), '结算条写明无奖励', G.NO_PRIZE_TEXT);
+  ok(!('maxRespinsPerQuestion' in G.LIMITS), '重转次数上限已从 limits 移除');
+}
 
 {
   const r1 = G.rngFrom('seed-a'), r2 = G.rngFrom('seed-a');
@@ -299,13 +307,30 @@ ok(!!Store, 'G.Store 存在');
   const save = Store.defaultSave();
   ok(save.points && save.points.balance === 0, '新存档余额为 0');
   ok(Array.isArray(save.wrongBook), 'wrongBook 是数组');
-  ok(save.settings.englishUnlockedThrough === 'U2', '英语默认解锁到 U2');
+  ok(!!save.progress.chinese.byTag, 'progress 里只有识字一科的统计');
+  ok(save.settings.englishUnlockedThrough === undefined, '英语解锁设置已移除');
   ok(!!save.limits && save.limits.maxPointsPerDay > 0, 'limits 已初始化');
 
   Store.save(save);
   const back = Store.load();
   eq(back.points.balance, save.points.balance, '存档写入后能读回');
-  eq(back.settings.englishUnlockedThrough, 'U2', '设置项持久化');
+  eq(back.settings.mix.chinese, G.DEFAULT_MIX.chinese, '设置项持久化');
+}
+
+{
+  // 老存档（三科时代）读进来不能崩：progress 是嵌套的，浅拷贝补不到里层
+  const legacy = Store.defaultSave();
+  legacy.progress = { english: { familyStats: {}, typeStats: {} } };
+  legacy.settings.englishUnlockedThrough = 'U8';
+  Store._setCache(null);
+  Store.save(legacy);
+
+  const raw = JSON.parse(sandbox.localStorage.getItem(Store.KEY));
+  ok(raw.progress.chinese === undefined, '（构造出一份没有识字统计的老存档）');
+
+  const loaded = Store.load();
+  ok(!!loaded.progress.chinese.byTag, '老存档读入后补上了 progress.chinese.byTag');
+  Store._setCache(null);
 }
 
 {
@@ -321,104 +346,180 @@ ok(!!Store, 'G.Store 存在');
   ok(!a2.ok, '余额被篡改时审计报警', JSON.stringify(a2));
 }
 
-/* ---- 3. 课程 ---- */
-section('3. 课程与干扰项（30-curriculum.js）');
-const Cur = G.Curriculum;
-Cur.init(data);
+/* ---- 3. 字表与题库 ---- */
+section('3. 字表与题库（30-bank.js）');
+const Bank = G.Bank;
+ok(!!Bank, 'G.Bank 存在');
+Bank.init(data);
+
+// 选项里出现的是偏旁而不是汉字的题型，字表范围检查对它们豁免
+const RADICAL_TAGS = new Set(['部首', '偏旁']);
+
+const ZI = Bank.zibiao();
+ok(!!ZI && Array.isArray(ZI.chars), '字表已载入');
+ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
+
+{
+  const all = Bank.all();
+  eq(all.length, data.chinese.length, 'Bank.all() 与题库等长');
+  ok(all.length <= 300, '题量在上限 300 以内', all.length + ' 道');
+
+  const chars = new Set(ZI.chars.map((c) => c.char));
+  eq(chars.size, ZI.chars.length, '字表内没有重复的字');
+
+  const grades = new Set(ZI.chars.map((c) => c.grade));
+  ok([...grades].every((g) => g === 1 || g === 2), '字表只含一、二年级', [...grades].join(','));
+
+  // 字表每一条都要有拼音，否则看拼音选字会指向空气。
+  // 拼音带声调符号（yī、wàn）而不是数字 —— 那是给孩子看的。
+  // 判定方式：把声调符号规范化掉之后，剩下的应该全是 a-z。
+  const hasPinyin = (c) => {
+    if (!c.pinyin) return false;
+    const bare = c.pinyin.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return /^[a-z]+$/.test(bare);
+  };
+  const noPinyin = ZI.chars.filter((c) => !hasPinyin(c));
+  ok(noPinyin.length === 0, '每个字都有合法拼音',
+     noPinyin.slice(0, 3).map((c) => c.char + '=' + c.pinyin).join(' '));
+}
+
+{
+  // 题库的结构约束。生成器（gen_ziku.py）已经断言过一遍，这里是拿**实际
+  // 落到产物里的字节**再验一次 —— 生成器和构建之间还有一道序列化。
+  const all = Bank.all();
+  const problems = [];
+  const ids = new Set();
+  const byTag = {};
+
+  all.forEach((q) => {
+    if (ids.has(q.id)) problems.push(q.id + '：id 重复');
+    ids.add(q.id);
+
+    if (q.subject !== 'chinese') problems.push(q.id + '：subject=' + q.subject);
+    if (q.type !== 'choice') problems.push(q.id + '：type=' + q.type);
+    if (!q.options || q.options.length !== 4) problems.push(q.id + '：选项不是 4 个');
+
+    const optIds = (q.options || []).map((o) => o.id);
+    if (new Set(optIds).size !== optIds.length) problems.push(q.id + '：选项 id 重复');
+    if (optIds.indexOf(q.answer) < 0) problems.push(q.id + '：answer 不在选项里');
+
+    const texts = (q.options || []).map((o) => o.text);
+    if (new Set(texts).size !== texts.length) problems.push(q.id + '：选项内容重复 ' + texts.join('/'));
+
+    if (!q.explain) problems.push(q.id + '：缺少 explain');
+    if (!q.stem || !q.stem.text) problems.push(q.id + '：缺少题干文本');
+
+    const tag = (q.tags || [])[0];
+    if (!tag) problems.push(q.id + '：缺少 tags');
+    else byTag[tag] = (byTag[tag] || 0) + 1;
+  });
+
+  const uniq = [...new Set(problems)];
+  ok(uniq.length === 0, all.length + ' 道题结构自洽', uniq.slice(0, 4).join(' | '));
+  console.log('    \x1b[90m' + Object.keys(byTag).sort()
+    .map((t) => t + '(' + byTag[t] + ')').join('  ') + '\x1b[0m');
+
+  eq(Object.keys(byTag).length, 8, '覆盖 8 种题型');
+}
+
+{
+  // 「字的范围」—— 这是需求里唯一一条能被机器验证的约束，也是最容易
+  // 悄悄破掉的一条：干扰项里混进三年级的字，孩子照样能玩，没人会发现。
+  const chars = new Set(ZI.chars.map((c) => c.char));
+  const offenders = [];
+
+  Bank.all().forEach((q) => {
+    if (RADICAL_TAGS.has((q.tags || [])[0])) return;
+    (q.options || []).forEach((o) => {
+      for (const c of (o.text || '')) {
+        if (c >= '一' && c <= '鿿' && !chars.has(c)) {
+          offenders.push(q.id + ' 的选项「' + o.text + '」含表外字「' + c + '」');
+        }
+      }
+    });
+  });
+
+  ok(offenders.length === 0, '所有选项里的汉字都在字表内',
+     offenders.slice(0, 3).join(' | '));
+
+  // 答案本身也必须表内 —— 上一条只查了选项，这条独立复核。
+  // 部首题的答案是偏旁（亻 氵 讠），它们落在汉字码位里但不是能单独用的字，
+  // 同样豁免。
+  const outside = Bank.all().filter((q) => {
+    if (RADICAL_TAGS.has((q.tags || [])[0])) return false;
+    const opt = (q.options || []).filter((o) => o.id === q.answer)[0];
+    const t = ((opt && opt.text) || '').trim();
+    return t.length === 1 && t >= '一' && t <= '鿿' && !chars.has(t);
+  });
+  ok(outside.length === 0, '所有「答案是一个字」的题，那个字都在字表内',
+     outside.slice(0, 3).map((q) => q.id).join(' '));
+}
+
+/* ---- 4. 抽题权重 ---- */
+section('4. 加权抽题（Bank.drawOne）');
+{
+  const q0 = Bank.all()[0];
+  const save = Store.defaultSave();
+
+  eq(Bank.weightOf(q0, {}), 1, '没做过的题权重 = 1');
+  ok(Bank.weightOf(q0, { [q0.id]: { wrongCount: 3, cleared: false } }) > 1,
+     '错过的题权重更高');
+  ok(Bank.weightOf(q0, { [q0.id]: { wrongCount: 3, cleared: true } }) < 1,
+     '连对两次后权重降低');
+}
+
+{
+  // 抽题分布：给 40 道题记上错题，它们出现的频率应当明显高于其余 256 道
+  const all = Bank.all();
+  const marked = all.slice(0, 40);
+  const save = Store.defaultSave();
+  marked.forEach((q, i) => {
+    save.wrongBook.push({
+      qid: q.id, subject: 'chinese', seen: 1, correct: 0,
+      wrongCount: 1 + (i % 2), rightStreak: 0, lastWrongAt: Date.now(), cleared: false,
+    });
+  });
+
+  const rng = G.rngFrom('draw-dist');
+  const tally = {};
+  const N = 40000;
+  for (let i = 0; i < N; i++) {
+    const q = Bank.drawOne(save, [], rng);
+    tally[q.id] = (tally[q.id] || 0) + 1;
+  }
+
+  const markedIds = new Set(marked.map((q) => q.id));
+  let markedHits = 0;
+  Object.keys(tally).forEach((id) => { if (markedIds.has(id)) markedHits += tally[id]; });
+  const markedRate = markedHits / N;
+  const fairRate = marked.length / all.length;   // 均匀随机下应得的比例
+
+  ok(markedRate > fairRate * 1.8, '错题被抽中的频率明显高于均匀随机',
+     (markedRate * 100).toFixed(1) + '% vs 均匀 ' + (fairRate * 100).toFixed(1) + '%');
+
+  // 权重不是「只出错题」—— 没做过的题仍然占大头，否则孩子一开局就被
+  // 历史错题淹没，会觉得这个游戏变难了
+  ok(markedRate < 0.6, '错题没有淹没题库', (markedRate * 100).toFixed(1) + '%');
+}
 
 {
   const save = Store.defaultSave();
-  const fams = Cur.unlockedFamilies(save);
-  eq(fams.sort().join(','), 'ad,ag,am,an,ap,at', '默认解锁 6 个词族（U1–U2）');
-
-  save.settings.englishUnlockedThrough = 'U3';
-  eq(Cur.unlockedFamilies(save).length, 9, '解锁到 U3 后有 9 个词族');
-  save.settings.englishUnlockedThrough = 'U8';
-  eq(Cur.unlockedFamilies(save).length, 25, '解锁到 U8 后覆盖全部 25 个词族');
-}
-
-{
-  const p = Cur.split('fan');
-  ok(p && p.onset === 'f' && p.vowel === 'a' && p.coda === 'n', 'split(fan) 正确');
-  ok(Cur.split('cat').coda === 't', 'split(cat) 正确');
-  ok(Cur.split('123') === null, 'split 对非词返回 null');
-}
-
-{
-  // 干扰项必须是真词、必须与答案不同、必须凑够数量
-  const fams = Cur.unlockedFamilies(Store.defaultSave());
-  const allWords = Cur.allWords();
-  let bad = [];
-  let vowelContrast = 0, total = 0;
-
-  for (let i = 0; i < 400; i++) {
-    const fam = fams[i % fams.length];
-    const words = Cur.wordsByFamily()[fam];
-    const w = words[Math.floor(Math.random() * words.length)];
-    const ds = Cur.makeDistractors(w, fam, fams, 2);
-    total++;
-    if (ds.some((d) => !allWords[d.text])) bad.push(w + ' → ' + JSON.stringify(ds));
-    if (ds.some((d) => d.text === w)) bad.push(w + ' 的干扰项包含自己');
-    if (ds.some((d) => d.kind === 'vowel-contrast')) vowelContrast++;
+  const rng = G.rngFrom('draw-exclude');
+  const used = Bank.all().slice(0, 50).map((q) => q.id);
+  let bad = 0;
+  for (let i = 0; i < 3000; i++) {
+    const q = Bank.drawOne(save, used, rng);
+    if (used.indexOf(q.id) >= 0) bad++;
   }
-  ok(bad.length === 0, '干扰项全部是真实存在的词且不含答案本身',
-     bad.slice(0, 3).join(' | '));
+  eq(bad, 0, 'excludeIds 内的题不会被抽到');
 
-  // 换元音干扰项是 OPW2 的核心考点，占比过低说明最小对立表没生效
-  const ratio = vowelContrast / total;
-  ok(ratio > 0.5, '换元音干扰项占比 > 50%', '实际 ' + (ratio * 100).toFixed(0) + '%');
+  // 题库被抽空时不能崩，也不能返回 null
+  const allIds = Bank.all().map((q) => q.id);
+  const q2 = Bank.drawOne(save, allIds, G.rngFrom('draw-empty'));
+  ok(!!q2 && allIds.indexOf(q2.id) >= 0, '题库被抽空时兜底返回一道题');
 
-  const ds = Cur.makeDistractors('zzz', 'an', fams, 2);
-  ok(Array.isArray(ds), 'makeDistractors 对无法拆分的词不崩');
-}
-
-/* ---- 4. 程序化生成器 ---- */
-section('4. 数学生成器（instantiateGenerator）');
-{
-  const kinds = {};
-  data.math.forEach((q) => { if (q.generator) kinds[q.generator.kind] = q; });
-  ok(Object.keys(kinds).length >= 3, '覆盖至少 3 种 generator.kind',
-     Object.keys(kinds).join(', '));
-
-  let problems = [];
-  let observed = new Set();
-
-  Object.keys(kinds).forEach((kind) => {
-    const q = kinds[kind];
-    for (let i = 0; i < 300; i++) {
-      const rng = G.rngFrom('gen-' + kind + '-' + i);
-      const out = Cur.instantiateGenerator(q, rng);
-      observed.add(kind);
-
-      if (!out.options || out.options.length < 2) { problems.push(kind + ': 选项少于 2 个'); continue; }
-      const ids = out.options.map((o) => o.id);
-      if (new Set(ids).size !== ids.length) problems.push(kind + ': 选项 id 重复');
-      const texts = out.options.map((o) => o.text);
-      if (new Set(texts).size !== texts.length) problems.push(kind + ': 选项内容重复 → ' + texts.join('/'));
-      if (ids.indexOf(out.answer) < 0) problems.push(kind + ': answer 不在选项里');
-
-      const ansText = out.options.filter((o) => o.id === out.answer)[0].text;
-      const n = parseInt(ansText, 10);
-      if (!isNaN(n) && n < 0) problems.push(kind + ': 出现负数答案 ' + n);
-
-      // 加法不超纲
-      if (kind === 'add' && out._meta && out._meta.ans > 20) problems.push(kind + ': 和超过 20 → ' + out._meta.ans);
-      if (kind === 'sub' && out._meta && out._meta.ans < 0) problems.push(kind + ': 差为负');
-      if (!out.explain) problems.push(kind + ': 缺少 explain');
-      if (!out.stem || !out.stem.text) problems.push(kind + ': 缺少题干文本');
-    }
-  });
-
-  const uniq = Array.from(new Set(problems));
-  ok(uniq.length === 0, '四种生成器共 1200 次展开全部自洽',
-     uniq.slice(0, 4).join(' | '));
-  eq(observed.size, Object.keys(kinds).length, '所有 kind 都被执行到');
-
-  // 同种子必须同题 —— 这是「同一天同题可复现」的基础
-  const q = kinds.add;
-  const x = Cur.instantiateGenerator(q, G.rngFrom('fixed'));
-  const y = Cur.instantiateGenerator(q, G.rngFrom('fixed'));
-  eq(x.stem.text, y.stem.text, '同种子生成同一道题');
+  eq(Bank.byId(allIds[0]).id, allIds[0], 'byId 能查到题');
+  eq(Bank.byId('不存在'), null, 'byId 查不到时返回 null');
 }
 
 /* ---- 5. 一局编排 ---- */
@@ -428,13 +529,21 @@ ok(!!Runner, 'G.Runner 存在');
 ok(typeof Runner.buildRound === 'function', 'buildRound 是函数');
 
 {
-  let rounds = 0;
   const problems = [];
-  const subjectCounts = { chinese: 0, math: 0, english: 0 };
+  let rounds = 0;
+  let tagAdjacent = 0, tagPairs = 0;
+  let baseAdjacent = 0, basePairs = 0;   // 同一批题随机打散的对照
 
   for (let i = 0; i < 60; i++) {
     const save = Store.defaultSave();
-    save.sessions = Array.from({ length: i % 5 }, () => ({ ts: Date.now(), correct: 7, items: [], spins: [] }));
+    // 造一点历史：每局都有几道题做错过
+    Bank.all().slice(i * 7, i * 7 + 5).forEach((q) => {
+      save.wrongBook.push({
+        qid: q.id, subject: 'chinese', seen: 2, correct: 0,
+        wrongCount: 2, rightStreak: 0, lastWrongAt: Date.now(), cleared: false,
+      });
+    });
+
     let round;
     try {
       round = Runner.buildRound(save);
@@ -444,62 +553,110 @@ ok(typeof Runner.buildRound === 'function', 'buildRound 是函数');
     }
     rounds++;
 
-    const items = round.items || round.questions || round;
-    if (!Array.isArray(items)) { problems.push('buildRound 返回值不是数组'); continue; }
+    const items = round.questions;
+    if (!Array.isArray(items)) { problems.push('buildRound 没返回 questions 数组'); continue; }
     if (items.length !== 10) { problems.push('第 ' + i + ' 局题数 = ' + items.length); continue; }
 
-    const counts = { chinese: 0, math: 0, english: 0 };
-    const engIdx = [];
+    const seen = new Set();
     items.forEach((q, idx) => {
-      if (!q || !q.subject) { problems.push('第 ' + i + ' 局第 ' + idx + ' 题缺 subject'); return; }
-      counts[q.subject] = (counts[q.subject] || 0) + 1;
-      if (q.subject === 'english') engIdx.push(idx);
-      if (q.subject === 'english' && !q.family && !q.families) {
-        problems.push('英语题缺 family');
+      if (!q || !q.id) { problems.push('第 ' + i + ' 局第 ' + idx + ' 题没有 id'); return; }
+      if (q.subject !== 'chinese') problems.push('第 ' + i + ' 局第 ' + idx + ' 题不是识字题');
+      if (seen.has(q.id)) problems.push('第 ' + i + ' 局出现重复题 ' + q.id);
+      seen.add(q.id);
+
+      // 位置软约束：首尾必须是这一局里最可能答对的两道
+      const prob = Runner.successProb(q, save);
+      if (idx > 0 && idx < 9 && prob > Runner.successProb(items[9], save) + 1e-9) {
+        problems.push('第 ' + i + ' 局中间题的成功率高于末题');
       }
     });
 
-    if (counts.chinese !== 4 || counts.math !== 3 || counts.english !== 3) {
-      problems.push('第 ' + i + ' 局分布 = ' + JSON.stringify(counts));
+    const p0 = Runner.successProb(items[0], save);
+    const p9 = Runner.successProb(items[9], save);
+    const midMax = Math.max(...items.slice(1, 9).map((q) => Runner.successProb(q, save)));
+    if (Math.min(p0, p9) < midMax - 1e-9) {
+      problems.push('第 ' + i + ' 局首/末题不是成功率最高的两道');
     }
 
-    // 位置软约束：英语落在中间，首尾留给高正确率题
-    if (engIdx.some((idx) => idx < 1 || idx > 6)) {
-      problems.push('第 ' + i + ' 局英语题位置 = ' + engIdx.join(','));
+    for (let k = 1; k < items.length; k++) {
+      tagPairs++;
+      const a = (items[k - 1].tags || [])[0], b = (items[k].tags || [])[0];
+      if (a === b) tagAdjacent++;
     }
-    if (items[0].subject === 'english') problems.push('第 ' + i + ' 局首题是英语');
-    if (items[9].subject === 'english') problems.push('第 ' + i + ' 局末题是英语');
 
-    subjectCounts.chinese += counts.chinese;
-    subjectCounts.math += counts.math;
-    subjectCounts.english += counts.english;
+    // 对照：同样这 10 道题，单纯打散会怎样。题型分布很不均（看拼音选字
+    // 占三分之一），所以对照不能假设「8 种题型各 1/8」。
+    const ctrl = G.shuffle(items.slice(), G.rngFrom('ctrl-' + i));
+    for (let k = 1; k < ctrl.length; k++) {
+      basePairs++;
+      const a = (ctrl[k - 1].tags || [])[0], b = (ctrl[k].tags || [])[0];
+      if (a === b) baseAdjacent++;
+    }
   }
 
-  const uniq = Array.from(new Set(problems));
+  const uniq = [...new Set(problems)];
   ok(rounds === 60, '60 局全部构建成功', '成功 ' + rounds + ' 局');
-  ok(uniq.length === 0, '60 局全部满足 4/3/3 + 位置约束',
-     uniq.slice(0, 5).join(' | '));
-  eq(subjectCounts.chinese, 240, '语文总题数 = 4 × 60');
-  eq(subjectCounts.math, 180, '数学总题数 = 3 × 60');
-  eq(subjectCounts.english, 180, '英语总题数 = 3 × 60');
+  ok(uniq.length === 0, '60 局均为 10 道不重复的识字题，且首尾留给最有把握的题',
+     uniq.slice(0, 4).join(' | '));
+
+  // 同一题型不挨着。orderByTag 是软约束，不要求做到 0，
+  // 但必须比「原样打散」明显好 —— 拿同一批题的随机排列当对照。
+  const rate = tagAdjacent / tagPairs;
+  const base = baseAdjacent / basePairs;
+  ok(rate < base * 0.4, '同题型相邻的比例远低于随机排列',
+     (rate * 100).toFixed(1) + '% vs 随机 ' + (base * 100).toFixed(1) + '%');
 }
 
 {
-  // 同一局的 3 道英语题必须属于同一词族（hear → build → use 闭环的前提）
-  const Cur2 = G.Curriculum;
-  let violations = 0, samples = [];
-  for (let i = 0; i < 40; i++) {
-    const save = Store.defaultSave();
-    const seq = Cur2.buildEnglishSequence(save, 'day-' + i, []);
-    const fams = new Set();
-    seq.questions.forEach((q) => {
-      (q.families || (q.family ? [q.family] : [])).forEach((f) => fams.add(f));
-    });
-    // 题目可以跨族（sort 题天生跨两族），但必须包含本局选中的词族
-    if (seq.questions.length !== 3) { violations++; samples.push('第' + i + '局英语题数=' + seq.questions.length); continue; }
-    if (!fams.has(seq.family)) { violations++; samples.push('第' + i + '局不含选中词族 ' + seq.family + ' → ' + Array.from(fams).join(',')); }
-  }
-  ok(violations === 0, '40 局英语序列均为 3 题且包含选中词族', samples.slice(0, 3).join(' | '));
+  // 答题结算写进存档的哪几个字段
+  const save = Store.defaultSave();
+  const q = Bank.all()[0];
+
+  const rec = Runner.recordAnswer(save, q, false, 1200);
+  eq(rec.wrongCount, 1, '答错记进错题本');
+  ok(!rec.cleared, '答错后未标记为已掌握');
+
+  Runner.recordAnswer(save, q, true, 900);
+  Runner.recordAnswer(save, q, true, 800);
+  eq(rec.rightStreak, 2, '连对两次');
+  ok(rec.cleared, '连对两次才算真会了');
+
+  const tag = (q.tags || [])[0];
+  ok(save.progress.chinese.byTag[tag], '按题型统计已写入 progress.chinese.byTag');
+  eq(save.progress.chinese.byTag[tag].seen, 3, '题型统计记了 3 次');
+  eq(save.progress.chinese.byTag[tag].correct, 2, '其中答对 2 次');
+}
+
+{
+  // 积分与每日上限
+  const save = Store.defaultSave();
+  eq(Runner.awardPoints(save, 5).awarded, 5, '正常得分全额入账');
+  eq(save.points.balance, 5, '余额跟着涨');
+  eq(save.points.lifetime, 5, '累计积分跟着涨');
+
+  eq(Runner.awardPoints(save, 0).awarded, 0, '空奖入账 0 分');
+
+  const r = Runner.awardPoints(save, 999);
+  eq(r.awarded, save.limits.maxPointsPerDay - 5, '单日得分封顶在 maxPointsPerDay');
+  ok(r.capped, '触顶时标记 capped');
+  eq(save.points.balance, save.limits.maxPointsPerDay, '封顶后余额 = 每日上限');
+}
+
+{
+  // 一局的存档记录：sessions 里要能看到这一局的题和转盘结果
+  const save = Store.defaultSave();
+  const round = Runner.buildRound(save);
+  const items = round.questions.slice(0, 10).map((q) => ({ qid: q.id, correct: true, ms: 900 }));
+  const session = Runner.finishSession(save, round, items, [{ prize: 'none', ts: Date.now() }], 0);
+
+  eq(save.sessions.length, 1, 'sessions 里多了一条');
+  eq(session.correct, 10, '本局 10 题全对');
+  eq(session.pointsEarned, 0, '空奖一局的得分为 0');
+  ok(save.sessions[0].spins.length === 1, '转盘结果一并存档');
+
+  // 只保留最近 30 局
+  for (let i = 0; i < 40; i++) Runner.finishSession(save, round, items, [], 0);
+  eq(save.sessions.length, 30, 'sessions 滚动保留最近 30 局');
 }
 
 /* ---- 6. 转盘 ---- */

@@ -72,20 +72,6 @@
   letter-spacing: 2px;
 }
 
-.stem-number {
-  font-size: 62px;
-  letter-spacing: 6px;
-  font-variant-numeric: tabular-nums;
-  color: var(--c-primary-d);
-}
-
-/* 数一数：图形那行和问题分行显示 */
-.stem-count {
-  font-size: 36px;
-  line-height: 1.7;
-  letter-spacing: 3px;
-  white-space: pre-line;   /* 保留生成器里插入的换行 */
-}
 
 .stem-hint {
   font-size: 22px;
@@ -135,7 +121,6 @@
 
 .options-grid    { grid-template-columns: 1fr 1fr; }
 .options-row     { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
-.options-letters { max-width: 460px; }
 
 .option {
   position: relative;
@@ -159,9 +144,10 @@
 
 .option:active:not(.locked) { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.07); }
 
-.option-letter { font-size: 52px; min-height: 108px; letter-spacing: 2px; color: var(--c-primary-d); }
 
-.option-word { font-size: 36px; letter-spacing: 2px; }
+/* 识字题的选项大多是一个字。32px 的「口」和「日」在手机上几乎看不出
+   区别，而「分清形近字」正是这个游戏要练的事。 */
+.option-single .option-text { font-size: 50px; }
 
 .option.locked { cursor: default; }
 .option.is-answer { border-color: var(--c-ok); background: #E8F5E9; }
@@ -174,7 +160,6 @@
   color: var(--c-ok);
 }
 
-.options-words .option.is-answer::after { top: 4px; right: 10px; font-size: 19px; }
 
 /* 答错的选项 */
 .option.fb-bad { border-color: var(--c-bad); }
@@ -193,222 +178,6 @@
 }
 
 .explain.hidden { display: none; }
-
-/* ---------- 拼读题 ---------- */
-
-.blend-cards {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  opacity: .75;
-  transition: opacity .3s;
-}
-
-.blend-cards.ready { opacity: 1; }
-
-.blend-card {
-  min-width: 128px;
-  min-height: 128px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 56px;
-  font-weight: 800;
-  font-family: inherit;
-  color: var(--c-primary-d);
-  background: var(--c-bg-alt);
-  border: 4px dashed var(--c-line);
-  border-radius: var(--r-lg);
-  cursor: pointer;
-  transition: all .18s;
-}
-
-.blend-card.tapped {
-  border-style: solid;
-  border-color: var(--c-second);
-  background: #E1F5FE;
-  transform: scale(1.04);
-}
-
-.blend-plus { font-size: 38px; font-weight: 800; color: var(--c-ink-soft); }
-
-.vowel-gap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 68px;
-  font-weight: 800;
-  letter-spacing: 4px;
-  color: var(--c-ink);
-}
-
-.vg-char { color: var(--c-ink); }
-
-.vg-blank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 74px;
-  height: 88px;
-  color: var(--c-primary);
-  background: #FFF3E0;
-  border: 4px dashed var(--c-primary);
-  border-radius: var(--r-md);
-  animation: blank-pulse 1.6s infinite;
-}
-
-@keyframes blank-pulse {
-  0%, 100% { border-color: var(--c-primary); }
-  50%      { border-color: #FFCC80; }
-}
-
-.vg-space { width: 16px; }
-
-/* ---------- 归类题 ---------- */
-
-.sort-tray {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  min-height: 66px;
-  padding: 10px;
-  width: 100%;
-  background: #FFF3E0;
-  border-radius: var(--r-lg);
-}
-
-.sort-item {
-  min-height: 56px;
-  padding: 8px 20px;
-  font-size: 27px;
-  font-weight: 700;
-  font-family: inherit;
-  color: var(--c-ink);
-  background: #fff;
-  border: 3px solid var(--c-line);
-  border-radius: var(--r-md);
-  cursor: pointer;
-  transition: all .16s;
-}
-
-.sort-item.selected {
-  border-color: var(--c-second);
-  background: #E1F5FE;
-  transform: scale(1.1);
-  box-shadow: 0 0 0 5px rgba(79,195,247,.2);
-}
-
-.sort-item.placed { min-height: 46px; font-size: 22px; padding: 4px 13px; margin: 3px; border-color: transparent; }
-
-.sort-item.item-ok  { background: #E8F5E9; border-color: var(--c-ok); }
-.sort-item.item-bad { background: #FFEBEE; border-color: var(--c-bad); }
-
-.sort-buckets { display: flex; gap: 14px; width: 100%; }
-
-.sort-bucket {
-  flex: 1;
-  min-height: 132px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  font-family: inherit;
-  background: #fff;
-  border: 4px solid var(--bucket-color, var(--c-second));
-  border-radius: var(--r-lg);
-  cursor: pointer;
-  transition: all .18s;
-}
-
-.sort-bucket:active { transform: scale(.98); }
-
-.sort-bucket.bucket-hint {
-  animation: bucket-hint 1s infinite;
-}
-
-@keyframes bucket-hint {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239,83,80,.4); }
-  50%      { box-shadow: 0 0 0 10px rgba(239,83,80,0); }
-}
-
-.bucket-label {
-  font-size: 25px;
-  font-weight: 800;
-  color: var(--bucket-color, var(--c-second));
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.sort-drop {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 5px;
-  min-height: 62px;
-  padding: 5px;
-  border-radius: var(--r-md);
-  background: #FAFAFA;
-}
-
-/* ---------- 真假词 ---------- */
-
-.word-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 220px;
-  min-height: 128px;
-  padding: 20px 44px;
-  background: var(--c-bg-alt);
-  border: 4px solid var(--c-line);
-  border-radius: var(--r-xl);
-  box-shadow: var(--shadow);
-}
-
-.word-card-text {
-  font-size: 66px;
-  font-weight: 800;
-  letter-spacing: 5px;
-  color: var(--c-ink);
-}
-
-.word-card-speaker {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  width: 46px;
-  height: 46px;
-  font-size: 21px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  opacity: .6;
-}
-
-.realword-actions { display: flex; gap: 16px; width: 100%; max-width: 460px; }
-
-.rw-btn {
-  flex: 1;
-  min-height: 88px;
-  font-size: 27px;
-  font-weight: 800;
-  font-family: inherit;
-  color: #fff;
-  border: none;
-  border-radius: var(--r-lg);
-  cursor: pointer;
-  box-shadow: 0 5px 0 rgba(0,0,0,.14);
-  transition: transform .1s;
-}
-
-.rw-btn:active:not(.locked) { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.14); }
-.rw-real { background: linear-gradient(180deg, #81C784 0%, #4CAF50 100%); }
-.rw-fake { background: linear-gradient(180deg, #EF9A9A 0%, #E57373 100%); }
-.rw-btn.locked { opacity: .5; }
-.rw-btn.is-answer { opacity: 1; box-shadow: 0 0 0 5px rgba(102,187,106,.4), 0 5px 0 rgba(0,0,0,.14); }
 
 /* ---------- 结算 ---------- */
 

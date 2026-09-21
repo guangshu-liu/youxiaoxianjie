@@ -8,28 +8,38 @@
 
   var G = window.G = window.G || {};
 
-  G.VERSION = '0.1.0-phase0';
+  G.VERSION = '1.0.0';
 
-  /* ---------- 常量 ---------- */
+  /* ---------- 常量 ----------
+   * 整个游戏只有识字一科。原来是语文/数学/英语三科混排，英语还挂着一套
+   * OPW2 自然拼读体系；现在全部收成一件事：认字。
+   */
+  G.SUBJECTS = ['chinese'];
 
-  G.SUBJECTS = ['chinese', 'math', 'english'];
+  G.SUBJECT_LABEL = { chinese: '识字' };
 
-  G.SUBJECT_LABEL = { chinese: '语文', math: '数学', english: '英语' };
-
-  // 一局构成：语文 4 + 数学 3 + 英语 3
-  G.DEFAULT_MIX = { chinese: 4, math: 3, english: 3 };
+  // 一局 10 道，全是识字题
+  G.DEFAULT_MIX = { chinese: 10 };
 
   G.ROUND_SIZE = 10;
 
-  // 转盘奖项。概率和为 100。'again' 替代原方案的「遗憾」空奖——可重转。
+  // 转盘奖项。概率和为 100。
+  // 'none' 是空奖：中了就是「谢谢参与」，当场结束，**不重转**。
+  // 它曾经是「再来一次」（占 20%，可重转最多 3 次，次数用完兜底送 1 分）——
+  // 但重转会把一次抽奖拖成几轮，孩子盯着转盘的时间比答题还长，
+  // 而且「兜底送分」让空奖实际上不存在。现在它就是明明白白的不中。
   G.PRIZES = [
-    { id: 'tv10',  points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
-    { id: 'p1',    points: 1,  weight: 30, label: '1 分',           kind: 'points' },
-    { id: 'p2',    points: 2,  weight: 20, label: '2 分',           kind: 'points' },
-    { id: 'p5',    points: 5,  weight: 15, label: '5 分',           kind: 'points' },
-    { id: 'p10',   points: 10, weight: 10, label: '10 分',          kind: 'points' },
-    { id: 'again', points: 0,  weight: 20, label: '再来一次',       kind: 'again' }
+    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
+    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           kind: 'points' },
+    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           kind: 'points' },
+    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           kind: 'points' },
+    { id: 'p10',  points: 10, weight: 10, label: '10 分',          kind: 'points' },
+    { id: 'none', points: 0,  weight: 20, label: '下次好运',       kind: 'none' }
   ];
+
+  // 空奖在盘面上写「下次好运」（84px 的扇区贴不下更长），
+  // 结算条上写全 —— 那里有整行宽度，也把话说清楚。
+  G.NO_PRIZE_TEXT = '无奖励，下次好运';
 
   // 兑换项。500 分兑 1 元（原需求 50 分，期望值算下来 20 题 1 元，成本失控）。
   G.REWARDS = [
@@ -41,8 +51,7 @@
     maxTvMinutesPerDay: 30,
     maxRedemptionsPerDay: 2,
     maxRedemptionsPerWeek: 5,
-    maxPointsPerDay: 60,
-    maxRespinsPerQuestion: 3
+    maxPointsPerDay: 60
   };
 
   // 家长模式门禁：答案超出幼小衔接范围
@@ -278,7 +287,7 @@
   }
 
   /**
-   * 大喇叭按钮。英语听音题的题干就是它。
+   * 大喇叭按钮。题干带 audio 的题用它。
    * 可重复点 —— 6 岁孩子会反复听，不能只让听一次。
    */
   function speakerButton(audioId, label, opts) {
@@ -346,10 +355,10 @@
       // balance 和 lifetime 独立累加，是防作弊审计的基础（见 70-parent.js）
       points: { balance: 0, lifetime: 0 },
 
+      // 只有识字一科。老存档里的 progress.english / progress.math 不再写也不再读，
+      // 留着不动 —— 删掉它们对游戏没有任何影响，却会让「导入旧备份」多一次改动。
       progress: {
-        english: { familyStats: {}, typeStats: {} },
-        chinese: { byTag: {} },
-        math: { byTag: {} }
+        chinese: { byTag: {} }
       },
 
       // 错题本是唯一真相源。cleared 的条件是 rightStreak >= 2。
@@ -368,7 +377,6 @@
       settings: {
         audioEnabled: true,
         mix: JSON.parse(JSON.stringify(G.DEFAULT_MIX)),
-        englishUnlockedThrough: 'U2',
         mutedAudio: [],
         weakMode: false
       },
@@ -432,6 +440,12 @@
     Object.keys(def.limits).forEach(function (k) {
       if (save.limits[k] === undefined) save.limits[k] = def.limits[k];
     });
+
+    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（三科时代）也有
+    // progress.chinese.byTag，正常不会缺；但手工改过的备份可能缺。
+    if (!save.progress.chinese) save.progress.chinese = { byTag: {} };
+    if (!save.progress.chinese.byTag) save.progress.chinese.byTag = {};
+
     return save;
   }
 
@@ -856,60 +870,6 @@
     if (failStreak >= 2) showSoundPrompt();
   }
 
-  /**
-   * 播放一个序列，片段之间留固定间隔。
-   * 数学题的动态题干靠这个拼：「3 加 4 等于几」= num.3 + op.add + num.4 + op.eq + op.howmany
-   * 用 Web Audio 的 start(when) 精确排期，不靠 setTimeout（后者在移动端会被节流）。
-   */
-  function playSequence(ids, opts) {
-    opts = opts || {};
-    var gap = opts.gap === undefined ? 0.08 : opts.gap;
-
-    var c = getCtx();
-    if (!c) return Promise.resolve(false);
-
-    var doIt = function () {
-      return Promise.all(ids.map(resolve)).then(function (hits) {
-        var t = c.currentTime + 0.02;
-        var last = null;
-        hits.forEach(function (hit) {
-          if (!hit) return;
-          var src = c.createBufferSource();
-          src.buffer = hit.buffer;
-          var g = c.createGain();
-          g.gain.value = (hit.gain || 1) * (opts.volume === undefined ? 1 : opts.volume);
-          src.connect(g);
-          g.connect(c.destination);
-          src.start(t);
-          t += hit.buffer.duration + gap;
-          last = src;
-        });
-        if (!last) return false;
-        return new Promise(function (res) {
-          last.onended = function () { res(true); };
-        });
-      });
-    };
-
-    if (c.state !== 'running') {
-      return unlock().then(function (ok) { return ok ? doIt() : false; });
-    }
-    return doIt();
-  }
-
-  /**
-   * 带降级的播放 —— 音素音是目前最大的内容风险点（edge-tts 读单个音素不可靠）。
-   * 如果音素音缺失或质量差，blend 题要能退回整词音。
-   * 这个降级路径必须在 Phase 0 就存在，否则 Phase 1 发现音素音不行时要返工整个 blend 题。
-   */
-  function playWithFallback(primaryId, fallbackId, opts) {
-    return resolve(primaryId).then(function (hit) {
-      if (hit) return play(primaryId, opts);
-      G.log('音频缺失，降级到', fallbackId);
-      return play(fallbackId, opts);
-    });
-  }
-
   function has(audioId) {
     return !!(overrides[audioId] || (G.AUDIO_MAP && G.AUDIO_MAP[audioId]));
   }
@@ -1257,8 +1217,6 @@
     isUnlocked: isUnlocked,
     resolve: resolve,
     play: play,
-    playSequence: playSequence,
-    playWithFallback: playWithFallback,
     preload: preload,
     has: has,
 
@@ -1279,473 +1237,121 @@
 
 })(window);
 
-/* ===== 30-curriculum.js ===== */
-/* 30-curriculum.js — OPW2 课程表、解锁、干扰项生成、加权抽题
+/* ===== 30-bank.js ===== */
+/* 30-bank.js — 识字题库：加权抽题
  *
- * 英语模块教学质量的核心。两个设计约束：
- *   1. 解锁由家长控制，不由游戏自动解锁 —— 游戏进度和课外班进度是两回事
- *   2. 范围之内按「新鲜度 × 薄弱度 × 冷却」加权，不均匀随机 ——
- *      均匀随机会让 -ag 这类低频词族永远得不到练习，而孩子已熟的在浪费时间
+ * 这个文件以前是 30-curriculum.js，装的是 OPW2 自然拼读课程表、词族解锁、
+ * 最小对立对干扰项生成。英语模块下线后，真正还需要留下的只有一件事：
+ * 从题库里挑题，且挑得有讲究。
+ *
+ * 挑题的讲究只有一条 —— **不均匀随机**。均匀随机会让孩子已经滚瓜烂熟的字
+ * 反复出现（浪费时间），而总写错的字永远轮不到（得不到练习）。所以按
+ * 错题本加权：没掌握的加权重出，连对两次的降权。
+ *
+ * 干扰项不在这里生成。识字题的选项是「同音字 / 形近字」，属于内容问题，
+ * 已经由 tools/gen_ziku.py 在构建期算好并写进题库 —— 运行时不猜。
  */
 (function (window) {
   'use strict';
 
   var G = window.G;
 
-  var cur = null;                    // curriculum.json 内容
-  var questions = { chinese: [], math: [], english: [] };
-  var wordsByFamily = {};            // { family: [word] }
-  var allWords = {};                 // { word: family } 全局词表，用于最小对立判断
+  var questions = [];
+  var zibiao = null;
 
   /* ---------- 加载 ---------- */
 
   function init(data) {
-    cur = data.curriculum || (window.G.CURRICULUM_DATA);
-    questions.chinese = (data.chinese || []).slice();
-    questions.math = (data.math || []).slice();
-    questions.english = (data.english || []).slice();
+    questions = (data.chinese || []).slice();
+    zibiao = data.zibiao || null;
 
-    if (!cur) throw new Error('缺少 curriculum 数据');
+    if (!questions.length) throw new Error('缺少识字题库（src/data/chinese.json）');
 
-    wordsByFamily = {};
-    allWords = {};
-    Object.keys(cur.families).forEach(function (fam) {
-      var ws = cur.families[fam].words || [];
-      wordsByFamily[fam] = ws;
-      ws.forEach(function (w) { allWords[w] = fam; });
-    });
-
-    G.log('课程已加载', Object.keys(cur.families).length, '个词族,',
-          questions.chinese.length, questions.math.length, questions.english.length, '道题');
+    G.log('识字题库已加载', questions.length, '道题',
+          zibiao ? ('，字表 ' + zibiao.chars.length + ' 字') : '');
   }
 
-  function curriculum() { return cur; }
+  function all() { return questions; }
+  function zibiaoData() { return zibiao; }
 
-  function unitById(id) {
-    return cur.units.filter(function (u) { return u.id === id; })[0] || null;
+  function byId(id) {
+    for (var i = 0; i < questions.length; i++) {
+      if (questions[i].id === id) return questions[i];
+    }
+    return null;
   }
 
-  /* ---------- 解锁 ---------- */
+  /* ---------- 加权 ---------- */
 
   /**
-   * 家长在面板里选「孩子课上到哪了」，游戏只在这个范围内出题。
-   * 若游戏自动解锁，孩子天赋好就会解锁到 U6 而老师才教到 U3 ——
-   * 做 U6 全靠猜，会形成错误的拼读直觉。
+   * 一道题的抽取权重。
+   *   - 错过的题，错得越多权重越高（+1.5 × 错误次数）
+   *   - 连对两次（cleared）的题降到 0.4 —— 不是不出，是少出
+   *   - 没做过的题权重 1
    */
-  function unlockedUnitIds(save) {
-    var through = save.settings.englishUnlockedThrough || 'U2';
-    var out = [];
-    for (var i = 0; i < cur.units.length; i++) {
-      out.push(cur.units[i].id);
-      if (cur.units[i].id === through) break;
-    }
-    return out;
+  function weightOf(q, wrongIndex) {
+    var w = 1;
+    var rec = wrongIndex[q.id];
+    if (rec && !rec.cleared) w += 1.5 * rec.wrongCount;
+    if (rec && rec.cleared) w *= 0.4;
+    return w;
   }
 
-  function unlockedFamilies(save) {
-    var units = unlockedUnitIds(save);
-    var out = [];
-    units.forEach(function (uid) {
-      var u = unitById(uid);
-      if (u) out = out.concat(u.families);
-    });
-    return out;
+  function wrongIndexOf(save) {
+    var idx = {};
+    (save.wrongBook || []).forEach(function (w) { idx[w.qid] = w; });
+    return idx;
   }
 
-  function familyInUnit(family, unitId) {
-    var u = unitById(unitId);
-    return !!(u && u.families.indexOf(family) >= 0);
-  }
+  /**
+   * 抽一道题。excludeIds 用来保证一局之内不重复。
+   * @param {object} save
+   * @param {string[]} excludeIds
+   * @param {function} rng  可选，注入固定随机源便于测试
+   */
+  function drawOne(save, excludeIds, rng) {
+    rng = rng || Math.random;
+    var excluded = {};
+    (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-  /* ---------- 英语加权 ---------- */
+    var avail = questions.filter(function (q) { return !excluded[q.id]; });
+    // 兜底：题库被抽空时允许重复，也不让一局短题
+    if (!avail.length) avail = questions;
+    if (!avail.length) return null;
 
-  var COOLDOWN_MS = 5 * 60 * 1000;   // 同一词族 5 分钟内刚出现过就大幅降权
-
-  function familyWeight(family, save, recentFamilies) {
-    var st = save.progress.english.familyStats[family] || { seen: 0, correct: 0, lastSeen: 0 };
-    var units = unlockedUnitIds(save);
-    var latest = units[units.length - 1];
-
-    // 最近学的单元占大头（×2.5）
-    var freshness = familyInUnit(family, latest) ? 1.0 : 0.4;
-
-    // 错得多的多出
-    var wrongRate = st.seen > 0 ? 1 - (st.correct / st.seen) : 0.5;
-    var weakness = 1 + 0.5 * wrongRate;
-
-    // 本局内已经用过该词族 → 降权，避免一局 3 道英语题全是 -an
-    var used = (recentFamilies || []).indexOf(family) >= 0;
-
-    // 刚做过 → 降权
-    var cooled = st.lastSeen && (Date.now() - st.lastSeen < COOLDOWN_MS);
-
-    var w = freshness * weakness * (used ? 0.05 : 1) * (cooled ? 0.2 : 1);
-    return Math.max(w, 0.01);
-  }
-
-  function pickFamily(save, rng, recentFamilies) {
-    var fams = unlockedFamilies(save);
-    var weights = fams.map(function (f) { return familyWeight(f, save, recentFamilies); });
+    var wrongIndex = wrongIndexOf(save);
+    var weights = avail.map(function (q) { return weightOf(q, wrongIndex); });
     var total = G.sum(weights);
+    if (total <= 0) return avail[Math.floor(rng() * avail.length)];
+
     var r = rng() * total;
-    for (var i = 0; i < fams.length; i++) {
+    for (var i = 0; i < avail.length; i++) {
       r -= weights[i];
-      if (r <= 0) return fams[i];
+      if (r <= 0) return avail[i];
     }
-    return fams[fams.length - 1];
+    return avail[avail.length - 1];
   }
 
-  /* ---------- 干扰项生成 ----------
-   * 100 道英语题手工写选项必然出错，而且很容易写出「孩子不用听就能排除」的废题
-   * （比如 fan vs box）。所以干扰项必须程序化生成，且必须是最小对立对。
-   */
-
-  /**
-   * 拆词：fan → {onset:'f', vowel:'a', coda:'n'}
-   * 只处理 CVC（含 -ix 这类 CC 结尾）。
-   */
-  function split(word) {
-    var m = word.match(/^([bcdfghjklmnpqrstvwyz]*)([aeiou])(.*)$/);
-    if (!m) return null;
-    return { onset: m[1], vowel: m[2], coda: m[3] };
-  }
-
-  /**
-   * 最小对立干扰项。优先级：
-   *   1. vowel-contrast  —— 换元音（OPW2 的核心考点）
-   *   2. minimal-pair-initial —— 同词族换首音
-   *   3. same-coda       —— 同尾不同元音
-   * 全部要求是真实存在的词（用全局词表判断），否则孩子会靠「这词没见过」来排除。
-   */
-  function makeDistractors(word, family, unlockedFams, count) {
-    count = count || 2;
-    var parts = split(word);
-    if (!parts) return [];
-
-    var vowelOrder = (cur.minimalPairs.vowelSwaps[parts.vowel] || []).slice();
-    var out = [];
-    var seen = {};
-    seen[word] = true;
-
-    function add(w, kind) {
-      if (!w || seen[w] || out.length >= count) return;
-      seen[w] = true;
-      out.push({ text: w, kind: kind });
-    }
-
-    // 1. 换元音，保持首音和尾音（fan → fin / fun）—— 最能考查短元音辨析
-    vowelOrder.forEach(function (v) {
-      var cand = parts.onset + v + parts.coda;
-      if (allWords[cand]) add(cand, 'vowel-contrast');
-    });
-
-    // 2. 同词族换首音（fan → man / pan）
-    var famWords = wordsByFamily[family] || [];
-    G.shuffle(famWords, Math.random).forEach(function (w) {
-      if (w !== word && split(w) && split(w).vowel === parts.vowel) {
-        add(w, 'minimal-pair-initial');
-      }
-    });
-
-    // 3. 同尾音不同元音，跨词族（兜底，保证一定凑够 count 个）
-    if (out.length < count) {
-      Object.keys(allWords).forEach(function (w) {
-        if (out.length >= count) return;
-        var p = split(w);
-        if (p && p.coda === parts.coda && p.vowel !== parts.vowel && p.onset === parts.onset) {
-          add(w, 'same-coda');
-        }
-      });
-    }
-
-    // 4. 仍不够就从已解锁词族里随便补真实词（宁可削弱区分度，也不能有假词选项）
-    if (out.length < count) {
-      var pool = [];
-      unlockedFams.forEach(function (f) {
-        pool = pool.concat(wordsByFamily[f] || []);
-      });
-      G.shuffle(pool, Math.random).forEach(function (w) { add(w, 'filler'); });
-    }
-
-    return out;
-  }
-
-  /**
-   * 组装一道 listen 题的选项：1 个正确答案 + N 个最小对立干扰项，打乱。
-   */
-  function buildListenOptions(answerWord, family, unlockedFams, rng) {
-    var n = 2;                                   // 6 岁工作记忆有限，3 个选项足够
-    var ds = makeDistractors(answerWord, family, unlockedFams, n);
-    var opts = [{ text: answerWord, kind: 'answer' }].concat(ds);
-    opts = G.shuffle(opts, rng);
-    return opts.map(function (o, i) {
-      return { id: String.fromCharCode(97 + i), text: o.text, _kind: o.kind };
-    });
-  }
-
-  /* ---------- 程序化生成题（数学） ----------
-   * JSON 里只写模板，运行时用固定种子展开。投入产出比最高的一处。
-   */
-
-  function instantiateGenerator(q, rng) {
-    var g = q.generator;
-    var out = JSON.parse(JSON.stringify(q));
-    out._generated = true;
-
-    if (g.kind === 'add' || g.kind === 'sub') {
-      var a, b, ans, guard = 0;
-      do {
-        a = G.randInt(rng, g.a[0], g.a[1]);
-        b = G.randInt(rng, g.b[0], g.b[1]);
-        guard++;
-      } while (guard < 200 && !evalConstraint(g.constraint, a, b));
-
-      if (g.kind === 'add') {
-        ans = a + b;
-        out.stem.text = g.missing === 'b'
-          ? (a + ' + ? = ' + ans)          // 填加数，比直接算和难一档
-          : (a + ' + ' + b + ' = ?');
-      } else {
-        ans = a - b;
-        out.stem.text = g.missing === 'b'
-          ? (a + ' − ? = ' + ans)
-          : (a + ' − ' + b + ' = ?');
-      }
-
-      // 干扰项 = 正确答案 ±1/±2，都是「算错会得到的数」，比随机数有区分度得多
-      var wrongs = nearMiss(ans, g.optionRule);
-      out.options = makeNumericOptions(ans, wrongs, rng);
-      out.answer = out.options.filter(function (o) { return o.text === String(ans); })[0].id;
-      out.explain = buildExplain(g.kind, a, b, ans, g.missing);
-      out._meta = { a: a, b: b, ans: ans };
-    }
-
-    else if (g.kind === 'compare') {
-      var x, y, guard2 = 0;
-      do {
-        x = G.randInt(rng, g.a[0], g.a[1]);
-        y = G.randInt(rng, g.b[0], g.b[1]);
-        guard2++;
-      } while (guard2 < 200 && !evalConstraint(g.constraint, x, y));
-
-      var big = Math.max(x, y);
-      var small = Math.min(x, y);
-      // 3 个选项，避免 50% 蒙对率
-      var third = small > 1 ? small - 1 : big + 1;
-      out.stem.text = x + ' 和 ' + y + '，哪个大？';
-      out.options = makeNumericOptions(big, [small, third], rng);
-      out.answer = out.options.filter(function (o) { return o.text === String(big); })[0].id;
-      out.explain = big + ' 比 ' + Math.min(x, y) + ' 大。';
-      out._meta = { a: x, b: y, ans: big };
-    }
-
-    else if (g.kind === 'count') {
-      // 数一数：随机撒几个图形，让孩子点数
-      var n = G.randInt(rng, g.n[0], g.n[1]);
-      var shapes = ['🍎', '⭐', '🐟', '🌸', '🎈'];
-      var shape = G.pick(shapes, rng);
-      var line = [];
-      for (var i = 0; i < n; i++) line.push(shape);
-
-      out.stem.text = line.join(' ') + '\n一共有几个？';
-      out.stem.layout = 'count';
-      out.options = makeNumericOptions(n, nearMiss(n, g.optionRule), rng);
-      out.answer = out.options.filter(function (o) { return o.text === String(n); })[0].id;
-      out.explain = '数一数，一共 ' + n + ' 个。';
-      out._meta = { ans: n };
-    }
-
-    return out;
-  }
-
-  function makeNumericOptions(ans, wrongs, rng) {
-    var vals = [ans].concat(wrongs);
-    // 去重 + 去负
-    var seen = {};
-    vals = vals.filter(function (v) {
-      if (v < 0 || seen[v]) return false;
-      seen[v] = true;
-      return true;
-    });
-    var opts = G.shuffle(vals, rng).map(function (v, i) {
-      return { id: String.fromCharCode(97 + i), text: String(v) };
-    });
-    return opts;
-  }
-
-  function buildExplain(kind, a, b, ans, missing) {
-    if (kind === 'add') {
-      if (missing === 'b') return a + ' 再加 ' + b + ' 才是 ' + ans + '。';
-      return a + ' 和 ' + b + ' 合起来是 ' + ans + '。';
-    }
-    if (missing === 'b') return a + ' 拿走 ' + b + ' 还剩 ' + ans + '。';
-    return a + ' 拿走 ' + b + ' 还剩 ' + ans + '。';
-  }
-
-  function evalConstraint(expr, a, b) {
-    if (!expr) return true;
-    try {
-      /* jshint evil:true */
-      return !!(new Function('a', 'b', 'return (' + expr + ');'))(a, b);
-    } catch (e) { return true; }
-  }
-
-  function nearMiss(ans, rule) {
-    if (rule === 'near-miss') {
-      var cands = [ans + 1, ans - 1, ans + 2, ans - 2, ans + 10, ans - 10]
-        .filter(function (v) { return v >= 0 && v !== ans; });
-      return cands.slice(0, 3);
-    }
-    return [ans + 1, ans - 1, ans + 2];
-  }
-
-  /* ---------- 抽题 ---------- */
-
-  function poolFor(subject) {
-    return questions[subject] || [];
-  }
-
-  /**
-   * 从某科目抽一题。rng 决定生成题的展开结果，所以同一天同一种子得到同一道题。
-   */
-  function drawOne(subject, save, dateSeed, excludeIds) {
-    var pool = poolFor(subject);
-    if (!pool.length) return null;
-
-    var rng = G.rngFrom(dateSeed + '|' + subject + '|' + (excludeIds || []).length + '|' + Math.floor(Math.random() * 1e9));
-
-    var avail = pool.filter(function (q) {
-      if ((excludeIds || []).indexOf(q.id) >= 0) return false;
-      if (subject === 'english') {
-        if (!familyUnlocked(q.family, save)) return false;
-      }
-      return true;
-    });
-    if (!avail.length) avail = pool;
-
-    var picked = weightedPickQuestion(avail, save, rng);
-    if (picked.generator) return instantiateGenerator(picked, rng);
-
-    // 英语 listen 题的选项每次现生成，避免固定选项被记住
-    if (picked.type === 'listen') {
-      var out = JSON.parse(JSON.stringify(picked));
-      var fams = unlockedFamilies(save);
-      var opts = buildListenOptions(out.answerWord, out.family, fams, rng);
-      out.options = opts;
-      out.answer = opts.filter(function (o) { return o.text === out.answerWord; })[0].id;
-      return out;
-    }
-
-    return JSON.parse(JSON.stringify(picked));
-  }
-
-  function familyUnlocked(family, save) {
-    if (!family) return false;
-    return unlockedFamilies(save).indexOf(family) >= 0;
-  }
-
-  /**
-   * 题型加权：错题本里的题加权重出，已 cleared 的降权。
-   */
-  function weightedPickQuestion(pool, save, rng) {
-    var wrongIndex = {};
-    save.wrongBook.forEach(function (w) { wrongIndex[w.qid] = w; });
-
-    var weights = pool.map(function (q) {
-      var w = 1;
-      var rec = wrongIndex[q.id];
-      if (rec && !rec.cleared) w += 1.5 * rec.wrongCount;   // 错题重出
-      if (rec && rec.cleared) w *= 0.4;                      // 已掌握 → 降权
-      return w;
-    });
-
-    var total = G.sum(weights);
-    var r = rng() * total;
-    for (var i = 0; i < pool.length; i++) {
-      r -= weights[i];
-      if (r <= 0) return pool[i];
-    }
-    return pool[pool.length - 1];
-  }
-
-  /**
-   * 挑一局英语题：锁定同一词族的「听 → 拼 → 用」固定教学序列。
-   * 这不是「3 个随机题型」——自然拼读的标准教学顺序是 hear it → build it → use it，
-   * 随机化会破坏它。而且 OPW2 每单元就是围绕 2-4 个词族展开，一节课教一个词族，
-   * 3 道题都围绕 -an 才是「这节课我们在学 -an」的体验。6 岁孩子需要聚焦，不是覆盖。
-   */
-  function buildEnglishSequence(save, dateSeed, recentFamilies) {
-    var rng = G.rngFrom(dateSeed + '|english-seq|' + Math.floor(Math.random() * 1e9));
-    var family = pickFamily(save, rng, recentFamilies);
-
-    // sort / realword 可能覆盖多个词族，所以同时认 family 和 families 两个字段
-    var pick = function (type, mode) {
-      var pool = questions.english.filter(function (q) {
-        if (q.type !== type) return false;
-        if (mode && q.mode !== mode) return false;
-        var fams = q.families || (q.family ? [q.family] : []);
-        return fams.indexOf(family) >= 0;
-      });
-      if (!pool.length) return null;
-      return pool[Math.floor(rng() * pool.length)];
-    };
-
-    var seq = [];
-    var listen = pick('listen');
-    if (listen) seq.push(materialize(listen, save, rng, 'listen'));
-
-    var blend = pick('blend', 'vowel-gap') || pick('blend');
-    if (blend) seq.push(materialize(blend, save, rng, 'blend'));
-
-    // 第 3 槽 sort / realword 交替
-    var useSort = (save.sessions.length % 2) === 0;
-    var third = useSort ? pick('sort') : pick('realword');
-    if (!third) third = pick('sort') || pick('realword');
-    if (third) seq.push(materialize(third, save, rng, third.type));
-
-    return { family: family, questions: seq.filter(Boolean) };
-  }
-
-  function materialize(q, save, rng, type) {
-    var out = JSON.parse(JSON.stringify(q));
-    delete out._familyPool;
-
-    if (type === 'listen') {
-      var fams = unlockedFamilies(save);
-      var opts = buildListenOptions(out.answerWord, out.family, fams, rng);
-      out.options = opts;
-      out.answer = opts.filter(function (o) { return o.text === out.answerWord; })[0].id;
-    }
-    return out;
-  }
-
-  G.Curriculum = {
+  G.Bank = {
     init: init,
-    curriculum: curriculum,
-    unitById: unitById,
-    unlockedUnitIds: unlockedUnitIds,
-    unlockedFamilies: unlockedFamilies,
-    familyInUnit: familyInUnit,
-    familyWeight: familyWeight,
-    pickFamily: pickFamily,
-    makeDistractors: makeDistractors,
-    buildListenOptions: buildListenOptions,
-    instantiateGenerator: instantiateGenerator,
-    drawOne: drawOne,
-    buildEnglishSequence: buildEnglishSequence,
-    split: split,
-    wordsByFamily: function () { return wordsByFamily; },
-    allWords: function () { return allWords; }
+    all: all,
+    byId: byId,
+    zibiao: zibiaoData,
+    weightOf: weightOf,
+    drawOne: drawOne
   };
 
 })(window);
 
 /* ===== 40-runner.js ===== */
-/* 40-runner.js — 一局的编排：4/3/3 配比 + 位置软约束 + 答题结算
+/* 40-runner.js — 一局的编排：抽题、排位、答题结算
  *
- * 位置软约束是这里最重要的设计：
+ * 排位是这里最重要的设计：
  *   第 1 题和第 10 题必来自孩子正确率最高的池。
  *   6 岁孩子最后一题的成败，直接决定他明天还想不想玩。
+ *
+ * 第二重要的是「同一题型不连着出」：题库里 8 种题型（看拼音选字、
+ * 数笔画、反义词…）均匀抽，但连续三道「数笔画」会让一局显得很单调。
  */
 (function (window) {
   'use strict';
@@ -1755,7 +1361,7 @@
   /* ---------- 成功概率估计 ---------- */
 
   /**
-   * 估计孩子答对某题的概率。有历史用历史，没历史用难度 + 是否刚学过做代理。
+   * 估计孩子答对某题的概率。有历史用历史，没历史用难度做代理。
    * 只用来排位置，不参与计分。
    */
   function successProb(q, save) {
@@ -1764,123 +1370,108 @@
     if (rec && rec.seen > 0) return rec.correct / rec.seen;
 
     // 无历史：难度 1 → 0.9, 难度 2 → 0.75, 难度 3 → 0.6
-    var byDiff = { 1: 0.9, 2: 0.75, 3: 0.6 }[q.difficulty || 1] || 0.75;
-
-    // 英语：最新学过的单元更熟
-    if (q.subject === 'english' && q.family) {
-      var units = G.Curriculum.unlockedUnitIds(save);
-      var latest = units[units.length - 1];
-      if (G.Curriculum.familyInUnit(q.family, latest)) byDiff += 0.05;
-    }
-    return G.clamp(byDiff, 0.1, 0.98);
+    return G.clamp({ 1: 0.9, 2: 0.75, 3: 0.6 }[q.difficulty || 1] || 0.75, 0.1, 0.98);
   }
 
   /* ---------- 组局 ---------- */
 
+  /**
+   * 组一局。
+   *
+   * 抽题**不用固定种子**（数学时代用过「同一天同一局」的日种子，那是为了
+   * 生成的算式可复现 —— 家长想再讲一遍时题目别变）。这里反过来：同一局
+   * 重玩应该换一批字，否则孩子第二遍是背答案而不是认字。错题本的加权
+   * 也依赖「刚答错的题立刻变得更常出」，日种子会把这条反馈延迟到明天。
+   */
   function buildRound(save) {
-    var mix = save.settings.mix || G.DEFAULT_MIX;
-    var total = mix.chinese + mix.math + mix.english;
-    var dateSeed = G.localDateStr();
-
-    var rng = G.rngFrom(dateSeed + '|round|' + save.sessions.length + '|' + Math.floor(Math.random() * 1e9));
+    var total = G.DEFAULT_MIX.chinese || G.ROUND_SIZE;
     var used = [];
+    var picked = [];
 
-    // 语文、数学各自抽
-    var cn = [], ma = [];
-    for (var i = 0; i < mix.chinese; i++) {
-      var q1 = G.Curriculum.drawOne('chinese', save, dateSeed, used);
-      if (q1) { cn.push(q1); used.push(q1.id); }
-    }
-    for (var j = 0; j < mix.math; j++) {
-      var q2 = G.Curriculum.drawOne('math', save, dateSeed, used);
-      if (q2) { ma.push(q2); used.push(q2.id); }
+    for (var i = 0; i < total; i++) {
+      var q = G.Bank.drawOne(save, used);
+      if (!q) break;
+      used.push(q.id);
+      picked.push(q);
     }
 
-    // 英语：同一词族的固定序列
-    var enSeq = G.Curriculum.buildEnglishSequence(save, dateSeed, []);
-    var en = enSeq.questions.slice(0, mix.english);
-
-    G.log('本局英语词族 =', enSeq.family, '题数 =', en.length);
-
-    // ---- 位置安排 ----
-    var slots = new Array(total).fill(null);
-
-    // 1. 英语 3 题落在位置 2–7（1-based）→ index 1..6
-    var enSlots = G.shuffle([1, 2, 3, 4, 5, 6], rng).slice(0, en.length).sort(function (a, b) { return a - b; });
-    en.forEach(function (q, i) {
-      if (enSlots[i] !== undefined) slots[enSlots[i]] = q;
-    });
-
-    // 2. 剩余位置放语文数学
-    var rest = cn.concat(ma);
-    var freeIdx = [];
-    for (var k = 0; k < total; k++) if (!slots[k]) freeIdx.push(k);
-
-    // 语数交替铺开，避免连着 4 道数学
-    rest = interleave(cn, ma);
-
-    freeIdx.forEach(function (idx, i) {
-      slots[idx] = rest[i] || null;
-    });
-
-    // 3. 第 1 题和第 10 题换成高正确率池里的题（位置上原有的题退回候补）
-    var filled = slots.filter(Boolean);
-    swapForEasy(slots, 0, filled, save, q => q.subject !== 'english');
-    swapForEasy(slots, total - 1, filled, save, q => q.subject !== 'english');
-
-    var out = slots.filter(Boolean);
-
-    // 兜底：万一某科目题量不足导致槽位空缺
-    while (out.length < total) {
-      var extra = G.Curriculum.drawOne('chinese', save, dateSeed, out.map(function (q) { return q.id; }));
+    // 兜底。正常抽不到这一步（296 道题 >> 10），只有题库被改小到一局以内
+    // 才会走到：那时先试着再抽一道没出过的，实在没有才允许重复 ——
+    // 宁可出现重题，也不要让一局变成半局。
+    while (picked.length < total) {
+      var extra = G.Bank.drawOne(save, used);
       if (!extra) break;
-      out.push(extra);
+      if (used.indexOf(extra.id) >= 0) extra = G.Bank.drawOne(save, []);
+      else used.push(extra.id);
+      if (!extra) break;
+      picked.push(extra);
     }
 
     return {
-      family: enSeq.family,
-      questions: out,
+      questions: arrange(picked, save),
       startedAt: Date.now()
     };
   }
 
-  function interleave(a, b) {
-    var out = [], i = 0, j = 0;
-    var takeA = true;
-    while (i < a.length || j < b.length) {
-      if (takeA && i < a.length) out.push(a[i++]);
-      else if (!takeA && j < b.length) out.push(b[j++]);
-      else if (i < a.length) out.push(a[i++]);
-      else if (j < b.length) out.push(b[j++]);
-      takeA = !takeA;
-    }
-    return out;
+  /**
+   * 排位置：
+   *   1. 最可能答对的两道，分给第 1 题和第 10 题
+   *   2. 剩下的打散，且不让同一题型挨着
+   */
+  function arrange(questions, save) {
+    if (questions.length <= 2) return questions.slice();
+
+    var ranked = questions.slice().sort(function (a, b) {
+      return successProb(b, save) - successProb(a, save);
+    });
+
+    var first = ranked[0];
+    var last = ranked[1];
+    var middle = G.shuffle(ranked.slice(2), Math.random);
+
+    return [first].concat(orderByTag(middle, tagOf(first), tagOf(last)), [last]);
+  }
+
+  function tagOf(q) {
+    return (q.tags && q.tags[0]) || q.type || '';
   }
 
   /**
-   * 把指定位置换成「孩子最可能答对」的题。
-   * 只在非英语题里换 —— 英语题的顺序有教学意义（听→拼→用），不能动。
+   * 按题型交错排列：每次从剩下的题里挑一道和上一题**不同题型**的，并且优先
+   * 挑剩余数量最多的那个题型 —— 先把大堆消耗掉，小堆才不会剩到最后被迫相邻。
+   *
+   * 「看拼音选字」占了题库的三分之一，一局 10 题里通常有 3 道；不做这一步，
+   * 它们会以相当高的概率挨在一起，一局看起来就像只有两种题。
+   *
+   * 这是软约束，不是排序目标：某个题型一旦过半（现在没有），相邻就躲不掉，
+   * 那时按原样排下去，不为了满足约束把题目弄丢。
    */
-  function swapForEasy(slots, idx, filled, save, filterFn) {
-    var current = slots[idx];
-    if (!current) return;
+  function orderByTag(items, prevTag, tailTag) {
+    var pool = items.slice();
+    var out = [];
 
-    var candidates = filled.filter(function (q) {
-      return q !== current && filterFn(q) && slots.indexOf(q) < 0;
-    });
-    if (!candidates.length) return;
+    while (pool.length) {
+      var count = {};
+      pool.forEach(function (q) {
+        var t = tagOf(q);
+        count[t] = (count[t] || 0) + 1;
+      });
 
-    // 从候补里找一道比当前题更容易的
-    var better = candidates
-      .map(function (q) { return { q: q, p: successProb(q, save) }; })
-      .filter(function (x) { return x.p > successProb(current, save) + 0.05; })
-      .sort(function (a, b) { return b.p - a.p; })[0];
+      var pick = -1;
+      var best = -1;
+      for (var i = 0; i < pool.length; i++) {
+        var t = tagOf(pool[i]);
+        if (t === prevTag) continue;
+        // 最后一道还要避开末题的题型，否则会在末尾撞上
+        if (pool.length === 1 && t === tailTag) continue;
+        if (count[t] > best) { best = count[t]; pick = i; }
+      }
+      if (pick < 0) pick = 0;               // 只剩同题型了，认了
 
-    if (better) {
-      var oldIdx = slots.indexOf(better.q);
-      slots[idx] = better.q;
-      if (oldIdx >= 0) slots[oldIdx] = current;   // 换下来的题回填到原位置
+      prevTag = tagOf(pool[pick]);
+      out.push(pool.splice(pick, 1)[0]);
     }
+    return out;
   }
 
   /* ---------- 答题结算 ---------- */
@@ -1896,7 +1487,7 @@
     save.wrongBook.forEach(function (w) { if (w.qid === q.id) rec = w; });
     if (!rec) {
       rec = {
-        qid: q.id, subject: q.subject, family: q.family || null,
+        qid: q.id, subject: q.subject, family: null,
         seen: 0, correct: 0, wrongCount: 0, rightStreak: 0,
         lastWrongAt: 0, cleared: false
       };
@@ -1914,24 +1505,12 @@
       rec.lastWrongAt = now;
     }
 
-    // --- 分项统计 ---
-    if (q.subject === 'english') {
-      if (q.family) {
-        var fs = save.progress.english.familyStats[q.family] ||
-                 (save.progress.english.familyStats[q.family] = { seen: 0, correct: 0, lastSeen: 0 });
-        fs.seen++; if (correct) fs.correct++;
-        fs.lastSeen = now;
-      }
-      var ts = save.progress.english.typeStats[q.type] ||
-               (save.progress.english.typeStats[q.type] = { seen: 0, correct: 0 });
-      ts.seen++; if (correct) ts.correct++;
-    } else {
-      var bucket = save.progress[q.subject].byTag;
-      (q.tags || []).forEach(function (tag) {
-        var t = bucket[tag] || (bucket[tag] = { seen: 0, correct: 0 });
-        t.seen++; if (correct) t.correct++;
-      });
-    }
+    // --- 按知识点统计（家长面板用）---
+    var bucket = save.progress.chinese.byTag;
+    (q.tags || []).forEach(function (tag) {
+      var t = bucket[tag] || (bucket[tag] = { seen: 0, correct: 0 });
+      t.seen++; if (correct) t.correct++;
+    });
 
     return rec;
   }
@@ -1969,7 +1548,6 @@
       correct: items.filter(function (x) { return x.correct; }).length,
       total: items.length,
       pointsEarned: pointsEarned,
-      family: round.family || null,
       items: items,
       spins: spins
     };
@@ -1992,12 +1570,15 @@
 })(window);
 
 /* ===== 41-render-choice.js ===== */
-/* 41-render-choice.js — 选择题渲染器（choice 与 listen 共用）
+/* 41-render-choice.js — 选择题渲染器
  *
- * choice 和 listen 从渲染代码看是同一个东西：题干 + N 个选项。
- * 差别只是题干是文字还是音频。写两套渲染器是重复劳动，会带来两份 bug。
- * 它们真正不同的地方在内容模型（listen 的干扰项是最小对立对），那个在
- * 30-curriculum.js 里处理。
+ * 整个题库现在只有一种题型：choice（题干 + 4 个选项）。曾经还有个 listen
+ * 渲染分支（听音选词，走 OPW2 自然拼读），英语下线后一起删了 —— 留着就是
+ * 一段永远跑不到、也没人测的代码。
+ *
+ * rendererFor 也放在这里。它原来在 44-render-realword.js，那个文件承载的
+ * 是「看图选词 / 排序 / 拼词」三种英语题型；三种都没了，只剩下「按 type
+ * 找渲染器」这一件小事，没必要为它单开一个文件。
  */
 (function (window) {
   'use strict';
@@ -2005,6 +1586,14 @@
   var G = window.G;
 
   G.Renderers = G.Renderers || {};
+
+  /**
+   * 按题型取渲染器。目前只有 choice 一种，未知题型兜底也给它 ——
+   * 宁可渲染出一道还能做的题，也不要空白屏。
+   */
+  G.rendererFor = function (type) {
+    return G.Renderers[type] || G.Renderers.choice;
+  };
 
   G.Renderers.choice = function (container, q, handlers) {
     var options = q.options || [];
@@ -2016,24 +1605,16 @@
     // ---- 题干 ----
     var stem = G.el('div', { class: 'stem' });
 
-    if (q.type === 'listen') {
-      // 听音辨认：不显示文字，纯听。答完才露出拼写。
-      stem.appendChild(G.el('div', { class: 'stem-hint', text: '听一听，是哪个词？' }));
-      stem.appendChild(G.UI.speakerButton(q.audio && q.audio[0], null, { autoplay: true }));
-
-    } else if (q.type === 'prompt' || (q.stem && q.stem.audio)) {
-      // 有语音的题干（语文拼音等）
-      stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt || '' }));
+    if (q.stem && q.stem.audio) {
+      // 有语音的题干（「这个字读什么？」读一遍给孩子听）。
+      // 现在的识字题库没有音频题干，这条留给以后加真人读音时用。
+      if (q.stem.prompt) {
+        stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
+      }
       stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
 
     } else if (q.stem && q.stem.text) {
-      var cls = 'stem-text';
-      if (layout === 'big-number') cls += ' stem-number';
-      else if (layout === 'count') cls += ' stem-count';
-      stem.appendChild(G.el('div', { class: cls, text: q.stem.text }));
-      if (q.stem.audio) {
-        stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { small: true }));
-      }
+      stem.appendChild(G.el('div', { class: 'stem-text', text: q.stem.text }));
     }
 
     root.appendChild(stem);
@@ -2043,8 +1624,12 @@
     var buttons = {};
 
     options.forEach(function (opt) {
+      // 单字选项（「日」「目」「白」这类形近字）单独放大 —— 一眼看不清的字
+      // 会让孩子靠猜，而不是靠辨认
+      var single = (opt.text || '').length === 1;
+
       var btn = G.el('button', {
-        class: 'option',
+        class: 'option' + (single ? ' option-single' : ''),
         'data-id': opt.id,
         onclick: function () { choose(opt); }
       }, [G.el('span', { class: 'option-text', text: opt.text })]);
@@ -2074,28 +1659,13 @@
         if (id === q.answer) buttons[id].classList.add('is-answer');
       });
 
-      // listen 题答完才显示拼写 —— 否则孩子靠字形猜
-      if (q.type === 'listen') {
-        stem.querySelectorAll('.stem-hint').forEach(function (n) {
-          n.textContent = q.answerWord ? '答案是：' + q.answerWord : '';
-        });
-      }
-
-      // 播放该选项自己的音（listen 题的选项本身就是词）
-      var chosenWord = (q.options.filter(function (o) { return o.id === opt.id; })[0] || {}).text;
-      if (q.type === 'listen' && chosenWord && G.Audio.has('word.' + chosenWord)) {
-        setTimeout(function () { G.Audio.play('word.' + chosenWord); }, 260);
-      }
-
       if (!correct) {
         showExplain(q.explain);
-        if (q.explainAudio) {
-          setTimeout(function () { G.Audio.play(q.explainAudio); }, 700);
-        }
       } else {
         G.UI.confetti(container);
       }
 
+      // 答错的题留久一点，让孩子看清正确答案和解释
       setTimeout(function () { handlers.onAnswer(correct); }, correct ? 620 : 1500);
     }
 
@@ -2110,413 +1680,15 @@
 
 })(window);
 
-/* ===== 42-render-blend.js ===== */
-/* 42-render-blend.js — 拼读合成题（OPW2 的核心题型）
- *
- * 两个子模式：
- *   vowel-gap    — 「f _ n」听音填元音。OPW2 整本书就是教 5 个短元音，
- *                  这个模式直接把考点变成题目本身，性价比最高。建议占 blend 的 60%。
- *   tap-to-blend — 点 onset/rime 两张卡听音素，再选整词。
- *
- * 音素音缺失或质量差时走降级路径（playWithFallback → 整词音 + 依次高亮）。
- * 这条降级路径必须在 Phase 0 就存在，否则 Phase 1 发现音素音不行时要返工整个题型。
- */
-(function (window) {
-  'use strict';
-
-  var G = window.G;
-
-  G.Renderers = G.Renderers || {};
-
-  G.Renderers.blend = function (container, q, handlers) {
-    var mode = q.mode || 'vowel-gap';
-    var answered = false;
-
-    var root = G.el('div', { class: 'q q-blend q-blend-' + mode });
-    root.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt || '听一听，拼一拼' }));
-
-    if (mode === 'tap-to-blend') {
-      renderTapToBlend();
-    } else {
-      renderVowelGap();
-    }
-
-    container.appendChild(root);
-
-    /* ---------- 子模式 A：听音拼装 ---------- */
-
-    function renderTapToBlend() {
-      var onset = q.stem.onset;
-      var rime = q.stem.rime;
-      var word = q.answerWord;
-      var playedOnset = false, playedRime = false;
-
-      var cards = G.el('div', { class: 'blend-cards' });
-
-      var onsetCard = G.el('button', {
-        class: 'blend-card',
-        onclick: function () {
-          playedOnset = true;
-          onsetCard.classList.add('tapped');
-          // 降级：音素音缺失就播整词音，卡片依次高亮
-          G.Audio.playWithFallback(onset.audio, q.audio && q.audio[0]);
-          checkBoth();
-        }
-      }, [G.el('span', { class: 'blend-card-text', text: onset.text })]);
-
-      var plus = G.el('span', { class: 'blend-plus', text: '+' });
-
-      var rimeCard = G.el('button', {
-        class: 'blend-card',
-        onclick: function () {
-          playedRime = true;
-          rimeCard.classList.add('tapped');
-          G.Audio.playWithFallback(rime.audio, q.audio && q.audio[0]);
-          checkBoth();
-        }
-      }, [G.el('span', { class: 'blend-card-text', text: rime.text })]);
-
-      cards.appendChild(onsetCard);
-      cards.appendChild(plus);
-      cards.appendChild(rimeCard);
-      root.appendChild(cards);
-
-      function checkBoth() {
-        if (playedOnset && playedRime) {
-          root.querySelector('.blend-cards').classList.add('ready');
-        }
-      }
-
-      root.appendChild(G.el('div', { class: 'stem-hint stem-hint-sm', text: '两个音合起来是哪个词？' }));
-      root.appendChild(buildOptions(q.options || []));
-    }
-
-    /* ---------- 子模式 B：元音填空 ---------- */
-
-    function renderVowelGap() {
-      var display = G.el('div', { class: 'vowel-gap' });
-      // "f _ n" 里的空位渲染成一个闪烁的槽，视觉上提示「这里缺一个字母」
-      q.stem.display.split('').forEach(function (ch) {
-        if (ch === '_') display.appendChild(G.el('span', { class: 'vg-blank', text: '?' }));
-        else if (ch === ' ') display.appendChild(G.el('span', { class: 'vg-space' }));
-        else display.appendChild(G.el('span', { class: 'vg-char', text: ch }));
-      });
-
-      root.appendChild(display);
-      root.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
-
-      // 选项是大号字母，比文字选项更好点
-      var grid = G.el('div', { class: 'options options-row options-letters' });
-      (q.options || []).forEach(function (opt) {
-        var btn = G.el('button', {
-          class: 'option option-letter',
-          onclick: function () { choose(opt, btn); }
-        }, [G.el('span', { class: 'option-text', text: opt.text })]);
-        grid.appendChild(btn);
-      });
-      root.appendChild(grid);
-    }
-
-    function buildOptions(options) {
-      var grid = G.el('div', { class: 'options options-grid options-words' });
-      options.forEach(function (opt) {
-        var btn = G.el('button', {
-          class: 'option option-word',
-          onclick: function () {
-            if (answered) return;
-            // 先让孩子听到这个词，再判定
-            if (G.Audio.has('word.' + opt.text)) G.Audio.play('word.' + opt.text);
-            choose(opt, btn);
-          }
-        }, [G.el('span', { class: 'option-text', text: opt.text })]);
-        grid.appendChild(btn);
-      });
-      return grid;
-    }
-
-    function choose(opt, btn) {
-      if (answered) return;
-      answered = true;
-
-      var correct = opt.id === q.answer;
-      G.UI.feedback(btn, correct);
-
-      G.$$('.option', root).forEach(function (b) {
-        b.classList.add('locked');
-        if (b.getAttribute('data-id') === q.answer) b.classList.add('is-answer');
-      });
-
-      if (correct) {
-        G.UI.confetti(container);
-        // 答对了再把整词读一遍，强化「拼出来的是什么」
-        if (q.answerWord && G.Audio.has('word.' + q.answerWord)) {
-          setTimeout(function () { G.Audio.play('word.' + q.answerWord); }, 320);
-        }
-      } else {
-        showExplain(q.explain);
-      }
-
-      setTimeout(function () { handlers.onAnswer(correct); }, correct ? 750 : 1600);
-    }
-
-    function showExplain(text) {
-      if (!text) return;
-      var bar = G.el('div', { class: 'explain', text: text });
-      root.appendChild(bar);
-    }
-
-    return { destroy: function () {} };
-  };
-
-})(window);
-
-/* ===== 43-render-sort.js ===== */
-/* 43-render-sort.js — 词族归类题
- *
- * 交互用「点选 → 点筐」而不是拖拽。6 岁孩子在手机上拖拽命中率很低，
- * 拖到一半掉了会很挫败。点选式容错高得多。
- *
- * passRatio：sort 占一题的槽位但含 4 次判断，全对才算对太苛刻 ——
- * 会打击积极性，也扭曲难度统计。
- */
-(function (window) {
-  'use strict';
-
-  var G = window.G;
-
-  G.Renderers = G.Renderers || {};
-
-  G.Renderers.sort = function (container, q, handlers) {
-    var answered = false;
-    var selected = null;
-    var placed = {};                       // { itemId: bucketId }
-    var buckets = q.buckets || [];
-    var items = q.items || [];
-    var passRatio = q.passRatio === undefined ? 0.75 : q.passRatio;
-
-    var root = G.el('div', { class: 'q q-sort' });
-    root.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt || '把单词放进正确的筐子' }));
-
-    // ---- 待归类的词 ----
-    var tray = G.el('div', { class: 'sort-tray' });
-    var itemEls = {};
-
-    items.forEach(function (item) {
-      var el = G.el('button', {
-        class: 'sort-item',
-        onclick: function () { selectItem(item.id, el); }
-      }, [G.el('span', { text: item.text })]);
-      itemEls[item.id] = el;
-      tray.appendChild(el);
-    });
-    root.appendChild(tray);
-
-    // ---- 筐子 ----
-    var bucketRow = G.el('div', { class: 'sort-buckets' });
-    var bucketEls = {};
-
-    buckets.forEach(function (b) {
-      var drop = G.el('div', { class: 'sort-drop' });
-      var el = G.el('button', {
-        class: 'sort-bucket',
-        style: b.color ? ('--bucket-color:' + b.color) : null,
-        onclick: function () { placeInto(b.id); }
-      }, [
-        G.el('span', { class: 'bucket-label', text: b.label }),
-        drop
-      ]);
-      bucketEls[b.id] = { el: el, drop: drop };
-      bucketRow.appendChild(el);
-    });
-    root.appendChild(bucketRow);
-
-    root.appendChild(G.el('div', { class: 'stem-hint stem-hint-sm', text: '点一个词，再点一个筐子' }));
-    container.appendChild(root);
-
-    function selectItem(id, el) {
-      if (answered) return;
-      if (placed[id]) return;                  // 已放好的不能再选
-
-      Object.keys(itemEls).forEach(function (k) { itemEls[k].classList.remove('selected'); });
-      selected = id;
-      el.classList.add('selected');
-
-      var item = items.filter(function (i) { return i.id === id; })[0];
-      if (item && item.audio && G.Audio.has(item.audio.replace(/\.mp3$/, '').replace(/\//g, '.'))) {
-        G.Audio.play(item.audio.replace(/\.mp3$/, '').replace(/\//g, '.'));
-      }
-    }
-
-    function placeInto(bucketId) {
-      if (answered || !selected) return;
-
-      var id = selected;
-      placed[id] = bucketId;
-
-      var el = itemEls[id];
-      el.classList.remove('selected');
-      el.classList.add('placed');
-      bucketEls[bucketId].drop.appendChild(el);
-
-      selected = null;
-      if (Object.keys(placed).length === items.length) setTimeout(check, 320);
-    }
-
-    function check() {
-      if (answered) return;
-      answered = true;
-
-      var right = 0;
-      items.forEach(function (item) {
-        var ok = placed[item.id] === item.bucket;
-        if (ok) right++;
-        var el = itemEls[item.id];
-        el.classList.add(ok ? 'item-ok' : 'item-bad');
-      });
-
-      var ratio = right / items.length;
-      var passed = ratio >= passRatio;
-
-      // 错的词把正确归处标出来
-      if (!passed) {
-        items.forEach(function (item) {
-          if (placed[item.id] !== item.bucket) {
-            bucketEls[item.bucket].el.classList.add('bucket-hint');
-          }
-        });
-        showExplain(q.explain || ('对了 ' + right + ' 个，再仔细看看尾音。'));
-      } else {
-        G.UI.confetti(container);
-      }
-
-      G.log('sort 结果', right + '/' + items.length, '通过 =', passed);
-      setTimeout(function () { handlers.onAnswer(passed); }, passed ? 800 : 1900);
-    }
-
-    function showExplain(text) {
-      if (!text) return;
-      root.appendChild(G.el('div', { class: 'explain', text: text }));
-    }
-
-    return { destroy: function () {} };
-  };
-
-})(window);
-
-/* ===== 44-render-realword.js ===== */
-/* 44-render-realword.js — 真假词判断
- *
- * 假词默认不配音，只显示字母。两个原因：
- *   1. TTS 读 sep / fap 这类非词时发音不可预测（可能按拼写规则读，也可能触发
- *      语言模型纠错），孩子听到错音会破坏整个练习的意义。
- *   2. 不用音频反而更接近自然拼读的真实目标 —— 见词能读。孩子看到 sep，
- *      心里默拼 /s/ /e/ /p/，发现拼不出认识的词，就选「假词」。
- *
- * probeAudio 字段保留：若实测某几个假词的 TTS 读法标准，可以填上。
- */
-(function (window) {
-  'use strict';
-
-  var G = window.G;
-
-  G.Renderers = G.Renderers || {};
-
-  G.Renderers.realword = function (container, q, handlers) {
-    var answered = false;
-    var probe = q.probe || {};
-
-    var root = G.el('div', { class: 'q q-realword' });
-    root.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt || '这个词是真的吗？' }));
-
-    // ---- 词卡 ----
-    var card = G.el('div', { class: 'word-card' }, [
-      G.el('span', { class: 'word-card-text', text: probe.text })
-    ]);
-
-    // 真词可以给个喇叭（孩子可以点来确认），假词不给
-    if (probe.isReal && G.Audio.has('word.' + probe.text)) {
-      card.appendChild(G.el('button', {
-        class: 'word-card-speaker',
-        onclick: function (e) {
-          e.stopPropagation();
-          G.Audio.play('word.' + probe.text);
-        }
-      }, ['🔊']));
-    }
-    root.appendChild(card);
-
-    // ---- 两个大按钮 ----
-    var row = G.el('div', { class: 'realword-actions' });
-    var btnReal = G.el('button', {
-      class: 'rw-btn rw-real',
-      onclick: function () { answer(true, btnReal); }
-    }, ['✅ 真词']);
-    var btnFake = G.el('button', {
-      class: 'rw-btn rw-fake',
-      onclick: function () { answer(false, btnFake); }
-    }, ['❌ 假词']);
-    row.appendChild(btnReal);
-    row.appendChild(btnFake);
-    root.appendChild(row);
-
-    container.appendChild(root);
-
-    function answer(saidReal, btn) {
-      if (answered) return;
-      answered = true;
-
-      var correct = (saidReal === !!probe.isReal);
-      G.UI.feedback(btn, correct);
-
-      btnReal.classList.add('locked');
-      btnFake.classList.add('locked');
-      (probe.isReal ? btnReal : btnFake).classList.add('is-answer');
-
-      var reveal = q.reveal || {};
-      if (correct) {
-        G.UI.confetti(container);
-        // 揭晓真正的那个词
-        if (reveal.audio && G.Audio.has(reveal.audio.replace(/\.mp3$/, '').replace(/\//g, '.'))) {
-          setTimeout(function () {
-            G.Audio.play(reveal.audio.replace(/\.mp3$/, '').replace(/\//g, '.'));
-          }, 320);
-        }
-        if (reveal.text) showExplain(reveal.text);
-      } else {
-        showExplain(reveal.text || q.explain);
-      }
-
-      setTimeout(function () { handlers.onAnswer(correct); }, correct ? 800 : 1800);
-    }
-
-    function showExplain(text) {
-      if (!text) return;
-      var bar = G.el('div', { class: 'explain', text: text });
-      root.appendChild(bar);
-    }
-
-    return { destroy: function () {} };
-  };
-
-  /**
-   * 题型 → 渲染器。渲染器按视觉形态分（3 个），内容按题型分（5 个）。
-   */
-  G.rendererFor = function (type) {
-    if (type === 'choice' || type === 'listen') return G.Renderers.choice;
-    if (type === 'blend') return G.Renderers.blend;
-    if (type === 'sort') return G.Renderers.sort;
-    if (type === 'realword') return G.Renderers.realword;
-    return G.Renderers.choice;
-  };
-
-})(window);
-
 /* ===== 50-wheel.js ===== */
 /* 50-wheel.js — 转盘抽奖
  *
  * 结果先定后动画：先按权重抽出奖品，再反推指针该停在哪。
- * 反过来（让动画时长或角度决定结果）会在慢设备上产生偏差，也会让
- * 「再来一次」的重转逻辑变得不可控。
+ * 反过来让动画时长或角度决定结果，会在慢设备上产生偏差。
+ *
+ * 一次答对 = 一次转动，转完就结算。曾经有过「再来一次」的重转机制，
+ * 已经去掉：重转把一次抽奖拖成几轮，孩子盯着盘转的时间比答题还长。
+ * 空奖就是空奖（G.NO_PRIZE_TEXT），不兜底、不重来。
  */
 (function (window) {
   'use strict';
@@ -2565,21 +1737,18 @@
       p2: '#4FC3F7',
       p5: '#FFD54F',
       p10: '#BA68C8',
-      again: '#B0BEC5'
+      none: '#B0BEC5'
     }[id] || '#B0BEC5';
   }
 
   /**
-   * 打开转盘。返回 Promise<{prize, respins}> —— resolve 时奖励已入账。
+   * 打开转盘。返回 Promise<{prize, awarded}> —— resolve 时奖励已入账。
    *
    * @param {object} save
-   * @param {object} roundState  {respinCount}
    */
-  function open(save, roundState) {
+  function open(save) {
     return new Promise(function (resolve) {
       var segments = segmentAngles();
-      var respins = (roundState && roundState.respinCount) || 0;
-      var maxRespins = save.limits.maxRespinsPerQuestion || 3;
 
       var overlay = G.el('div', { class: 'overlay wheel-overlay' });
       var box = G.el('div', { class: 'wheel-box' });
@@ -2636,48 +1805,27 @@
 
         G.Audio.play('ui.spin');
 
-        setTimeout(function () { settle(prize, respins); }, 3600);
+        setTimeout(function () { finish(prize); }, 3600);
       });
 
-      function settle(prize, respinCount) {
-        if (prize.kind === 'again') {
-          if (respinCount >= maxRespins) {
-            // 重转次数用完 —— 给最低档奖励，不能让孩子空手而归
-            finish(G.PRIZES[1], respinCount);
-            return;
-          }
-          G.Audio.play('ui.win');
-          resultBar.textContent = '再来一次！';
-          resultBar.className = 'wheel-result wheel-result-again';
-          setTimeout(function () {
-            overlay.classList.add('closing');
-            setTimeout(function () {
-              if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-              resolve({ prize: prize, respins: respinCount + 1, again: true });
-            }, 320);
-          }, 900);
-          return;
-        }
-        finish(prize, respinCount);
-      }
-
-      function finish(prize, respinCount) {
+      function finish(prize) {
         G.Audio.play('ui.win');
 
         var r = G.Runner.awardPoints(save, prize.points);
         var extra = '';
 
-        if (prize.kind === 'tv') {
+        if (prize.kind === 'none') {
+          resultBar.textContent = G.NO_PRIZE_TEXT;
+          resultBar.className = 'wheel-result wheel-result-none';
+        } else if (prize.kind === 'tv') {
           G.Runner.awardTvMinutes(save, 10);
-          extra = '（记得让爸爸妈妈知道哦）';
-        } else if (r.capped) {
-          extra = '（今天的积分已经攒满啦，明天继续！）';
+          resultBar.textContent = prize.label + '（记得让爸爸妈妈知道哦）';
+          resultBar.className = 'wheel-result wheel-result-win';
+        } else {
+          if (r.capped) extra = '（今天的积分已经攒满啦，明天继续！）';
+          resultBar.textContent = '+' + r.awarded + ' 分 ' + extra;
+          resultBar.className = 'wheel-result wheel-result-win';
         }
-
-        resultBar.textContent = prize.points > 0
-          ? ('+' + r.awarded + ' 分 ' + extra)
-          : (prize.label + ' ' + extra);
-        resultBar.className = 'wheel-result wheel-result-win';
 
         G.Store.save(save);
 
@@ -2690,7 +1838,7 @@
           overlay.classList.add('closing');
           setTimeout(function () {
             if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-            resolve({ prize: prize, respins: respinCount, awarded: r.awarded });
+            resolve({ prize: prize, awarded: r.awarded });
           }, 320);
         }
       }
@@ -3151,43 +2299,11 @@
     }
     box.appendChild(section('待确认兑换', pendBox));
 
-    /* --- 英语进度解锁 --- */
-    var unlockBox = G.el('div', { class: 'stat-card' });
-    unlockBox.appendChild(G.el('div', {
-      class: 'muted',
-      text: '孩子在课外班学到哪了？游戏只在这个范围内出题。'
-    }));
-    var cur = G.Curriculum.curriculum();
-    cur.unlockOptions.forEach(function (opt) {
-      var checked = save.settings.englishUnlockedThrough === opt.through;
-      var optEl = G.el('button', {
-        class: 'unlock-opt' + (checked ? ' unlock-on' : ''),
-        onclick: function () {
-          save.settings.englishUnlockedThrough = opt.through;
-          G.Store.save(save);
-          rerender();
-        }
-      }, [
-        G.el('span', { class: 'unlock-radio', text: checked ? '●' : '○' }),
-        G.el('div', {}, [
-          G.el('div', { class: 'unlock-label', text: opt.label }),
-          G.el('div', { class: 'unlock-detail', text: opt.detail })
-        ])
-      ]);
-      unlockBox.appendChild(optEl);
-    });
-
-    // 只给建议，不自动执行 —— 决定权在家长
-    var suggestion = englishSuggestion(save);
-    if (suggestion) unlockBox.appendChild(G.el('div', { class: 'suggest', text: suggestion }));
-
-    box.appendChild(section('英语进度', unlockBox));
+    /* --- 识字范围 --- */
+    box.appendChild(section('识字范围', buildZibiaoPanel(save)));
 
     /* --- 学习数据 --- */
     box.appendChild(section('学习数据', buildStats(save)));
-
-    /* --- 音频替换 --- */
-    box.appendChild(section('音频', buildAudioPanel(save, rerender)));
 
     /* --- 备份 --- */
     box.appendChild(section('备份', buildBackupPanel(save, rerender)));
@@ -3219,48 +2335,91 @@
 
   /* ---------- 各区块 ---------- */
 
-  function englishSuggestion(save) {
-    var fs = save.progress.english.familyStats;
-    var fams = G.Curriculum.unlockedFamilies(save);
-    var seen = 0, correct = 0;
-    fams.forEach(function (f) {
-      if (fs[f]) { seen += fs[f].seen; correct += fs[f].correct; }
+  /**
+   * 识字范围面板。
+   *
+   * 只读，没有任何开关 —— 原来这里是「英语学到第几单元」的解锁选择，现在
+   * 题库固定在小学一、二年级范围内，没有可调的东西。留下的是家长真正想看
+   * 的那个问题：**哪几个字还没会**。
+   */
+  function buildZibiaoPanel(save) {
+    var wrap = G.el('div', { class: 'stat-card' });
+    var zb = G.Bank.zibiao();
+    if (!zb) {
+      wrap.appendChild(G.el('div', { class: 'muted', text: '字表未加载' }));
+      return wrap;
+    }
+
+    var g1 = zb.chars.filter(function (c) { return c.grade === 1; }).length;
+    wrap.appendChild(G.el('div', {
+      class: 'muted',
+      text: '题库共 ' + G.Bank.all().length + ' 道题，全部出自下面这张字表（' +
+            zb.chars.length + ' 字：一年级 ' + g1 + ' · 二年级 ' + (zb.chars.length - g1) + '）。' +
+            '题目和干扰项都不会超出这个范围。'
+    }));
+
+    // 还没掌握的字。只从「答案是一个汉字」的题里统计 —— 数笔画题的答案是
+    // 数字、看字选拼音的答案是拼音，那些题对不上字，不参与。
+    var shaky = {};
+    save.wrongBook.forEach(function (w) {
+      if (w.cleared) return;
+      var q = findQuestion(w.qid);
+      var ch = q && answerChar(q);
+      if (!ch) return;
+      shaky[ch] = (shaky[ch] || 0) + w.wrongCount;
     });
-    if (seen < 20) return null;
-    var acc = correct / seen;
-    if (acc < 0.9) return null;
 
-    var units = G.Curriculum.unlockedUnitIds(save);
-    var idx = units.length;
-    if (idx >= G.Curriculum.curriculum().unlockOptions.length) return null;
+    var chars = Object.keys(shaky).sort(function (a, b) { return shaky[b] - shaky[a]; });
+    if (chars.length) {
+      wrap.appendChild(G.el('div', { class: 'stat-title', text: '还没巩固的字（错得最多的在前）' }));
+      wrap.appendChild(G.el('div', { class: 'zi-grid' }, chars.slice(0, 24).map(function (ch) {
+        return G.el('span', { class: 'zi-chip zi-chip-weak', text: ch });
+      })));
+      if (chars.length > 24) {
+        wrap.appendChild(G.el('div', { class: 'muted', text: '还有 ' + (chars.length - 24) + ' 个，先练这些。' }));
+      }
+    } else if (save.wrongBook.length) {
+      wrap.appendChild(G.el('div', { class: 'muted', text: '错题本里没有尚未巩固的字，继续保持。' }));
+    }
 
-    return '建议：当前范围正确率 ' + Math.round(acc * 100) +
-           '%，要不要跟老师确认后解锁下一单元？';
+    var learned = zb.chars.filter(function (c) { return !shaky[c.char]; });
+    wrap.appendChild(G.el('div', {
+      class: 'stat-title',
+      text: '字表（' + zb.chars.length + ' 字，' + learned.length + ' 个当前没在错题本里）'
+    }));
+    wrap.appendChild(G.el('div', { class: 'zi-grid' }, zb.chars.map(function (c) {
+      return G.el('span', {
+        class: 'zi-chip' + (shaky[c.char] ? ' zi-chip-weak' : ''),
+        title: c.pinyin,
+        text: c.char
+      });
+    })));
+
+    return wrap;
+  }
+
+  /** 取一道题的答案对应的字；答案不是单个汉字就返回 null。 */
+  function answerChar(q) {
+    var opts = q.options || [];
+    for (var i = 0; i < opts.length; i++) {
+      if (opts[i].id !== q.answer) continue;
+      var t = (opts[i].text || '').trim();
+      return /^[一-龥]$/.test(t) ? t : null;
+    }
+    return null;
   }
 
   function buildStats(save) {
     var wrap = G.el('div', { class: 'stat-card' });
 
-    // 英语按词族
-    var fs = save.progress.english.familyStats;
-    var fams = Object.keys(fs);
-    if (fams.length) {
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: '英语 · 按词族' }));
-      fams.sort(function (a, b) { return (fs[a].correct / fs[a].seen) - (fs[b].correct / fs[b].seen); })
-        .forEach(function (f) {
-          wrap.appendChild(bar(f + ' (-' + f + ')', fs[f].correct, fs[f].seen));
-        });
-    }
-
-    // 语文数学按标签
-    ['chinese', 'math'].forEach(function (sub) {
-      var bucket = save.progress[sub].byTag;
-      var tags = Object.keys(bucket);
-      if (!tags.length) return;
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL[sub] + ' · 按知识点' }));
+    // 按题型统计（看拼音选字 / 数笔画 / 反义词 …）
+    var bucket = save.progress.chinese.byTag;
+    var tags = Object.keys(bucket);
+    if (tags.length) {
+      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL.chinese + ' · 按题型' }));
       tags.sort(function (a, b) { return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen); })
         .forEach(function (t) { wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen)); });
-    });
+    }
 
     // 错题本
     var wrong = save.wrongBook.filter(function (w) { return !w.cleared; })
@@ -3269,8 +2428,9 @@
       wrap.appendChild(G.el('div', { class: 'stat-title', text: '待巩固的题（' + wrong.length + '）' }));
       wrong.slice(0, 15).forEach(function (w) {
         var q = findQuestion(w.qid);
+        var stemText = (q && q.stem && q.stem.text) || '';
         wrap.appendChild(G.el('div', { class: 'wrong-row' }, [
-          G.el('span', { text: (q ? (q.stem.text || q.answerWord || w.qid) : w.qid) }),
+          G.el('span', { text: stemText || w.qid }),
           G.el('span', { class: 'wrong-count', text: '错 ' + w.wrongCount + ' 次' })
         ]));
       });
@@ -3281,7 +2441,7 @@
       wrap.appendChild(G.el('div', { class: 'stat-title', text: '最近 ' + Math.min(10, save.sessions.length) + ' 局' }));
       save.sessions.slice(-10).reverse().forEach(function (s) {
         wrap.appendChild(bar(
-          G.localDateStr(new Date(s.ts)).slice(5) + ' · ' + (s.family ? '-' + s.family : ''),
+          G.localDateStr(new Date(s.ts)).slice(5) + ' · ' + s.correct + '/' + s.total,
           s.correct, s.total
         ));
       });
@@ -3294,146 +2454,9 @@
   function findQuestion(qid) {
     if (!_qIndex) {
       _qIndex = {};
-      ['chinese', 'math', 'english'].forEach(function (s) {
-        (window.G.DATA && window.G.DATA[s] || []).forEach(function (q) { _qIndex[q.id] = q; });
-      });
+      ((window.G.DATA && window.G.DATA.chinese) || []).forEach(function (q) { _qIndex[q.id] = q; });
     }
     return _qIndex[qid];
-  }
-
-  function buildAudioPanel(save, rerender) {
-    var wrap = G.el('div', { class: 'stat-card' });
-    var ids = Object.keys(G.AUDIO_MAP || {}).sort();
-
-    wrap.appendChild(G.el('div', {
-      class: 'muted',
-      text: '共 ' + ids.length + ' 条音频。觉得哪条读得不准，可以自己录一条盖掉。录完拖动滑块调到和原音一样响。'
-    }));
-
-    var filter = G.el('input', { class: 'gate-input', placeholder: '搜索，如 fan 或 word.f' });
-    wrap.appendChild(filter);
-
-    var list = G.el('div', { class: 'audio-list' });
-    wrap.appendChild(list);
-
-    function renderList(kw) {
-      G.clear(list);
-      var shown = ids.filter(function (id) { return !kw || id.indexOf(kw) >= 0; }).slice(0, 60);
-      if (!shown.length) {
-        list.appendChild(G.el('div', { class: 'muted', text: '没有匹配的音频' }));
-        return;
-      }
-      shown.forEach(function (id) {
-        list.appendChild(audioRow(id, save, rerender));
-      });
-      if (ids.filter(function (id) { return !kw || id.indexOf(kw) >= 0; }).length > 60) {
-        list.appendChild(G.el('div', { class: 'muted', text: '（结果太多，请用搜索缩小范围）' }));
-      }
-    }
-
-    filter.addEventListener('input', function () { renderList(filter.value.trim()); });
-    renderList('');
-
-    wrap.appendChild(G.el('button', {
-      class: 'btn btn-sm', text: '列出所有家长录音',
-      onclick: function () {
-        var ov = G.Audio.listOverrides();
-        G.UI.toast(ov.length ? ('已录 ' + ov.length + ' 条：' + ov.slice(0, 5).join(', ')) : '还没有录过');
-      }
-    }));
-
-    return wrap;
-  }
-
-  function audioRow(id, save, rerender) {
-    var meta = G.Audio.getOverrideMeta(id);
-    var muted = save.settings.mutedAudio.indexOf(id) >= 0;
-
-    var rowEl = G.el('div', { class: 'audio-row' });
-
-    rowEl.appendChild(G.el('div', { class: 'audio-id', text: id }));
-
-    var actions = G.el('div', { class: 'audio-actions' });
-
-    actions.appendChild(G.el('button', {
-      class: 'btn btn-xs', text: '听内置',
-      onclick: function () { G.Audio.play(id); }
-    }));
-
-    actions.appendChild(recButton(id, meta, rerender));
-
-    if (meta) {
-      actions.appendChild(G.el('button', {
-        class: 'btn btn-xs', text: '听我的',
-        onclick: function () { G.Audio.play(id); }
-      }));
-
-      // 音量对齐：录音和 TTS 音量必然不一致，忽大忽小会让孩子听不清
-      var slider = G.el('input', {
-        class: 'gain-slider', type: 'range', min: '0.2', max: '3', step: '0.1',
-        value: String(meta.gain || 1)
-      });
-      slider.addEventListener('input', function () {
-        G.Audio.setOverride(id, meta.blob, parseFloat(slider.value));
-      });
-      actions.appendChild(slider);
-
-      actions.appendChild(G.el('button', {
-        class: 'btn btn-xs btn-danger', text: '删',
-        onclick: function () {
-          G.Audio.removeOverride(id).then(rerender);
-        }
-      }));
-    }
-
-    actions.appendChild(G.el('button', {
-      class: 'btn btn-xs' + (muted ? ' btn-danger' : ''),
-      text: muted ? '已静音' : '静音',
-      onclick: function () {
-        var i = save.settings.mutedAudio.indexOf(id);
-        if (i >= 0) save.settings.mutedAudio.splice(i, 1);
-        else save.settings.mutedAudio.push(id);
-        G.Store.save(save);
-        rerender();
-      }
-    }));
-
-    rowEl.appendChild(actions);
-    return rowEl;
-  }
-
-  function recButton(id, meta, rerender) {
-    var btn = G.el('button', {
-      class: 'btn btn-xs ' + (meta ? '' : 'btn-primary'),
-      text: meta ? '重录' : '录一条',
-      onclick: function () {
-        var original = btn.textContent;
-        btn.textContent = '录音中…';
-        btn.disabled = true;
-
-        G.Audio.startRecording().then(function () {
-          G.UI.toast('开始录音，读完点「停止」');
-          btn.textContent = '停止';
-          btn.disabled = false;
-          btn.onclick = function () {
-            btn.disabled = true;
-            G.Audio.stopRecording().then(function (blob) {
-              if (!blob) { G.UI.toast('录音失败'); return; }
-              G.Audio.setOverride(id, blob, 1.0).then(function () {
-                G.UI.toast('已替换');
-                rerender();
-              });
-            });
-          };
-        }).catch(function (e) {
-          G.log('录音失败', e);
-          G.UI.toast('无法录音，请检查麦克风权限');
-          btn.textContent = original;
-          btn.disabled = false;
-        });
-      }
-    });
-    return btn;
   }
 
   function buildBackupPanel(save, rerender) {
@@ -3558,13 +2581,12 @@
 
   var root = null;
   var save = null;
-  var round = null;          // {family, questions, startedAt}
+  var round = null;          // {questions, startedAt}
   var idx = 0;
   var results = [];          // [true|false|null]
   var items = [];            // 逐题记录
   var spins = [];
   var roundPoints = 0;
-  var respinCount = 0;
   var qStartAt = 0;
 
   /* ---------- 启动 ---------- */
@@ -3573,7 +2595,7 @@
     root = G.$('#app');
     save = G.Store.load();
 
-    G.Curriculum.init(data);
+    G.Bank.init(data);
     G.Audio.init();
 
     save.integrity.bootId = (save.integrity.bootId || 0) + 1;
@@ -3637,8 +2659,8 @@
 
     var s = G.UI.screen('screen-home');
 
-    s.appendChild(G.el('div', { class: 'home-title', text: '知识闯关' }));
-    s.appendChild(G.el('div', { class: 'home-sub', text: '语文 · 数学 · 英语' }));
+    s.appendChild(G.el('div', { class: 'home-title', text: '识字闯关' }));
+    s.appendChild(G.el('div', { class: 'home-sub', text: '一局 10 个字，答对就转盘' }));
 
     var stats = G.el('div', { class: 'home-stats' }, [
       G.el('div', { class: 'home-points', text: String(save.points.balance) }),
@@ -3697,10 +2719,9 @@
     items = [];
     spins = [];
     roundPoints = 0;
-    respinCount = 0;
 
     G.log('本局题目：', round.questions.map(function (q) {
-      return q.subject + ':' + q.type + (q.family ? '/' + q.family : '');
+      return q.id + '[' + ((q.tags && q.tags[0]) || q.type) + ']';
     }).join('  '));
 
     // 预加载本局音频，不阻塞渲染
@@ -3750,7 +2771,7 @@
     var ms = Date.now() - qStartAt;
 
     results[idx] = correct;
-    items.push({ qid: q.id, subject: q.subject, type: q.type, family: q.family || null, correct: correct, ms: ms });
+    items.push({ qid: q.id, subject: q.subject, type: q.type, tags: q.tags || [], correct: correct, ms: ms });
 
     G.Runner.recordAnswer(save, q, correct, ms);
     G.Store.save(save);
@@ -3762,29 +2783,17 @@
 
     if (!correct) { advance(); return; }
 
-    // 答对 → 转盘
-    respinCount = 0;
-    spinLoop(advance);
-  }
-
-  function spinLoop(then) {
-    G.Wheel.open(save, { respinCount: respinCount }).then(function (res) {
+    // 答对 → 转盘。转完就翻页，空奖也一样 —— 没有重转。
+    G.Wheel.open(save).then(function (res) {
       spins.push({ prize: res.prize.id, ts: Date.now() });
       roundPoints += res.awarded || 0;
 
       var dc = G.Store.todayCounter(save);
       dc.spins += 1;
 
-      if (res.again) {
-        respinCount = res.respins;
-        G.log('再来一次，已重转', respinCount, '次');
-        spinLoop(then);            // 重转，不推进题目
-        return;
-      }
-
       G.Store.save(save);
       updatePointsChip();
-      setTimeout(then, 260);
+      setTimeout(advance, 260);
     });
   }
 
@@ -3817,12 +2826,6 @@
       G.el('span', { class: 'stat-label', text: '当前积分' }),
       G.el('span', { class: 'stat-value', text: save.points.balance + ' 分' })
     ]));
-    if (round.family) {
-      card.appendChild(G.el('div', { class: 'stat-row' }, [
-        G.el('span', { class: 'stat-label', text: '今天练的词族' }),
-        G.el('span', { class: 'stat-value', text: '-' + round.family })
-      ]));
-    }
     s.appendChild(card);
 
     if (pct >= 70) G.UI.confetti(s);

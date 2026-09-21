@@ -17,8 +17,8 @@
  * 不这么做的话，孩子会被永久钉在第一次打开的版本上。
  */
 
-var VERSION = 'yxjx-c9baaea612';
-var PRECACHE = ["index.html", "app.css", "data.js", "app.js", "manifest.webmanifest", "icons/favicon-32.png", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "audio/ui/correct.wav", "audio/ui/num.0.wav", "audio/ui/num.1.wav", "audio/ui/num.10.wav", "audio/ui/num.11.wav", "audio/ui/num.12.wav", "audio/ui/num.13.wav", "audio/ui/num.14.wav", "audio/ui/num.15.wav", "audio/ui/num.16.wav", "audio/ui/num.17.wav", "audio/ui/num.18.wav", "audio/ui/num.19.wav", "audio/ui/num.2.wav", "audio/ui/num.20.wav", "audio/ui/num.3.wav", "audio/ui/num.4.wav", "audio/ui/num.5.wav", "audio/ui/num.6.wav", "audio/ui/num.7.wav", "audio/ui/num.8.wav", "audio/ui/num.9.wav", "audio/ui/op.add.wav", "audio/ui/op.eq.wav", "audio/ui/op.howmany.wav", "audio/ui/op.sub.wav", "audio/ui/op.whichbig.wav", "audio/ui/spin.wav", "audio/ui/tap.wav", "audio/ui/win.wav", "audio/ui/wrong.wav", "audio/phoneme/a.wav", "audio/phoneme/an.wav", "audio/phoneme/at.wav", "audio/phoneme/b.wav", "audio/phoneme/c.wav", "audio/phoneme/d.wav", "audio/phoneme/f.wav", "audio/phoneme/h.wav", "audio/phoneme/j.wav", "audio/phoneme/m.wav", "audio/word/bag.wav", "audio/word/bat.wav", "audio/word/cap.wav", "audio/word/cat.wav", "audio/word/dad.wav", "audio/word/fan.wav", "audio/word/hat.wav", "audio/word/jam.wav", "audio/word/man.wav", "audio/word/map.wav", "audio/word/pan.wav", "audio/word/ram.wav", "audio/word/sad.wav", "audio/word/tag.wav", "audio/word/van.wav"];
+var VERSION = 'yxjx-32aae47cd4';
+var PRECACHE = ["index.html", "app.css", "data.js", "app.js", "manifest.webmanifest", "icons/favicon-32.png", "icons/icon-180.png", "icons/icon-192.png", "icons/icon-512.png", "audio/ui/spin.wav", "audio/ui/win.wav"];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(

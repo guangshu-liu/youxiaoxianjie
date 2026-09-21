@@ -6,13 +6,12 @@
 
   var root = null;
   var save = null;
-  var round = null;          // {family, questions, startedAt}
+  var round = null;          // {questions, startedAt}
   var idx = 0;
   var results = [];          // [true|false|null]
   var items = [];            // 逐题记录
   var spins = [];
   var roundPoints = 0;
-  var respinCount = 0;
   var qStartAt = 0;
 
   /* ---------- 启动 ---------- */
@@ -21,7 +20,7 @@
     root = G.$('#app');
     save = G.Store.load();
 
-    G.Curriculum.init(data);
+    G.Bank.init(data);
     G.Audio.init();
 
     save.integrity.bootId = (save.integrity.bootId || 0) + 1;
@@ -85,8 +84,8 @@
 
     var s = G.UI.screen('screen-home');
 
-    s.appendChild(G.el('div', { class: 'home-title', text: '知识闯关' }));
-    s.appendChild(G.el('div', { class: 'home-sub', text: '语文 · 数学 · 英语' }));
+    s.appendChild(G.el('div', { class: 'home-title', text: '识字闯关' }));
+    s.appendChild(G.el('div', { class: 'home-sub', text: '一局 10 个字，答对就转盘' }));
 
     var stats = G.el('div', { class: 'home-stats' }, [
       G.el('div', { class: 'home-points', text: String(save.points.balance) }),
@@ -145,10 +144,9 @@
     items = [];
     spins = [];
     roundPoints = 0;
-    respinCount = 0;
 
     G.log('本局题目：', round.questions.map(function (q) {
-      return q.subject + ':' + q.type + (q.family ? '/' + q.family : '');
+      return q.id + '[' + ((q.tags && q.tags[0]) || q.type) + ']';
     }).join('  '));
 
     // 预加载本局音频，不阻塞渲染
@@ -198,7 +196,7 @@
     var ms = Date.now() - qStartAt;
 
     results[idx] = correct;
-    items.push({ qid: q.id, subject: q.subject, type: q.type, family: q.family || null, correct: correct, ms: ms });
+    items.push({ qid: q.id, subject: q.subject, type: q.type, tags: q.tags || [], correct: correct, ms: ms });
 
     G.Runner.recordAnswer(save, q, correct, ms);
     G.Store.save(save);
@@ -210,29 +208,17 @@
 
     if (!correct) { advance(); return; }
 
-    // 答对 → 转盘
-    respinCount = 0;
-    spinLoop(advance);
-  }
-
-  function spinLoop(then) {
-    G.Wheel.open(save, { respinCount: respinCount }).then(function (res) {
+    // 答对 → 转盘。转完就翻页，空奖也一样 —— 没有重转。
+    G.Wheel.open(save).then(function (res) {
       spins.push({ prize: res.prize.id, ts: Date.now() });
       roundPoints += res.awarded || 0;
 
       var dc = G.Store.todayCounter(save);
       dc.spins += 1;
 
-      if (res.again) {
-        respinCount = res.respins;
-        G.log('再来一次，已重转', respinCount, '次');
-        spinLoop(then);            // 重转，不推进题目
-        return;
-      }
-
       G.Store.save(save);
       updatePointsChip();
-      setTimeout(then, 260);
+      setTimeout(advance, 260);
     });
   }
 
@@ -265,12 +251,6 @@
       G.el('span', { class: 'stat-label', text: '当前积分' }),
       G.el('span', { class: 'stat-value', text: save.points.balance + ' 分' })
     ]));
-    if (round.family) {
-      card.appendChild(G.el('div', { class: 'stat-row' }, [
-        G.el('span', { class: 'stat-label', text: '今天练的词族' }),
-        G.el('span', { class: 'stat-value', text: '-' + round.family })
-      ]));
-    }
     s.appendChild(card);
 
     if (pct >= 70) G.UI.confetti(s);

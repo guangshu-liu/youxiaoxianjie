@@ -26,10 +26,10 @@
       // balance 和 lifetime 独立累加，是防作弊审计的基础（见 70-parent.js）
       points: { balance: 0, lifetime: 0 },
 
+      // 只有识字一科。老存档里的 progress.english / progress.math 不再写也不再读，
+      // 留着不动 —— 删掉它们对游戏没有任何影响，却会让「导入旧备份」多一次改动。
       progress: {
-        english: { familyStats: {}, typeStats: {} },
-        chinese: { byTag: {} },
-        math: { byTag: {} }
+        chinese: { byTag: {} }
       },
 
       // 错题本是唯一真相源。cleared 的条件是 rightStreak >= 2。
@@ -48,7 +48,6 @@
       settings: {
         audioEnabled: true,
         mix: JSON.parse(JSON.stringify(G.DEFAULT_MIX)),
-        englishUnlockedThrough: 'U2',
         mutedAudio: [],
         weakMode: false
       },
@@ -112,6 +111,12 @@
     Object.keys(def.limits).forEach(function (k) {
       if (save.limits[k] === undefined) save.limits[k] = def.limits[k];
     });
+
+    // progress 是嵌套的，上面的浅拷贝补不到里层。老存档（三科时代）也有
+    // progress.chinese.byTag，正常不会缺；但手工改过的备份可能缺。
+    if (!save.progress.chinese) save.progress.chinese = { byTag: {} };
+    if (!save.progress.chinese.byTag) save.progress.chinese.byTag = {};
+
     return save;
   }
 

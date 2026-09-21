@@ -1,8 +1,11 @@
 /* 50-wheel.js — 转盘抽奖
  *
  * 结果先定后动画：先按权重抽出奖品，再反推指针该停在哪。
- * 反过来（让动画时长或角度决定结果）会在慢设备上产生偏差，也会让
- * 「再来一次」的重转逻辑变得不可控。
+ * 反过来让动画时长或角度决定结果，会在慢设备上产生偏差。
+ *
+ * 一次答对 = 一次转动，转完就结算。曾经有过「再来一次」的重转机制，
+ * 已经去掉：重转把一次抽奖拖成几轮，孩子盯着盘转的时间比答题还长。
+ * 空奖就是空奖（G.NO_PRIZE_TEXT），不兜底、不重来。
  */
 (function (window) {
   'use strict';
@@ -51,21 +54,18 @@
       p2: '#4FC3F7',
       p5: '#FFD54F',
       p10: '#BA68C8',
-      again: '#B0BEC5'
+      none: '#B0BEC5'
     }[id] || '#B0BEC5';
   }
 
   /**
-   * 打开转盘。返回 Promise<{prize, respins}> —— resolve 时奖励已入账。
+   * 打开转盘。返回 Promise<{prize, awarded}> —— resolve 时奖励已入账。
    *
    * @param {object} save
-   * @param {object} roundState  {respinCount}
    */
-  function open(save, roundState) {
+  function open(save) {
     return new Promise(function (resolve) {
       var segments = segmentAngles();
-      var respins = (roundState && roundState.respinCount) || 0;
-      var maxRespins = save.limits.maxRespinsPerQuestion || 3;
 
       var overlay = G.el('div', { class: 'overlay wheel-overlay' });
       var box = G.el('div', { class: 'wheel-box' });
@@ -122,48 +122,27 @@
 
         G.Audio.play('ui.spin');
 
-        setTimeout(function () { settle(prize, respins); }, 3600);
+        setTimeout(function () { finish(prize); }, 3600);
       });
 
-      function settle(prize, respinCount) {
-        if (prize.kind === 'again') {
-          if (respinCount >= maxRespins) {
-            // 重转次数用完 —— 给最低档奖励，不能让孩子空手而归
-            finish(G.PRIZES[1], respinCount);
-            return;
-          }
-          G.Audio.play('ui.win');
-          resultBar.textContent = '再来一次！';
-          resultBar.className = 'wheel-result wheel-result-again';
-          setTimeout(function () {
-            overlay.classList.add('closing');
-            setTimeout(function () {
-              if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-              resolve({ prize: prize, respins: respinCount + 1, again: true });
-            }, 320);
-          }, 900);
-          return;
-        }
-        finish(prize, respinCount);
-      }
-
-      function finish(prize, respinCount) {
+      function finish(prize) {
         G.Audio.play('ui.win');
 
         var r = G.Runner.awardPoints(save, prize.points);
         var extra = '';
 
-        if (prize.kind === 'tv') {
+        if (prize.kind === 'none') {
+          resultBar.textContent = G.NO_PRIZE_TEXT;
+          resultBar.className = 'wheel-result wheel-result-none';
+        } else if (prize.kind === 'tv') {
           G.Runner.awardTvMinutes(save, 10);
-          extra = '（记得让爸爸妈妈知道哦）';
-        } else if (r.capped) {
-          extra = '（今天的积分已经攒满啦，明天继续！）';
+          resultBar.textContent = prize.label + '（记得让爸爸妈妈知道哦）';
+          resultBar.className = 'wheel-result wheel-result-win';
+        } else {
+          if (r.capped) extra = '（今天的积分已经攒满啦，明天继续！）';
+          resultBar.textContent = '+' + r.awarded + ' 分 ' + extra;
+          resultBar.className = 'wheel-result wheel-result-win';
         }
-
-        resultBar.textContent = prize.points > 0
-          ? ('+' + r.awarded + ' 分 ' + extra)
-          : (prize.label + ' ' + extra);
-        resultBar.className = 'wheel-result wheel-result-win';
 
         G.Store.save(save);
 
@@ -176,7 +155,7 @@
           overlay.classList.add('closing');
           setTimeout(function () {
             if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
-            resolve({ prize: prize, respins: respinCount, awarded: r.awarded });
+            resolve({ prize: prize, awarded: r.awarded });
           }, 320);
         }
       }

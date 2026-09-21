@@ -1,9 +1,12 @@
-/* 41-render-choice.js — 选择题渲染器（choice 与 listen 共用）
+/* 41-render-choice.js — 选择题渲染器
  *
- * choice 和 listen 从渲染代码看是同一个东西：题干 + N 个选项。
- * 差别只是题干是文字还是音频。写两套渲染器是重复劳动，会带来两份 bug。
- * 它们真正不同的地方在内容模型（listen 的干扰项是最小对立对），那个在
- * 30-curriculum.js 里处理。
+ * 整个题库现在只有一种题型：choice（题干 + 4 个选项）。曾经还有个 listen
+ * 渲染分支（听音选词，走 OPW2 自然拼读），英语下线后一起删了 —— 留着就是
+ * 一段永远跑不到、也没人测的代码。
+ *
+ * rendererFor 也放在这里。它原来在 44-render-realword.js，那个文件承载的
+ * 是「看图选词 / 排序 / 拼词」三种英语题型；三种都没了，只剩下「按 type
+ * 找渲染器」这一件小事，没必要为它单开一个文件。
  */
 (function (window) {
   'use strict';
@@ -11,6 +14,14 @@
   var G = window.G;
 
   G.Renderers = G.Renderers || {};
+
+  /**
+   * 按题型取渲染器。目前只有 choice 一种，未知题型兜底也给它 ——
+   * 宁可渲染出一道还能做的题，也不要空白屏。
+   */
+  G.rendererFor = function (type) {
+    return G.Renderers[type] || G.Renderers.choice;
+  };
 
   G.Renderers.choice = function (container, q, handlers) {
     var options = q.options || [];
@@ -22,24 +33,16 @@
     // ---- 题干 ----
     var stem = G.el('div', { class: 'stem' });
 
-    if (q.type === 'listen') {
-      // 听音辨认：不显示文字，纯听。答完才露出拼写。
-      stem.appendChild(G.el('div', { class: 'stem-hint', text: '听一听，是哪个词？' }));
-      stem.appendChild(G.UI.speakerButton(q.audio && q.audio[0], null, { autoplay: true }));
-
-    } else if (q.type === 'prompt' || (q.stem && q.stem.audio)) {
-      // 有语音的题干（语文拼音等）
-      stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt || '' }));
+    if (q.stem && q.stem.audio) {
+      // 有语音的题干（「这个字读什么？」读一遍给孩子听）。
+      // 现在的识字题库没有音频题干，这条留给以后加真人读音时用。
+      if (q.stem.prompt) {
+        stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
+      }
       stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
 
     } else if (q.stem && q.stem.text) {
-      var cls = 'stem-text';
-      if (layout === 'big-number') cls += ' stem-number';
-      else if (layout === 'count') cls += ' stem-count';
-      stem.appendChild(G.el('div', { class: cls, text: q.stem.text }));
-      if (q.stem.audio) {
-        stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { small: true }));
-      }
+      stem.appendChild(G.el('div', { class: 'stem-text', text: q.stem.text }));
     }
 
     root.appendChild(stem);
@@ -49,8 +52,12 @@
     var buttons = {};
 
     options.forEach(function (opt) {
+      // 单字选项（「日」「目」「白」这类形近字）单独放大 —— 一眼看不清的字
+      // 会让孩子靠猜，而不是靠辨认
+      var single = (opt.text || '').length === 1;
+
       var btn = G.el('button', {
-        class: 'option',
+        class: 'option' + (single ? ' option-single' : ''),
         'data-id': opt.id,
         onclick: function () { choose(opt); }
       }, [G.el('span', { class: 'option-text', text: opt.text })]);
@@ -80,28 +87,13 @@
         if (id === q.answer) buttons[id].classList.add('is-answer');
       });
 
-      // listen 题答完才显示拼写 —— 否则孩子靠字形猜
-      if (q.type === 'listen') {
-        stem.querySelectorAll('.stem-hint').forEach(function (n) {
-          n.textContent = q.answerWord ? '答案是：' + q.answerWord : '';
-        });
-      }
-
-      // 播放该选项自己的音（listen 题的选项本身就是词）
-      var chosenWord = (q.options.filter(function (o) { return o.id === opt.id; })[0] || {}).text;
-      if (q.type === 'listen' && chosenWord && G.Audio.has('word.' + chosenWord)) {
-        setTimeout(function () { G.Audio.play('word.' + chosenWord); }, 260);
-      }
-
       if (!correct) {
         showExplain(q.explain);
-        if (q.explainAudio) {
-          setTimeout(function () { G.Audio.play(q.explainAudio); }, 700);
-        }
       } else {
         G.UI.confetti(container);
       }
 
+      // 答错的题留久一点，让孩子看清正确答案和解释
       setTimeout(function () { handlers.onAnswer(correct); }, correct ? 620 : 1500);
     }
 

@@ -201,43 +201,11 @@
     }
     box.appendChild(section('待确认兑换', pendBox));
 
-    /* --- 英语进度解锁 --- */
-    var unlockBox = G.el('div', { class: 'stat-card' });
-    unlockBox.appendChild(G.el('div', {
-      class: 'muted',
-      text: '孩子在课外班学到哪了？游戏只在这个范围内出题。'
-    }));
-    var cur = G.Curriculum.curriculum();
-    cur.unlockOptions.forEach(function (opt) {
-      var checked = save.settings.englishUnlockedThrough === opt.through;
-      var optEl = G.el('button', {
-        class: 'unlock-opt' + (checked ? ' unlock-on' : ''),
-        onclick: function () {
-          save.settings.englishUnlockedThrough = opt.through;
-          G.Store.save(save);
-          rerender();
-        }
-      }, [
-        G.el('span', { class: 'unlock-radio', text: checked ? '●' : '○' }),
-        G.el('div', {}, [
-          G.el('div', { class: 'unlock-label', text: opt.label }),
-          G.el('div', { class: 'unlock-detail', text: opt.detail })
-        ])
-      ]);
-      unlockBox.appendChild(optEl);
-    });
-
-    // 只给建议，不自动执行 —— 决定权在家长
-    var suggestion = englishSuggestion(save);
-    if (suggestion) unlockBox.appendChild(G.el('div', { class: 'suggest', text: suggestion }));
-
-    box.appendChild(section('英语进度', unlockBox));
+    /* --- 识字范围 --- */
+    box.appendChild(section('识字范围', buildZibiaoPanel(save)));
 
     /* --- 学习数据 --- */
     box.appendChild(section('学习数据', buildStats(save)));
-
-    /* --- 音频替换 --- */
-    box.appendChild(section('音频', buildAudioPanel(save, rerender)));
 
     /* --- 备份 --- */
     box.appendChild(section('备份', buildBackupPanel(save, rerender)));
@@ -269,48 +237,91 @@
 
   /* ---------- 各区块 ---------- */
 
-  function englishSuggestion(save) {
-    var fs = save.progress.english.familyStats;
-    var fams = G.Curriculum.unlockedFamilies(save);
-    var seen = 0, correct = 0;
-    fams.forEach(function (f) {
-      if (fs[f]) { seen += fs[f].seen; correct += fs[f].correct; }
+  /**
+   * 识字范围面板。
+   *
+   * 只读，没有任何开关 —— 原来这里是「英语学到第几单元」的解锁选择，现在
+   * 题库固定在小学一、二年级范围内，没有可调的东西。留下的是家长真正想看
+   * 的那个问题：**哪几个字还没会**。
+   */
+  function buildZibiaoPanel(save) {
+    var wrap = G.el('div', { class: 'stat-card' });
+    var zb = G.Bank.zibiao();
+    if (!zb) {
+      wrap.appendChild(G.el('div', { class: 'muted', text: '字表未加载' }));
+      return wrap;
+    }
+
+    var g1 = zb.chars.filter(function (c) { return c.grade === 1; }).length;
+    wrap.appendChild(G.el('div', {
+      class: 'muted',
+      text: '题库共 ' + G.Bank.all().length + ' 道题，全部出自下面这张字表（' +
+            zb.chars.length + ' 字：一年级 ' + g1 + ' · 二年级 ' + (zb.chars.length - g1) + '）。' +
+            '题目和干扰项都不会超出这个范围。'
+    }));
+
+    // 还没掌握的字。只从「答案是一个汉字」的题里统计 —— 数笔画题的答案是
+    // 数字、看字选拼音的答案是拼音，那些题对不上字，不参与。
+    var shaky = {};
+    save.wrongBook.forEach(function (w) {
+      if (w.cleared) return;
+      var q = findQuestion(w.qid);
+      var ch = q && answerChar(q);
+      if (!ch) return;
+      shaky[ch] = (shaky[ch] || 0) + w.wrongCount;
     });
-    if (seen < 20) return null;
-    var acc = correct / seen;
-    if (acc < 0.9) return null;
 
-    var units = G.Curriculum.unlockedUnitIds(save);
-    var idx = units.length;
-    if (idx >= G.Curriculum.curriculum().unlockOptions.length) return null;
+    var chars = Object.keys(shaky).sort(function (a, b) { return shaky[b] - shaky[a]; });
+    if (chars.length) {
+      wrap.appendChild(G.el('div', { class: 'stat-title', text: '还没巩固的字（错得最多的在前）' }));
+      wrap.appendChild(G.el('div', { class: 'zi-grid' }, chars.slice(0, 24).map(function (ch) {
+        return G.el('span', { class: 'zi-chip zi-chip-weak', text: ch });
+      })));
+      if (chars.length > 24) {
+        wrap.appendChild(G.el('div', { class: 'muted', text: '还有 ' + (chars.length - 24) + ' 个，先练这些。' }));
+      }
+    } else if (save.wrongBook.length) {
+      wrap.appendChild(G.el('div', { class: 'muted', text: '错题本里没有尚未巩固的字，继续保持。' }));
+    }
 
-    return '建议：当前范围正确率 ' + Math.round(acc * 100) +
-           '%，要不要跟老师确认后解锁下一单元？';
+    var learned = zb.chars.filter(function (c) { return !shaky[c.char]; });
+    wrap.appendChild(G.el('div', {
+      class: 'stat-title',
+      text: '字表（' + zb.chars.length + ' 字，' + learned.length + ' 个当前没在错题本里）'
+    }));
+    wrap.appendChild(G.el('div', { class: 'zi-grid' }, zb.chars.map(function (c) {
+      return G.el('span', {
+        class: 'zi-chip' + (shaky[c.char] ? ' zi-chip-weak' : ''),
+        title: c.pinyin,
+        text: c.char
+      });
+    })));
+
+    return wrap;
+  }
+
+  /** 取一道题的答案对应的字；答案不是单个汉字就返回 null。 */
+  function answerChar(q) {
+    var opts = q.options || [];
+    for (var i = 0; i < opts.length; i++) {
+      if (opts[i].id !== q.answer) continue;
+      var t = (opts[i].text || '').trim();
+      return /^[一-龥]$/.test(t) ? t : null;
+    }
+    return null;
   }
 
   function buildStats(save) {
     var wrap = G.el('div', { class: 'stat-card' });
 
-    // 英语按词族
-    var fs = save.progress.english.familyStats;
-    var fams = Object.keys(fs);
-    if (fams.length) {
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: '英语 · 按词族' }));
-      fams.sort(function (a, b) { return (fs[a].correct / fs[a].seen) - (fs[b].correct / fs[b].seen); })
-        .forEach(function (f) {
-          wrap.appendChild(bar(f + ' (-' + f + ')', fs[f].correct, fs[f].seen));
-        });
-    }
-
-    // 语文数学按标签
-    ['chinese', 'math'].forEach(function (sub) {
-      var bucket = save.progress[sub].byTag;
-      var tags = Object.keys(bucket);
-      if (!tags.length) return;
-      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL[sub] + ' · 按知识点' }));
+    // 按题型统计（看拼音选字 / 数笔画 / 反义词 …）
+    var bucket = save.progress.chinese.byTag;
+    var tags = Object.keys(bucket);
+    if (tags.length) {
+      wrap.appendChild(G.el('div', { class: 'stat-title', text: G.SUBJECT_LABEL.chinese + ' · 按题型' }));
       tags.sort(function (a, b) { return (bucket[a].correct / bucket[a].seen) - (bucket[b].correct / bucket[b].seen); })
         .forEach(function (t) { wrap.appendChild(bar(t, bucket[t].correct, bucket[t].seen)); });
-    });
+    }
 
     // 错题本
     var wrong = save.wrongBook.filter(function (w) { return !w.cleared; })
@@ -319,8 +330,9 @@
       wrap.appendChild(G.el('div', { class: 'stat-title', text: '待巩固的题（' + wrong.length + '）' }));
       wrong.slice(0, 15).forEach(function (w) {
         var q = findQuestion(w.qid);
+        var stemText = (q && q.stem && q.stem.text) || '';
         wrap.appendChild(G.el('div', { class: 'wrong-row' }, [
-          G.el('span', { text: (q ? (q.stem.text || q.answerWord || w.qid) : w.qid) }),
+          G.el('span', { text: stemText || w.qid }),
           G.el('span', { class: 'wrong-count', text: '错 ' + w.wrongCount + ' 次' })
         ]));
       });
@@ -331,7 +343,7 @@
       wrap.appendChild(G.el('div', { class: 'stat-title', text: '最近 ' + Math.min(10, save.sessions.length) + ' 局' }));
       save.sessions.slice(-10).reverse().forEach(function (s) {
         wrap.appendChild(bar(
-          G.localDateStr(new Date(s.ts)).slice(5) + ' · ' + (s.family ? '-' + s.family : ''),
+          G.localDateStr(new Date(s.ts)).slice(5) + ' · ' + s.correct + '/' + s.total,
           s.correct, s.total
         ));
       });
@@ -344,146 +356,9 @@
   function findQuestion(qid) {
     if (!_qIndex) {
       _qIndex = {};
-      ['chinese', 'math', 'english'].forEach(function (s) {
-        (window.G.DATA && window.G.DATA[s] || []).forEach(function (q) { _qIndex[q.id] = q; });
-      });
+      ((window.G.DATA && window.G.DATA.chinese) || []).forEach(function (q) { _qIndex[q.id] = q; });
     }
     return _qIndex[qid];
-  }
-
-  function buildAudioPanel(save, rerender) {
-    var wrap = G.el('div', { class: 'stat-card' });
-    var ids = Object.keys(G.AUDIO_MAP || {}).sort();
-
-    wrap.appendChild(G.el('div', {
-      class: 'muted',
-      text: '共 ' + ids.length + ' 条音频。觉得哪条读得不准，可以自己录一条盖掉。录完拖动滑块调到和原音一样响。'
-    }));
-
-    var filter = G.el('input', { class: 'gate-input', placeholder: '搜索，如 fan 或 word.f' });
-    wrap.appendChild(filter);
-
-    var list = G.el('div', { class: 'audio-list' });
-    wrap.appendChild(list);
-
-    function renderList(kw) {
-      G.clear(list);
-      var shown = ids.filter(function (id) { return !kw || id.indexOf(kw) >= 0; }).slice(0, 60);
-      if (!shown.length) {
-        list.appendChild(G.el('div', { class: 'muted', text: '没有匹配的音频' }));
-        return;
-      }
-      shown.forEach(function (id) {
-        list.appendChild(audioRow(id, save, rerender));
-      });
-      if (ids.filter(function (id) { return !kw || id.indexOf(kw) >= 0; }).length > 60) {
-        list.appendChild(G.el('div', { class: 'muted', text: '（结果太多，请用搜索缩小范围）' }));
-      }
-    }
-
-    filter.addEventListener('input', function () { renderList(filter.value.trim()); });
-    renderList('');
-
-    wrap.appendChild(G.el('button', {
-      class: 'btn btn-sm', text: '列出所有家长录音',
-      onclick: function () {
-        var ov = G.Audio.listOverrides();
-        G.UI.toast(ov.length ? ('已录 ' + ov.length + ' 条：' + ov.slice(0, 5).join(', ')) : '还没有录过');
-      }
-    }));
-
-    return wrap;
-  }
-
-  function audioRow(id, save, rerender) {
-    var meta = G.Audio.getOverrideMeta(id);
-    var muted = save.settings.mutedAudio.indexOf(id) >= 0;
-
-    var rowEl = G.el('div', { class: 'audio-row' });
-
-    rowEl.appendChild(G.el('div', { class: 'audio-id', text: id }));
-
-    var actions = G.el('div', { class: 'audio-actions' });
-
-    actions.appendChild(G.el('button', {
-      class: 'btn btn-xs', text: '听内置',
-      onclick: function () { G.Audio.play(id); }
-    }));
-
-    actions.appendChild(recButton(id, meta, rerender));
-
-    if (meta) {
-      actions.appendChild(G.el('button', {
-        class: 'btn btn-xs', text: '听我的',
-        onclick: function () { G.Audio.play(id); }
-      }));
-
-      // 音量对齐：录音和 TTS 音量必然不一致，忽大忽小会让孩子听不清
-      var slider = G.el('input', {
-        class: 'gain-slider', type: 'range', min: '0.2', max: '3', step: '0.1',
-        value: String(meta.gain || 1)
-      });
-      slider.addEventListener('input', function () {
-        G.Audio.setOverride(id, meta.blob, parseFloat(slider.value));
-      });
-      actions.appendChild(slider);
-
-      actions.appendChild(G.el('button', {
-        class: 'btn btn-xs btn-danger', text: '删',
-        onclick: function () {
-          G.Audio.removeOverride(id).then(rerender);
-        }
-      }));
-    }
-
-    actions.appendChild(G.el('button', {
-      class: 'btn btn-xs' + (muted ? ' btn-danger' : ''),
-      text: muted ? '已静音' : '静音',
-      onclick: function () {
-        var i = save.settings.mutedAudio.indexOf(id);
-        if (i >= 0) save.settings.mutedAudio.splice(i, 1);
-        else save.settings.mutedAudio.push(id);
-        G.Store.save(save);
-        rerender();
-      }
-    }));
-
-    rowEl.appendChild(actions);
-    return rowEl;
-  }
-
-  function recButton(id, meta, rerender) {
-    var btn = G.el('button', {
-      class: 'btn btn-xs ' + (meta ? '' : 'btn-primary'),
-      text: meta ? '重录' : '录一条',
-      onclick: function () {
-        var original = btn.textContent;
-        btn.textContent = '录音中…';
-        btn.disabled = true;
-
-        G.Audio.startRecording().then(function () {
-          G.UI.toast('开始录音，读完点「停止」');
-          btn.textContent = '停止';
-          btn.disabled = false;
-          btn.onclick = function () {
-            btn.disabled = true;
-            G.Audio.stopRecording().then(function (blob) {
-              if (!blob) { G.UI.toast('录音失败'); return; }
-              G.Audio.setOverride(id, blob, 1.0).then(function () {
-                G.UI.toast('已替换');
-                rerender();
-              });
-            });
-          };
-        }).catch(function (e) {
-          G.log('录音失败', e);
-          G.UI.toast('无法录音，请检查麦克风权限');
-          btn.textContent = original;
-          btn.disabled = false;
-        });
-      }
-    });
-    return btn;
   }
 
   function buildBackupPanel(save, rerender) {

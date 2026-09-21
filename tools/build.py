@@ -94,37 +94,36 @@ def fmt_size(n):
 
 # ---------------------------------------------------------------- 数据
 
-def load_json(name):
+def load_json(name, empty=None):
     path = os.path.join(SRC, 'data', name)
     if not os.path.exists(path):
         log('  ⚠️  缺少 %s，按空处理' % name)
-        return [] if name != 'curriculum.json' else {}
+        return {} if empty is None else empty
     with open(path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
-def build_data_js():
-    """生成 window.G.DATA 和 window.G.CURRICULUM_DATA。"""
-    curriculum = load_json('curriculum.json')
-    chinese = load_json('chinese.json')
-    math = load_json('math.json')
-    english = load_json('english.json')
+def load_zibiao():
+    """字表白名单。题库里的每一个汉字都必须出自它 —— 这就是「字的范围」那条约束。"""
+    return load_json('zi_grade12.json', empty={'chars': []})
 
-    payload = {
-        'chinese': chinese,
-        'math': math,
-        'english': english,
+
+def build_data_js():
+    """生成 window.G.DATA = {chinese: [...], zibiao: {...}}。
+
+    整个游戏只有识字一科，数据也就只有两份：题库和它背后的字表。
+    """
+    data = {
+        'chinese': load_json('chinese.json', empty=[]),
+        'zibiao': load_zibiao(),
     }
     # ensure_ascii=False 让中文在产物里保持可读，便于调试
     js = ('window.G = window.G || {};\n'
           'window.G.DATA = %s;\n'
-          'window.G.CURRICULUM_DATA = %s;\n'
-          % (json.dumps(payload, ensure_ascii=False, separators=(',', ':')),
-             json.dumps(curriculum, ensure_ascii=False, separators=(',', ':'))))
+          % json.dumps(data, ensure_ascii=False, separators=(',', ':')))
 
-    counts = {k: len(v) for k, v in payload.items()}
-    log('  题库：语文 %d · 数学 %d · 英语 %d' %
-        (counts['chinese'], counts['math'], counts['english']))
+    log('  题库：识字 %d 道 · 字表 %d 字'
+        % (len(data['chinese']), len(data['zibiao'].get('chars', []))))
     return js
 
 
@@ -213,129 +212,98 @@ def template():
 
 # ---------------------------------------------------------------- 校验
 
-# 选项不来自静态 options 数组的题型。三个都是刻意的设计决定，不是数据缺失：
-#   listen   —— 选项每次由 30-curriculum.js 用最小对立对现生成（固定选项会被记住）
-#   realword —— 只有「真词 / 假词」两个按钮，由 44-render-realword.js 写死
-#   sort     —— 选项是 items[]，判定看 bucket 是否命中，没有 answer 字段
-NO_STATIC_OPTIONS = {'listen', 'realword', 'sort'}
+# 题量上限。需求是「控制在 300 以内」，这里是它的机器版本。
+QUESTION_LIMIT = 300
+
+# 选项里会出现偏旁（氵 艹 扌…）而不是汉字的题型。这些字符本来就不单独成字，
+# 不在字表里是正常的。
+RADICAL_TAGS = {'部首', '偏旁'}
+
+
+def is_han(c):
+    """cjk 统一汉字区。标点、拼音字母、数字都不算。"""
+    return chr(0x4E00) <= c <= chr(0x9FFF)
 
 
 def validate(entries):
-    """构建前的自检。100 道手工题 + 生成的音频 + 交叉引用必然会出现笔误，
-    这个函数能挡掉 90% 的低级 bug。"""
+    """构建前的自检。
+
+    题库是生成出来的（tools/gen_ziku.py），所以这里不重复生成器的那些断言
+    （唯一正确答案之类，见 gen_ziku.py 的 selfcheck），只查生成器管不到、
+    或者一旦出错就会静默生效的东西：
+      · 题量是否超限
+      · 每个选项里的汉字是否真在字表白名单内 —— 「字的范围」这条需求
+    """
     errors = []
     warnings = []
 
     audio_ids = set(e['id'] for e in entries)
-    curriculum = load_json('curriculum.json')
-    families = set(curriculum.get('families', {}).keys())
+    chars = set(c['char'] for c in load_zibiao().get('chars', []))
+    if not chars:
+        errors.append('字表 zi_grade12.json 是空的，无法校验出题范围')
+
+    questions = load_json('chinese.json', empty=[])
+
+    if len(questions) > QUESTION_LIMIT:
+        errors.append('题库 %d 道，超过上限 %d' % (len(questions), QUESTION_LIMIT))
 
     all_ids = set()
-    for subject, fname in [('chinese', 'chinese.json'),
-                           ('math', 'math.json'),
-                           ('english', 'english.json')]:
-        for q in load_json(fname):
-            qid = q.get('id', '<无 id>')
-            qtype = q.get('type')
+    for q in questions:
+        qid = q.get('id', '<无 id>')
+        qtype = q.get('type')
 
-            if qid in all_ids:
-                errors.append('%s：id 重复' % qid)
-            all_ids.add(qid)
+        if qid in all_ids:
+            errors.append('%s：id 重复' % qid)
+        all_ids.add(qid)
 
-            if q.get('subject') != subject:
-                errors.append('%s：subject 应为 %s，实际 %s' % (qid, subject, q.get('subject')))
+        if q.get('subject') != 'chinese':
+            errors.append('%s：subject 应为 chinese，实际 %s' % (qid, q.get('subject')))
 
-            # 生成题的选项在运行时展开，静态 options/answer 检查对它不适用
-            runtime_opts = bool(q.get('generator')) or qtype in NO_STATIC_OPTIONS
+        opts = q.get('options', [])
+        ids = [o.get('id') for o in opts]
+        if len(ids) != len(set(ids)):
+            errors.append('%s：选项 id 重复' % qid)
 
-            if not runtime_opts:
-                opts = q.get('options', [])
-                ids = [o.get('id') for o in opts]
-                if len(ids) != len(set(ids)):
-                    errors.append('%s：选项 id 重复' % qid)
+        ans = q.get('answer')
+        if ans not in ids:
+            errors.append('%s：answer "%s" 不在选项里' % (qid, ans))
 
-                ans = q.get('answer')
-                if ans is not None and ans not in ids:
-                    errors.append('%s：answer "%s" 不在选项里' % (qid, ans))
+        if not opts:
+            errors.append('%s：没有选项' % qid)
 
-                if qtype not in NO_STATIC_OPTIONS and not opts:
-                    errors.append('%s：没有选项' % qid)
+        if not q.get('explain'):
+            errors.append('%s：缺少 explain（答错时孩子看不到讲解）' % qid)
 
-            # sort 题无论选项怎么来，items 的 bucket 都必须存在
-            if qtype == 'sort':
-                buckets = set(b.get('id') for b in q.get('buckets', []))
-                items = q.get('items', [])
-                if len(buckets) < 2:
-                    errors.append('%s：sort 题至少要有 2 个筐子' % qid)
-                if not items:
-                    errors.append('%s：sort 题没有 items' % qid)
-                for it in items:
-                    if it.get('bucket') not in buckets:
-                        errors.append('%s：item %s 的 bucket "%s" 不存在'
-                                      % (qid, it.get('id'), it.get('bucket')))
+        # ---- 字的范围 ----
+        # 只看「答案是一个汉字」的题还不够 —— 干扰项跑出范围同样有害：
+        # 孩子会在选项里见到三年级的字，甚至把那个字当成正确答案记下来。
+        tags = q.get('tags') or []
+        if not (set(tags) & RADICAL_TAGS):
+            for o in opts:
+                for c in (o.get('text') or ''):
+                    if is_han(c) and c not in chars:
+                        errors.append('%s：选项「%s」不在字表内' % (qid, o.get('text')))
 
-            # 英语题的 unit/family 必须非空且在课程表里
-            if subject == 'english':
-                fams = q.get('families') or ([q['family']] if q.get('family') else [])
-                if not fams:
-                    errors.append('%s：英语题缺少 family' % qid)
-                for f in fams:
-                    if f not in families:
-                        errors.append('%s：词族 "%s" 未在 curriculum.json 定义' % (qid, f))
-                if not q.get('unit'):
-                    errors.append('%s：英语题缺少 unit' % qid)
-            else:
-                if q.get('unit') or q.get('family'):
-                    warnings.append('%s：非英语题不应有 unit/family' % qid)
+        # 音频引用必须存在
+        for a in (q.get('audio') or []):
+            aid = a if isinstance(a, str) else a.get('id')
+            if not aid:
+                continue
+            key = aid.replace('.mp3', '').replace('.wav', '').replace('/', '.')
+            if key not in audio_ids:
+                warnings.append('%s：引用的音频 %s 不存在' % (qid, aid))
 
-            # 音频引用必须存在
-            for a in (q.get('audio') or []):
-                aid = a if isinstance(a, str) else a.get('id')
-                if not aid:
-                    continue
-                key = aid.replace('.mp3', '').replace('.wav', '').replace('/', '.')
-                if key not in audio_ids:
-                    warnings.append('%s：引用的音频 %s 不存在' % (qid, aid))
-
-    # 词族覆盖率。
-    # 只检查「孩子现在玩得到的」词族 —— 即默认解锁范围以内的。锁定单元没有题是
-    # 正常的（Phase 0 只做了 U1–U2），对它们报警会把真正的缺口淹掉。
-    by_family = {}
-    for q in load_json('english.json'):
-        for f in (q.get('families') or ([q['family']] if q.get('family') else [])):
-            by_family.setdefault(f, []).append(q)
-
-    opts = curriculum.get('unlockOptions') or []
-    frontier = opts[0].get('through') if opts else None
-    reachable, locked = [], []
-    for u in curriculum.get('units', []):
-        (reachable if _unitReached(u['id'], frontier) else locked).extend(u.get('families', []))
-
-    for f in reachable:
-        n = len(by_family.get(f, []))
-        if n == 0:
-            errors.append('词族 -%s 在解锁范围内但没有任何题' % f)
-        elif n < 3:
-            errors.append('词族 -%s 只有 %d 道题，但一局需要 3 道同族题' % (f, n))
-        elif n < 6:
-            warnings.append('词族 -%s 只有 %d 道题，几局后就会重复' % (f, n))
-
-    empty_locked = [f for f in locked if not by_family.get(f)]
-    if empty_locked:
-        warnings.append('解锁范围外 %d 个词族暂无题（正常，Phase 2 补）：%s'
-                        % (len(empty_locked), ' '.join('-' + f for f in empty_locked)))
+    # 题型分布。某一种题型只剩一两道时，一局 10 题必然反复出它，很单调。
+    by_tag = {}
+    for q in questions:
+        tag = (q.get('tags') or [q.get('type') or '?'])[0]
+        by_tag[tag] = by_tag.get(tag, 0) + 1
+    thin = [t for t, n in by_tag.items() if n < 8]
+    if thin:
+        warnings.append('这些题型不足 8 道，一局里会重复出现：%s'
+                        % ' '.join('%s(%d)' % (t, by_tag[t]) for t in thin))
 
     return errors, warnings
-
-
-def _unitReached(unit_id, frontier):
-    """UI 的解锁是「到 X 为止」，所以比较的是单元序号而不是字符串。"""
-    if not frontier:
-        return False
-    try:
-        return int(unit_id.lstrip('U')) <= int(frontier.lstrip('U'))
-    except ValueError:
-        return False
 
 
 # ---------------------------------------------------------------- 产物
@@ -473,14 +441,13 @@ def main():
     check_only = '--check-only' in flags or '--check' in flags or '-c' in sys.argv[1:]
 
     log('')
-    log('构建 幼小衔接知识闯关 (%s)' % mode)
+    log('构建 识字闯关 (%s)' % mode)
     log('=' * 46)
 
     entries = scan_audio()
     log('音频：%d 条，共 %s' % (len(entries), fmt_size(sum(e['bytes'] for e in entries))))
     if not entries:
-        log('  ⚠️  audio/ 为空。游戏能跑，但没有声音 —— 英语听音题会失效。')
-        log('     先跑 python3 tools/tts_gen.py 生成音频。')
+        log('  ⚠️  audio/ 为空。游戏能跑，但没有声音 —— 转盘的转动音和答对音会缺失。')
 
     log('')
     log('校验')

@@ -257,60 +257,6 @@
     if (failStreak >= 2) showSoundPrompt();
   }
 
-  /**
-   * 播放一个序列，片段之间留固定间隔。
-   * 数学题的动态题干靠这个拼：「3 加 4 等于几」= num.3 + op.add + num.4 + op.eq + op.howmany
-   * 用 Web Audio 的 start(when) 精确排期，不靠 setTimeout（后者在移动端会被节流）。
-   */
-  function playSequence(ids, opts) {
-    opts = opts || {};
-    var gap = opts.gap === undefined ? 0.08 : opts.gap;
-
-    var c = getCtx();
-    if (!c) return Promise.resolve(false);
-
-    var doIt = function () {
-      return Promise.all(ids.map(resolve)).then(function (hits) {
-        var t = c.currentTime + 0.02;
-        var last = null;
-        hits.forEach(function (hit) {
-          if (!hit) return;
-          var src = c.createBufferSource();
-          src.buffer = hit.buffer;
-          var g = c.createGain();
-          g.gain.value = (hit.gain || 1) * (opts.volume === undefined ? 1 : opts.volume);
-          src.connect(g);
-          g.connect(c.destination);
-          src.start(t);
-          t += hit.buffer.duration + gap;
-          last = src;
-        });
-        if (!last) return false;
-        return new Promise(function (res) {
-          last.onended = function () { res(true); };
-        });
-      });
-    };
-
-    if (c.state !== 'running') {
-      return unlock().then(function (ok) { return ok ? doIt() : false; });
-    }
-    return doIt();
-  }
-
-  /**
-   * 带降级的播放 —— 音素音是目前最大的内容风险点（edge-tts 读单个音素不可靠）。
-   * 如果音素音缺失或质量差，blend 题要能退回整词音。
-   * 这个降级路径必须在 Phase 0 就存在，否则 Phase 1 发现音素音不行时要返工整个 blend 题。
-   */
-  function playWithFallback(primaryId, fallbackId, opts) {
-    return resolve(primaryId).then(function (hit) {
-      if (hit) return play(primaryId, opts);
-      G.log('音频缺失，降级到', fallbackId);
-      return play(fallbackId, opts);
-    });
-  }
-
   function has(audioId) {
     return !!(overrides[audioId] || (G.AUDIO_MAP && G.AUDIO_MAP[audioId]));
   }
@@ -658,8 +604,6 @@
     isUnlocked: isUnlocked,
     resolve: resolve,
     play: play,
-    playSequence: playSequence,
-    playWithFallback: playWithFallback,
     preload: preload,
     has: has,
 

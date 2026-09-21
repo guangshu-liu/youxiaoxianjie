@@ -103,8 +103,9 @@
   line-height: 1.4;
 }
 
-.wheel-result-win   { color: #2E7D32; background: #E8F5E9; animation: pop-ok .6s ease-out; }
-.wheel-result-again { color: #E8892B; background: #FFF3E0; }
+.wheel-result-win  { color: #2E7D32; background: #E8F5E9; animation: pop-ok .6s ease-out; }
+/* 空奖：灰蓝，不用红色 —— 不中奖不是做错事，别让它看起来像惩罚 */
+.wheel-result-none { color: #546E7A; background: #ECEFF1; }
 
 .btn-spin {
   min-width: 190px;

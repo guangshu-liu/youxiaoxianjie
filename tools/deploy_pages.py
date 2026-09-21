@@ -174,7 +174,7 @@ def ensure_repo(login, repo_name):
     log(DIM + ('  创建 GitHub 仓库 %s…' % full) + RESET)
     r = run(['gh', 'repo', 'create', full, '--public',
              '--source=.', '--remote=origin',
-             '--description', '给 6 岁孩子的幼小衔接知识闯关游戏'],
+             '--description', '给幼小衔接阶段孩子的识字闯关游戏'],
             check=False)
 
     if r.returncode != 0:

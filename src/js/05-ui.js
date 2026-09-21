@@ -89,7 +89,7 @@
   }
 
   /**
-   * 大喇叭按钮。英语听音题的题干就是它。
+   * 大喇叭按钮。题干带 audio 的题用它。
    * 可重复点 —— 6 岁孩子会反复听，不能只让听一次。
    */
   function speakerButton(audioId, label, opts) {

@@ -7,28 +7,38 @@
 
   var G = window.G = window.G || {};
 
-  G.VERSION = '0.1.0-phase0';
+  G.VERSION = '1.0.0';
 
-  /* ---------- 常量 ---------- */
+  /* ---------- 常量 ----------
+   * 整个游戏只有识字一科。原来是语文/数学/英语三科混排，英语还挂着一套
+   * OPW2 自然拼读体系；现在全部收成一件事：认字。
+   */
+  G.SUBJECTS = ['chinese'];
 
-  G.SUBJECTS = ['chinese', 'math', 'english'];
+  G.SUBJECT_LABEL = { chinese: '识字' };
 
-  G.SUBJECT_LABEL = { chinese: '语文', math: '数学', english: '英语' };
-
-  // 一局构成：语文 4 + 数学 3 + 英语 3
-  G.DEFAULT_MIX = { chinese: 4, math: 3, english: 3 };
+  // 一局 10 道，全是识字题
+  G.DEFAULT_MIX = { chinese: 10 };
 
   G.ROUND_SIZE = 10;
 
-  // 转盘奖项。概率和为 100。'again' 替代原方案的「遗憾」空奖——可重转。
+  // 转盘奖项。概率和为 100。
+  // 'none' 是空奖：中了就是「谢谢参与」，当场结束，**不重转**。
+  // 它曾经是「再来一次」（占 20%，可重转最多 3 次，次数用完兜底送 1 分）——
+  // 但重转会把一次抽奖拖成几轮，孩子盯着转盘的时间比答题还长，
+  // 而且「兜底送分」让空奖实际上不存在。现在它就是明明白白的不中。
   G.PRIZES = [
-    { id: 'tv10',  points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
-    { id: 'p1',    points: 1,  weight: 30, label: '1 分',           kind: 'points' },
-    { id: 'p2',    points: 2,  weight: 20, label: '2 分',           kind: 'points' },
-    { id: 'p5',    points: 5,  weight: 15, label: '5 分',           kind: 'points' },
-    { id: 'p10',   points: 10, weight: 10, label: '10 分',          kind: 'points' },
-    { id: 'again', points: 0,  weight: 20, label: '再来一次',       kind: 'again' }
+    { id: 'tv10', points: 0,  weight: 5,  label: '动画片 10 分钟', kind: 'tv' },
+    { id: 'p1',   points: 1,  weight: 30, label: '1 分',           kind: 'points' },
+    { id: 'p2',   points: 2,  weight: 20, label: '2 分',           kind: 'points' },
+    { id: 'p5',   points: 5,  weight: 15, label: '5 分',           kind: 'points' },
+    { id: 'p10',  points: 10, weight: 10, label: '10 分',          kind: 'points' },
+    { id: 'none', points: 0,  weight: 20, label: '下次好运',       kind: 'none' }
   ];
+
+  // 空奖在盘面上写「下次好运」（84px 的扇区贴不下更长），
+  // 结算条上写全 —— 那里有整行宽度，也把话说清楚。
+  G.NO_PRIZE_TEXT = '无奖励，下次好运';
 
   // 兑换项。500 分兑 1 元（原需求 50 分，期望值算下来 20 题 1 元，成本失控）。
   G.REWARDS = [
@@ -40,8 +50,7 @@
     maxTvMinutesPerDay: 30,
     maxRedemptionsPerDay: 2,
     maxRedemptionsPerWeek: 5,
-    maxPointsPerDay: 60,
-    maxRespinsPerQuestion: 3
+    maxPointsPerDay: 60
   };
 
   // 家长模式门禁：答案超出幼小衔接范围
