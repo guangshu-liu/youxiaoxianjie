@@ -7,33 +7,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.yam",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ant",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "ram"
+        "text": "L"
       },
       {
         "id": "b",
-        "text": "ham"
+        "text": "F"
       },
       {
         "id": "c",
-        "text": "yam"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "jam"
+        "text": "A"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 yam。"
+    "answer": "d",
+    "explain": "听到的是 ant，开头是 a，大写 A。"
   },
   {
     "id": "en-0002",
@@ -43,33 +43,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.man",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ball",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "man"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "can"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "fan"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "van"
+        "text": "W"
       }
     ],
     "answer": "a",
-    "explain": "听到的是 man。"
+    "explain": "听到的是 ball，开头是 b，大写 B。"
   },
   {
     "id": "en-0003",
@@ -79,33 +79,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.sad",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.car",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sad"
+        "text": "C"
       },
       {
         "id": "b",
-        "text": "dad"
+        "text": "B"
       },
       {
         "id": "c",
-        "text": "mad"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "pad"
+        "text": "I"
       }
     ],
     "answer": "a",
-    "explain": "听到的是 sad。"
+    "explain": "听到的是 car，开头是 c，大写 C。"
   },
   {
     "id": "en-0004",
@@ -115,33 +115,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.rag",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.dog",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bag"
+        "text": "N"
       },
       {
         "id": "b",
-        "text": "tag"
+        "text": "Z"
       },
       {
         "id": "c",
-        "text": "rag"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "wag"
+        "text": "D"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 rag。"
+    "answer": "d",
+    "explain": "听到的是 dog，开头是 d，大写 D。"
   },
   {
     "id": "en-0005",
@@ -151,33 +151,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.lap",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.elbow",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "map"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "lap"
+        "text": "R"
       },
       {
         "id": "c",
-        "text": "cap"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "tap"
+        "text": "E"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 lap。"
+    "answer": "d",
+    "explain": "听到的是 elbow，开头是 e，大写 E。"
   },
   {
     "id": "en-0006",
@@ -187,33 +187,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.cat",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.fan",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hat"
+        "text": "E"
       },
       {
         "id": "b",
-        "text": "mat"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "bat"
+        "text": "F"
       },
       {
         "id": "d",
-        "text": "cat"
+        "text": "P"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 cat。"
+    "answer": "c",
+    "explain": "听到的是 fan，开头是 f，大写 F。"
   },
   {
     "id": "en-0007",
@@ -223,33 +223,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.vet",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.goat",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "net"
+        "text": "G"
       },
       {
         "id": "b",
-        "text": "wet"
+        "text": "R"
       },
       {
         "id": "c",
-        "text": "vet"
+        "text": "X"
       },
       {
         "id": "d",
-        "text": "pet"
+        "text": "E"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 vet。"
+    "answer": "a",
+    "explain": "听到的是 goat，开头是 g，大写 G。"
   },
   {
     "id": "en-0008",
@@ -259,33 +259,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.ten",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.hand",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "men"
+        "text": "Z"
       },
       {
         "id": "b",
-        "text": "den"
+        "text": "A"
       },
       {
         "id": "c",
-        "text": "hen"
+        "text": "H"
       },
       {
         "id": "d",
-        "text": "ten"
+        "text": "S"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 ten。"
+    "answer": "c",
+    "explain": "听到的是 hand，开头是 h，大写 H。"
   },
   {
     "id": "en-0009",
@@ -295,33 +295,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.bed",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.insect",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "red"
+        "text": "X"
       },
       {
         "id": "b",
-        "text": "wed"
+        "text": "T"
       },
       {
         "id": "c",
-        "text": "bed"
+        "text": "D"
       },
       {
         "id": "d",
-        "text": "led"
+        "text": "I"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 bed。"
+    "answer": "d",
+    "explain": "听到的是 insect，开头是 i，大写 I。"
   },
   {
     "id": "en-0010",
@@ -331,33 +331,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.sip",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.juice",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sip"
+        "text": "M"
       },
       {
         "id": "b",
-        "text": "rip"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "zip"
+        "text": "W"
       },
       {
         "id": "d",
-        "text": "tip"
+        "text": "T"
       }
     ],
-    "answer": "a",
-    "explain": "听到的是 sip。"
+    "answer": "b",
+    "explain": "听到的是 juice，开头是 j，大写 J。"
   },
   {
     "id": "en-0011",
@@ -367,33 +367,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.hid",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.king",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lid"
+        "text": "G"
       },
       {
         "id": "b",
-        "text": "rid"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "did"
+        "text": "K"
       },
       {
         "id": "d",
-        "text": "hid"
+        "text": "E"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 hid。"
+    "answer": "c",
+    "explain": "听到的是 king，开头是 k，大写 K。"
   },
   {
     "id": "en-0012",
@@ -403,33 +403,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.fin",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.leaf",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bin"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "fin"
+        "text": "P"
       },
       {
         "id": "c",
-        "text": "pin"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "win"
+        "text": "K"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 fin。"
+    "answer": "c",
+    "explain": "听到的是 leaf，开头是 l，大写 L。"
   },
   {
     "id": "en-0013",
@@ -439,33 +439,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.wig",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.monkey",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wig"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "dig"
+        "text": "G"
       },
       {
         "id": "c",
-        "text": "pig"
+        "text": "O"
       },
       {
         "id": "d",
-        "text": "big"
+        "text": "M"
       }
     ],
-    "answer": "a",
-    "explain": "听到的是 wig。"
+    "answer": "d",
+    "explain": "听到的是 monkey，开头是 m，大写 M。"
   },
   {
     "id": "en-0014",
@@ -475,33 +475,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.hit",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.nose",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hit"
+        "text": "Q"
       },
       {
         "id": "b",
-        "text": "sit"
+        "text": "F"
       },
       {
         "id": "c",
-        "text": "bit"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "pit"
+        "text": "T"
       }
     ],
-    "answer": "a",
-    "explain": "听到的是 hit。"
+    "answer": "c",
+    "explain": "听到的是 nose，开头是 n，大写 N。"
   },
   {
     "id": "en-0015",
@@ -511,33 +511,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.pot",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ostrich",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lot"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "dot"
+        "text": "H"
       },
       {
         "id": "c",
-        "text": "cot"
+        "text": "O"
       },
       {
         "id": "d",
-        "text": "pot"
+        "text": "W"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 pot。"
+    "answer": "c",
+    "explain": "听到的是 ostrich，开头是 o，大写 O。"
   },
   {
     "id": "en-0016",
@@ -547,33 +547,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.mop",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.pig",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "top"
+        "text": "Q"
       },
       {
         "id": "b",
-        "text": "hop"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "mop"
+        "text": "P"
       },
       {
         "id": "d",
-        "text": "cop"
+        "text": "E"
       }
     ],
     "answer": "c",
-    "explain": "听到的是 mop。"
+    "explain": "听到的是 pig，开头是 p，大写 P。"
   },
   {
     "id": "en-0017",
@@ -583,33 +583,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.hug",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.question",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "jug"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "rug"
+        "text": "V"
       },
       {
         "id": "c",
-        "text": "hug"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "mug"
+        "text": "W"
       }
     ],
     "answer": "c",
-    "explain": "听到的是 hug。"
+    "explain": "听到的是 question，开头是 q，大写 Q。"
   },
   {
     "id": "en-0018",
@@ -619,33 +619,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.gun",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.red",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sun"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "bun"
+        "text": "N"
       },
       {
         "id": "c",
-        "text": "run"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "gun"
+        "text": "R"
       }
     ],
     "answer": "d",
-    "explain": "听到的是 gun。"
+    "explain": "听到的是 red，开头是 r，大写 R。"
   },
   {
     "id": "en-0019",
@@ -655,33 +655,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.ham",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.snake",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "jam"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "ham"
+        "text": "I"
       },
       {
         "id": "c",
-        "text": "dam"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "yam"
+        "text": "E"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 ham。"
+    "answer": "a",
+    "explain": "听到的是 snake，开头是 s，大写 S。"
   },
   {
     "id": "en-0020",
@@ -691,33 +691,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.van",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.tree",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pan"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "fan"
+        "text": "T"
       },
       {
         "id": "c",
-        "text": "van"
+        "text": "X"
       },
       {
         "id": "d",
-        "text": "can"
+        "text": "Q"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 van。"
+    "answer": "b",
+    "explain": "听到的是 tree，开头是 t，大写 T。"
   },
   {
     "id": "en-0021",
@@ -727,33 +727,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.dad",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.umbrella",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sad"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "mad"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "dad"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "pad"
+        "text": "E"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 dad。"
+    "answer": "a",
+    "explain": "听到的是 umbrella，开头是 u，大写 U。"
   },
   {
     "id": "en-0022",
@@ -763,33 +763,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.wag",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.vest",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tag"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "wag"
+        "text": "V"
       },
       {
         "id": "c",
-        "text": "rag"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "bag"
+        "text": "J"
       }
     ],
     "answer": "b",
-    "explain": "听到的是 wag。"
+    "explain": "听到的是 vest，开头是 v，大写 V。"
   },
   {
     "id": "en-0023",
@@ -799,33 +799,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.tap",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.window",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tap"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "nap"
+        "text": "Z"
       },
       {
         "id": "c",
-        "text": "map"
+        "text": "A"
       },
       {
         "id": "d",
-        "text": "cap"
+        "text": "X"
       }
     ],
     "answer": "a",
-    "explain": "听到的是 tap。"
+    "explain": "听到的是 window，开头是 w，大写 W。"
   },
   {
     "id": "en-0024",
@@ -835,33 +835,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.rat",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.yam",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "rat"
+        "text": "K"
       },
       {
         "id": "b",
-        "text": "mat"
+        "text": "T"
       },
       {
         "id": "c",
-        "text": "cat"
+        "text": "Y"
       },
       {
         "id": "d",
-        "text": "bat"
+        "text": "F"
       }
     ],
-    "answer": "a",
-    "explain": "听到的是 rat。"
+    "answer": "c",
+    "explain": "听到的是 yam，开头是 y，大写 Y。"
   },
   {
     "id": "en-0025",
@@ -871,33 +871,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.wet",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.zoo",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "net"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "pet"
+        "text": "Z"
       },
       {
         "id": "c",
-        "text": "wet"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "vet"
+        "text": "T"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 wet。"
+    "answer": "b",
+    "explain": "听到的是 zoo，开头是 z，大写 Z。"
   },
   {
     "id": "en-0026",
@@ -907,33 +907,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.pen",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.apple",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "den"
+        "text": "X"
       },
       {
         "id": "b",
-        "text": "ten"
+        "text": "A"
       },
       {
         "id": "c",
-        "text": "men"
+        "text": "P"
       },
       {
         "id": "d",
-        "text": "pen"
+        "text": "E"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 pen。"
+    "answer": "b",
+    "explain": "听到的是 apple，开头是 a，大写 A。"
   },
   {
     "id": "en-0027",
@@ -943,33 +943,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.led",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.bed",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "red"
+        "text": "A"
       },
       {
         "id": "b",
-        "text": "fed"
+        "text": "X"
       },
       {
         "id": "c",
-        "text": "led"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "wed"
+        "text": "B"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 led。"
+    "answer": "d",
+    "explain": "听到的是 bed，开头是 b，大写 B。"
   },
   {
     "id": "en-0028",
@@ -979,33 +979,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.lip",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.cup",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "rip"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "zip"
+        "text": "C"
       },
       {
         "id": "c",
-        "text": "lip"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "sip"
+        "text": "Y"
       }
     ],
-    "answer": "c",
-    "explain": "听到的是 lip。"
+    "answer": "b",
+    "explain": "听到的是 cup，开头是 c，大写 C。"
   },
   {
     "id": "en-0029",
@@ -1015,33 +1015,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.did",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.duck",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "rid"
+        "text": "A"
       },
       {
         "id": "b",
-        "text": "kid"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "lid"
+        "text": "R"
       },
       {
         "id": "d",
-        "text": "did"
+        "text": "D"
       }
     ],
     "answer": "d",
-    "explain": "听到的是 did。"
+    "explain": "听到的是 duck，开头是 d，大写 D。"
   },
   {
     "id": "en-0030",
@@ -1051,33 +1051,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.win",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.egg",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fin"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "pin"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "bin"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "win"
+        "text": "P"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 win。"
+    "answer": "b",
+    "explain": "听到的是 egg，开头是 e，大写 E。"
   },
   {
     "id": "en-0031",
@@ -1087,33 +1087,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.big",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.fish",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wig"
+        "text": "Y"
       },
       {
         "id": "b",
-        "text": "fig"
+        "text": "Z"
       },
       {
         "id": "c",
-        "text": "big"
+        "text": "F"
       },
       {
         "id": "d",
-        "text": "dig"
+        "text": "U"
       }
     ],
     "answer": "c",
-    "explain": "听到的是 big。"
+    "explain": "听到的是 fish，开头是 f，大写 F。"
   },
   {
     "id": "en-0032",
@@ -1123,33 +1123,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.sit",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.gate",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bit"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "sit"
+        "text": "P"
       },
       {
         "id": "c",
-        "text": "pit"
+        "text": "G"
       },
       {
         "id": "d",
-        "text": "fit"
+        "text": "R"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 sit。"
+    "answer": "c",
+    "explain": "听到的是 gate，开头是 g，大写 G。"
   },
   {
     "id": "en-0033",
@@ -1159,33 +1159,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.cot",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.horse",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "cot"
+        "text": "H"
       },
       {
         "id": "b",
-        "text": "dot"
+        "text": "S"
       },
       {
         "id": "c",
-        "text": "hot"
+        "text": "D"
       },
       {
         "id": "d",
-        "text": "pot"
+        "text": "L"
       }
     ],
     "answer": "a",
-    "explain": "听到的是 cot。"
+    "explain": "听到的是 horse，开头是 h，大写 H。"
   },
   {
     "id": "en-0034",
@@ -1195,33 +1195,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.pop",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ink",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "top"
+        "text": "P"
       },
       {
         "id": "b",
-        "text": "hop"
+        "text": "I"
       },
       {
         "id": "c",
-        "text": "cop"
+        "text": "A"
       },
       {
         "id": "d",
-        "text": "pop"
+        "text": "W"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 pop。"
+    "answer": "b",
+    "explain": "听到的是 ink，开头是 i，大写 I。"
   },
   {
     "id": "en-0035",
@@ -1231,33 +1231,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.jug",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.jam",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "mug"
+        "text": "L"
       },
       {
         "id": "b",
-        "text": "rug"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "bug"
+        "text": "G"
       },
       {
         "id": "d",
-        "text": "jug"
+        "text": "A"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 jug。"
+    "answer": "b",
+    "explain": "听到的是 jam，开头是 j，大写 J。"
   },
   {
     "id": "en-0036",
@@ -1267,33 +1267,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.sun",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.kite",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sun"
+        "text": "K"
       },
       {
         "id": "b",
-        "text": "run"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "fun"
+        "text": "R"
       },
       {
         "id": "d",
-        "text": "bun"
+        "text": "L"
       }
     ],
     "answer": "a",
-    "explain": "听到的是 sun。"
+    "explain": "听到的是 kite，开头是 k，大写 K。"
   },
   {
     "id": "en-0037",
@@ -1303,33 +1303,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.jam",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.lion",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "dam"
+        "text": "L"
       },
       {
         "id": "b",
-        "text": "jam"
+        "text": "Y"
       },
       {
         "id": "c",
-        "text": "yam"
+        "text": "W"
       },
       {
         "id": "d",
-        "text": "ram"
+        "text": "I"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 jam。"
+    "answer": "a",
+    "explain": "听到的是 lion，开头是 l，大写 L。"
   },
   {
     "id": "en-0038",
@@ -1339,33 +1339,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.can",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.moon",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fan"
+        "text": "C"
       },
       {
         "id": "b",
-        "text": "man"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "van"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "can"
+        "text": "A"
       }
     ],
-    "answer": "d",
-    "explain": "听到的是 can。"
+    "answer": "b",
+    "explain": "听到的是 moon，开头是 m，大写 M。"
   },
   {
     "id": "en-0039",
@@ -1375,33 +1375,33 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.mad",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.nut",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sad"
+        "text": "G"
       },
       {
         "id": "b",
-        "text": "mad"
+        "text": "D"
       },
       {
         "id": "c",
-        "text": "dad"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "pad"
+        "text": "Q"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 mad。"
+    "answer": "c",
+    "explain": "听到的是 nut，开头是 n，大写 N。"
   },
   {
     "id": "en-0040",
@@ -1411,1457 +1411,1433 @@
     "unit": null,
     "family": null,
     "tags": [
-      "听音选词"
+      "听音选字母"
     ],
     "stem": {
-      "text": "听一听，选出你听到的词",
-      "audio": "en.bag",
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ox",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tag"
+        "text": "O"
       },
       {
         "id": "b",
-        "text": "bag"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "rag"
+        "text": "Z"
       },
       {
         "id": "d",
-        "text": "wag"
+        "text": "K"
       }
     ],
-    "answer": "b",
-    "explain": "听到的是 bag。"
+    "answer": "a",
+    "explain": "听到的是 ox，开头是 o，大写 O。"
   },
   {
     "id": "en-0041",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 ram 的结尾音一样？",
+      "text": "大写 A 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lap"
+        "text": "o"
       },
       {
         "id": "b",
-        "text": "mat"
+        "text": "a"
       },
       {
         "id": "c",
-        "text": "nap"
+        "text": "e"
       },
       {
         "id": "d",
-        "text": "jam"
+        "text": "b"
       }
     ],
-    "answer": "d",
-    "explain": "ram 和 jam 的结尾都是 -am。"
+    "answer": "b",
+    "explain": "A 的小写是 a。"
   },
   {
     "id": "en-0042",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 fan 的结尾音一样？",
+      "text": "大写 B 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "ham"
+        "text": "q"
       },
       {
         "id": "b",
-        "text": "man"
+        "text": "b"
       },
       {
         "id": "c",
-        "text": "map"
+        "text": "d"
       },
       {
         "id": "d",
-        "text": "dad"
+        "text": "p"
       }
     ],
     "answer": "b",
-    "explain": "fan 和 man 的结尾都是 -an。"
+    "explain": "B 的小写是 b。"
   },
   {
     "id": "en-0043",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 dad 的结尾音一样？",
+      "text": "大写 C 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tap"
+        "text": "c"
       },
       {
         "id": "b",
-        "text": "pad"
+        "text": "o"
       },
       {
         "id": "c",
-        "text": "tag"
+        "text": "e"
       },
       {
         "id": "d",
-        "text": "mat"
+        "text": "l"
       }
     ],
-    "answer": "b",
-    "explain": "dad 和 pad 的结尾都是 -ad。"
+    "answer": "a",
+    "explain": "C 的小写是 c。"
   },
   {
     "id": "en-0044",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 bag 的结尾音一样？",
+      "text": "小写 d 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "nap"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "hat"
+        "text": "Q"
       },
       {
         "id": "c",
-        "text": "ham"
+        "text": "B"
       },
       {
         "id": "d",
-        "text": "rag"
+        "text": "P"
       }
     ],
-    "answer": "d",
-    "explain": "bag 和 rag 的结尾都是 -ag。"
+    "answer": "a",
+    "explain": "d 的大写是 D。"
   },
   {
     "id": "en-0045",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 cap 的结尾音一样？",
+      "text": "小写 e 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "map"
+        "text": "O"
       },
       {
         "id": "b",
-        "text": "bad"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "hat"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "yam"
+        "text": "B"
       }
     ],
-    "answer": "a",
-    "explain": "cap 和 map 的结尾都是 -ap。"
+    "answer": "b",
+    "explain": "e 的大写是 E。"
   },
   {
     "id": "en-0046",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 bat 的结尾音一样？",
+      "text": "小写 f 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "rat"
+        "text": "F"
       },
       {
         "id": "b",
-        "text": "lap"
+        "text": "A"
       },
       {
         "id": "c",
-        "text": "dam"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "map"
+        "text": "R"
       }
     ],
     "answer": "a",
-    "explain": "bat 和 rat 的结尾都是 -at。"
+    "explain": "f 的大写是 F。"
   },
   {
     "id": "en-0047",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 jet 的结尾音一样？",
+      "text": "小写 g 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "net"
+        "text": "H"
       },
       {
         "id": "b",
-        "text": "fed"
+        "text": "Y"
       },
       {
         "id": "c",
-        "text": "pen"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "hen"
+        "text": "G"
       }
     ],
-    "answer": "a",
-    "explain": "jet 和 net 的结尾都是 -et。"
+    "answer": "d",
+    "explain": "g 的大写是 G。"
   },
   {
     "id": "en-0048",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 hen 的结尾音一样？",
+      "text": "小写 h 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "led"
+        "text": "N"
       },
       {
         "id": "b",
-        "text": "pen"
+        "text": "K"
       },
       {
         "id": "c",
-        "text": "wet"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "fed"
+        "text": "H"
       }
     ],
-    "answer": "b",
-    "explain": "hen 和 pen 的结尾都是 -en。"
+    "answer": "d",
+    "explain": "h 的大写是 H。"
   },
   {
     "id": "en-0049",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 red 的结尾音一样？",
+      "text": "小写 i 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "net"
+        "text": "I"
       },
       {
         "id": "b",
-        "text": "bed"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "den"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "jet"
+        "text": "G"
       }
     ],
-    "answer": "b",
-    "explain": "red 和 bed 的结尾都是 -ed。"
+    "answer": "a",
+    "explain": "i 的大写是 I。"
   },
   {
     "id": "en-0050",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 lip 的结尾音一样？",
+      "text": "大写 J 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tip"
+        "text": "l"
       },
       {
         "id": "b",
-        "text": "fin"
+        "text": "n"
       },
       {
         "id": "c",
-        "text": "pig"
+        "text": "j"
       },
       {
         "id": "d",
-        "text": "lid"
+        "text": "i"
       }
     ],
-    "answer": "a",
-    "explain": "lip 和 tip 的结尾都是 -ip。"
+    "answer": "c",
+    "explain": "J 的小写是 j。"
   },
   {
     "id": "en-0051",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 rib 的结尾音一样？",
+      "text": "大写 K 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "big"
+        "text": "k"
       },
       {
         "id": "b",
-        "text": "bib"
+        "text": "q"
       },
       {
         "id": "c",
-        "text": "lip"
+        "text": "h"
       },
       {
         "id": "d",
-        "text": "fix"
+        "text": "x"
       }
     ],
-    "answer": "b",
-    "explain": "rib 和 bib 的结尾都是 -ib。"
+    "answer": "a",
+    "explain": "K 的小写是 k。"
   },
   {
     "id": "en-0052",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 hid 的结尾音一样？",
+      "text": "大写 L 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fix"
+        "text": "j"
       },
       {
         "id": "b",
-        "text": "mix"
+        "text": "i"
       },
       {
         "id": "c",
-        "text": "pit"
+        "text": "l"
       },
       {
         "id": "d",
-        "text": "kid"
+        "text": "o"
       }
     ],
-    "answer": "d",
-    "explain": "hid 和 kid 的结尾都是 -id。"
+    "answer": "c",
+    "explain": "L 的小写是 l。"
   },
   {
     "id": "en-0053",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 pin 的结尾音一样？",
+      "text": "大写 M 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bib"
+        "text": "n"
       },
       {
         "id": "b",
-        "text": "fin"
+        "text": "w"
       },
       {
         "id": "c",
-        "text": "pit"
+        "text": "r"
       },
       {
         "id": "d",
-        "text": "fit"
+        "text": "m"
       }
     ],
-    "answer": "b",
-    "explain": "pin 和 fin 的结尾都是 -in。"
+    "answer": "d",
+    "explain": "M 的小写是 m。"
   },
   {
     "id": "en-0054",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 fig 的结尾音一样？",
+      "text": "大写 N 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kid"
+        "text": "i"
       },
       {
         "id": "b",
-        "text": "wig"
+        "text": "m"
       },
       {
         "id": "c",
-        "text": "rip"
+        "text": "n"
       },
       {
         "id": "d",
-        "text": "tin"
+        "text": "h"
       }
     ],
-    "answer": "b",
-    "explain": "fig 和 wig 的结尾都是 -ig。"
+    "answer": "c",
+    "explain": "N 的小写是 n。"
   },
   {
     "id": "en-0055",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 pit 的结尾音一样？",
+      "text": "大写 O 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "dig"
+        "text": "e"
       },
       {
         "id": "b",
-        "text": "hit"
+        "text": "j"
       },
       {
         "id": "c",
-        "text": "zip"
+        "text": "c"
       },
       {
         "id": "d",
-        "text": "sip"
+        "text": "o"
       }
     ],
-    "answer": "b",
-    "explain": "pit 和 hit 的结尾都是 -it。"
+    "answer": "d",
+    "explain": "O 的小写是 o。"
   },
   {
     "id": "en-0056",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 six 的结尾音一样？",
+      "text": "小写 p 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "rib"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "fix"
+        "text": "D"
       },
       {
         "id": "c",
-        "text": "rid"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "bin"
+        "text": "P"
       }
     ],
-    "answer": "b",
-    "explain": "six 和 fix 的结尾都是 -ix。"
+    "answer": "d",
+    "explain": "p 的大写是 P。"
   },
   {
     "id": "en-0057",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 pot 的结尾音一样？",
+      "text": "小写 q 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "top"
+        "text": "P"
       },
       {
         "id": "b",
-        "text": "mop"
+        "text": "Q"
       },
       {
         "id": "c",
-        "text": "cop"
+        "text": "D"
       },
       {
         "id": "d",
-        "text": "hot"
+        "text": "B"
       }
     ],
-    "answer": "d",
-    "explain": "pot 和 hot 的结尾都是 -ot。"
+    "answer": "b",
+    "explain": "q 的大写是 Q。"
   },
   {
     "id": "en-0058",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 top 的结尾音一样？",
+      "text": "小写 r 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lot"
+        "text": "A"
       },
       {
         "id": "b",
-        "text": "mop"
+        "text": "F"
       },
       {
         "id": "c",
-        "text": "pot"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "dot"
+        "text": "R"
       }
     ],
-    "answer": "b",
-    "explain": "top 和 mop 的结尾都是 -op。"
+    "answer": "d",
+    "explain": "r 的大写是 R。"
   },
   {
     "id": "en-0059",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 jug 的结尾音一样？",
+      "text": "大写 S 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "gun"
+        "text": "s"
       },
       {
         "id": "b",
-        "text": "sum"
+        "text": "x"
       },
       {
         "id": "c",
-        "text": "mug"
+        "text": "g"
       },
       {
         "id": "d",
-        "text": "gum"
+        "text": "z"
       }
     ],
-    "answer": "c",
-    "explain": "jug 和 mug 的结尾都是 -ug。"
+    "answer": "a",
+    "explain": "S 的小写是 s。"
   },
   {
     "id": "en-0060",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 bud 的结尾音一样？",
+      "text": "大写 T 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bug"
+        "text": "t"
       },
       {
         "id": "b",
-        "text": "fun"
+        "text": "v"
       },
       {
         "id": "c",
-        "text": "mud"
+        "text": "l"
       },
       {
         "id": "d",
-        "text": "sun"
+        "text": "f"
       }
     ],
-    "answer": "c",
-    "explain": "bud 和 mud 的结尾都是 -ud。"
+    "answer": "a",
+    "explain": "T 的小写是 t。"
   },
   {
     "id": "en-0061",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 cup 的结尾音一样？",
+      "text": "大写 U 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "gum"
+        "text": "v"
       },
       {
         "id": "b",
-        "text": "hum"
+        "text": "u"
       },
       {
         "id": "c",
-        "text": "mug"
+        "text": "n"
       },
       {
         "id": "d",
-        "text": "pup"
+        "text": "f"
       }
     ],
-    "answer": "d",
-    "explain": "cup 和 pup 的结尾都是 -up。"
+    "answer": "b",
+    "explain": "U 的小写是 u。"
   },
   {
     "id": "en-0062",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 nut 的结尾音一样？",
+      "text": "大写 V 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hum"
+        "text": "r"
       },
       {
         "id": "b",
-        "text": "mud"
+        "text": "v"
       },
       {
         "id": "c",
-        "text": "rug"
+        "text": "u"
       },
       {
         "id": "d",
-        "text": "hut"
+        "text": "w"
       }
     ],
-    "answer": "d",
-    "explain": "nut 和 hut 的结尾都是 -ut。"
+    "answer": "b",
+    "explain": "V 的小写是 v。"
   },
   {
     "id": "en-0063",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 cub 的结尾音一样？",
+      "text": "大写 W 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hum"
+        "text": "w"
       },
       {
         "id": "b",
-        "text": "tub"
+        "text": "r"
       },
       {
         "id": "c",
-        "text": "bug"
+        "text": "m"
       },
       {
         "id": "d",
-        "text": "pup"
+        "text": "v"
       }
     ],
-    "answer": "b",
-    "explain": "cub 和 tub 的结尾都是 -ub。"
+    "answer": "a",
+    "explain": "W 的小写是 w。"
   },
   {
     "id": "en-0064",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 gum 的结尾音一样？",
+      "text": "大写 X 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hum"
+        "text": "x"
       },
       {
         "id": "b",
-        "text": "tub"
+        "text": "k"
       },
       {
         "id": "c",
-        "text": "cub"
+        "text": "z"
       },
       {
         "id": "d",
-        "text": "hug"
+        "text": "r"
       }
     ],
     "answer": "a",
-    "explain": "gum 和 hum 的结尾都是 -um。"
+    "explain": "X 的小写是 x。"
   },
   {
     "id": "en-0065",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 bun 的结尾音一样？",
+      "text": "小写 y 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "sun"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "hut"
+        "text": "L"
       },
       {
         "id": "c",
-        "text": "hug"
+        "text": "Y"
       },
       {
         "id": "d",
-        "text": "rug"
+        "text": "G"
       }
     ],
-    "answer": "a",
-    "explain": "bun 和 sun 的结尾都是 -un。"
+    "answer": "c",
+    "explain": "y 的大写是 Y。"
   },
   {
     "id": "en-0066",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 jam 的结尾音一样？",
+      "text": "小写 z 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wag"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "tap"
+        "text": "L"
       },
       {
         "id": "c",
-        "text": "van"
+        "text": "Z"
       },
       {
         "id": "d",
-        "text": "yam"
+        "text": "X"
       }
     ],
-    "answer": "d",
-    "explain": "jam 和 yam 的结尾都是 -am。"
+    "answer": "c",
+    "explain": "z 的大写是 Z。"
   },
   {
     "id": "en-0067",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 man 的结尾音一样？",
+      "text": "小写 a 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pan"
+        "text": "A"
       },
       {
         "id": "b",
-        "text": "map"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "yam"
+        "text": "E"
       },
       {
         "id": "d",
-        "text": "mad"
+        "text": "P"
       }
     ],
     "answer": "a",
-    "explain": "man 和 pan 的结尾都是 -an。"
+    "explain": "a 的大写是 A。"
   },
   {
     "id": "en-0068",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "词族归类"
+      "大小写配对"
     ],
     "stem": {
-      "text": "下面哪个词和 pad 的结尾音一样？",
+      "text": "小写 b 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lap"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "sad"
+        "text": "Q"
       },
       {
         "id": "c",
-        "text": "fan"
+        "text": "P"
       },
       {
         "id": "d",
-        "text": "tap"
+        "text": "D"
       }
     ],
-    "answer": "b",
-    "explain": "pad 和 sad 的结尾都是 -ad。"
+    "answer": "a",
+    "explain": "b 的大写是 B。"
   },
   {
     "id": "en-0069",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ hat is on the mat.",
-      "audio": "en.sentence.01",
-      "audioReveals": true,
+      "text": "小写 c 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fed"
+        "text": "T"
       },
       {
         "id": "b",
-        "text": "bed"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "red"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "led"
+        "text": "O"
       }
     ],
     "answer": "c",
-    "explain": "这一句是「the red hat is on the mat.」。"
+    "explain": "c 的大写是 C。"
   },
   {
     "id": "en-0070",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ bug is in the mud.",
-      "audio": "en.sentence.02",
-      "audioReveals": true,
+      "text": "大写 D 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wig"
+        "text": "b"
       },
       {
         "id": "b",
-        "text": "dig"
+        "text": "p"
       },
       {
         "id": "c",
-        "text": "fig"
+        "text": "d"
       },
       {
         "id": "d",
-        "text": "big"
+        "text": "q"
       }
     ],
-    "answer": "d",
-    "explain": "这一句是「the big bug is in the mud.」。"
+    "answer": "c",
+    "explain": "D 的小写是 d。"
   },
   {
     "id": "en-0071",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ cat is on the bed.",
-      "audio": "en.sentence.03",
-      "audioReveals": true,
+      "text": "大写 E 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "dig"
+        "text": "o"
       },
       {
         "id": "b",
-        "text": "fig"
+        "text": "e"
       },
       {
         "id": "c",
-        "text": "wig"
+        "text": "c"
       },
       {
         "id": "d",
-        "text": "big"
+        "text": "m"
       }
     ],
-    "answer": "d",
-    "explain": "这一句是「the big cat is on the bed.」。"
+    "answer": "b",
+    "explain": "E 的小写是 e。"
   },
   {
     "id": "en-0072",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ pot is on the mat.",
-      "audio": "en.sentence.04",
-      "audioReveals": true,
+      "text": "大写 F 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lot"
+        "text": "r"
       },
       {
         "id": "b",
-        "text": "dot"
+        "text": "f"
       },
       {
         "id": "c",
-        "text": "hot"
+        "text": "t"
       },
       {
         "id": "d",
-        "text": "cot"
+        "text": "e"
       }
     ],
-    "answer": "c",
-    "explain": "这一句是「the hot pot is on the mat.」。"
+    "answer": "b",
+    "explain": "F 的小写是 f。"
   },
   {
     "id": "en-0073",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "my ___ hat is in the bag.",
-      "audio": "en.sentence.05",
-      "audioReveals": true,
+      "text": "大写 G 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "net"
+        "text": "u"
       },
       {
         "id": "b",
-        "text": "jet"
+        "text": "q"
       },
       {
         "id": "c",
-        "text": "pet"
+        "text": "g"
       },
       {
         "id": "d",
-        "text": "wet"
+        "text": "y"
       }
     ],
-    "answer": "d",
-    "explain": "这一句是「my wet hat is in the bag.」。"
+    "answer": "c",
+    "explain": "G 的小写是 g。"
   },
   {
     "id": "en-0074",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ jam is on the mat.",
-      "audio": "en.sentence.06",
-      "audioReveals": true,
+      "text": "大写 H 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "led"
+        "text": "n"
       },
       {
         "id": "b",
-        "text": "red"
+        "text": "h"
       },
       {
         "id": "c",
-        "text": "fed"
+        "text": "q"
       },
       {
         "id": "d",
-        "text": "bed"
+        "text": "k"
       }
     ],
     "answer": "b",
-    "explain": "这一句是「the red jam is on the mat.」。"
+    "explain": "H 的小写是 h。"
   },
   {
     "id": "en-0075",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the ___ pig is in the tub.",
-      "audio": "en.sentence.07",
-      "audioReveals": true,
+      "text": "大写 I 的小写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "big"
+        "text": "i"
       },
       {
         "id": "b",
-        "text": "dig"
+        "text": "l"
       },
       {
         "id": "c",
-        "text": "wig"
+        "text": "j"
       },
       {
         "id": "d",
-        "text": "fig"
+        "text": "m"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the big pig is in the tub.」。"
+    "explain": "I 的小写是 i。"
   },
   {
     "id": "en-0076",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the hen can see a ___ bug.",
-      "audio": "en.sentence.08",
-      "audioReveals": true,
+      "text": "小写 j 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "big"
+        "text": "N"
       },
       {
         "id": "b",
-        "text": "wig"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "dig"
+        "text": "I"
       },
       {
         "id": "d",
-        "text": "fig"
+        "text": "L"
       }
     ],
-    "answer": "a",
-    "explain": "这一句是「the hen can see a big bug.」。"
+    "answer": "b",
+    "explain": "j 的大写是 J。"
   },
   {
     "id": "en-0077",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the man can see a ___ hat.",
-      "audio": "en.sentence.09",
-      "audioReveals": true,
+      "text": "小写 k 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bed"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "wed"
+        "text": "K"
       },
       {
         "id": "c",
-        "text": "fed"
+        "text": "H"
       },
       {
         "id": "d",
-        "text": "red"
+        "text": "X"
       }
     ],
-    "answer": "d",
-    "explain": "这一句是「the man can see a red hat.」。"
+    "answer": "b",
+    "explain": "k 的大写是 K。"
   },
   {
     "id": "en-0078",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the cat has a ___ hat.",
-      "audio": "en.sentence.10",
-      "audioReveals": true,
+      "text": "小写 l 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bed"
+        "text": "I"
       },
       {
         "id": "b",
-        "text": "red"
+        "text": "J"
       },
       {
         "id": "c",
-        "text": "fed"
+        "text": "W"
       },
       {
         "id": "d",
-        "text": "wed"
+        "text": "L"
       }
     ],
-    "answer": "b",
-    "explain": "这一句是「the cat has a red hat.」。"
+    "answer": "d",
+    "explain": "l 的大写是 L。"
   },
   {
     "id": "en-0079",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the pen is ___.",
-      "audio": "en.sentence.11",
-      "audioReveals": true,
+      "text": "小写 m 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "red"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "fed"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "bed"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "wed"
+        "text": "H"
       }
     ],
-    "answer": "a",
-    "explain": "这一句是「the pen is red.」。"
+    "answer": "b",
+    "explain": "m 的大写是 M。"
   },
   {
     "id": "en-0080",
     "subject": "english",
     "type": "choice",
-    "difficulty": 2,
+    "difficulty": 1,
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "大小写配对"
     ],
     "stem": {
-      "text": "the sun is ___.",
-      "audio": "en.sentence.12",
-      "audioReveals": true,
+      "text": "小写 n 的大写是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pot"
+        "text": "H"
       },
       {
         "id": "b",
-        "text": "dot"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "hot"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "cot"
+        "text": "C"
       }
     ],
     "answer": "c",
-    "explain": "这一句是「the sun is hot.」。"
+    "explain": "n 的大写是 N。"
   },
   {
     "id": "en-0081",
@@ -2871,34 +2847,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the mud is ___.",
-      "audio": "en.sentence.13",
-      "audioReveals": true,
+      "text": "字母 A 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wet"
+        "text": "B"
       },
       {
         "id": "b",
-        "text": "jet"
+        "text": "C"
       },
       {
         "id": "c",
-        "text": "vet"
+        "text": "D"
       },
       {
         "id": "d",
-        "text": "net"
+        "text": "E"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the mud is wet.」。"
+    "explain": "A 的下一个字母是 B。"
   },
   {
     "id": "en-0082",
@@ -2908,34 +2882,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see.",
-      "audio": "en.sentence.14",
-      "audioReveals": true,
+      "text": "字母 B 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "ten"
+        "text": "F"
       },
       {
         "id": "b",
-        "text": "hen"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "den"
+        "text": "C"
       },
       {
         "id": "d",
-        "text": "pen"
+        "text": "D"
       }
     ],
-    "answer": "b",
-    "explain": "这一句是「the hen can see.」。"
+    "answer": "c",
+    "explain": "B 的下一个字母是 C。"
   },
   {
     "id": "en-0083",
@@ -2945,34 +2917,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see the sun.",
-      "audio": "en.sentence.15",
-      "audioReveals": true,
+      "text": "字母 C 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kid"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "lid"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "hid"
+        "text": "G"
       },
       {
         "id": "d",
-        "text": "did"
+        "text": "F"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the kid can see the sun.」。"
+    "explain": "C 的下一个字母是 D。"
   },
   {
     "id": "en-0084",
@@ -2982,34 +2952,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see the cat.",
-      "audio": "en.sentence.16",
-      "audioReveals": true,
+      "text": "字母 D 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "tub"
+        "text": "F"
       },
       {
         "id": "b",
-        "text": "pup"
+        "text": "H"
       },
       {
         "id": "c",
-        "text": "gum"
+        "text": "G"
       },
       {
         "id": "d",
-        "text": "cup"
+        "text": "C"
       }
     ],
-    "answer": "b",
-    "explain": "这一句是「the pup can see the cat.」。"
+    "answer": "d",
+    "explain": "D 的上一个字母是 C。"
   },
   {
     "id": "en-0085",
@@ -3019,34 +2987,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see the mud.",
-      "audio": "en.sentence.17",
-      "audioReveals": true,
+      "text": "字母 E 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "bug"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "rug"
+        "text": "G"
       },
       {
         "id": "c",
-        "text": "mug"
+        "text": "I"
       },
       {
         "id": "d",
-        "text": "jug"
+        "text": "H"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the bug can see the mud.」。"
+    "explain": "E 的上一个字母是 D。"
   },
   {
     "id": "en-0086",
@@ -3056,34 +3022,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see my hat.",
-      "audio": "en.sentence.18",
-      "audioReveals": true,
+      "text": "字母 F 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "van"
+        "text": "J"
       },
       {
         "id": "b",
-        "text": "pan"
+        "text": "I"
       },
       {
         "id": "c",
-        "text": "man"
+        "text": "H"
       },
       {
         "id": "d",
-        "text": "fan"
+        "text": "E"
       }
     ],
-    "answer": "c",
-    "explain": "这一句是「the man can see my hat.」。"
+    "answer": "d",
+    "explain": "F 的上一个字母是 E。"
   },
   {
     "id": "en-0087",
@@ -3093,34 +3057,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ can see my bed.",
-      "audio": "en.sentence.19",
-      "audioReveals": true,
+      "text": "字母 G 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fig"
+        "text": "F"
       },
       {
         "id": "b",
-        "text": "pig"
+        "text": "I"
       },
       {
         "id": "c",
-        "text": "dig"
+        "text": "J"
       },
       {
         "id": "d",
-        "text": "wig"
+        "text": "K"
       }
     ],
-    "answer": "b",
-    "explain": "这一句是「the pig can see my bed.」。"
+    "answer": "a",
+    "explain": "G 的上一个字母是 F。"
   },
   {
     "id": "en-0088",
@@ -3130,34 +3092,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ has a red hat.",
-      "audio": "en.sentence.20",
-      "audioReveals": true,
+      "text": "字母 H 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fig"
+        "text": "J"
       },
       {
         "id": "b",
-        "text": "dig"
+        "text": "L"
       },
       {
         "id": "c",
-        "text": "wig"
+        "text": "K"
       },
       {
         "id": "d",
-        "text": "pig"
+        "text": "G"
       }
     ],
     "answer": "d",
-    "explain": "这一句是「the pig has a red hat.」。"
+    "explain": "H 的上一个字母是 G。"
   },
   {
     "id": "en-0089",
@@ -3167,34 +3127,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ has a big hat.",
-      "audio": "en.sentence.21",
-      "audioReveals": true,
+      "text": "字母 I 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "van"
+        "text": "H"
       },
       {
         "id": "b",
-        "text": "fan"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "pan"
+        "text": "K"
       },
       {
         "id": "d",
-        "text": "man"
+        "text": "L"
       }
     ],
-    "answer": "d",
-    "explain": "这一句是「the man has a big hat.」。"
+    "answer": "a",
+    "explain": "I 的上一个字母是 H。"
   },
   {
     "id": "en-0090",
@@ -3204,34 +3162,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ has a red cup.",
-      "audio": "en.sentence.22",
-      "audioReveals": true,
+      "text": "字母 J 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "hid"
+        "text": "L"
       },
       {
         "id": "b",
-        "text": "did"
+        "text": "N"
       },
       {
         "id": "c",
-        "text": "lid"
+        "text": "M"
       },
       {
         "id": "d",
-        "text": "kid"
+        "text": "I"
       }
     ],
     "answer": "d",
-    "explain": "这一句是「the kid has a red cup.」。"
+    "explain": "J 的上一个字母是 I。"
   },
   {
     "id": "en-0091",
@@ -3241,34 +3197,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ has a big mug.",
-      "audio": "en.sentence.23",
-      "audioReveals": true,
+      "text": "字母 K 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pup"
+        "text": "L"
       },
       {
         "id": "b",
-        "text": "gum"
+        "text": "N"
       },
       {
         "id": "c",
-        "text": "jug"
+        "text": "O"
       },
       {
         "id": "d",
-        "text": "tub"
+        "text": "M"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the pup has a big mug.」。"
+    "explain": "K 的下一个字母是 L。"
   },
   {
     "id": "en-0092",
@@ -3278,34 +3232,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ has a red van.",
-      "audio": "en.sentence.24",
-      "audioReveals": true,
+      "text": "字母 L 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "fan"
+        "text": "O"
       },
       {
         "id": "b",
-        "text": "can"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "man"
+        "text": "N"
       },
       {
         "id": "d",
-        "text": "pan"
+        "text": "P"
       }
     ],
-    "answer": "c",
-    "explain": "这一句是「the man has a red van.」。"
+    "answer": "b",
+    "explain": "L 的下一个字母是 M。"
   },
   {
     "id": "en-0093",
@@ -3315,34 +3267,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the kid can see ___ men.",
-      "audio": "en.sentence.25",
-      "audioReveals": true,
+      "text": "字母 M 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "den"
+        "text": "P"
       },
       {
         "id": "b",
-        "text": "hen"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "ten"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "pen"
+        "text": "N"
       }
     ],
-    "answer": "c",
-    "explain": "这一句是「the kid can see ten men.」。"
+    "answer": "d",
+    "explain": "M 的下一个字母是 N。"
   },
   {
     "id": "en-0094",
@@ -3352,34 +3302,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ is in the cup.",
-      "audio": "en.sentence.26",
-      "audioReveals": true,
+      "text": "字母 N 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "win"
+        "text": "Q"
       },
       {
         "id": "b",
-        "text": "pin"
+        "text": "M"
       },
       {
         "id": "c",
-        "text": "tin"
+        "text": "R"
       },
       {
         "id": "d",
-        "text": "bin"
+        "text": "P"
       }
     ],
     "answer": "b",
-    "explain": "这一句是「the pin is in the cup.」。"
+    "explain": "N 的上一个字母是 M。"
   },
   {
     "id": "en-0095",
@@ -3389,34 +3337,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "句子填空"
+      "字母顺序"
     ],
     "stem": {
-      "text": "the ___ is in the pot.",
-      "audio": "en.sentence.27",
-      "audioReveals": true,
+      "text": "字母 O 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "nut"
+        "text": "N"
       },
       {
         "id": "b",
-        "text": "cut"
+        "text": "Q"
       },
       {
         "id": "c",
-        "text": "tub"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "hut"
+        "text": "R"
       }
     ],
     "answer": "a",
-    "explain": "这一句是「the nut is in the pot.」。"
+    "explain": "O 的上一个字母是 N。"
   },
   {
     "id": "en-0096",
@@ -3426,32 +3372,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 P 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wam"
+        "text": "R"
       },
       {
         "id": "b",
-        "text": "mam"
+        "text": "S"
       },
       {
         "id": "c",
-        "text": "zam"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "jam"
+        "text": "O"
       }
     ],
     "answer": "d",
-    "explain": "jam 是真词，另外三个不是。"
+    "explain": "P 的上一个字母是 O。"
   },
   {
     "id": "en-0097",
@@ -3461,32 +3407,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 Q 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kad"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "mad"
+        "text": "T"
       },
       {
         "id": "c",
-        "text": "jad"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "vad"
+        "text": "P"
       }
     ],
-    "answer": "b",
-    "explain": "mad 是真词，另外三个不是。"
+    "answer": "d",
+    "explain": "Q 的上一个字母是 P。"
   },
   {
     "id": "en-0098",
@@ -3496,32 +3442,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 R 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "yag"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "wag"
+        "text": "Q"
       },
       {
         "id": "c",
-        "text": "kag"
+        "text": "U"
       },
       {
         "id": "d",
-        "text": "pag"
+        "text": "T"
       }
     ],
     "answer": "b",
-    "explain": "wag 是真词，另外三个不是。"
+    "explain": "R 的上一个字母是 Q。"
   },
   {
     "id": "en-0099",
@@ -3531,32 +3477,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 S 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kap"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "fap"
+        "text": "W"
       },
       {
         "id": "c",
-        "text": "zap"
+        "text": "U"
       },
       {
         "id": "d",
-        "text": "cap"
+        "text": "R"
       }
     ],
     "answer": "d",
-    "explain": "cap 是真词，另外三个不是。"
+    "explain": "S 的上一个字母是 R。"
   },
   {
     "id": "en-0100",
@@ -3566,32 +3512,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 T 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "det"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "net"
+        "text": "W"
       },
       {
         "id": "c",
-        "text": "zet"
+        "text": "U"
       },
       {
         "id": "d",
-        "text": "tet"
+        "text": "X"
       }
     ],
-    "answer": "b",
-    "explain": "net 是真词，另外三个不是。"
+    "answer": "c",
+    "explain": "T 的下一个字母是 U。"
   },
   {
     "id": "en-0101",
@@ -3601,32 +3547,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 U 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "zen"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "den"
+        "text": "Y"
       },
       {
         "id": "c",
-        "text": "nen"
+        "text": "X"
       },
       {
         "id": "d",
-        "text": "cen"
+        "text": "W"
       }
     ],
-    "answer": "b",
-    "explain": "den 是真词，另外三个不是。"
+    "answer": "a",
+    "explain": "U 的下一个字母是 V。"
   },
   {
     "id": "en-0102",
@@ -3636,32 +3582,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 V 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "ded"
+        "text": "Y"
       },
       {
         "id": "b",
-        "text": "hed"
+        "text": "X"
       },
       {
         "id": "c",
-        "text": "med"
+        "text": "Z"
       },
       {
         "id": "d",
-        "text": "red"
+        "text": "W"
       }
     ],
     "answer": "d",
-    "explain": "red 是真词，另外三个不是。"
+    "explain": "V 的下一个字母是 W。"
   },
   {
     "id": "en-0103",
@@ -3671,32 +3617,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 W 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "jip"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "bip"
+        "text": "V"
       },
       {
         "id": "c",
-        "text": "tip"
+        "text": "Y"
       },
       {
         "id": "d",
-        "text": "wip"
+        "text": "Z"
       }
     ],
-    "answer": "c",
-    "explain": "tip 是真词，另外三个不是。"
+    "answer": "b",
+    "explain": "W 的上一个字母是 V。"
   },
   {
     "id": "en-0104",
@@ -3706,32 +3652,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 X 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "vib"
+        "text": "Y"
       },
       {
         "id": "b",
-        "text": "wib"
+        "text": "Z"
       },
       {
         "id": "c",
-        "text": "bib"
+        "text": "W"
       },
       {
         "id": "d",
-        "text": "pib"
+        "text": "V"
       }
     ],
-    "answer": "c",
-    "explain": "bib 是真词，另外三个不是。"
+    "answer": "a",
+    "explain": "X 的下一个字母是 Y。"
   },
   {
     "id": "en-0105",
@@ -3741,32 +3687,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 Y 的下一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "cid"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "yid"
+        "text": "X"
       },
       {
         "id": "c",
-        "text": "pid"
+        "text": "Z"
       },
       {
         "id": "d",
-        "text": "kid"
+        "text": "V"
       }
     ],
-    "answer": "d",
-    "explain": "kid 是真词，另外三个不是。"
+    "answer": "c",
+    "explain": "Y 的下一个字母是 Z。"
   },
   {
     "id": "en-0106",
@@ -3776,32 +3722,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "字母顺序"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "字母 Z 的上一个字母是哪个？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pin"
+        "text": "X"
       },
       {
         "id": "b",
-        "text": "cin"
+        "text": "W"
       },
       {
         "id": "c",
-        "text": "zin"
+        "text": "V"
       },
       {
         "id": "d",
-        "text": "jin"
+        "text": "Y"
       }
     ],
-    "answer": "a",
-    "explain": "pin 是真词，另外三个不是。"
+    "answer": "d",
+    "explain": "Z 的上一个字母是 Y。"
   },
   {
     "id": "en-0107",
@@ -3811,32 +3757,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "lig"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "fig"
+        "text": "C"
       },
       {
         "id": "c",
-        "text": "vig"
+        "text": "Q"
       },
       {
         "id": "d",
-        "text": "kig"
+        "text": "A"
       }
     ],
-    "answer": "b",
-    "explain": "fig 是真词，另外三个不是。"
+    "answer": "d",
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0108",
@@ -3846,32 +3792,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "yit"
+        "text": "S"
       },
       {
         "id": "b",
-        "text": "pit"
+        "text": "E"
       },
       {
         "id": "c",
-        "text": "zit"
+        "text": "B"
       },
       {
         "id": "d",
-        "text": "jit"
+        "text": "P"
       }
     ],
     "answer": "b",
-    "explain": "pit 是真词，另外三个不是。"
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0109",
@@ -3881,32 +3827,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "cix"
+        "text": "I"
       },
       {
         "id": "b",
-        "text": "tix"
+        "text": "F"
       },
       {
         "id": "c",
-        "text": "hix"
+        "text": "H"
       },
       {
         "id": "d",
-        "text": "fix"
+        "text": "W"
       }
     ],
-    "answer": "d",
-    "explain": "fix 是真词，另外三个不是。"
+    "answer": "a",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0110",
@@ -3916,32 +3862,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kot"
+        "text": "H"
       },
       {
         "id": "b",
-        "text": "hot"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "vot"
+        "text": "J"
       },
       {
         "id": "d",
-        "text": "zot"
+        "text": "S"
       }
     ],
     "answer": "b",
-    "explain": "hot 是真词，另外三个不是。"
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0111",
@@ -3951,32 +3897,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "cop"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "vop"
+        "text": "X"
       },
       {
         "id": "c",
-        "text": "gop"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "rop"
+        "text": "U"
       }
     ],
-    "answer": "a",
-    "explain": "cop 是真词，另外三个不是。"
+    "answer": "d",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0112",
@@ -3986,32 +3932,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "nug"
+        "text": "R"
       },
       {
         "id": "b",
-        "text": "zug"
+        "text": "N"
       },
       {
         "id": "c",
-        "text": "sug"
+        "text": "T"
       },
       {
         "id": "d",
-        "text": "mug"
+        "text": "A"
       }
     ],
     "answer": "d",
-    "explain": "mug 是真词，另外三个不是。"
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0113",
@@ -4021,32 +3967,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "mud"
+        "text": "X"
       },
       {
         "id": "b",
-        "text": "nud"
+        "text": "B"
       },
       {
         "id": "c",
-        "text": "vud"
+        "text": "E"
       },
       {
         "id": "d",
-        "text": "tud"
+        "text": "N"
       }
     ],
-    "answer": "a",
-    "explain": "mud 是真词，另外三个不是。"
+    "answer": "c",
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0114",
@@ -4056,32 +4002,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "pup"
+        "text": "D"
       },
       {
         "id": "b",
-        "text": "kup"
+        "text": "L"
       },
       {
         "id": "c",
-        "text": "vup"
+        "text": "I"
       },
       {
         "id": "d",
-        "text": "yup"
+        "text": "Y"
       }
     ],
-    "answer": "a",
-    "explain": "pup 是真词，另外三个不是。"
+    "answer": "c",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0115",
@@ -4091,32 +4037,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "dut"
+        "text": "G"
       },
       {
         "id": "b",
-        "text": "kut"
+        "text": "V"
       },
       {
         "id": "c",
-        "text": "nut"
+        "text": "L"
       },
       {
         "id": "d",
-        "text": "mut"
+        "text": "O"
       }
     ],
-    "answer": "c",
-    "explain": "nut 是真词，另外三个不是。"
+    "answer": "d",
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0116",
@@ -4126,32 +4072,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "wub"
+        "text": "U"
       },
       {
         "id": "b",
-        "text": "kub"
+        "text": "B"
       },
       {
         "id": "c",
-        "text": "vub"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "rub"
+        "text": "Y"
       }
     ],
-    "answer": "d",
-    "explain": "rub 是真词，另外三个不是。"
+    "answer": "a",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0117",
@@ -4161,32 +4107,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "yum"
+        "text": "V"
       },
       {
         "id": "b",
-        "text": "wum"
+        "text": "R"
       },
       {
         "id": "c",
-        "text": "zum"
+        "text": "X"
       },
       {
         "id": "d",
-        "text": "gum"
+        "text": "A"
       }
     ],
     "answer": "d",
-    "explain": "gum 是真词，另外三个不是。"
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0118",
@@ -4196,32 +4142,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "vun"
+        "text": "W"
       },
       {
         "id": "b",
-        "text": "bun"
+        "text": "T"
       },
       {
         "id": "c",
-        "text": "cun"
+        "text": "E"
       },
       {
         "id": "d",
-        "text": "jun"
+        "text": "K"
       }
     ],
-    "answer": "b",
-    "explain": "bun 是真词，另外三个不是。"
+    "answer": "c",
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0119",
@@ -4231,32 +4177,32 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "vam"
+        "text": "I"
       },
       {
         "id": "b",
-        "text": "yam"
+        "text": "G"
       },
       {
         "id": "c",
-        "text": "mam"
+        "text": "S"
       },
       {
         "id": "d",
-        "text": "kam"
+        "text": "N"
       }
     ],
-    "answer": "b",
-    "explain": "yam 是真词，另外三个不是。"
+    "answer": "a",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
     "id": "en-0120",
@@ -4266,31 +4212,31 @@
     "unit": null,
     "family": null,
     "tags": [
-      "找真词"
+      "元音字母"
     ],
     "stem": {
-      "text": "下面哪个是真词？",
+      "text": "下面哪个是元音字母？",
       "layout": "grid"
     },
     "options": [
       {
         "id": "a",
-        "text": "kad"
+        "text": "F"
       },
       {
         "id": "b",
-        "text": "nad"
+        "text": "O"
       },
       {
         "id": "c",
-        "text": "bad"
+        "text": "P"
       },
       {
         "id": "d",
-        "text": "vad"
+        "text": "Z"
       }
     ],
-    "answer": "c",
-    "explain": "bad 是真词，另外三个不是。"
+    "answer": "b",
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
   }
 ]

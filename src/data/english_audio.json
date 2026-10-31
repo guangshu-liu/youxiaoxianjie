@@ -2,8 +2,18 @@
   "comment": "英语题库引用的语音。由 tools/gen_yingyu.py 生成，不要手改。",
   "entries": [
     {
-      "id": "en.bag",
-      "text": "bag",
+      "id": "en.ant",
+      "text": "ant",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.apple",
+      "text": "apple",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.ball",
+      "text": "ball",
       "voice": "Samantha"
     },
     {
@@ -12,63 +22,73 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.big",
-      "text": "big",
+      "id": "en.car",
+      "text": "car",
       "voice": "Samantha"
     },
     {
-      "id": "en.can",
-      "text": "can",
+      "id": "en.cup",
+      "text": "cup",
       "voice": "Samantha"
     },
     {
-      "id": "en.cat",
-      "text": "cat",
+      "id": "en.dog",
+      "text": "dog",
       "voice": "Samantha"
     },
     {
-      "id": "en.cot",
-      "text": "cot",
+      "id": "en.duck",
+      "text": "duck",
       "voice": "Samantha"
     },
     {
-      "id": "en.dad",
-      "text": "dad",
+      "id": "en.egg",
+      "text": "egg",
       "voice": "Samantha"
     },
     {
-      "id": "en.did",
-      "text": "did",
+      "id": "en.elbow",
+      "text": "elbow",
       "voice": "Samantha"
     },
     {
-      "id": "en.fin",
-      "text": "fin",
+      "id": "en.fan",
+      "text": "fan",
       "voice": "Samantha"
     },
     {
-      "id": "en.gun",
-      "text": "gun",
+      "id": "en.fish",
+      "text": "fish",
       "voice": "Samantha"
     },
     {
-      "id": "en.ham",
-      "text": "ham",
+      "id": "en.gate",
+      "text": "gate",
       "voice": "Samantha"
     },
     {
-      "id": "en.hid",
-      "text": "hid",
+      "id": "en.goat",
+      "text": "goat",
       "voice": "Samantha"
     },
     {
-      "id": "en.hit",
-      "text": "hit",
+      "id": "en.hand",
+      "text": "hand",
       "voice": "Samantha"
     },
     {
-      "id": "en.hug",
-      "text": "hug",
+      "id": "en.horse",
+      "text": "horse",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.ink",
+      "text": "ink",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.insect",
+      "text": "insect",
       "voice": "Samantha"
     },
     {
@@ -77,123 +97,98 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.jug",
-      "text": "jug",
+      "id": "en.juice",
+      "text": "juice",
       "voice": "Samantha"
     },
     {
-      "id": "en.lap",
-      "text": "lap",
+      "id": "en.king",
+      "text": "king",
       "voice": "Samantha"
     },
     {
-      "id": "en.led",
-      "text": "led",
+      "id": "en.kite",
+      "text": "kite",
       "voice": "Samantha"
     },
     {
-      "id": "en.lip",
-      "text": "lip",
+      "id": "en.leaf",
+      "text": "leaf",
       "voice": "Samantha"
     },
     {
-      "id": "en.mad",
-      "text": "mad",
+      "id": "en.lion",
+      "text": "lion",
       "voice": "Samantha"
     },
     {
-      "id": "en.man",
-      "text": "man",
+      "id": "en.monkey",
+      "text": "monkey",
       "voice": "Samantha"
     },
     {
-      "id": "en.mop",
-      "text": "mop",
+      "id": "en.moon",
+      "text": "moon",
       "voice": "Samantha"
     },
     {
-      "id": "en.pen",
-      "text": "pen",
+      "id": "en.nose",
+      "text": "nose",
       "voice": "Samantha"
     },
     {
-      "id": "en.pop",
-      "text": "pop",
+      "id": "en.nut",
+      "text": "nut",
       "voice": "Samantha"
     },
     {
-      "id": "en.pot",
-      "text": "pot",
+      "id": "en.ostrich",
+      "text": "ostrich",
       "voice": "Samantha"
     },
     {
-      "id": "en.rag",
-      "text": "rag",
+      "id": "en.ox",
+      "text": "ox",
       "voice": "Samantha"
     },
     {
-      "id": "en.rat",
-      "text": "rat",
+      "id": "en.pig",
+      "text": "pig",
       "voice": "Samantha"
     },
     {
-      "id": "en.sad",
-      "text": "sad",
+      "id": "en.question",
+      "text": "question",
       "voice": "Samantha"
     },
     {
-      "id": "en.sip",
-      "text": "sip",
+      "id": "en.red",
+      "text": "red",
       "voice": "Samantha"
     },
     {
-      "id": "en.sit",
-      "text": "sit",
+      "id": "en.snake",
+      "text": "snake",
       "voice": "Samantha"
     },
     {
-      "id": "en.sun",
-      "text": "sun",
+      "id": "en.tree",
+      "text": "tree",
       "voice": "Samantha"
     },
     {
-      "id": "en.tap",
-      "text": "tap",
+      "id": "en.umbrella",
+      "text": "umbrella",
       "voice": "Samantha"
     },
     {
-      "id": "en.ten",
-      "text": "ten",
+      "id": "en.vest",
+      "text": "vest",
       "voice": "Samantha"
     },
     {
-      "id": "en.van",
-      "text": "van",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.vet",
-      "text": "vet",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.wag",
-      "text": "wag",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.wet",
-      "text": "wet",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.wig",
-      "text": "wig",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.win",
-      "text": "win",
+      "id": "en.window",
+      "text": "window",
       "voice": "Samantha"
     },
     {
@@ -202,138 +197,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.sentence.01",
-      "text": "the red hat is on the mat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.02",
-      "text": "the big bug is in the mud.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.03",
-      "text": "the big cat is on the bed.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.04",
-      "text": "the hot pot is on the mat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.05",
-      "text": "my wet hat is in the bag.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.06",
-      "text": "the red jam is on the mat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.07",
-      "text": "the big pig is in the tub.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.08",
-      "text": "the hen can see a big bug.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.09",
-      "text": "the man can see a red hat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.10",
-      "text": "the cat has a red hat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.11",
-      "text": "the pen is red.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.12",
-      "text": "the sun is hot.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.13",
-      "text": "the mud is wet.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.14",
-      "text": "the hen can see.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.15",
-      "text": "the kid can see the sun.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.16",
-      "text": "the pup can see the cat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.17",
-      "text": "the bug can see the mud.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.18",
-      "text": "the man can see my hat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.19",
-      "text": "the pig can see my bed.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.20",
-      "text": "the pig has a red hat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.21",
-      "text": "the man has a big hat.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.22",
-      "text": "the kid has a red cup.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.23",
-      "text": "the pup has a big mug.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.24",
-      "text": "the man has a red van.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.25",
-      "text": "the kid can see ten men.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.26",
-      "text": "the pin is in the cup.",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.sentence.27",
-      "text": "the nut is in the pot.",
+      "id": "en.zoo",
+      "text": "zoo",
       "voice": "Samantha"
     }
   ]

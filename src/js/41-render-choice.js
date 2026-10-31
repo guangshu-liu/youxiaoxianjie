@@ -14,8 +14,14 @@
 
   G.Renderers = G.Renderers || {};
 
-  /** 单个汉字。用来判断「这是不是识字题的单字选项」。 */
-  var HAN_RE = /^[一-鿿]$/;
+  /**
+   * 「单独一个字符」的选项。汉字（日 / 目 / 白）和英语的单个字母
+   * （B / b）都要单独放大 —— 一眼看不清的字形，孩子只能靠猜。
+   *
+   * 数学题不在这条里：它的选项也是短的（7 / 70），把「7」放大到 50px
+   * 会让同一排高低不平，看起来像排版坏了。
+   */
+  var SINGLE_RE = /^(?:[一-鿿]|[A-Za-z])$/;
 
   /**
    * 按题型取渲染器。目前只有 choice 一种，未知题型兜底也给它 ——
@@ -38,32 +44,20 @@
     var stem = G.el('div', { class: 'stem' });
 
     var hasAudio = !!(q.stem && q.stem.audio);
-    // 语音会不会念出答案（句子填空念的是填好空的那句）。
-    // 会的话，喇叭按钮要等答完再出现 —— 否则孩子一点就听见答案了。
-    var audioReveals = !!(q.stem && q.stem.audioReveals);
 
     if (q.stem && q.stem.prompt) {
       stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
     }
 
-    // 题干文字和喇叭按钮**不是二选一**：英语的听音选词两者都有
-    // （「听一听，选出你听到的词」+ 音频），句子填空也是（整句 + 音频）。
-    // 早先这里写成了 if/else if，结果是 67 道英语题的文字题干全都不显示，
-    // 句子填空连要填的句子都看不见。
+    // 题干文字和喇叭按钮**不是二选一**：英语的听音题两者都有
+    // （「听一听，这个词开头是哪个大写字母？」+ 音频）。
+    // 早先这里写成了 if/else if，结果是英语题的文字题干全都不显示。
     if (q.stem && q.stem.text) {
       stem.appendChild(G.el('div', { class: 'stem-text', text: q.stem.text }));
     }
 
-    if (hasAudio && !audioReveals) {
+    if (hasAudio) {
       stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
-    }
-
-    // 答完后才放出来的喇叭（答案已经在屏幕上了，这时听是复习不是作弊）
-    var lateSpeaker = null;
-    if (hasAudio && audioReveals) {
-      lateSpeaker = G.UI.speakerButton(q.stem.audio, '听一遍', { small: true });
-      lateSpeaker.classList.add('hidden');
-      stem.appendChild(lateSpeaker);
     }
 
     root.appendChild(stem);
@@ -76,10 +70,10 @@
       // 单字选项（「日」「目」「白」这类形近字）单独放大 —— 一眼看不清的字
       // 会让孩子靠猜，而不是靠辨认。
       //
-      // 必须限定「是一个汉字」，不能只看长度：数学题的选项也是短的，
-      // 「7」和「70」混在一道题里，只把「7」放大到 50px 会让这一排
+      // 必须限定「是一个汉字或一个字母」，不能只看长度：数学题的选项也是
+      // 短的，「7」和「70」混在一道题里，只把「7」放大到 50px 会让这一排
       // 高低不平，看起来像是排版坏了。
-      var single = HAN_RE.test(opt.text || '');
+      var single = SINGLE_RE.test(opt.text || '');
 
       var btn = G.el('button', {
         class: 'option' + (single ? ' option-single' : ''),
@@ -114,9 +108,6 @@
         buttons[id].classList.add('locked');
         if (id === q.answer) buttons[id].classList.add('is-answer');
       });
-
-      // 答案已经亮出来了，这时才放出「听一遍」
-      if (lateSpeaker) lateSpeaker.classList.remove('hidden');
 
       if (!correct) {
         showExplain(q.explain);

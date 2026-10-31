@@ -402,7 +402,7 @@ def validate(entries):
 def audio_refs(q):
     """一道题引用到的所有音频 id。
 
-    两个地方会有：题干语音（听音选词的 stem.audio）和旧格式的顶层 audio。
+    两个地方会有：题干语音（听音选字母的 stem.audio）和旧格式的顶层 audio。
     """
     out = []
     stem = q.get('stem') or {}

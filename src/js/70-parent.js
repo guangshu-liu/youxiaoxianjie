@@ -315,7 +315,7 @@
     var wrap = G.el('div', { class: 'stat-card' });
 
     // 按题型统计，三科分开列（语文：归类 / 笔画…；数学：拆数 / 比大小…；
-    // 英语：听音选词 / 词族归类…）。合在一起列的话，家长看不出到底是
+    // 英语：听音选字母 / 大小写配对…）。合在一起列的话，家长看不出到底是
     // 哪一科弱 —— 而这正是他翻到这个页面想知道的。
     G.SUBJECTS.forEach(function (s) {
       var bucket = (save.progress[s] && save.progress[s].byTag) || {};

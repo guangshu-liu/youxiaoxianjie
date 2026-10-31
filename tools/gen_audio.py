@@ -4,8 +4,7 @@
 gen_audio.py — 语音生成（macOS 自带 say，不联网、不装任何东西）
 
 产出：
-    audio/en/<word>.m4a        英语单词
-    audio/en/sentence/<n>.m4a  英语句子
+    audio/en/<word>.m4a        英语单词（听音选字母题的素材）
     tools/audio_manifest.json  清单（id → 路径 + 文本哈希）
 
 为什么用 say 而不是 edge-tts：
@@ -79,7 +78,7 @@ def save_manifest(m):
 
 
 def audio_id_to_path(aid):
-    """'en.sentence.01' → 'en/sentence/01.m4a'。
+    """'en.ant' → 'en/ant.m4a'。
 
     id 就是路径把 / 换成 . —— 代码引用音频不需要第二张映射表，这条规矩
     从项目第一天起就在，别改。
@@ -244,7 +243,7 @@ def main():
     manifest['version'] = 1
     save_manifest(manifest)
 
-    # 清掉空目录（en/ 下没有句子时就别留一个空壳）
+    # 清掉空目录（删掉整批词之后 en/ 下可能剩个空壳）
     for dirpath, dirnames, filenames in os.walk(AUDIO, topdown=False):
         if dirpath != AUDIO and not os.listdir(dirpath):
             os.rmdir(dirpath)

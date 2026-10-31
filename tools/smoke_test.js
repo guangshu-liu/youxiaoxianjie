@@ -184,7 +184,7 @@ function makeSandbox() {
 //
 // 41-render-choice.js 曾经也在这个名单外，理由是「渲染器离不开 DOM」。
 // 但渲染器真正的风险不是崩溃，是**该画的东西没画出来**（stem.audio 那条
-// if/else if 让 67 道英语题的文字题干全都不显示，就是这么漏的）。桩只要
+// if/else if 让英语题的文字题干全都不显示，就是这么漏的）。桩只要
 // 把 className/classList 和事件监听做真，这一整类 bug 是能在无头环境里
 // 抓住的，所以 41 加进来了。
 const LOGIC = /^(00|05|10|20|21|30|40|41|50|60)0?-|^(00|10|20|21|30|40|41|50|60)-/;
@@ -325,46 +325,37 @@ function testRenderer() {
   }
 
   const withAudio = all.filter((q) => q.stem && q.stem.audio);
-  const reveals = withAudio.filter((q) => q.stem.audioReveals);
   const silent = all.filter((q) => !(q.stem && q.stem.audio));
-  ok(withAudio.length === 67 && reveals.length === 27,
-     '题库里 67 道带音频（其中 27 道音频会念出答案）',
-     '带音频 ' + withAudio.length + ' / 会念出答案 ' + reveals.length);
+  ok(withAudio.length === 40, '题库里 40 道带音频（听音选字母）',
+     '带音频 ' + withAudio.length);
 
   // ---- 带音频的题：题干文字必须渲染出来 ----
-  // 这里曾经是 if (audio) … else if (text) …，67 道英语题的文字题干
-  // 全都不显示，句子填空连要填的句子都看不见。
-  let noText = [], noSpeaker = [], shownEarly = [], hiddenLate = [];
+  // 这里曾经是 if (audio) … else if (text) …，英语题的文字题干全都不显示，
+  // 只留下一个没有说明的喇叭，孩子不知道要他干什么。
+  let noText = [], noSpeaker = [], hiddenSpk = [];
   withAudio.forEach((q) => {
     const r = render(q);
     if (!r.of('stem-text').length) noText.push(q.id);
-    if (!r.of('speaker').length) noSpeaker.push(q.id);
     const spk = r.of('speaker')[0];
-    if (!spk) return;
-    const hidden = spk.classList.contains('hidden');
-    if (q.stem.audioReveals && !hidden) shownEarly.push(q.id);
-    if (!q.stem.audioReveals && hidden) hiddenLate.push(q.id);
+    if (!spk) { noSpeaker.push(q.id); return; }
+    // 听音题的音频念的就是这道题要听的东西，答题前就该能点 —— 藏起来的话
+    // 这道题就没有任何信息了。
+    if (spk.classList.contains('hidden')) hiddenSpk.push(q.id);
   });
 
   eq(noText.length, 0, '带音频的题，题干文字都渲染出来了', noText.slice(0, 4).join(' '));
   eq(noSpeaker.length, 0, '带音频的题都有喇叭按钮', noSpeaker.slice(0, 4).join(' '));
-  eq(shownEarly.length, 0, '会念出答案的音频，答题前藏起来',
-     shownEarly.slice(0, 4).join(' '));
-  eq(hiddenLate.length, 0, '不念答案的音频（听音选词）答题前就能听',
-     hiddenLate.slice(0, 4).join(' '));
+  eq(hiddenSpk.length, 0, '听音题的喇叭答题前就能点', hiddenSpk.slice(0, 4).join(' '));
 
-  // ---- 答完之后，藏起来的喇叭要放出来 ----
-  if (reveals.length) {
-    const q = reveals[0];
+  // ---- 答错时解释条要出来 ----
+  {
+    const q = withAudio[0];
     const r = render(q);
-    const spk = r.of('speaker')[0];
     const wrong = r.nodes.find((n) => n.classList.contains('option')
       && n.getAttribute('data-id') !== q.answer);
     ok(!!wrong, '选项按钮上挂着 click 处理器');
     if (wrong) {
       wrong.dispatch('click');
-      ok(!spk.classList.contains('hidden'), '答完之后喇叭按钮放出来了',
-         q.id + ' 仍然 hidden');
       ok(r.of('explain').some((n) => !n.classList.contains('hidden')),
          '答错时解释条显示出来');
     }
@@ -567,10 +558,8 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
     if (!q.explain) problems.push(q.id + '：缺少 explain');
     if (!q.stem || (!q.stem.text && !q.stem.audio)) problems.push(q.id + '：题干既没有文字也没有音频');
     // 渲染器把题干文字和喇叭按钮都画出来，所以只有音频的题干会变成
-    // 一个没有说明的喇叭。这一条曾经漏掉了 67 道英语题的文字题干。
+    // 一个没有说明的喇叭。这一条曾经漏掉了英语题的文字题干。
     if (q.stem && q.stem.audio && !q.stem.text) problems.push(q.id + '：有音频却没有文字题干');
-    // audioReveals 是「答完才放喇叭」的开关，没有音频它就没有意义。
-    if (q.stem && q.stem.audioReveals && !q.stem.audio) problems.push(q.id + '：标了 audioReveals 却没有音频');
     // 布局必须显式写出来：渲染器给根节点挂 q-layout-<layout>，
     // 缺了会挂上 q-layout-undefined，CSS 里就没有任何一条规则命中。
     if (!q.stem || !q.stem.layout) problems.push(q.id + '：题干缺少 layout');
@@ -656,7 +645,7 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
 
 {
   // ---- 英语的语音引用 ----
-  // 听音选词的题干是一段语音；audio id 指向 G.AUDIO_MAP 里的一条文件。
+  // 听音选字母的题干带一段语音；audio id 指向 G.AUDIO_MAP 里的一条文件。
   // id 写错的话，题目能正常显示、选项也能选，只是**永远没有声音** ——
   // 而那道题的全部信息都在声音里。这是最典型的「静默失败」。
   const audio = Object.keys((G.DATA && G.DATA.audioMap) || G.AUDIO_MAP || {});
@@ -665,8 +654,8 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
   Bank.of('english').forEach((q) => {
     const id = q.stem && q.stem.audio;
     if (id) refs.push([q.id, id]);
-    else if ((q.tags || [])[0] === '听音选词') {
-      ok(false, q.id + ' 是听音选词却没有 stem.audio');
+    else if ((q.tags || [])[0] === '听音选字母') {
+      ok(false, q.id + ' 是听音选字母却没有 stem.audio');
     }
   });
 

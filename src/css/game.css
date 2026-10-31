@@ -106,10 +106,6 @@
 .speaker:active { transform: translateY(4px); box-shadow: 0 2px 0 #29A8DC; }
 .speaker-icon { font-size: 52px; line-height: 1; }
 
-/* 会念出答案的语音（句子填空）：答完之前藏起来。
-   .hidden 在本项目里不是全局类，每个用到的地方各写一条 —— 见下方 .explain.hidden。 */
-.speaker.hidden { display: none; }
-
 .speaker.playing { animation: pulse .55s infinite; }
 
 .speaker-sm {
