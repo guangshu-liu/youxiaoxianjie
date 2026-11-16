@@ -3,8 +3,9 @@
 """
 gen_shuxue.py — 数学题库生成器
 
-产出 src/data/math.json（90 道，全部 choice 题型），是「语文 / 数学 / 英语」
-三科里的数学那一份。
+产出 src/data/math.json（200 道，全部 choice 题型），是「语文 / 数学 / 英语」
+三科里的数学那一份。难度 1 / 难度 2 各 100 道：零基础的孩子先做 20 以内
+不进位加减，正确率达标后才解锁 100 以内进位 / 退位（见 BUILDERS）。
 
 数学题没有语文那种「选项里混进了超纲的字」的问题，但有一类更隐蔽的错：
 **一道题不止一个正确答案**。自动出题最容易栽在两类题上：
@@ -153,6 +154,73 @@ def build_calc():
 
     # 加一道减一道，孩子不会连着做 13 道加法做麻了
     return interleave([add_qs, sub_qs])
+
+
+# ---------------------------------------------------------------- 基础计算（难度 1）
+
+def calc_basic_pairs():
+    """基础档的算式全集：10 以内加减 + 20 以内不进位加 / 不退位减。
+
+    幼小衔接阶段（5-6 岁）课标只要求借实物做 10 以内加减；20 以内不进位
+    加减是一年级上的起点。这里刻意不碰进位 / 退位 —— 那是人教版二年级上
+    的内容，留给难度 2 的 build_calc()。
+
+    分成四类是为了让「10 以内」和「20 以内」都不偏废，且一局里题型能错开。
+    """
+    small_add = [(a, b) for a in range(1, 10) for b in range(1, 10)
+                 if a + b <= 10]
+    small_sub = [(a, b) for a in range(2, 11) for b in range(1, a)]
+    teen_add = [(a, b) for a in range(11, 20) for b in range(1, 10)
+                if a % 10 + b < 10 and a + b <= 20]
+    teen_sub = [(a, b) for a in range(11, 20) for b in range(1, 10)
+                if a % 10 >= b]
+    return [small_add, small_sub, teen_add, teen_sub]
+
+
+def build_calc_basic():
+    """难度 1 的直接计算：四类各 17 道，共 68 道。
+
+    干扰项只在本档范围内取（0..20），不拿 30、47 这种数来凑 —— 那种选项
+    孩子看一眼就排除，题目等于白出。题干里出现过的数也不当干扰项。
+    """
+    kinds = ['small+', 'small-', 'teen+', 'teen-']
+    out_groups = []
+
+    for kind, pairs in zip(kinds, calc_basic_pairs()):
+        rng = Rng(dhash('calc-basic-' + kind) & 0xFFFF)
+        pairs = rng.shuffle(pairs)
+        qs = []
+        op = '+' if kind.endswith('+') else '-'
+
+        for a, b in pairs:
+            if len(qs) >= 17:
+                break
+            r = a + b if op == '+' else a - b
+            # 10 以内题的干扰项也卡在 10 以内 —— 拿 15 当「2 + 3」的
+            # 错误答案，孩子看一眼就排除，那道题等于白出。
+            hi = 10 if a <= 10 else 20
+            ds = near_miss(r, [r - 3, r - 2, r - 1, r + 1, r + 2, r + 3,
+                               r - 10, r + 10],
+                           'calc-basic-%d%s%d' % (a, op, b),
+                           lo=0, hi=hi, avoid=(a, b))
+            if len(ds) < 3:
+                continue
+
+            if op == '+':
+                how = ('从 %d 接着数 %d 个，就是 %d。' % (a, b, r) if a < 10
+                       else '个位 %d 加 %d 得 %d，十位还是 1。' % (a % 10, b, r))
+            else:
+                how = ('从 %d 里拿走 %d 个，还剩 %d 个。' % (a, b, r) if a <= 10
+                       else '个位 %d 减 %d 得 %d，十位还是 1。' % (a % 10, b, r))
+            explain = '%d %s %d = %d。%s' % (a, op, b, r, how)
+
+            qs.append(make_choice(
+                'math', 'ma-basic-%s-%04d' % (kind, len(qs) + 1), '计算', 1,
+                '%d %s %d = ?' % (a, op, b), str(r), ds, explain,
+                layout='big-number'))
+        out_groups.append(qs)
+
+    return interleave(out_groups)
 
 
 # ---------------------------------------------------------------- 拆数凑十
@@ -580,15 +648,19 @@ def build_classify():
 # (标签, 构造函数, 上限)。上限之和**正好等于** LIMIT —— 这样每类的题量是
 # 有意配的，而不是被切片随机截断的。改配比只动这里的数字。
 #
-# 数学占 90 道，是「语文:数学:英语 = 3:3:4」里的那份 3（见 build.py 的
-# SUBJECT_MIX）。
+# 数学 200 道里难度 1 / 难度 2 各占 100 道：
+#   d1 = 基础计算 68 + 比大小 18 + 分类 14
+#   d2 = 直接计算 32 + 拆数凑十 28 + 应用题 20 + 找规律 20
+# 计算与思维仍然各半（100 / 100），但零基础的孩子一局不会再撞上 8 道
+# 100 以内进位加。难度 2 的题一题没删，只是从 100 道裁到 32 道。
 BUILDERS = [
-    ('直接计算', build_calc, 100),
+    ('直接计算', build_calc, 32),
     ('拆数凑十', build_chaishu, 28),
     ('应用题', build_word, 20),
     ('比大小', build_compare, 18),
     ('找规律', build_seq, 20),
     ('分类', build_classify, 14),
+    ('基础计算', build_calc_basic, 68),
 ]
 
 LIMIT = 200
@@ -697,8 +769,9 @@ def selfcheck(questions):
          再断言四个选项里恰好一个等于它，而且它就是 answer 指的那个。
       2. 范围 —— 防超纲和负数：题干和选项里出现的每个数都在 0..100 之内，
          选项必须是纯数字（带负号的一眼就能看出来）。
-      3. 进位 / 退位 —— 防「这道题其实不用进/退位」，也就是防生成器某天
-         被人改了筛选条件，悄悄混进一堆数数就能做的题。
+      3. 难度分档 —— 难度 1 必须 20 以内且不进/退位，难度 2 必须进/退位。
+         防生成器某天被人改了筛选条件，把超纲算式混进基础档，或者把
+         进阶档悄悄降成数数就能做的题。
       4. 找规律 —— 防公差 1（和数数分不开）和第四项越界。
       5. 比大小 —— 防两个选项一样大（「哪个最大」就有两个答案）。
       6. 分类 —— 防「换一条判据答案就变了」。
@@ -750,15 +823,34 @@ def selfcheck(questions):
             errs.append('%s：layout 应为 %s，实际 %s'
                         % (qid, want, q['stem'].get('layout')))
 
-        # ---- 3. 直接计算：必须进/退位，减法不出负数 ----
+        # ---- 3. 直接计算：按难度分档，两档的边界都不许糊 ----
+        # 难度 1 = 20 以内、不进位 / 不退位；难度 2 = 100 以内、必须进位 / 退位。
+        # 一起挡住「基础题偷偷变成进位加」和「进阶题被改成数数就能做」。
         if tag == '计算':
             m = RE_CALC.match(t)
             if m:
                 a, op, b = int(m.group(1)), m.group(2), int(m.group(3))
-                if op == '+':
-                    if a % 10 + b >= 10:
-                        pass
+                if q['difficulty'] == 1:
+                    if a > 20 or b > 9:
+                        errs.append('%s：基础档出现了超过 20 的数 %d %s %d'
+                                    % (qid, a, op, b))
+                    if op == '+':
+                        # 10 以内的「9 + 1 = 10」是凑十，不是进位；进位只在
+                        # 两位数加一位数时才成立。
+                        if a >= 10 and a % 10 + b >= 10:
+                            errs.append('%s：基础档 %d + %d 不该进位' % (qid, a, b))
+                        if a + b > 20:
+                            errs.append('%s：基础档 %d + %d 的结果超过 20'
+                                        % (qid, a, b))
                     else:
+                        # a = 10 时 a % 10 = 0，「10 - 6」是 10 以内减法，
+                        # 不涉及退位；退位只在十几减一位数时才成立。
+                        if a > 10 and a % 10 < b:
+                            errs.append('%s：基础档 %d - %d 不该退位' % (qid, a, b))
+                        if a - b < 0:
+                            errs.append('%s：%d - %d 结果是负数' % (qid, a, b))
+                elif op == '+':
+                    if a % 10 + b < 10:
                         errs.append('%s：%d + %d 不进位，数数就能做' % (qid, a, b))
                 else:
                     if a % 10 >= b:

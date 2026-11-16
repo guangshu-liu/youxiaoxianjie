@@ -1555,6 +1555,12 @@
  *   永远轮不到（得不到练习）。所以按错题本加权：没掌握的加权重出，
  *   连对两次的降权。
  *
+ * 讲究三：**难度按孩子水平解锁**。
+ *   题库里难度 1 是 20 以内不进位加减、字表内的字、字母启蒙；难度 2 是
+ *   100 以内进位 / 退位、部首笔画、字母顺序。均匀随机的话，零基础孩子
+ *   分科一局 10 道数学能撞上 8 道进位加，玩两次就不玩了。所以先看最近
+ *   20 次本科目作答：没数据或正确率低就只出难度 1，≥ 80% 才解锁难度 2。
+ *
  * 干扰项不在这里生成。所有科目的选项都是内容问题，已经在构建期由
  * tools/gen_*.py 算好写进题库 —— 运行时不猜。
  */
@@ -1564,6 +1570,7 @@
   var G = window.G;
 
   var banks = {};        // { chinese: [q, ...], math: [...], english: [...] }
+  var byIdMap = {};      // id -> q，给 byId 和难度分档回查科目用
   var zibiao = null;
 
   /* ---------- 加载 ---------- */
@@ -1579,6 +1586,11 @@
     });
 
     zibiao = data.zibiao || null;
+
+    byIdMap = {};
+    G.SUBJECTS.forEach(function (s) {
+      banks[s].forEach(function (q) { byIdMap[q.id] = q; });
+    });
 
     // 缺一科就让构建期挡住，运行时不带病上线。
     // 少一科的后果不是「少几道题」——是那一局的 10 个坑里空出 3 个，
@@ -1601,15 +1613,7 @@
     return G.SUBJECTS.reduce(function (acc, s) { return acc.concat(banks[s] || []); }, []);
   }
 
-  function byId(id) {
-    for (var i = 0; i < G.SUBJECTS.length; i++) {
-      var list = banks[G.SUBJECTS[i]] || [];
-      for (var j = 0; j < list.length; j++) {
-        if (list[j].id === id) return list[j];
-      }
-    }
-    return null;
-  }
+  function byId(id) { return byIdMap[id] || null; }
 
   function zibiaoData() { return zibiao; }
 
@@ -1642,6 +1646,36 @@
   }
 
   /**
+   * 孩子当前该做哪一档题（1 = 基础，2 = 进阶）。
+   *
+   * 只看最近 20 次**本科目**作答：英语全对不该让数学跟着升档。存档里
+   * 只留有 qid 和 correct，所以用 byIdMap 回查科目；题库换过之后旧 qid
+   * 查不到就跳过，不拿失效记录充数。
+   *
+   * 样本不足 6 次（新用户 / 刚清了存档 / 题库更新）一律留在基础档；
+   * 正确率 ≥ 0.8 才解锁进阶档，掉下来再降回去。20 次的窗口是为了
+   * 别因为一局失手就立刻把孩子打回原地。
+   */
+  function levelOf(save, subject) {
+    var sessions = (save && save.sessions) || [];
+    var seen = 0, correct = 0;
+
+    for (var i = sessions.length - 1; i >= 0 && seen < 20; i--) {
+      var items = (sessions[i] && sessions[i].items) || [];
+      for (var j = items.length - 1; j >= 0 && seen < 20; j--) {
+        var it = items[j];
+        var q = byIdMap[it.qid];
+        if (!q || q.subject !== subject) continue;
+        seen++;
+        if (it.correct) correct++;
+      }
+    }
+
+    if (seen < 6) return 1;
+    return (correct / seen >= 0.8) ? 2 : 1;
+  }
+
+  /**
    * 从指定科目抽一道题。excludeIds 用来保证一局之内不重复。
    * @param {object} save
    * @param {string} subject
@@ -1656,10 +1690,16 @@
     var excluded = {};
     (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-    var avail = pool.filter(function (q) { return !excluded[q.id]; });
-    // 兜底：本科目的题被抽空时允许重复，也不让一局短题。
-    // 一局只要 3~4 道，而每个科目至少 90 道，正常永远走不到这里；
-    // 但题库被裁剪成十几道时就会 —— 那时候「重复一道」也比「少一道」好。
+    var level = levelOf(save, subject);
+    var avail = pool.filter(function (q) {
+      return !excluded[q.id] && (q.difficulty || 1) <= level;
+    });
+    // 本档的题被这一局抽光时，允许本档重题，也不让一局短题；
+    // 更重要的是**不借这个机会把超纲题放进来**。
+    if (!avail.length) {
+      avail = pool.filter(function (q) { return (q.difficulty || 1) <= level; });
+    }
+    // 极端兜底：题库里连本档都没有（裁剪过的测试题库）时才退回全池。
     if (!avail.length) avail = pool;
 
     var wrongIndex = wrongIndexOf(save);
@@ -1683,6 +1723,7 @@
     subjectOf: subjectOf,
     zibiao: zibiaoData,
     weightOf: weightOf,
+    levelOf: levelOf,
     drawOne: drawOne
   };
 

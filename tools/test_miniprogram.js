@@ -164,6 +164,25 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   });
 }
 
+/* ---- 3c. 难度分档（生成产物里同样生效） ---- */
+{
+  // 深拷贝：Store.load() 与 app.globalData.save 是同一个对象，直接 push
+  // 会污染后面「play 页走完一整局」断言的 sessions 长度。
+  const save = JSON.parse(JSON.stringify(G.Store.load()));
+  eq(G.Bank.levelOf(save, 'math'), 1, '新存档只出基础档');
+  const round = G.Runner.buildSubjectRound(save, 'math', 10);
+  eq(round.questions.filter((q) => (q.difficulty || 1) === 1).length, 10,
+     '新手的单科局 10 题全是难度 1');
+
+  const pro = JSON.parse(JSON.stringify(G.Store.load()));
+  pro.sessions.push({
+    items: Array.from({ length: 20 }, () => ({
+      qid: G.Bank.of('math')[0].id, correct: true,
+    })),
+  });
+  eq(G.Bank.levelOf(pro, 'math'), 2, '全对历史解锁进阶档');
+}
+
 /* ---- 4. 星星规则 ---- */
 {
   // 阈值 9 / 6：做对 9 题才 3 星，6 题才 2 星，其余 1 星保底。

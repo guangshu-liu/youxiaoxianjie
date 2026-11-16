@@ -694,6 +694,13 @@ section('4. 加权抽题（Bank.drawOne）');
   const pool = Bank.of('chinese');
   const marked = pool.slice(0, Math.round(pool.length * 0.135));
   const save = Store.defaultSave();
+  // 本段测的是错题加权，不是难度选档。被标记的 27 道全是难度 2，
+  // 新手存档会被门控挡住，所以先造一段全对历史放行全部题。
+  save.sessions.push({
+    items: Array.from({ length: 20 }, () => ({
+      qid: pool[0].id, subject: 'chinese', correct: true,
+    })),
+  });
   marked.forEach((q, i) => {
     save.wrongBook.push({
       qid: q.id, subject: 'chinese', seen: 1, correct: 0,
@@ -757,6 +764,44 @@ section('4. 加权抽题（Bank.drawOne）');
   eq(G.SUBJECTS.filter((s) => Bank.byId(Bank.of(s)[0].id)).length, 3,
      'byId 三科通查');
   eq(Bank.subjectOf(allIds[0]), 'chinese', 'subjectOf 返回题目所属科目');
+}
+
+{
+  // 难度分档：零基础孩子不该一上来就撞 100 以内进位加
+  const rng = G.rngFrom('draw-level');
+  const fresh = Store.defaultSave();
+  let bad = 0;
+  for (let i = 0; i < 1500; i++) {
+    G.SUBJECTS.forEach((s) => {
+      const q = Bank.drawOne(fresh, s, [], rng);
+      if ((q.difficulty || 1) > 1) bad++;
+    });
+  }
+  eq(bad, 0, '新手存档只抽到难度 1 的题');
+  eq(Bank.levelOf(fresh, 'math'), 1, '无历史时难度档 = 1');
+
+  const pro = Store.defaultSave();
+  pro.sessions.push({
+    items: Array.from({ length: 20 }, () => ({
+      qid: Bank.of('math')[0].id, subject: 'math', correct: true,
+    })),
+  });
+  eq(Bank.levelOf(pro, 'math'), 2, '最近 20 题全对 → 解锁难度 2');
+  eq(Bank.levelOf(pro, 'english'), 1, '数学满分不会让英语一起升档');
+
+  let got2 = 0;
+  for (let i = 0; i < 1500; i++) {
+    if ((Bank.drawOne(pro, 'math', [], rng).difficulty || 1) === 2) got2++;
+  }
+  ok(got2 > 0, '解锁后难度 2 的题能被抽到', got2 + ' / 1500');
+
+  const weak = Store.defaultSave();
+  weak.sessions.push({
+    items: Array.from({ length: 20 }, (_, i) => ({
+      qid: Bank.of('math')[0].id, subject: 'math', correct: i < 5,
+    })),
+  });
+  eq(Bank.levelOf(weak, 'math'), 1, '正确率不达标时留在难度 1');
 }
 
 /* ---- 5. 一局编排 ---- */

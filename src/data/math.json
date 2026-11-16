@@ -1127,2386 +1127,6 @@
     "unit": null,
     "family": null,
     "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "58 + 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "72"
-      },
-      {
-        "id": "b",
-        "text": "64"
-      },
-      {
-        "id": "c",
-        "text": "62"
-      },
-      {
-        "id": "d",
-        "text": "60"
-      }
-    ],
-    "answer": "c",
-    "explain": "58 + 4 = 62。个位 8 加 4 得 12，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0034",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "70 - 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "62"
-      },
-      {
-        "id": "b",
-        "text": "59"
-      },
-      {
-        "id": "c",
-        "text": "51"
-      },
-      {
-        "id": "d",
-        "text": "61"
-      }
-    ],
-    "answer": "d",
-    "explain": "70 - 9 = 61。个位 0 减 9 不够，从十位借一当十，10 减 9 得 1。"
-  },
-  {
-    "id": "ma-0035",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "47 + 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "52"
-      },
-      {
-        "id": "b",
-        "text": "40"
-      },
-      {
-        "id": "c",
-        "text": "50"
-      },
-      {
-        "id": "d",
-        "text": "60"
-      }
-    ],
-    "answer": "c",
-    "explain": "47 + 3 = 50。个位 7 加 3 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0036",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "80 - 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "67"
-      },
-      {
-        "id": "b",
-        "text": "77"
-      },
-      {
-        "id": "c",
-        "text": "76"
-      },
-      {
-        "id": "d",
-        "text": "79"
-      }
-    ],
-    "answer": "b",
-    "explain": "80 - 3 = 77。个位 0 减 3 不够，从十位借一当十，10 减 3 得 7。"
-  },
-  {
-    "id": "ma-0037",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "37 + 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "36"
-      },
-      {
-        "id": "b",
-        "text": "46"
-      },
-      {
-        "id": "c",
-        "text": "44"
-      },
-      {
-        "id": "d",
-        "text": "28"
-      }
-    ],
-    "answer": "b",
-    "explain": "37 + 9 = 46。个位 7 加 9 得 16，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0038",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "91 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "83"
-      },
-      {
-        "id": "b",
-        "text": "75"
-      },
-      {
-        "id": "c",
-        "text": "85"
-      },
-      {
-        "id": "d",
-        "text": "97"
-      }
-    ],
-    "answer": "c",
-    "explain": "91 - 6 = 85。个位 1 减 6 不够，从十位借一当十，11 减 6 得 5。"
-  },
-  {
-    "id": "ma-0039",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "34 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "39"
-      },
-      {
-        "id": "b",
-        "text": "42"
-      },
-      {
-        "id": "c",
-        "text": "40"
-      },
-      {
-        "id": "d",
-        "text": "50"
-      }
-    ],
-    "answer": "c",
-    "explain": "34 + 6 = 40。个位 4 加 6 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0040",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "31 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "23"
-      },
-      {
-        "id": "b",
-        "text": "21"
-      },
-      {
-        "id": "c",
-        "text": "13"
-      },
-      {
-        "id": "d",
-        "text": "39"
-      }
-    ],
-    "answer": "a",
-    "explain": "31 - 8 = 23。个位 1 减 8 不够，从十位借一当十，11 减 8 得 3。"
-  },
-  {
-    "id": "ma-0041",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "18 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "34"
-      },
-      {
-        "id": "b",
-        "text": "25"
-      },
-      {
-        "id": "c",
-        "text": "24"
-      },
-      {
-        "id": "d",
-        "text": "14"
-      }
-    ],
-    "answer": "c",
-    "explain": "18 + 6 = 24。个位 8 加 6 得 14，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0042",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "44 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "38"
-      },
-      {
-        "id": "b",
-        "text": "39"
-      },
-      {
-        "id": "c",
-        "text": "36"
-      },
-      {
-        "id": "d",
-        "text": "37"
-      }
-    ],
-    "answer": "a",
-    "explain": "44 - 6 = 38。个位 4 减 6 不够，从十位借一当十，14 减 6 得 8。"
-  },
-  {
-    "id": "ma-0043",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "18 + 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "21"
-      },
-      {
-        "id": "b",
-        "text": "22"
-      },
-      {
-        "id": "c",
-        "text": "24"
-      },
-      {
-        "id": "d",
-        "text": "23"
-      }
-    ],
-    "answer": "d",
-    "explain": "18 + 5 = 23。个位 8 加 5 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0044",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "32 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "14"
-      },
-      {
-        "id": "b",
-        "text": "25"
-      },
-      {
-        "id": "c",
-        "text": "40"
-      },
-      {
-        "id": "d",
-        "text": "24"
-      }
-    ],
-    "answer": "d",
-    "explain": "32 - 8 = 24。个位 2 减 8 不够，从十位借一当十，12 减 8 得 4。"
-  },
-  {
-    "id": "ma-0045",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "57 + 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "62"
-      },
-      {
-        "id": "b",
-        "text": "58"
-      },
-      {
-        "id": "c",
-        "text": "70"
-      },
-      {
-        "id": "d",
-        "text": "60"
-      }
-    ],
-    "answer": "d",
-    "explain": "57 + 3 = 60。个位 7 加 3 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0046",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "44 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "38"
-      },
-      {
-        "id": "b",
-        "text": "37"
-      },
-      {
-        "id": "c",
-        "text": "26"
-      },
-      {
-        "id": "d",
-        "text": "36"
-      }
-    ],
-    "answer": "d",
-    "explain": "44 - 8 = 36。个位 4 减 8 不够，从十位借一当十，14 减 8 得 6。"
-  },
-  {
-    "id": "ma-0047",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "37 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "44"
-      },
-      {
-        "id": "b",
-        "text": "46"
-      },
-      {
-        "id": "c",
-        "text": "45"
-      },
-      {
-        "id": "d",
-        "text": "47"
-      }
-    ],
-    "answer": "c",
-    "explain": "37 + 8 = 45。个位 7 加 8 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0048",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "54 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "62"
-      },
-      {
-        "id": "b",
-        "text": "47"
-      },
-      {
-        "id": "c",
-        "text": "45"
-      },
-      {
-        "id": "d",
-        "text": "46"
-      }
-    ],
-    "answer": "d",
-    "explain": "54 - 8 = 46。个位 4 减 8 不够，从十位借一当十，14 减 8 得 6。"
-  },
-  {
-    "id": "ma-0049",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "93 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "98"
-      },
-      {
-        "id": "b",
-        "text": "86"
-      },
-      {
-        "id": "c",
-        "text": "90"
-      },
-      {
-        "id": "d",
-        "text": "100"
-      }
-    ],
-    "answer": "d",
-    "explain": "93 + 7 = 100。个位 3 加 7 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0050",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "82 - 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "78"
-      },
-      {
-        "id": "b",
-        "text": "88"
-      },
-      {
-        "id": "c",
-        "text": "68"
-      },
-      {
-        "id": "d",
-        "text": "76"
-      }
-    ],
-    "answer": "a",
-    "explain": "82 - 4 = 78。个位 2 减 4 不够，从十位借一当十，12 减 4 得 8。"
-  },
-  {
-    "id": "ma-0051",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "43 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "52"
-      },
-      {
-        "id": "b",
-        "text": "50"
-      },
-      {
-        "id": "c",
-        "text": "48"
-      },
-      {
-        "id": "d",
-        "text": "36"
-      }
-    ],
-    "answer": "b",
-    "explain": "43 + 7 = 50。个位 3 加 7 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0052",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "74 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "78"
-      },
-      {
-        "id": "b",
-        "text": "68"
-      },
-      {
-        "id": "c",
-        "text": "58"
-      },
-      {
-        "id": "d",
-        "text": "67"
-      }
-    ],
-    "answer": "b",
-    "explain": "74 - 6 = 68。个位 4 减 6 不够，从十位借一当十，14 减 6 得 8。"
-  },
-  {
-    "id": "ma-0053",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "69 + 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "64"
-      },
-      {
-        "id": "b",
-        "text": "74"
-      },
-      {
-        "id": "c",
-        "text": "73"
-      },
-      {
-        "id": "d",
-        "text": "72"
-      }
-    ],
-    "answer": "b",
-    "explain": "69 + 5 = 74。个位 9 加 5 得 14，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0054",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "30 - 2 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "28"
-      },
-      {
-        "id": "b",
-        "text": "32"
-      },
-      {
-        "id": "c",
-        "text": "29"
-      },
-      {
-        "id": "d",
-        "text": "30"
-      }
-    ],
-    "answer": "a",
-    "explain": "30 - 2 = 28。个位 0 减 2 不够，从十位借一当十，10 减 2 得 8。"
-  },
-  {
-    "id": "ma-0055",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "27 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "25"
-      },
-      {
-        "id": "b",
-        "text": "35"
-      },
-      {
-        "id": "c",
-        "text": "37"
-      },
-      {
-        "id": "d",
-        "text": "34"
-      }
-    ],
-    "answer": "b",
-    "explain": "27 + 8 = 35。个位 7 加 8 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0056",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "61 - 2 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "49"
-      },
-      {
-        "id": "b",
-        "text": "61"
-      },
-      {
-        "id": "c",
-        "text": "59"
-      },
-      {
-        "id": "d",
-        "text": "69"
-      }
-    ],
-    "answer": "c",
-    "explain": "61 - 2 = 59。个位 1 减 2 不够，从十位借一当十，11 减 2 得 9。"
-  },
-  {
-    "id": "ma-0057",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "46 + 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "50"
-      },
-      {
-        "id": "b",
-        "text": "42"
-      },
-      {
-        "id": "c",
-        "text": "52"
-      },
-      {
-        "id": "d",
-        "text": "48"
-      }
-    ],
-    "answer": "a",
-    "explain": "46 + 4 = 50。个位 6 加 4 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0058",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "91 - 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "85"
-      },
-      {
-        "id": "b",
-        "text": "86"
-      },
-      {
-        "id": "c",
-        "text": "87"
-      },
-      {
-        "id": "d",
-        "text": "95"
-      }
-    ],
-    "answer": "c",
-    "explain": "91 - 4 = 87。个位 1 减 4 不够，从十位借一当十，11 减 4 得 7。"
-  },
-  {
-    "id": "ma-0059",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "56 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "66"
-      },
-      {
-        "id": "b",
-        "text": "64"
-      },
-      {
-        "id": "c",
-        "text": "54"
-      },
-      {
-        "id": "d",
-        "text": "62"
-      }
-    ],
-    "answer": "b",
-    "explain": "56 + 8 = 64。个位 6 加 8 得 14，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0060",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "20 - 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "19"
-      },
-      {
-        "id": "b",
-        "text": "17"
-      },
-      {
-        "id": "c",
-        "text": "16"
-      },
-      {
-        "id": "d",
-        "text": "18"
-      }
-    ],
-    "answer": "b",
-    "explain": "20 - 3 = 17。个位 0 减 3 不够，从十位借一当十，10 减 3 得 7。"
-  },
-  {
-    "id": "ma-0061",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "55 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "62"
-      },
-      {
-        "id": "b",
-        "text": "64"
-      },
-      {
-        "id": "c",
-        "text": "63"
-      },
-      {
-        "id": "d",
-        "text": "73"
-      }
-    ],
-    "answer": "c",
-    "explain": "55 + 8 = 63。个位 5 加 8 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0062",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "82 - 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "75"
-      },
-      {
-        "id": "b",
-        "text": "74"
-      },
-      {
-        "id": "c",
-        "text": "76"
-      },
-      {
-        "id": "d",
-        "text": "65"
-      }
-    ],
-    "answer": "a",
-    "explain": "82 - 7 = 75。个位 2 减 7 不够，从十位借一当十，12 减 7 得 5。"
-  },
-  {
-    "id": "ma-0063",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "87 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "93"
-      },
-      {
-        "id": "b",
-        "text": "95"
-      },
-      {
-        "id": "c",
-        "text": "85"
-      },
-      {
-        "id": "d",
-        "text": "94"
-      }
-    ],
-    "answer": "b",
-    "explain": "87 + 8 = 95。个位 7 加 8 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0064",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "55 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "57"
-      },
-      {
-        "id": "b",
-        "text": "48"
-      },
-      {
-        "id": "c",
-        "text": "47"
-      },
-      {
-        "id": "d",
-        "text": "49"
-      }
-    ],
-    "answer": "c",
-    "explain": "55 - 8 = 47。个位 5 减 8 不够，从十位借一当十，15 减 8 得 7。"
-  },
-  {
-    "id": "ma-0065",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "95 + 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "100"
-      },
-      {
-        "id": "b",
-        "text": "90"
-      },
-      {
-        "id": "c",
-        "text": "99"
-      },
-      {
-        "id": "d",
-        "text": "98"
-      }
-    ],
-    "answer": "a",
-    "explain": "95 + 5 = 100。个位 5 加 5 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0066",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "61 - 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "58"
-      },
-      {
-        "id": "b",
-        "text": "56"
-      },
-      {
-        "id": "c",
-        "text": "68"
-      },
-      {
-        "id": "d",
-        "text": "60"
-      }
-    ],
-    "answer": "a",
-    "explain": "61 - 3 = 58。个位 1 减 3 不够，从十位借一当十，11 减 3 得 8。"
-  },
-  {
-    "id": "ma-0067",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "75 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "69"
-      },
-      {
-        "id": "b",
-        "text": "83"
-      },
-      {
-        "id": "c",
-        "text": "81"
-      },
-      {
-        "id": "d",
-        "text": "82"
-      }
-    ],
-    "answer": "c",
-    "explain": "75 + 6 = 81。个位 5 加 6 得 11，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0068",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "93 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "97"
-      },
-      {
-        "id": "b",
-        "text": "87"
-      },
-      {
-        "id": "c",
-        "text": "99"
-      },
-      {
-        "id": "d",
-        "text": "89"
-      }
-    ],
-    "answer": "b",
-    "explain": "93 - 6 = 87。个位 3 减 6 不够，从十位借一当十，13 减 6 得 7。"
-  },
-  {
-    "id": "ma-0069",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "49 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "56"
-      },
-      {
-        "id": "b",
-        "text": "55"
-      },
-      {
-        "id": "c",
-        "text": "42"
-      },
-      {
-        "id": "d",
-        "text": "66"
-      }
-    ],
-    "answer": "a",
-    "explain": "49 + 7 = 56。个位 9 加 7 得 16，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0070",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "60 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "53"
-      },
-      {
-        "id": "b",
-        "text": "52"
-      },
-      {
-        "id": "c",
-        "text": "54"
-      },
-      {
-        "id": "d",
-        "text": "66"
-      }
-    ],
-    "answer": "c",
-    "explain": "60 - 6 = 54。个位 0 减 6 不够，从十位借一当十，10 减 6 得 4。"
-  },
-  {
-    "id": "ma-0071",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "44 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "53"
-      },
-      {
-        "id": "b",
-        "text": "51"
-      },
-      {
-        "id": "c",
-        "text": "62"
-      },
-      {
-        "id": "d",
-        "text": "52"
-      }
-    ],
-    "answer": "d",
-    "explain": "44 + 8 = 52。个位 4 加 8 得 12，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0072",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "38 - 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "27"
-      },
-      {
-        "id": "b",
-        "text": "29"
-      },
-      {
-        "id": "c",
-        "text": "39"
-      },
-      {
-        "id": "d",
-        "text": "30"
-      }
-    ],
-    "answer": "b",
-    "explain": "38 - 9 = 29。个位 8 减 9 不够，从十位借一当十，18 减 9 得 9。"
-  },
-  {
-    "id": "ma-0073",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "46 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "54"
-      },
-      {
-        "id": "b",
-        "text": "63"
-      },
-      {
-        "id": "c",
-        "text": "51"
-      },
-      {
-        "id": "d",
-        "text": "53"
-      }
-    ],
-    "answer": "d",
-    "explain": "46 + 7 = 53。个位 6 加 7 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0074",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "93 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "85"
-      },
-      {
-        "id": "b",
-        "text": "95"
-      },
-      {
-        "id": "c",
-        "text": "75"
-      },
-      {
-        "id": "d",
-        "text": "84"
-      }
-    ],
-    "answer": "a",
-    "explain": "93 - 8 = 85。个位 3 减 8 不够，从十位借一当十，13 减 8 得 5。"
-  },
-  {
-    "id": "ma-0075",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "22 + 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "41"
-      },
-      {
-        "id": "b",
-        "text": "31"
-      },
-      {
-        "id": "c",
-        "text": "32"
-      },
-      {
-        "id": "d",
-        "text": "30"
-      }
-    ],
-    "answer": "b",
-    "explain": "22 + 9 = 31。个位 2 加 9 得 11，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0076",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "45 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "27"
-      },
-      {
-        "id": "b",
-        "text": "39"
-      },
-      {
-        "id": "c",
-        "text": "37"
-      },
-      {
-        "id": "d",
-        "text": "38"
-      }
-    ],
-    "answer": "c",
-    "explain": "45 - 8 = 37。个位 5 减 8 不够，从十位借一当十，15 减 8 得 7。"
-  },
-  {
-    "id": "ma-0077",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "17 + 3 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "20"
-      },
-      {
-        "id": "b",
-        "text": "22"
-      },
-      {
-        "id": "c",
-        "text": "30"
-      },
-      {
-        "id": "d",
-        "text": "19"
-      }
-    ],
-    "answer": "a",
-    "explain": "17 + 3 = 20。个位 7 加 3 得 10，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0078",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "73 - 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "70"
-      },
-      {
-        "id": "b",
-        "text": "67"
-      },
-      {
-        "id": "c",
-        "text": "77"
-      },
-      {
-        "id": "d",
-        "text": "69"
-      }
-    ],
-    "answer": "d",
-    "explain": "73 - 4 = 69。个位 3 减 4 不够，从十位借一当十，13 减 4 得 9。"
-  },
-  {
-    "id": "ma-0079",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "39 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "31"
-      },
-      {
-        "id": "b",
-        "text": "46"
-      },
-      {
-        "id": "c",
-        "text": "47"
-      },
-      {
-        "id": "d",
-        "text": "48"
-      }
-    ],
-    "answer": "c",
-    "explain": "39 + 8 = 47。个位 9 加 8 得 17，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0080",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "80 - 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "75"
-      },
-      {
-        "id": "b",
-        "text": "77"
-      },
-      {
-        "id": "c",
-        "text": "85"
-      },
-      {
-        "id": "d",
-        "text": "73"
-      }
-    ],
-    "answer": "a",
-    "explain": "80 - 5 = 75。个位 0 减 5 不够，从十位借一当十，10 减 5 得 5。"
-  },
-  {
-    "id": "ma-0081",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "15 + 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "25"
-      },
-      {
-        "id": "b",
-        "text": "7"
-      },
-      {
-        "id": "c",
-        "text": "23"
-      },
-      {
-        "id": "d",
-        "text": "24"
-      }
-    ],
-    "answer": "c",
-    "explain": "15 + 8 = 23。个位 5 加 8 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0082",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "65 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "59"
-      },
-      {
-        "id": "b",
-        "text": "49"
-      },
-      {
-        "id": "c",
-        "text": "61"
-      },
-      {
-        "id": "d",
-        "text": "69"
-      }
-    ],
-    "answer": "a",
-    "explain": "65 - 6 = 59。个位 5 减 6 不够，从十位借一当十，15 减 6 得 9。"
-  },
-  {
-    "id": "ma-0083",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "59 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "65"
-      },
-      {
-        "id": "b",
-        "text": "75"
-      },
-      {
-        "id": "c",
-        "text": "63"
-      },
-      {
-        "id": "d",
-        "text": "55"
-      }
-    ],
-    "answer": "a",
-    "explain": "59 + 6 = 65。个位 9 加 6 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0084",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "22 - 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "20"
-      },
-      {
-        "id": "b",
-        "text": "8"
-      },
-      {
-        "id": "c",
-        "text": "18"
-      },
-      {
-        "id": "d",
-        "text": "28"
-      }
-    ],
-    "answer": "c",
-    "explain": "22 - 4 = 18。个位 2 减 4 不够，从十位借一当十，12 减 4 得 8。"
-  },
-  {
-    "id": "ma-0085",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "56 + 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "71"
-      },
-      {
-        "id": "b",
-        "text": "61"
-      },
-      {
-        "id": "c",
-        "text": "51"
-      },
-      {
-        "id": "d",
-        "text": "59"
-      }
-    ],
-    "answer": "b",
-    "explain": "56 + 5 = 61。个位 6 加 5 得 11，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0086",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "62 - 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "54"
-      },
-      {
-        "id": "b",
-        "text": "52"
-      },
-      {
-        "id": "c",
-        "text": "53"
-      },
-      {
-        "id": "d",
-        "text": "71"
-      }
-    ],
-    "answer": "c",
-    "explain": "62 - 9 = 53。个位 2 减 9 不够，从十位借一当十，12 减 9 得 3。"
-  },
-  {
-    "id": "ma-0087",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "48 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "54"
-      },
-      {
-        "id": "b",
-        "text": "44"
-      },
-      {
-        "id": "c",
-        "text": "42"
-      },
-      {
-        "id": "d",
-        "text": "55"
-      }
-    ],
-    "answer": "a",
-    "explain": "48 + 6 = 54。个位 8 加 6 得 14，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0088",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "22 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "16"
-      },
-      {
-        "id": "b",
-        "text": "14"
-      },
-      {
-        "id": "c",
-        "text": "6"
-      },
-      {
-        "id": "d",
-        "text": "18"
-      }
-    ],
-    "answer": "a",
-    "explain": "22 - 6 = 16。个位 2 减 6 不够，从十位借一当十，12 减 6 得 6。"
-  },
-  {
-    "id": "ma-0089",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "16 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "21"
-      },
-      {
-        "id": "b",
-        "text": "25"
-      },
-      {
-        "id": "c",
-        "text": "23"
-      },
-      {
-        "id": "d",
-        "text": "13"
-      }
-    ],
-    "answer": "c",
-    "explain": "16 + 7 = 23。个位 6 加 7 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0090",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "91 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "82"
-      },
-      {
-        "id": "b",
-        "text": "83"
-      },
-      {
-        "id": "c",
-        "text": "84"
-      },
-      {
-        "id": "d",
-        "text": "85"
-      }
-    ],
-    "answer": "b",
-    "explain": "91 - 8 = 83。个位 1 减 8 不够，从十位借一当十，11 减 8 得 3。"
-  },
-  {
-    "id": "ma-0091",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "86 + 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "81"
-      },
-      {
-        "id": "b",
-        "text": "92"
-      },
-      {
-        "id": "c",
-        "text": "91"
-      },
-      {
-        "id": "d",
-        "text": "93"
-      }
-    ],
-    "answer": "c",
-    "explain": "86 + 5 = 91。个位 6 加 5 得 11，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0092",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "51 - 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "44"
-      },
-      {
-        "id": "b",
-        "text": "55"
-      },
-      {
-        "id": "c",
-        "text": "47"
-      },
-      {
-        "id": "d",
-        "text": "45"
-      }
-    ],
-    "answer": "d",
-    "explain": "51 - 6 = 45。个位 1 减 6 不够，从十位借一当十，11 减 6 得 5。"
-  },
-  {
-    "id": "ma-0093",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "39 + 6 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "45"
-      },
-      {
-        "id": "b",
-        "text": "43"
-      },
-      {
-        "id": "c",
-        "text": "55"
-      },
-      {
-        "id": "d",
-        "text": "33"
-      }
-    ],
-    "answer": "a",
-    "explain": "39 + 6 = 45。个位 9 加 6 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0094",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "33 - 5 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "38"
-      },
-      {
-        "id": "b",
-        "text": "28"
-      },
-      {
-        "id": "c",
-        "text": "29"
-      },
-      {
-        "id": "d",
-        "text": "26"
-      }
-    ],
-    "answer": "b",
-    "explain": "33 - 5 = 28。个位 3 减 5 不够，从十位借一当十，13 减 5 得 8。"
-  },
-  {
-    "id": "ma-0095",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "89 + 4 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "95"
-      },
-      {
-        "id": "b",
-        "text": "93"
-      },
-      {
-        "id": "c",
-        "text": "92"
-      },
-      {
-        "id": "d",
-        "text": "94"
-      }
-    ],
-    "answer": "b",
-    "explain": "89 + 4 = 93。个位 9 加 4 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0096",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "23 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "5"
-      },
-      {
-        "id": "b",
-        "text": "14"
-      },
-      {
-        "id": "c",
-        "text": "15"
-      },
-      {
-        "id": "d",
-        "text": "25"
-      }
-    ],
-    "answer": "c",
-    "explain": "23 - 8 = 15。个位 3 减 8 不够，从十位借一当十，13 减 8 得 5。"
-  },
-  {
-    "id": "ma-0097",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "38 + 7 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "45"
-      },
-      {
-        "id": "b",
-        "text": "47"
-      },
-      {
-        "id": "c",
-        "text": "43"
-      },
-      {
-        "id": "d",
-        "text": "44"
-      }
-    ],
-    "answer": "a",
-    "explain": "38 + 7 = 45。个位 8 加 7 得 15，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0098",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "84 - 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "73"
-      },
-      {
-        "id": "b",
-        "text": "76"
-      },
-      {
-        "id": "c",
-        "text": "75"
-      },
-      {
-        "id": "d",
-        "text": "85"
-      }
-    ],
-    "answer": "c",
-    "explain": "84 - 9 = 75。个位 4 减 9 不够，从十位借一当十，14 减 9 得 5。"
-  },
-  {
-    "id": "ma-0099",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "14 + 9 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "23"
-      },
-      {
-        "id": "b",
-        "text": "13"
-      },
-      {
-        "id": "c",
-        "text": "21"
-      },
-      {
-        "id": "d",
-        "text": "33"
-      }
-    ],
-    "answer": "a",
-    "explain": "14 + 9 = 23。个位 4 加 9 得 13，满十要向十位进一。"
-  },
-  {
-    "id": "ma-0100",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
-      "计算"
-    ],
-    "stem": {
-      "text": "73 - 8 = ?",
-      "layout": "big-number"
-    },
-    "options": [
-      {
-        "id": "a",
-        "text": "55"
-      },
-      {
-        "id": "b",
-        "text": "81"
-      },
-      {
-        "id": "c",
-        "text": "65"
-      },
-      {
-        "id": "d",
-        "text": "75"
-      }
-    ],
-    "answer": "c",
-    "explain": "73 - 8 = 65。个位 3 减 8 不够，从十位借一当十，13 减 8 得 5。"
-  },
-  {
-    "id": "ma-0101",
-    "subject": "math",
-    "type": "choice",
-    "difficulty": 2,
-    "unit": null,
-    "family": null,
-    "tags": [
       "拆数"
     ],
     "stem": {
@@ -3535,7 +1155,7 @@
     "explain": "13 里面有 1 个十和 3 个一，所以 13 = 10 + 3。"
   },
   {
-    "id": "ma-0102",
+    "id": "ma-0034",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3570,7 +1190,7 @@
     "explain": "66 里面有 6 个十和 6 个一，所以 66 = 60 + 6。"
   },
   {
-    "id": "ma-0103",
+    "id": "ma-0035",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3605,7 +1225,7 @@
     "explain": "8 + 8 = 16；8 + 2 = 10，10 再加 6 得 16。"
   },
   {
-    "id": "ma-0104",
+    "id": "ma-0036",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3640,7 +1260,7 @@
     "explain": "34 里面有 3 个十和 4 个一。"
   },
   {
-    "id": "ma-0105",
+    "id": "ma-0037",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3675,7 +1295,7 @@
     "explain": "33 里面有 3 个十和 3 个一，所以 33 = 30 + 3。"
   },
   {
-    "id": "ma-0106",
+    "id": "ma-0038",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3710,7 +1330,7 @@
     "explain": "79 里面有 7 个十和 9 个一，所以 79 = 70 + 9。"
   },
   {
-    "id": "ma-0107",
+    "id": "ma-0039",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3745,7 +1365,7 @@
     "explain": "3 + 8 = 11；3 + 7 = 10，10 再加 1 得 11。"
   },
   {
-    "id": "ma-0108",
+    "id": "ma-0040",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3780,7 +1400,7 @@
     "explain": "46 里面有 4 个十和 6 个一。"
   },
   {
-    "id": "ma-0109",
+    "id": "ma-0041",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3815,7 +1435,7 @@
     "explain": "64 里面有 6 个十和 4 个一，所以 64 = 60 + 4。"
   },
   {
-    "id": "ma-0110",
+    "id": "ma-0042",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3850,7 +1470,7 @@
     "explain": "67 里面有 6 个十和 7 个一，所以 67 = 60 + 7。"
   },
   {
-    "id": "ma-0111",
+    "id": "ma-0043",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3885,7 +1505,7 @@
     "explain": "9 + 3 = 12；9 + 1 = 10，10 再加 2 得 12。"
   },
   {
-    "id": "ma-0112",
+    "id": "ma-0044",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3920,7 +1540,7 @@
     "explain": "14 里面有 1 个十和 4 个一。"
   },
   {
-    "id": "ma-0113",
+    "id": "ma-0045",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3955,7 +1575,7 @@
     "explain": "32 里面有 3 个十和 2 个一，所以 32 = 30 + 2。"
   },
   {
-    "id": "ma-0114",
+    "id": "ma-0046",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -3990,7 +1610,7 @@
     "explain": "12 里面有 1 个十和 2 个一，所以 12 = 10 + 2。"
   },
   {
-    "id": "ma-0115",
+    "id": "ma-0047",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4025,7 +1645,7 @@
     "explain": "6 + 6 = 12；6 + 4 = 10，10 再加 2 得 12。"
   },
   {
-    "id": "ma-0116",
+    "id": "ma-0048",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4060,7 +1680,7 @@
     "explain": "93 里面有 9 个十和 3 个一。"
   },
   {
-    "id": "ma-0117",
+    "id": "ma-0049",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4095,7 +1715,7 @@
     "explain": "65 里面有 6 个十和 5 个一，所以 65 = 60 + 5。"
   },
   {
-    "id": "ma-0118",
+    "id": "ma-0050",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4130,7 +1750,7 @@
     "explain": "95 里面有 9 个十和 5 个一，所以 95 = 90 + 5。"
   },
   {
-    "id": "ma-0119",
+    "id": "ma-0051",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4165,7 +1785,7 @@
     "explain": "5 + 8 = 13；5 + 5 = 10，10 再加 3 得 13。"
   },
   {
-    "id": "ma-0120",
+    "id": "ma-0052",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4200,7 +1820,7 @@
     "explain": "58 里面有 5 个十和 8 个一。"
   },
   {
-    "id": "ma-0121",
+    "id": "ma-0053",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4235,7 +1855,7 @@
     "explain": "92 里面有 9 个十和 2 个一，所以 92 = 90 + 2。"
   },
   {
-    "id": "ma-0122",
+    "id": "ma-0054",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4270,7 +1890,7 @@
     "explain": "56 里面有 5 个十和 6 个一，所以 56 = 50 + 6。"
   },
   {
-    "id": "ma-0123",
+    "id": "ma-0055",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4305,7 +1925,7 @@
     "explain": "9 + 4 = 13；9 + 1 = 10，10 再加 3 得 13。"
   },
   {
-    "id": "ma-0124",
+    "id": "ma-0056",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4340,7 +1960,7 @@
     "explain": "98 里面有 9 个十和 8 个一。"
   },
   {
-    "id": "ma-0125",
+    "id": "ma-0057",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4375,7 +1995,7 @@
     "explain": "84 里面有 8 个十和 4 个一，所以 84 = 80 + 4。"
   },
   {
-    "id": "ma-0126",
+    "id": "ma-0058",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4410,7 +2030,7 @@
     "explain": "27 里面有 2 个十和 7 个一，所以 27 = 20 + 7。"
   },
   {
-    "id": "ma-0127",
+    "id": "ma-0059",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4445,7 +2065,7 @@
     "explain": "8 + 7 = 15；8 + 2 = 10，10 再加 5 得 15。"
   },
   {
-    "id": "ma-0128",
+    "id": "ma-0060",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4480,7 +2100,7 @@
     "explain": "57 里面有 5 个十和 7 个一。"
   },
   {
-    "id": "ma-0129",
+    "id": "ma-0061",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4515,7 +2135,7 @@
     "explain": "用加法：74 + 6 = 80。"
   },
   {
-    "id": "ma-0130",
+    "id": "ma-0062",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4550,7 +2170,7 @@
     "explain": "用减法：81 - 5 = 76。"
   },
   {
-    "id": "ma-0131",
+    "id": "ma-0063",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4585,7 +2205,7 @@
     "explain": "用加法：68 + 6 = 74。"
   },
   {
-    "id": "ma-0132",
+    "id": "ma-0064",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4620,7 +2240,7 @@
     "explain": "用减法：67 - 8 = 59。"
   },
   {
-    "id": "ma-0133",
+    "id": "ma-0065",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4655,7 +2275,7 @@
     "explain": "用加法：39 + 6 = 45。"
   },
   {
-    "id": "ma-0134",
+    "id": "ma-0066",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4690,7 +2310,7 @@
     "explain": "用减法：60 - 9 = 51。"
   },
   {
-    "id": "ma-0135",
+    "id": "ma-0067",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4725,7 +2345,7 @@
     "explain": "用加法：25 + 9 = 34。"
   },
   {
-    "id": "ma-0136",
+    "id": "ma-0068",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4760,7 +2380,7 @@
     "explain": "用减法：82 - 6 = 76。"
   },
   {
-    "id": "ma-0137",
+    "id": "ma-0069",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4795,7 +2415,7 @@
     "explain": "用加法：29 + 7 = 36。"
   },
   {
-    "id": "ma-0138",
+    "id": "ma-0070",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4830,7 +2450,7 @@
     "explain": "用减法：32 - 8 = 24。"
   },
   {
-    "id": "ma-0139",
+    "id": "ma-0071",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4865,7 +2485,7 @@
     "explain": "用加法：28 + 7 = 35。"
   },
   {
-    "id": "ma-0140",
+    "id": "ma-0072",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4900,7 +2520,7 @@
     "explain": "用减法：17 - 8 = 9。"
   },
   {
-    "id": "ma-0141",
+    "id": "ma-0073",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4935,7 +2555,7 @@
     "explain": "用加法：22 + 9 = 31。"
   },
   {
-    "id": "ma-0142",
+    "id": "ma-0074",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -4970,7 +2590,7 @@
     "explain": "用减法：70 - 6 = 64。"
   },
   {
-    "id": "ma-0143",
+    "id": "ma-0075",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5005,7 +2625,7 @@
     "explain": "用加法：52 + 9 = 61。"
   },
   {
-    "id": "ma-0144",
+    "id": "ma-0076",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5040,7 +2660,7 @@
     "explain": "用减法：16 - 8 = 8。"
   },
   {
-    "id": "ma-0145",
+    "id": "ma-0077",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5075,7 +2695,7 @@
     "explain": "用加法：17 + 9 = 26。"
   },
   {
-    "id": "ma-0146",
+    "id": "ma-0078",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5110,7 +2730,7 @@
     "explain": "用减法：31 - 6 = 25。"
   },
   {
-    "id": "ma-0147",
+    "id": "ma-0079",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5145,7 +2765,7 @@
     "explain": "用减法：52 - 5 = 47。"
   },
   {
-    "id": "ma-0148",
+    "id": "ma-0080",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5180,7 +2800,7 @@
     "explain": "用减法：24 - 8 = 16。"
   },
   {
-    "id": "ma-0149",
+    "id": "ma-0081",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5215,7 +2835,7 @@
     "explain": "把四个数比一比：49 比 1、24、42 都大，所以 49 最大。"
   },
   {
-    "id": "ma-0150",
+    "id": "ma-0082",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5250,7 +2870,7 @@
     "explain": "把四个数比一比：12 比 16、25、90 都小，所以 12 最小。"
   },
   {
-    "id": "ma-0151",
+    "id": "ma-0083",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5285,7 +2905,7 @@
     "explain": "55 和 64 比，64 更大。"
   },
   {
-    "id": "ma-0152",
+    "id": "ma-0084",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5320,7 +2940,7 @@
     "explain": "把四个数比一比：98 比 10、20、44 都大，所以 98 最大。"
   },
   {
-    "id": "ma-0153",
+    "id": "ma-0085",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5355,7 +2975,7 @@
     "explain": "把四个数比一比：16 比 52、67、94 都小，所以 16 最小。"
   },
   {
-    "id": "ma-0154",
+    "id": "ma-0086",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5390,7 +3010,7 @@
     "explain": "84 和 92 比，92 更大。"
   },
   {
-    "id": "ma-0155",
+    "id": "ma-0087",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5425,7 +3045,7 @@
     "explain": "把四个数比一比：98 比 42、54、82 都大，所以 98 最大。"
   },
   {
-    "id": "ma-0156",
+    "id": "ma-0088",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5460,7 +3080,7 @@
     "explain": "把四个数比一比：30 比 43、52、67 都小，所以 30 最小。"
   },
   {
-    "id": "ma-0157",
+    "id": "ma-0089",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5495,7 +3115,7 @@
     "explain": "33 和 83 比，83 更大。"
   },
   {
-    "id": "ma-0158",
+    "id": "ma-0090",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5530,7 +3150,7 @@
     "explain": "把四个数比一比：99 比 16、52、56 都大，所以 99 最大。"
   },
   {
-    "id": "ma-0159",
+    "id": "ma-0091",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5565,7 +3185,7 @@
     "explain": "把四个数比一比：6 比 7、67、98 都小，所以 6 最小。"
   },
   {
-    "id": "ma-0160",
+    "id": "ma-0092",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5600,7 +3220,7 @@
     "explain": "27 和 58 比，58 更大。"
   },
   {
-    "id": "ma-0161",
+    "id": "ma-0093",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5635,7 +3255,7 @@
     "explain": "把四个数比一比：99 比 22、38、72 都大，所以 99 最大。"
   },
   {
-    "id": "ma-0162",
+    "id": "ma-0094",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5670,7 +3290,7 @@
     "explain": "把四个数比一比：19 比 37、55、61 都小，所以 19 最小。"
   },
   {
-    "id": "ma-0163",
+    "id": "ma-0095",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5705,7 +3325,7 @@
     "explain": "6 和 39 比，39 更大。"
   },
   {
-    "id": "ma-0164",
+    "id": "ma-0096",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5740,7 +3360,7 @@
     "explain": "把四个数比一比：84 比 18、55、72 都大，所以 84 最大。"
   },
   {
-    "id": "ma-0165",
+    "id": "ma-0097",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5775,7 +3395,7 @@
     "explain": "把四个数比一比：10 比 68、70、98 都小，所以 10 最小。"
   },
   {
-    "id": "ma-0166",
+    "id": "ma-0098",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -5810,7 +3430,7 @@
     "explain": "24 和 90 比，90 更大。"
   },
   {
-    "id": "ma-0167",
+    "id": "ma-0099",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5845,7 +3465,7 @@
     "explain": "每次多 3：14、17、20，再往后是 23。"
   },
   {
-    "id": "ma-0168",
+    "id": "ma-0100",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5880,7 +3500,7 @@
     "explain": "每次多 10：16、26、36，再往后是 46。"
   },
   {
-    "id": "ma-0169",
+    "id": "ma-0101",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5915,7 +3535,7 @@
     "explain": "每次多 18：24、42、60，再往后是 78。"
   },
   {
-    "id": "ma-0170",
+    "id": "ma-0102",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5950,7 +3570,7 @@
     "explain": "每次多 5：11、16、21，再往后是 26。"
   },
   {
-    "id": "ma-0171",
+    "id": "ma-0103",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -5985,7 +3605,7 @@
     "explain": "每次多 10：29、39、49，再往后是 59。"
   },
   {
-    "id": "ma-0172",
+    "id": "ma-0104",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6020,7 +3640,7 @@
     "explain": "每次多 19：30、49、68，再往后是 87。"
   },
   {
-    "id": "ma-0173",
+    "id": "ma-0105",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6055,7 +3675,7 @@
     "explain": "每次多 2：2、4、6，再往后是 8。"
   },
   {
-    "id": "ma-0174",
+    "id": "ma-0106",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6090,7 +3710,7 @@
     "explain": "每次多 10：28、38、48，再往后是 58。"
   },
   {
-    "id": "ma-0175",
+    "id": "ma-0107",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6125,7 +3745,7 @@
     "explain": "每次多 18：30、48、66，再往后是 84。"
   },
   {
-    "id": "ma-0176",
+    "id": "ma-0108",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6160,7 +3780,7 @@
     "explain": "每次多 3：1、4、7，再往后是 10。"
   },
   {
-    "id": "ma-0177",
+    "id": "ma-0109",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6195,7 +3815,7 @@
     "explain": "每次多 10：21、31、41，再往后是 51。"
   },
   {
-    "id": "ma-0178",
+    "id": "ma-0110",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6230,7 +3850,7 @@
     "explain": "每次多 15：29、44、59，再往后是 74。"
   },
   {
-    "id": "ma-0179",
+    "id": "ma-0111",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6265,7 +3885,7 @@
     "explain": "每次多 5：12、17、22，再往后是 27。"
   },
   {
-    "id": "ma-0180",
+    "id": "ma-0112",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6300,7 +3920,7 @@
     "explain": "每次多 10：22、32、42，再往后是 52。"
   },
   {
-    "id": "ma-0181",
+    "id": "ma-0113",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6335,7 +3955,7 @@
     "explain": "每次多 14：30、44、58，再往后是 72。"
   },
   {
-    "id": "ma-0182",
+    "id": "ma-0114",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6370,7 +3990,7 @@
     "explain": "每次多 5：19、24、29，再往后是 34。"
   },
   {
-    "id": "ma-0183",
+    "id": "ma-0115",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6405,7 +4025,7 @@
     "explain": "每次多 10：15、25、35，再往后是 45。"
   },
   {
-    "id": "ma-0184",
+    "id": "ma-0116",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6440,7 +4060,7 @@
     "explain": "每次多 15：28、43、58，再往后是 73。"
   },
   {
-    "id": "ma-0185",
+    "id": "ma-0117",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6475,7 +4095,7 @@
     "explain": "每次多 4：3、7、11，再往后是 15。"
   },
   {
-    "id": "ma-0186",
+    "id": "ma-0118",
     "subject": "math",
     "type": "choice",
     "difficulty": 2,
@@ -6510,7 +4130,7 @@
     "explain": "每次多 10：12、22、32，再往后是 42。"
   },
   {
-    "id": "ma-0187",
+    "id": "ma-0119",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6545,7 +4165,7 @@
     "explain": "其他三个都是双数，73 是单数。"
   },
   {
-    "id": "ma-0188",
+    "id": "ma-0120",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6580,7 +4200,7 @@
     "explain": "其他三个都是单数，88 是双数。"
   },
   {
-    "id": "ma-0189",
+    "id": "ma-0121",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6615,7 +4235,7 @@
     "explain": "其他三个都是一位数，67 是两位数。"
   },
   {
-    "id": "ma-0190",
+    "id": "ma-0122",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6650,7 +4270,7 @@
     "explain": "其他三个都是整十数，98 不是整十数。"
   },
   {
-    "id": "ma-0191",
+    "id": "ma-0123",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6685,7 +4305,7 @@
     "explain": "其他三个都不是整十数，80 是整十数。"
   },
   {
-    "id": "ma-0192",
+    "id": "ma-0124",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6720,7 +4340,7 @@
     "explain": "其他三个都是双数，91 是单数。"
   },
   {
-    "id": "ma-0193",
+    "id": "ma-0125",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6755,7 +4375,7 @@
     "explain": "其他三个都是单数，84 是双数。"
   },
   {
-    "id": "ma-0194",
+    "id": "ma-0126",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6790,7 +4410,7 @@
     "explain": "其他三个都是一位数，89 是两位数。"
   },
   {
-    "id": "ma-0195",
+    "id": "ma-0127",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6825,7 +4445,7 @@
     "explain": "其他三个都是整十数，82 不是整十数。"
   },
   {
-    "id": "ma-0196",
+    "id": "ma-0128",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6860,7 +4480,7 @@
     "explain": "其他三个都不是整十数，80 是整十数。"
   },
   {
-    "id": "ma-0197",
+    "id": "ma-0129",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6895,7 +4515,7 @@
     "explain": "其他三个都是双数，97 是单数。"
   },
   {
-    "id": "ma-0198",
+    "id": "ma-0130",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6930,7 +4550,7 @@
     "explain": "其他三个都是单数，78 是双数。"
   },
   {
-    "id": "ma-0199",
+    "id": "ma-0131",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6965,7 +4585,7 @@
     "explain": "其他三个都是一位数，36 是两位数。"
   },
   {
-    "id": "ma-0200",
+    "id": "ma-0132",
     "subject": "math",
     "type": "choice",
     "difficulty": 1,
@@ -6998,5 +4618,2385 @@
     ],
     "answer": "d",
     "explain": "其他三个都是整十数，93 不是整十数。"
+  },
+  {
+    "id": "ma-0133",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "2 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "5"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "c",
+    "explain": "2 + 3 = 5。从 2 接着数 3 个，就是 5。"
+  },
+  {
+    "id": "ma-0134",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "8 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "5"
+      },
+      {
+        "id": "c",
+        "text": "2"
+      },
+      {
+        "id": "d",
+        "text": "7"
+      }
+    ],
+    "answer": "b",
+    "explain": "8 - 3 = 5。从 8 里拿走 3 个，还剩 5 个。"
+  },
+  {
+    "id": "ma-0135",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "14 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "20"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "b",
+    "explain": "14 + 5 = 19。个位 4 加 5 得 19，十位还是 1。"
+  },
+  {
+    "id": "ma-0136",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "12"
+      },
+      {
+        "id": "c",
+        "text": "16"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "d",
+    "explain": "18 - 3 = 15。个位 8 减 3 得 15，十位还是 1。"
+  },
+  {
+    "id": "ma-0137",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "7 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "b",
+    "explain": "7 + 3 = 10。从 7 接着数 3 个，就是 10。"
+  },
+  {
+    "id": "ma-0138",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "10 - 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "1"
+      },
+      {
+        "id": "c",
+        "text": "2"
+      },
+      {
+        "id": "d",
+        "text": "5"
+      }
+    ],
+    "answer": "a",
+    "explain": "10 - 6 = 4。从 10 里拿走 6 个，还剩 4 个。"
+  },
+  {
+    "id": "ma-0139",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "11 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "13"
+      },
+      {
+        "id": "b",
+        "text": "9"
+      },
+      {
+        "id": "c",
+        "text": "12"
+      },
+      {
+        "id": "d",
+        "text": "2"
+      }
+    ],
+    "answer": "c",
+    "explain": "11 + 1 = 12。个位 1 加 1 得 12，十位还是 1。"
+  },
+  {
+    "id": "ma-0140",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "13 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "11"
+      },
+      {
+        "id": "b",
+        "text": "9"
+      },
+      {
+        "id": "c",
+        "text": "10"
+      },
+      {
+        "id": "d",
+        "text": "20"
+      }
+    ],
+    "answer": "c",
+    "explain": "13 - 3 = 10。个位 3 减 3 得 10，十位还是 1。"
+  },
+  {
+    "id": "ma-0141",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "1 + 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "7"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "4"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "a",
+    "explain": "1 + 6 = 7。从 1 接着数 6 个，就是 7。"
+  },
+  {
+    "id": "ma-0142",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "4"
+      },
+      {
+        "id": "d",
+        "text": "1"
+      }
+    ],
+    "answer": "b",
+    "explain": "5 - 2 = 3。从 5 里拿走 2 个，还剩 3 个。"
+  },
+  {
+    "id": "ma-0143",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "14 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "17"
+      },
+      {
+        "id": "c",
+        "text": "16"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "b",
+    "explain": "14 + 3 = 17。个位 4 加 3 得 17，十位还是 1。"
+  },
+  {
+    "id": "ma-0144",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 - 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "13"
+      },
+      {
+        "id": "b",
+        "text": "12"
+      },
+      {
+        "id": "c",
+        "text": "15"
+      },
+      {
+        "id": "d",
+        "text": "11"
+      }
+    ],
+    "answer": "b",
+    "explain": "18 - 6 = 12。个位 8 减 6 得 12，十位还是 1。"
+  },
+  {
+    "id": "ma-0145",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "3 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "8"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "b",
+    "explain": "3 + 5 = 8。从 3 接着数 5 个，就是 8。"
+  },
+  {
+    "id": "ma-0146",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 - 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "2"
+      },
+      {
+        "id": "b",
+        "text": "1"
+      },
+      {
+        "id": "c",
+        "text": "3"
+      },
+      {
+        "id": "d",
+        "text": "0"
+      }
+    ],
+    "answer": "b",
+    "explain": "5 - 4 = 1。从 5 里拿走 4 个，还剩 1 个。"
+  },
+  {
+    "id": "ma-0147",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "13 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "15"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "a",
+    "explain": "13 + 5 = 18。个位 3 加 5 得 18，十位还是 1。"
+  },
+  {
+    "id": "ma-0148",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "17 - 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "8"
+      },
+      {
+        "id": "b",
+        "text": "11"
+      },
+      {
+        "id": "c",
+        "text": "12"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "b",
+    "explain": "17 - 6 = 11。个位 7 减 6 得 11，十位还是 1。"
+  },
+  {
+    "id": "ma-0149",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "8"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "6"
+      }
+    ],
+    "answer": "a",
+    "explain": "5 + 3 = 8。从 5 接着数 3 个，就是 8。"
+  },
+  {
+    "id": "ma-0150",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "7 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "5"
+      },
+      {
+        "id": "c",
+        "text": "6"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "b",
+    "explain": "7 - 2 = 5。从 7 里拿走 2 个，还剩 5 个。"
+  },
+  {
+    "id": "ma-0151",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "15 + 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "20"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "17"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "c",
+    "explain": "15 + 2 = 17。个位 5 加 2 得 17，十位还是 1。"
+  },
+  {
+    "id": "ma-0152",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "13 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "12"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "c",
+    "explain": "13 - 2 = 11。个位 3 减 2 得 11，十位还是 1。"
+  },
+  {
+    "id": "ma-0153",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "4 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "9"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "c",
+    "explain": "4 + 5 = 9。从 4 接着数 5 个，就是 9。"
+  },
+  {
+    "id": "ma-0154",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "1"
+      },
+      {
+        "id": "c",
+        "text": "4"
+      },
+      {
+        "id": "d",
+        "text": "2"
+      }
+    ],
+    "answer": "d",
+    "explain": "5 - 3 = 2。从 5 里拿走 3 个，还剩 2 个。"
+  },
+  {
+    "id": "ma-0155",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "13 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "12"
+      },
+      {
+        "id": "c",
+        "text": "17"
+      },
+      {
+        "id": "d",
+        "text": "11"
+      }
+    ],
+    "answer": "a",
+    "explain": "13 + 1 = 14。个位 3 加 1 得 14，十位还是 1。"
+  },
+  {
+    "id": "ma-0156",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "14 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "13"
+      },
+      {
+        "id": "b",
+        "text": "12"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "b",
+    "explain": "14 - 2 = 12。个位 4 减 2 得 12，十位还是 1。"
+  },
+  {
+    "id": "ma-0157",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "3 + 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "9"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "a",
+    "explain": "3 + 6 = 9。从 3 接着数 6 个，就是 9。"
+  },
+  {
+    "id": "ma-0158",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "9 - 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "2"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "4"
+      }
+    ],
+    "answer": "d",
+    "explain": "9 - 5 = 4。从 9 里拿走 5 个，还剩 4 个。"
+  },
+  {
+    "id": "ma-0159",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "20"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "17"
+      },
+      {
+        "id": "d",
+        "text": "16"
+      }
+    ],
+    "answer": "b",
+    "explain": "18 + 1 = 19。个位 8 加 1 得 19，十位还是 1。"
+  },
+  {
+    "id": "ma-0160",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "19 - 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "15"
+      },
+      {
+        "id": "b",
+        "text": "4"
+      },
+      {
+        "id": "c",
+        "text": "12"
+      },
+      {
+        "id": "d",
+        "text": "14"
+      }
+    ],
+    "answer": "d",
+    "explain": "19 - 5 = 14。个位 9 减 5 得 14，十位还是 1。"
+  },
+  {
+    "id": "ma-0161",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "1 + 9 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "d",
+    "explain": "1 + 9 = 10。从 1 接着数 9 个，就是 10。"
+  },
+  {
+    "id": "ma-0162",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "9 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "5"
+      },
+      {
+        "id": "b",
+        "text": "8"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "6"
+      }
+    ],
+    "answer": "b",
+    "explain": "9 - 1 = 8。从 9 里拿走 1 个，还剩 8 个。"
+  },
+  {
+    "id": "ma-0163",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "13 + 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "20"
+      },
+      {
+        "id": "b",
+        "text": "15"
+      },
+      {
+        "id": "c",
+        "text": "18"
+      },
+      {
+        "id": "d",
+        "text": "17"
+      }
+    ],
+    "answer": "d",
+    "explain": "13 + 4 = 17。个位 3 加 4 得 17，十位还是 1。"
+  },
+  {
+    "id": "ma-0164",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "16 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "13"
+      },
+      {
+        "id": "b",
+        "text": "15"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "a",
+    "explain": "16 - 3 = 13。个位 6 减 3 得 13，十位还是 1。"
+  },
+  {
+    "id": "ma-0165",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "6 + 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "b",
+    "explain": "6 + 4 = 10。从 6 接着数 4 个，就是 10。"
+  },
+  {
+    "id": "ma-0166",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "6 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "1"
+      },
+      {
+        "id": "b",
+        "text": "4"
+      },
+      {
+        "id": "c",
+        "text": "5"
+      },
+      {
+        "id": "d",
+        "text": "3"
+      }
+    ],
+    "answer": "d",
+    "explain": "6 - 3 = 3。从 6 里拿走 3 个，还剩 3 个。"
+  },
+  {
+    "id": "ma-0167",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "12 + 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "18"
+      },
+      {
+        "id": "c",
+        "text": "13"
+      },
+      {
+        "id": "d",
+        "text": "16"
+      }
+    ],
+    "answer": "d",
+    "explain": "12 + 4 = 16。个位 2 加 4 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0168",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "17"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "b",
+    "explain": "18 - 1 = 17。个位 8 减 1 得 17，十位还是 1。"
+  },
+  {
+    "id": "ma-0169",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "4 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "10"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "6"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "b",
+    "explain": "4 + 3 = 7。从 4 接着数 3 个，就是 7。"
+  },
+  {
+    "id": "ma-0170",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "10 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "5"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "c",
+    "explain": "10 - 2 = 8。从 10 里拿走 2 个，还剩 8 个。"
+  },
+  {
+    "id": "ma-0171",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "11 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "13"
+      },
+      {
+        "id": "d",
+        "text": "16"
+      }
+    ],
+    "answer": "d",
+    "explain": "11 + 5 = 16。个位 1 加 5 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0172",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 - 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "17"
+      },
+      {
+        "id": "b",
+        "text": "16"
+      },
+      {
+        "id": "c",
+        "text": "19"
+      },
+      {
+        "id": "d",
+        "text": "6"
+      }
+    ],
+    "answer": "b",
+    "explain": "18 - 2 = 16。个位 8 减 2 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0173",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "6 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "8"
+      },
+      {
+        "id": "b",
+        "text": "7"
+      },
+      {
+        "id": "c",
+        "text": "10"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "d",
+    "explain": "6 + 3 = 9。从 6 接着数 3 个，就是 9。"
+  },
+  {
+    "id": "ma-0174",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "10 - 8 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "2"
+      },
+      {
+        "id": "d",
+        "text": "4"
+      }
+    ],
+    "answer": "c",
+    "explain": "10 - 8 = 2。从 10 里拿走 8 个，还剩 2 个。"
+  },
+  {
+    "id": "ma-0175",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "16 + 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "20"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "d",
+    "explain": "16 + 2 = 18。个位 6 加 2 得 18，十位还是 1。"
+  },
+  {
+    "id": "ma-0176",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "19 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "20"
+      },
+      {
+        "id": "b",
+        "text": "8"
+      },
+      {
+        "id": "c",
+        "text": "16"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "d",
+    "explain": "19 - 1 = 18。个位 9 减 1 得 18，十位还是 1。"
+  },
+  {
+    "id": "ma-0177",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "9 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "7"
+      },
+      {
+        "id": "b",
+        "text": "8"
+      },
+      {
+        "id": "c",
+        "text": "10"
+      },
+      {
+        "id": "d",
+        "text": "0"
+      }
+    ],
+    "answer": "c",
+    "explain": "9 + 1 = 10。从 9 接着数 1 个，就是 10。"
+  },
+  {
+    "id": "ma-0178",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "2"
+      },
+      {
+        "id": "d",
+        "text": "6"
+      }
+    ],
+    "answer": "a",
+    "explain": "5 - 1 = 4。从 5 里拿走 1 个，还剩 4 个。"
+  },
+  {
+    "id": "ma-0179",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "12 + 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "15"
+      },
+      {
+        "id": "c",
+        "text": "18"
+      },
+      {
+        "id": "d",
+        "text": "16"
+      }
+    ],
+    "answer": "b",
+    "explain": "12 + 3 = 15。个位 2 加 3 得 15，十位还是 1。"
+  },
+  {
+    "id": "ma-0180",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "19 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "13"
+      },
+      {
+        "id": "c",
+        "text": "6"
+      },
+      {
+        "id": "d",
+        "text": "16"
+      }
+    ],
+    "answer": "d",
+    "explain": "19 - 3 = 16。个位 9 减 3 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0181",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "3"
+      },
+      {
+        "id": "b",
+        "text": "4"
+      },
+      {
+        "id": "c",
+        "text": "6"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "c",
+    "explain": "5 + 1 = 6。从 5 接着数 1 个，就是 6。"
+  },
+  {
+    "id": "ma-0182",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "7 - 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "1"
+      },
+      {
+        "id": "b",
+        "text": "2"
+      },
+      {
+        "id": "c",
+        "text": "0"
+      },
+      {
+        "id": "d",
+        "text": "3"
+      }
+    ],
+    "answer": "b",
+    "explain": "7 - 5 = 2。从 7 里拿走 5 个，还剩 2 个。"
+  },
+  {
+    "id": "ma-0183",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "11 + 7 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "16"
+      },
+      {
+        "id": "b",
+        "text": "17"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "d",
+    "explain": "11 + 7 = 18。个位 1 加 7 得 18，十位还是 1。"
+  },
+  {
+    "id": "ma-0184",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "12 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "10"
+      },
+      {
+        "id": "b",
+        "text": "9"
+      },
+      {
+        "id": "c",
+        "text": "13"
+      },
+      {
+        "id": "d",
+        "text": "11"
+      }
+    ],
+    "answer": "d",
+    "explain": "12 - 1 = 11。个位 2 减 1 得 11，十位还是 1。"
+  },
+  {
+    "id": "ma-0185",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "1 + 7 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "9"
+      },
+      {
+        "id": "b",
+        "text": "5"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "6"
+      }
+    ],
+    "answer": "c",
+    "explain": "1 + 7 = 8。从 1 接着数 7 个，就是 8。"
+  },
+  {
+    "id": "ma-0186",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "10 - 7 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "3"
+      },
+      {
+        "id": "b",
+        "text": "0"
+      },
+      {
+        "id": "c",
+        "text": "2"
+      },
+      {
+        "id": "d",
+        "text": "5"
+      }
+    ],
+    "answer": "a",
+    "explain": "10 - 7 = 3。从 10 里拿走 7 个，还剩 3 个。"
+  },
+  {
+    "id": "ma-0187",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "15 + 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "16"
+      },
+      {
+        "id": "c",
+        "text": "19"
+      },
+      {
+        "id": "d",
+        "text": "17"
+      }
+    ],
+    "answer": "b",
+    "explain": "15 + 1 = 16。个位 5 加 1 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0188",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "19 - 6 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "14"
+      },
+      {
+        "id": "b",
+        "text": "13"
+      },
+      {
+        "id": "c",
+        "text": "3"
+      },
+      {
+        "id": "d",
+        "text": "12"
+      }
+    ],
+    "answer": "b",
+    "explain": "19 - 6 = 13。个位 9 减 6 得 13，十位还是 1。"
+  },
+  {
+    "id": "ma-0189",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "2 + 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "8"
+      },
+      {
+        "id": "c",
+        "text": "5"
+      },
+      {
+        "id": "d",
+        "text": "3"
+      }
+    ],
+    "answer": "a",
+    "explain": "2 + 4 = 6。从 2 接着数 4 个，就是 6。"
+  },
+  {
+    "id": "ma-0190",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "10 - 3 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "9"
+      },
+      {
+        "id": "b",
+        "text": "5"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "c",
+    "explain": "10 - 3 = 7。从 10 里拿走 3 个，还剩 7 个。"
+  },
+  {
+    "id": "ma-0191",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "14 + 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "18"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "20"
+      },
+      {
+        "id": "d",
+        "text": "17"
+      }
+    ],
+    "answer": "a",
+    "explain": "14 + 4 = 18。个位 4 加 4 得 18，十位还是 1。"
+  },
+  {
+    "id": "ma-0192",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "17 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "16"
+      },
+      {
+        "id": "b",
+        "text": "19"
+      },
+      {
+        "id": "c",
+        "text": "15"
+      },
+      {
+        "id": "d",
+        "text": "18"
+      }
+    ],
+    "answer": "a",
+    "explain": "17 - 1 = 16。个位 7 减 1 得 16，十位还是 1。"
+  },
+  {
+    "id": "ma-0193",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "5 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "0"
+      },
+      {
+        "id": "b",
+        "text": "9"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "d",
+    "explain": "5 + 5 = 10。从 5 接着数 5 个，就是 10。"
+  },
+  {
+    "id": "ma-0194",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "2 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "4"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "1"
+      },
+      {
+        "id": "d",
+        "text": "0"
+      }
+    ],
+    "answer": "c",
+    "explain": "2 - 1 = 1。从 2 里拿走 1 个，还剩 1 个。"
+  },
+  {
+    "id": "ma-0195",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "11 + 2 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "12"
+      },
+      {
+        "id": "b",
+        "text": "3"
+      },
+      {
+        "id": "c",
+        "text": "13"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "c",
+    "explain": "11 + 2 = 13。个位 1 加 2 得 13，十位还是 1。"
+  },
+  {
+    "id": "ma-0196",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "17 - 4 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "3"
+      },
+      {
+        "id": "b",
+        "text": "13"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "10"
+      }
+    ],
+    "answer": "b",
+    "explain": "17 - 4 = 13。个位 7 减 4 得 13，十位还是 1。"
+  },
+  {
+    "id": "ma-0197",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "2 + 7 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "6"
+      },
+      {
+        "id": "b",
+        "text": "10"
+      },
+      {
+        "id": "c",
+        "text": "8"
+      },
+      {
+        "id": "d",
+        "text": "9"
+      }
+    ],
+    "answer": "d",
+    "explain": "2 + 7 = 9。从 2 接着数 7 个，就是 9。"
+  },
+  {
+    "id": "ma-0198",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "6 - 1 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "3"
+      },
+      {
+        "id": "b",
+        "text": "5"
+      },
+      {
+        "id": "c",
+        "text": "7"
+      },
+      {
+        "id": "d",
+        "text": "2"
+      }
+    ],
+    "answer": "b",
+    "explain": "6 - 1 = 5。从 6 里拿走 1 个，还剩 5 个。"
+  },
+  {
+    "id": "ma-0199",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "12 + 5 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "16"
+      },
+      {
+        "id": "b",
+        "text": "20"
+      },
+      {
+        "id": "c",
+        "text": "17"
+      },
+      {
+        "id": "d",
+        "text": "15"
+      }
+    ],
+    "answer": "c",
+    "explain": "12 + 5 = 17。个位 2 加 5 得 17，十位还是 1。"
+  },
+  {
+    "id": "ma-0200",
+    "subject": "math",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "计算"
+    ],
+    "stem": {
+      "text": "18 - 7 = ?",
+      "layout": "big-number"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "1"
+      },
+      {
+        "id": "b",
+        "text": "9"
+      },
+      {
+        "id": "c",
+        "text": "11"
+      },
+      {
+        "id": "d",
+        "text": "8"
+      }
+    ],
+    "answer": "c",
+    "explain": "18 - 7 = 11。个位 8 减 7 得 11，十位还是 1。"
   }
 ]
