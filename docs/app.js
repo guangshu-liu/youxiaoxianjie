@@ -1766,6 +1766,40 @@
   }
 
   /**
+   * 组一局**单科**的题（小程序用：选一科，10 题）。
+   *
+   * 和 buildRound 的差别只有「从几科抽」：抽题、排位、错题加权、兜底
+   * 全部复用同一套代码，所以两端的题目质量不会各自漂移。
+   * 网页版继续用 buildRound（3:3:4 混合局），这个函数对它没有影响。
+   */
+  function buildSubjectRound(save, subject, size) {
+    var want = size || G.ROUND_SIZE;
+    var used = [];
+    var picked = [];
+
+    for (var i = 0; i < want; i++) {
+      var q = G.Bank.drawOne(save, subject, used);
+      if (!q) break;
+      used.push(q.id);
+      picked.push(q);
+    }
+
+    // 兜底：题库不够时允许重复 —— 宁可重题，也不要让一局变成半局。
+    while (picked.length < want) {
+      var extra = G.Bank.drawOne(save, subject, used);
+      if (!extra) break;
+      used.push(extra.id);
+      picked.push(extra);
+    }
+
+    return {
+      questions: arrange(picked, save),
+      startedAt: Date.now(),
+      subject: subject
+    };
+  }
+
+  /**
    * 排位置：
    *   1. 最可能答对的两道，分给第 1 题和第 10 题
    *   2. 剩下的打散，且相邻两题尽量不同科、同科内尽量不同题型
@@ -1946,6 +1980,7 @@
 
   G.Runner = {
     buildRound: buildRound,
+    buildSubjectRound: buildSubjectRound,
     successProb: successProb,
     recordAnswer: recordAnswer,
     awardPoints: awardPoints,
