@@ -1,0 +1,45 @@
+<view class="screen screen-game">
+  <view class="game-top">
+    <button class="btn btn-icon" bindtap="onExit">✕</button>
+
+    <view class="dots">
+      <view
+        wx:for="{{dots}}"
+        wx:key="i"
+        class="dot dot-{{item.state}}"></view>
+    </view>
+
+    <view class="game-points">{{stars}}★</view>
+  </view>
+
+  <view class="game-body">
+    <view class="q q-layout-{{layout}} {{shake ? 'shake' : ''}}">
+      <view class="stem">
+        <view class="stem-text">{{stemText}}</view>
+        <button wx:if="{{hasAudio}}" class="speaker" bindtap="onSpeaker">
+          <text class="speaker-icon">🔊</text>
+        </button>
+      </view>
+
+      <view class="options options-{{layout}}">
+        <button
+          wx:for="{{options}}"
+          wx:key="id"
+          class="option {{item.single ? 'option-single' : ''}} {{item.state === 'answer' ? 'is-answer' : ''}} {{item.state === 'wrong' ? 'is-wrong' : ''}} {{item.state ? 'locked' : ''}} {{item.state === 'answer' && fb === 'ok' ? 'fb-ok' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onOption">
+          <text class="option-text">{{item.text}}</text>
+          <text wx:if="{{item.state === 'answer'}}" class="option-check">✓</text>
+        </button>
+      </view>
+
+      <view wx:if="{{showExplain}}" class="explain">{{explain}}</view>
+
+      <view
+        wx:for="{{confettiPieces}}"
+        wx:key="id"
+        class="confetti"
+        style="left:{{item.left}}%; animation-delay:{{item.delay}}s; background:{{item.color}}"></view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,22 @@
+{
+  "description": "幼小衔接闯关 — 三科混排的儿童答题游戏",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "coverView": true,
+    "nodeModules": false,
+    "autoAudits": false
+  },
+  "compileType": "miniprogram",
+  "libVersion": "2.19.0",
+  "appid": "wx3a2e18a8d97fce1f",
+  "projectname": "youxiaoxianjie",
+  "miniprogramRoot": "./",
+  "condition": {}
+}

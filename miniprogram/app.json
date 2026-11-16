@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/play/play",
+    "pages/result/result",
+    "pages/parent/parent"
+  ],
+  "window": {
+    "navigationBarTitleText": "幼小衔接闯关",
+    "navigationBarBackgroundColor": "#FFF8E7",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFF8E7",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,33 @@
+<view class="screen screen-home">
+  <view class="home-title">幼小衔接闯关</view>
+  <view class="home-sub">一局 {{mixText}}</view>
+
+  <view class="home-stats">
+    <view class="home-points">{{stars}}</view>
+    <view class="home-points-label">星星</view>
+  </view>
+
+  <view class="badge-strip">
+    <view wx:for="{{badges}}" wx:key="need" class="badge {{item.got ? 'badge-got' : ''}}">
+      <text class="badge-emoji">{{item.emoji}}</text>
+      <text class="badge-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <view class="badge-progress">
+    <view class="badge-progress-bar" style="width:{{progressPct}}%"></view>
+  </view>
+
+  <view class="home-next" wx:if="{{nextBadge}}">
+    再攒 {{nextBadge.left}} 颗星星，解锁「{{nextBadge.name}}」
+  </view>
+  <view class="home-next" wx:else>四个徽章都拿到啦！</view>
+
+  <button class="btn btn-primary btn-xl" bindtap="onStart">开始游戏</button>
+
+  <view class="home-row">
+    <button class="btn btn-ghost" bindtap="onParent">👨‍👩‍👧 家长</button>
+  </view>
+
+  <view class="home-last" wx:if="{{lastText}}">{{lastText}}</view>
+</view>

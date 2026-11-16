@@ -1,0 +1,450 @@
+/* app.wxss — 全局样式，移植自网页版 src/css/base.css + game.css
+ *
+ * 保留原来的 6 岁儿童 UI 规范：按钮 ≥60px、字号 ≥22px、高对比、点按有反馈。
+ * 尺寸沿用 px 而不是 rpx —— 这套设计是按 375pt 的手机排的，两端口径一致，
+ * 改一处不用换算两次。
+ */
+
+page {
+  --c-bg:        #FFF8E7;
+  --c-bg-alt:    #FFFFFF;
+  --c-ink:       #2D3142;
+  --c-ink-soft:  #6B7280;
+  --c-primary:   #FF8A65;
+  --c-primary-d: #F4703F;
+  --c-second:    #4FC3F7;
+  --c-ok:        #66BB6A;
+  --c-bad:       #EF5350;
+  --c-warn:      #FFB74D;
+  --c-line:      #E8E0D0;
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+
+  --tap: 60px;
+  --gap: 14px;
+
+  --shadow: 0 4px 0 rgba(0,0,0,.10), 0 8px 24px rgba(0,0,0,.06);
+
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+               "Microsoft YaHei", "Helvetica Neue", sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, button, input, textarea {
+  box-sizing: border-box;
+}
+
+/* ---------- 屏幕容器 ---------- */
+
+.screen {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px calc(18px + env(safe-area-inset-bottom));
+  animation: screen-in .26s ease-out;
+}
+
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 按钮 ---------- */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 14px 24px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--c-ink);
+  background: var(--c-bg-alt);
+  border: none;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
+}
+
+/* 小程序 button 默认带一条 ::after 边框，不去掉会像描边错位 */
+.btn::after { border: none; }
+
+.btn-primary {
+  background: linear-gradient(180deg, #FFA07A 0%, var(--c-primary) 100%);
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.18);
+}
+
+.btn-secondary { background: linear-gradient(180deg, #7FD8FF 0%, var(--c-second) 100%); color: #fff; }
+.btn-ghost     { background: transparent; box-shadow: none; color: var(--c-ink-soft); border: 2px solid var(--c-line); }
+.btn-danger    { background: var(--c-bad); color: #fff; }
+
+.btn-xl  { font-size: 28px; min-height: 78px; border-radius: var(--r-lg); width: 100%; }
+.btn-sm  { font-size: 17px; min-height: 44px; padding: 8px 16px; }
+.btn-xs  { font-size: 15px; min-height: 36px; padding: 5px 11px; border-radius: var(--r-sm); }
+.btn-icon { min-width: var(--tap); width: var(--tap); font-size: 24px; padding: 0; }
+
+/* ---------- 首页 ---------- */
+
+.screen-home {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.home-title {
+  font-size: 46px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--c-primary-d);
+  text-shadow: 0 3px 0 rgba(255,255,255,.9), 0 6px 16px rgba(244,112,63,.22);
+}
+
+.home-sub { font-size: 19px; color: var(--c-ink-soft); letter-spacing: 2px; margin-bottom: 4px; }
+
+.home-stats { margin: 4px 0 10px; }
+
+.home-points {
+  font-size: 68px;
+  font-weight: 800;
+  color: var(--c-second);
+  line-height: 1;
+  text-shadow: 0 3px 0 rgba(255,255,255,.9);
+}
+
+.home-points-label { font-size: 17px; color: var(--c-ink-soft); letter-spacing: 4px; }
+
+.home-row { display: flex; gap: var(--gap); width: 100%; max-width: 520px; }
+.home-row .btn { flex: 1; }
+
+.home-last { margin-top: 18px; font-size: 17px; color: var(--c-ink-soft); }
+
+.screen-home .btn-xl { max-width: 520px; }
+
+/* ---------- 徽章 ---------- */
+
+.badge-strip {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 74px;
+  padding: 8px 4px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.55);
+  border: 2px solid var(--c-line);
+  opacity: .45;
+  filter: grayscale(1);
+}
+
+.badge-got {
+  opacity: 1;
+  filter: none;
+  background: var(--c-bg-alt);
+  border-color: var(--c-second);
+  box-shadow: 0 4px 0 rgba(79,195,247,.25);
+}
+
+.badge-emoji { font-size: 30px; line-height: 1.1; }
+.badge-name  { font-size: 14px; color: var(--c-ink-soft); }
+
+.badge-progress {
+  width: 100%;
+  max-width: 520px;
+  height: 14px;
+  border-radius: 999px;
+  background: #EFE7D6;
+  overflow: hidden;
+}
+
+.badge-progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #7FD8FF, var(--c-second));
+  transition: width .4s ease;
+}
+
+.home-next { font-size: 16px; color: var(--c-ink-soft); }
+
+/* ---------- 答题 ---------- */
+
+.screen-game { padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); gap: 10px; }
+
+.game-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.game-points {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-second);
+  white-space: nowrap;
+  min-width: 62px;
+  text-align: right;
+}
+
+.dots { display: flex; gap: 7px; flex: 1; justify-content: center; flex-wrap: wrap; }
+
+.dot {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #E0D8C8;
+  transition: all .25s;
+}
+
+.dot-now { background: var(--c-second); transform: scale(1.45); box-shadow: 0 0 0 4px rgba(79,195,247,.22); }
+.dot-ok  { background: var(--c-ok); }
+.dot-bad { background: var(--c-bad); }
+
+.game-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.q {
+  width: 100%;
+  max-width: 660px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+.stem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.stem-text {
+  font-size: 40px;
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.35;
+  color: var(--c-ink);
+  letter-spacing: 2px;
+}
+
+/* ---------- 喇叭 ---------- */
+
+.speaker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  height: 132px;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  background: linear-gradient(180deg, #7FD8FF 0%, var(--c-second) 100%);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 6px 0 #29A8DC, 0 10px 26px rgba(41,168,220,.32);
+}
+
+.speaker::after { border: none; }
+.speaker-icon { font-size: 52px; line-height: 1; }
+.speaker.playing { animation: pulse .55s infinite; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
+/* ---------- 选项 ---------- */
+
+.options { display: grid; gap: var(--gap); width: 100%; }
+.options-grid { grid-template-columns: 1fr 1fr; }
+.options-row  { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+.options-big-number { grid-template-columns: 1fr 1fr; }
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 84px;
+  padding: 16px 20px;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--c-ink);
+  background: var(--c-bg-alt);
+  border: 3px solid var(--c-line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 4px 0 rgba(0,0,0,.07);
+  word-break: break-word;
+}
+
+.option::after { border: none; }
+
+.option-single .option-text { font-size: 50px; }
+
+.options-big-number .option-text { font-size: 46px; letter-spacing: 2px; }
+.q-layout-big-number .stem-text { font-size: 52px; letter-spacing: 4px; }
+
+.option.locked { opacity: .62; }
+.option.is-answer {
+  opacity: 1;
+  border-color: var(--c-ok);
+  background: #E8F5E9;
+}
+/* 对勾用真实节点而不是 ::after —— button 的 ::after 已经被用来清掉
+   默认边框，再往里塞 content 在部分基础库上不显示。 */
+.option-check {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  font-size: 22px;
+  color: var(--c-ok);
+}
+
+.option.is-wrong {
+  opacity: 1;
+  border-color: var(--c-bad);
+  background: #FFEBEE;
+}
+
+/* ---------- 解释 ---------- */
+
+.explain {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 19px;
+  line-height: 1.6;
+  text-align: center;
+  color: #7A3B1E;
+  background: #FFF3E0;
+  border-radius: var(--r-md);
+  border-left: 5px solid var(--c-warn);
+  animation: screen-in .22s ease-out;
+}
+
+/* ---------- 反馈动画 ---------- */
+
+.fb-ok  { animation: pop-ok .5s ease-out; }
+.fb-bad { animation: flash-bad .5s ease-out; }
+
+@keyframes pop-ok {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes flash-bad {
+  0%, 100% { background: inherit; }
+  30%      { background: #FFEBEE; }
+}
+
+.shake { animation: shake .45s cubic-bezier(.36,.07,.19,.97); }
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.confetti {
+  position: absolute;
+  top: -12px;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+  pointer-events: none;
+  animation: confetti-fall 1.3s ease-in forwards;
+}
+
+@keyframes confetti-fall {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(320px) rotate(560deg); }
+}
+
+/* ---------- 结算 ---------- */
+
+.screen-summary {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.summary-emoji { font-size: 76px; line-height: 1; animation: pop-ok .7s ease-out; }
+.summary-title { font-size: 34px; font-weight: 800; color: var(--c-primary-d); }
+.summary-score { font-size: 54px; font-weight: 800; color: var(--c-second); letter-spacing: 3px; }
+
+.summary-card {
+  width: 100%;
+  max-width: 460px;
+  margin: 14px 0;
+  padding: 18px;
+  background: var(--c-bg-alt);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+}
+
+.screen-summary .btn { max-width: 460px; width: 100%; }
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 18px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.stat-row:last-child { border-bottom: none; }
+.stat-label { color: var(--c-ink-soft); }
+.stat-value { font-weight: 800; }
+
+.summary-note {
+  font-size: 17px;
+  color: var(--c-ink-soft);
+  padding: 0 12px;
+}
+
+.badge-unlock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: var(--r-md);
+  background: #FFF3E0;
+  border-left: 5px solid var(--c-warn);
+  animation: pop-ok .7s ease-out;
+}
+
+.badge-unlock-emoji { font-size: 30px; }
+.badge-unlock-text { font-size: 18px; font-weight: 700; color: #7A3B1E; }

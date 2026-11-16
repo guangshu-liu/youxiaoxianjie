@@ -1,0 +1,154 @@
+<!-- 门禁 -->
+<view class="screen screen-parent gate-screen" wx:if="{{!unlocked}}">
+  <view class="panel-title">家长验证</view>
+  <view class="gate-q">{{gateQuestion}}</view>
+
+  <input
+    class="gate-input"
+    type="number"
+    value="{{gateInput}}"
+    focus="{{gateFocus}}"
+    placeholder="答案"
+    bindinput="onGateInput"
+    confirm-type="done"
+    bindconfirm="onGateSubmit" />
+
+  <view class="gate-err" wx:if="{{gateErr}}">{{gateErr}}</view>
+
+  <button class="btn btn-primary" bindtap="onGateSubmit">进入</button>
+  <button class="btn btn-ghost" bindtap="onGateCancel">取消</button>
+</view>
+
+<!-- 面板 -->
+<scroll-view scroll-y class="screen screen-parent" wx:else>
+
+  <view class="panel-title">家长面板</view>
+
+  <view class="warn-card" wx:if="{{clockTampered}}">
+    <view>⚠️ 检测到设备时间被回拨，兑换已冻结。</view>
+    <view class="muted">如果是改时区或跨日旅行导致的误报，点下面解除。</view>
+    <button class="btn btn-sm" bindtap="onUnfreeze">解除冻结</button>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">星星账目</view>
+    <view class="stat-card">
+      <view class="stat-row">
+        <text class="stat-label">当前星星</text>
+        <text class="stat-value">{{audit.balance}}</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">累计获得</text>
+        <text class="stat-value">{{audit.lifetime}}</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">累计消耗</text>
+        <text class="stat-value">{{audit.spent}}</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">账目应等于</text>
+        <text class="stat-value">{{audit.expected}}</text>
+      </view>
+      <view class="audit-bad" wx:if="{{!audit.ok}}">⚠️ 账目对不上，数据可能被修改过</view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">今天</view>
+    <view class="stat-card">
+      <view class="stat-row">
+        <text class="stat-label">今日星星</text>
+        <text class="stat-value">{{today.points}} / {{today.cap}}</text>
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">今日局数</text>
+        <text class="stat-value">{{today.sessions}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">语文认字范围</view>
+    <view class="stat-card">
+      <view class="muted">{{zibiao.summary}}</view>
+
+      <block wx:if="{{zibiao.weak.length}}">
+        <view class="stat-title">还没巩固的字（错得最多的在前）</view>
+        <view class="zi-grid">
+          <text wx:for="{{zibiao.weak}}" wx:key="char" class="zi-chip zi-chip-weak">{{item.char}}</text>
+        </view>
+      </block>
+      <view class="muted" wx:elif="{{zibiao.chars.length}}">错题本里没有尚未巩固的字，继续保持。</view>
+
+      <view class="stat-title">字表（{{zibiao.chars.length}} 字，{{zibiao.learned || 0}} 个当前没在错题本里）</view>
+      <view class="zi-grid">
+        <text
+          wx:for="{{zibiao.chars}}"
+          wx:key="char"
+          class="zi-chip {{item.weak ? 'zi-chip-weak' : ''}}"
+          title="{{item.pinyin}}">{{item.char}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">学习数据</view>
+    <view class="stat-card">
+      <block wx:for="{{bySubject}}" wx:key="label" wx:for-item="group">
+        <view class="stat-title">{{group.label}}</view>
+        <view class="bar-row" wx:for="{{group.rows}}" wx:key="label" wx:for-item="row">
+          <text class="bar-label">{{row.label}}</text>
+          <view class="bar-track"><view class="bar-fill" style="width:{{row.pct}}%"></view></view>
+          <text class="bar-pct">{{row.pct}}%</text>
+        </view>
+      </block>
+
+      <block wx:if="{{wrong.length}}">
+        <view class="stat-title">待巩固的题（{{wrong.length}}）</view>
+        <view class="wrong-row" wx:for="{{wrong}}" wx:key="id">
+          <text class="wrong-stem">{{item.stem}}</text>
+          <text class="wrong-count">错 {{item.count}} 次</text>
+        </view>
+      </block>
+
+      <block wx:if="{{sessions.length}}">
+        <view class="stat-title">最近 {{sessions.length}} 局</view>
+        <view class="bar-row" wx:for="{{sessions}}" wx:key="id" wx:for-item="row">
+          <text class="bar-label">{{row.label}}</text>
+          <view class="bar-track"><view class="bar-fill" style="width:{{row.pct}}%"></view></view>
+          <text class="bar-pct">{{row.pct}}%</text>
+        </view>
+      </block>
+
+      <view class="muted" wx:if="{{!bySubject.length && !wrong.length && !sessions.length}}">
+        还没有玩过，先去玩一局。
+      </view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">备份</view>
+    <view class="stat-card">
+      <view class="backup-hint {{backupWarn ? 'backup-warn' : ''}}">{{backupHint}}</view>
+      <button class="btn btn-sm btn-primary" bindtap="onExport">复制备份到剪贴板</button>
+
+      <textarea
+        class="import-area"
+        value="{{importText}}"
+        placeholder="把备份内容粘贴到这里"
+        bindinput="onImportInput"></textarea>
+      <button class="btn btn-sm" bindtap="onImport">从上面内容恢复</button>
+      <view class="muted">网页版备份里的家长录音不会带过来，其余数据都能恢复。</view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">危险操作</view>
+    <view class="stat-card">
+      <button class="btn btn-sm btn-danger" bindtap="onReset">清空所有数据（不可恢复）</button>
+    </view>
+  </view>
+
+  <button class="btn btn-ghost" bindtap="onClose">关闭</button>
+
+</scroll-view>

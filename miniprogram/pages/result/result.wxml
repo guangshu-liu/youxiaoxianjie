@@ -1,0 +1,41 @@
+<view class="screen screen-summary">
+  <view class="summary-emoji">{{emoji}}</view>
+  <view class="summary-title">{{title}}</view>
+  <view class="summary-score">{{score}}</view>
+
+  <view class="summary-card">
+    <view class="stat-row">
+      <text class="stat-label">本局星星</text>
+      <text class="stat-value">+{{stars}} ★</text>
+    </view>
+    <view class="stat-row">
+      <text class="stat-label">累计星星</text>
+      <text class="stat-value">{{totalStars}} ★</text>
+    </view>
+  </view>
+
+  <view wx:if="{{capped}}" class="summary-note">
+    今天的星星已经攒到上限啦，明天再来！
+  </view>
+
+  <view wx:if="{{newBadge}}" class="badge-unlock">
+    <text class="badge-unlock-emoji">{{newBadge.emoji}}</text>
+    <text class="badge-unlock-text">解锁了新徽章「{{newBadge.name}}」</text>
+  </view>
+
+  <view class="badge-strip">
+    <view wx:for="{{badges}}" wx:key="need" class="badge {{item.got ? 'badge-got' : ''}}">
+      <text class="badge-emoji">{{item.emoji}}</text>
+      <text class="badge-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <button class="btn btn-primary btn-xl" bindtap="onAgain">再来一局</button>
+  <button class="btn btn-ghost" bindtap="onHome">回到首页</button>
+
+  <view
+    wx:for="{{pieces}}"
+    wx:key="id"
+    class="confetti"
+    style="left:{{item.left}}%; animation-delay:{{item.delay}}s; background:{{item.color}}"></view>
+</view>

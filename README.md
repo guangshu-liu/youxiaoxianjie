@@ -39,9 +39,10 @@ iOS 上常常连提示都没有。收发双方都一样，没有开关可调。
 ```bash
 npm run qbank      # 重新生成三科题库（改了 tools/gen_*.py 之后跑）
 npm run audio      # 生成缺失/变更的语音（英语单词）
-npm run verify     # 生成器一致性 + 语音 + 校验 + 测试 + 构建 + 产物测试
+npm run verify     # 生成器一致性 + 语音 + 校验 + 测试 + 构建 + 产物测试 + 小程序
 npm run serve      # 本地预览 http://localhost:8080
 npm run deploy     # 发布到 GitHub Pages，拿到可以发微信的链接
+npm run mp:build   # 生成微信小程序的题库/逻辑/音频（见 miniprogram/README.md）
 ```
 
 改完东西推手机之前，先跑 `npm run verify`。它做六件事：
@@ -54,6 +55,7 @@ npm run deploy     # 发布到 GitHub Pages，拿到可以发微信的链接
 | `npm test` | 无头冒烟测试，从 `src/` 加载，125 项断言，0.5 秒 |
 | `npm run build` | 产出两种产物 |
 | `npm run test:build` | 同样的断言，但**从构建产物里抽内联代码跑**，126 项 |
+| `npm run mp:build` + `mp:test` | 生成小程序产物并跑 57 项断言（见 `miniprogram/README.md`） |
 
 最后一条不是多余的。拼接 13 个 JS 文件有真实风险：某个文件少个结尾分号、
 下一个文件以 `(` 开头，就会变成一个调用表达式 —— 这类 bug 只在运行时炸，
@@ -540,6 +542,27 @@ npm run build:single    # → output/幼小衔接-v1.0.html（约 640 KB）
 640 KB 里约 420 KB 是 base64 之后的英语语音（315 KB × 1.33）。这是「英语要有
 听力题」和「单文件要能双击打开」两条要求撞在一起的结果。在线版不受影响，
 它的语音是分离的 40 个文件，首屏不加载。
+
+---
+
+## 微信小程序
+
+`miniprogram/` 是同一套题的原生小程序版本，细节见
+[`miniprogram/README.md`](miniprogram/README.md)。三条要点：
+
+1. **逻辑不复制。** 构建时把 `00-core / 10-store / 30-bank / 40-runner` 用
+   `window` 垫片拼成 `generated/lib/game.js`，抽样、组局、错题加权、存档
+   迁移永远是同一份实现。
+2. **奖励换了。** 转盘抽奖和积分兑现金是微信审核的明确红线，改成按正确率
+   结算星星（1–3 星/局）+ 徽章。星星复用 `save.points`，存档结构不变。
+3. **只能原生重写界面。** `web-view` 内嵌网页不开放给个人主体，且业务域名
+   必须 ICP 备案 —— `github.io` 无法备案。
+
+```bash
+npm run mp:build   # 生成 generated/（不进 git）
+npm run mp:test    # wx 桩 + Node，57 项断言
+npm run mp:appid -- wx1234567890abcdef   # 注册后写入正式 AppID，走体验版
+```
 
 ---
 
