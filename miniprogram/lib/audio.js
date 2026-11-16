@@ -38,7 +38,12 @@ function play(audioId) {
     current = ctx;
     ctx.src = src;
     ctx.onEnded(function () { release(ctx); });
-    ctx.onError(function () { release(ctx); });
+    ctx.onError(function (res) {
+      // 真机上「听音题没声」先看这行：errMsg 能区分文件读不到、格式不支持、
+      // 被系统来电/其他 App 打断。静默吞掉的话只能靠猜。
+      console.warn('[audio] 播放失败', audioId, src, res && res.errMsg);
+      release(ctx);
+    });
     ctx.play();
     return Promise.resolve(true);
   } catch (e) {

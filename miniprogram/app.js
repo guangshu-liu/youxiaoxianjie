@@ -34,11 +34,19 @@ App({
 
     this.globalData.save = save;
 
-    // 听音题是这个游戏的核心题型，iOS 的静音开关会把整个游戏变成哑的。
-    // 网页版走 Web Audio 不受静音开关影响，这里对齐同样的行为。
+    // 听音题是这个游戏的核心题型，iOS 静音开关默认会把 InnerAudioContext 静音。
+    // 这个全局设置必须在创建任何 InnerAudioContext **之前**调用，且只管
+    // InnerAudioContext（题干语音）；sfx.js 走的 WebAudioContext 不受它保护。
     try {
-      wx.setInnerAudioOption({ obeyMuteSwitch: false });
-    } catch (e) { /* 低版本基础库没有这个 API，忽略 */ }
+      wx.setInnerAudioOption({
+        obeyMuteSwitch: false,
+        fail: function (res) {
+          console.warn('[app] setInnerAudioOption 失败，iOS 静音时可能没声', res && res.errMsg);
+        }
+      });
+    } catch (e) {
+      console.warn('[app] 当前基础库不支持 setInnerAudioOption', e);
+    }
   },
 
   onHide: function () {
