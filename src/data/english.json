@@ -1447,6 +1447,1086 @@
     "unit": null,
     "family": null,
     "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.pen",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "U"
+      },
+      {
+        "id": "b",
+        "text": "V"
+      },
+      {
+        "id": "c",
+        "text": "P"
+      },
+      {
+        "id": "d",
+        "text": "J"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 pen，开头是 p，大写 P。"
+  },
+  {
+    "id": "en-0042",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.queen",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Q"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "N"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 queen，开头是 q，大写 Q。"
+  },
+  {
+    "id": "en-0043",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.rabbit",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "W"
+      },
+      {
+        "id": "b",
+        "text": "R"
+      },
+      {
+        "id": "c",
+        "text": "Z"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 rabbit，开头是 r，大写 R。"
+  },
+  {
+    "id": "en-0044",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.sun",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "X"
+      },
+      {
+        "id": "b",
+        "text": "D"
+      },
+      {
+        "id": "c",
+        "text": "S"
+      },
+      {
+        "id": "d",
+        "text": "W"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 sun，开头是 s，大写 S。"
+  },
+  {
+    "id": "en-0045",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ten",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "W"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "T"
+      },
+      {
+        "id": "d",
+        "text": "G"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 ten，开头是 t，大写 T。"
+  },
+  {
+    "id": "en-0046",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.up",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "B"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "K"
+      },
+      {
+        "id": "d",
+        "text": "O"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 up，开头是 u，大写 U。"
+  },
+  {
+    "id": "en-0047",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.violin",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "F"
+      },
+      {
+        "id": "b",
+        "text": "S"
+      },
+      {
+        "id": "c",
+        "text": "V"
+      },
+      {
+        "id": "d",
+        "text": "R"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 violin，开头是 v，大写 V。"
+  },
+  {
+    "id": "en-0048",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.watch",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "A"
+      },
+      {
+        "id": "b",
+        "text": "W"
+      },
+      {
+        "id": "c",
+        "text": "J"
+      },
+      {
+        "id": "d",
+        "text": "C"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 watch，开头是 w，大写 W。"
+  },
+  {
+    "id": "en-0049",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.yes",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "U"
+      },
+      {
+        "id": "b",
+        "text": "X"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "Y"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 yes，开头是 y，大写 Y。"
+  },
+  {
+    "id": "en-0050",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.zebra",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "M"
+      },
+      {
+        "id": "b",
+        "text": "Q"
+      },
+      {
+        "id": "c",
+        "text": "Y"
+      },
+      {
+        "id": "d",
+        "text": "Z"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 zebra，开头是 z，大写 Z。"
+  },
+  {
+    "id": "en-0051",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ax",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "W"
+      },
+      {
+        "id": "b",
+        "text": "H"
+      },
+      {
+        "id": "c",
+        "text": "A"
+      },
+      {
+        "id": "d",
+        "text": "D"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 ax，开头是 a，大写 A。"
+  },
+  {
+    "id": "en-0052",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.bear",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "M"
+      },
+      {
+        "id": "b",
+        "text": "B"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "N"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 bear，开头是 b，大写 B。"
+  },
+  {
+    "id": "en-0053",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.cat",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "I"
+      },
+      {
+        "id": "b",
+        "text": "A"
+      },
+      {
+        "id": "c",
+        "text": "O"
+      },
+      {
+        "id": "d",
+        "text": "C"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 cat，开头是 c，大写 C。"
+  },
+  {
+    "id": "en-0054",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.desk",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "D"
+      },
+      {
+        "id": "b",
+        "text": "P"
+      },
+      {
+        "id": "c",
+        "text": "I"
+      },
+      {
+        "id": "d",
+        "text": "W"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 desk，开头是 d，大写 D。"
+  },
+  {
+    "id": "en-0055",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.elephant",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "J"
+      },
+      {
+        "id": "b",
+        "text": "V"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "G"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 elephant，开头是 e，大写 E。"
+  },
+  {
+    "id": "en-0056",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.fork",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "F"
+      },
+      {
+        "id": "c",
+        "text": "M"
+      },
+      {
+        "id": "d",
+        "text": "D"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 fork，开头是 f，大写 F。"
+  },
+  {
+    "id": "en-0057",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.girl",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "G"
+      },
+      {
+        "id": "b",
+        "text": "V"
+      },
+      {
+        "id": "c",
+        "text": "S"
+      },
+      {
+        "id": "d",
+        "text": "D"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 girl，开头是 g，大写 G。"
+  },
+  {
+    "id": "en-0058",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.hat",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Z"
+      },
+      {
+        "id": "b",
+        "text": "N"
+      },
+      {
+        "id": "c",
+        "text": "T"
+      },
+      {
+        "id": "d",
+        "text": "H"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 hat，开头是 h，大写 H。"
+  },
+  {
+    "id": "en-0059",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.igloo",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "Z"
+      },
+      {
+        "id": "c",
+        "text": "I"
+      },
+      {
+        "id": "d",
+        "text": "P"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 igloo，开头是 i，大写 I。"
+  },
+  {
+    "id": "en-0060",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.jet",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "B"
+      },
+      {
+        "id": "b",
+        "text": "G"
+      },
+      {
+        "id": "c",
+        "text": "J"
+      },
+      {
+        "id": "d",
+        "text": "R"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 jet，开头是 j，大写 J。"
+  },
+  {
+    "id": "en-0061",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.key",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "A"
+      },
+      {
+        "id": "b",
+        "text": "K"
+      },
+      {
+        "id": "c",
+        "text": "V"
+      },
+      {
+        "id": "d",
+        "text": "X"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 key，开头是 k，大写 K。"
+  },
+  {
+    "id": "en-0062",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.lemon",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "C"
+      },
+      {
+        "id": "b",
+        "text": "G"
+      },
+      {
+        "id": "c",
+        "text": "L"
+      },
+      {
+        "id": "d",
+        "text": "R"
+      }
+    ],
+    "answer": "c",
+    "explain": "听到的是 lemon，开头是 l，大写 L。"
+  },
+  {
+    "id": "en-0063",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.milk",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "L"
+      },
+      {
+        "id": "b",
+        "text": "M"
+      },
+      {
+        "id": "c",
+        "text": "B"
+      },
+      {
+        "id": "d",
+        "text": "U"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 milk，开头是 m，大写 M。"
+  },
+  {
+    "id": "en-0064",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.nest",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "N"
+      },
+      {
+        "id": "b",
+        "text": "V"
+      },
+      {
+        "id": "c",
+        "text": "M"
+      },
+      {
+        "id": "d",
+        "text": "E"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 nest，开头是 n，大写 N。"
+  },
+  {
+    "id": "en-0065",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.octopus",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "P"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "U"
+      },
+      {
+        "id": "d",
+        "text": "W"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 octopus，开头是 o，大写 O。"
+  },
+  {
+    "id": "en-0066",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.panda",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "P"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "Y"
+      },
+      {
+        "id": "d",
+        "text": "F"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 panda，开头是 p，大写 P。"
+  },
+  {
+    "id": "en-0067",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.quilt",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Q"
+      },
+      {
+        "id": "b",
+        "text": "M"
+      },
+      {
+        "id": "c",
+        "text": "W"
+      },
+      {
+        "id": "d",
+        "text": "T"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 quilt，开头是 q，大写 Q。"
+  },
+  {
+    "id": "en-0068",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.ring",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "R"
+      },
+      {
+        "id": "b",
+        "text": "D"
+      },
+      {
+        "id": "c",
+        "text": "X"
+      },
+      {
+        "id": "d",
+        "text": "P"
+      }
+    ],
+    "answer": "a",
+    "explain": "听到的是 ring，开头是 r，大写 R。"
+  },
+  {
+    "id": "en-0069",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.sock",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "I"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "G"
+      },
+      {
+        "id": "d",
+        "text": "S"
+      }
+    ],
+    "answer": "d",
+    "explain": "听到的是 sock，开头是 s，大写 S。"
+  },
+  {
+    "id": "en-0070",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "听音选字母"
+    ],
+    "stem": {
+      "text": "听一听，这个词开头是哪个大写字母？",
+      "audio": "en.tiger",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "P"
+      },
+      {
+        "id": "b",
+        "text": "T"
+      },
+      {
+        "id": "c",
+        "text": "X"
+      },
+      {
+        "id": "d",
+        "text": "I"
+      }
+    ],
+    "answer": "b",
+    "explain": "听到的是 tiger，开头是 t，大写 T。"
+  },
+  {
+    "id": "en-0071",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
       "大小写配对"
     ],
     "stem": {
@@ -1475,7 +2555,7 @@
     "explain": "A 的小写是 a。"
   },
   {
-    "id": "en-0042",
+    "id": "en-0072",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1510,7 +2590,7 @@
     "explain": "B 的小写是 b。"
   },
   {
-    "id": "en-0043",
+    "id": "en-0073",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1545,7 +2625,7 @@
     "explain": "C 的小写是 c。"
   },
   {
-    "id": "en-0044",
+    "id": "en-0074",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1580,7 +2660,7 @@
     "explain": "d 的大写是 D。"
   },
   {
-    "id": "en-0045",
+    "id": "en-0075",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1615,7 +2695,7 @@
     "explain": "e 的大写是 E。"
   },
   {
-    "id": "en-0046",
+    "id": "en-0076",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1650,7 +2730,7 @@
     "explain": "f 的大写是 F。"
   },
   {
-    "id": "en-0047",
+    "id": "en-0077",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1685,7 +2765,7 @@
     "explain": "g 的大写是 G。"
   },
   {
-    "id": "en-0048",
+    "id": "en-0078",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1720,7 +2800,7 @@
     "explain": "h 的大写是 H。"
   },
   {
-    "id": "en-0049",
+    "id": "en-0079",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1755,7 +2835,7 @@
     "explain": "i 的大写是 I。"
   },
   {
-    "id": "en-0050",
+    "id": "en-0080",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1790,7 +2870,7 @@
     "explain": "J 的小写是 j。"
   },
   {
-    "id": "en-0051",
+    "id": "en-0081",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1825,7 +2905,7 @@
     "explain": "K 的小写是 k。"
   },
   {
-    "id": "en-0052",
+    "id": "en-0082",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1860,7 +2940,7 @@
     "explain": "L 的小写是 l。"
   },
   {
-    "id": "en-0053",
+    "id": "en-0083",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1895,7 +2975,7 @@
     "explain": "M 的小写是 m。"
   },
   {
-    "id": "en-0054",
+    "id": "en-0084",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1930,7 +3010,7 @@
     "explain": "N 的小写是 n。"
   },
   {
-    "id": "en-0055",
+    "id": "en-0085",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -1965,7 +3045,7 @@
     "explain": "O 的小写是 o。"
   },
   {
-    "id": "en-0056",
+    "id": "en-0086",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2000,7 +3080,7 @@
     "explain": "p 的大写是 P。"
   },
   {
-    "id": "en-0057",
+    "id": "en-0087",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2035,7 +3115,7 @@
     "explain": "q 的大写是 Q。"
   },
   {
-    "id": "en-0058",
+    "id": "en-0088",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2070,7 +3150,7 @@
     "explain": "r 的大写是 R。"
   },
   {
-    "id": "en-0059",
+    "id": "en-0089",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2105,7 +3185,7 @@
     "explain": "S 的小写是 s。"
   },
   {
-    "id": "en-0060",
+    "id": "en-0090",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2140,7 +3220,7 @@
     "explain": "T 的小写是 t。"
   },
   {
-    "id": "en-0061",
+    "id": "en-0091",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2175,7 +3255,7 @@
     "explain": "U 的小写是 u。"
   },
   {
-    "id": "en-0062",
+    "id": "en-0092",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2210,7 +3290,7 @@
     "explain": "V 的小写是 v。"
   },
   {
-    "id": "en-0063",
+    "id": "en-0093",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2245,7 +3325,7 @@
     "explain": "W 的小写是 w。"
   },
   {
-    "id": "en-0064",
+    "id": "en-0094",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2280,7 +3360,7 @@
     "explain": "X 的小写是 x。"
   },
   {
-    "id": "en-0065",
+    "id": "en-0095",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2315,7 +3395,7 @@
     "explain": "y 的大写是 Y。"
   },
   {
-    "id": "en-0066",
+    "id": "en-0096",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2350,7 +3430,7 @@
     "explain": "z 的大写是 Z。"
   },
   {
-    "id": "en-0067",
+    "id": "en-0097",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2385,7 +3465,7 @@
     "explain": "a 的大写是 A。"
   },
   {
-    "id": "en-0068",
+    "id": "en-0098",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2420,7 +3500,7 @@
     "explain": "b 的大写是 B。"
   },
   {
-    "id": "en-0069",
+    "id": "en-0099",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2455,7 +3535,7 @@
     "explain": "c 的大写是 C。"
   },
   {
-    "id": "en-0070",
+    "id": "en-0100",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2490,7 +3570,7 @@
     "explain": "D 的小写是 d。"
   },
   {
-    "id": "en-0071",
+    "id": "en-0101",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2525,7 +3605,7 @@
     "explain": "E 的小写是 e。"
   },
   {
-    "id": "en-0072",
+    "id": "en-0102",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2560,7 +3640,7 @@
     "explain": "F 的小写是 f。"
   },
   {
-    "id": "en-0073",
+    "id": "en-0103",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2595,7 +3675,7 @@
     "explain": "G 的小写是 g。"
   },
   {
-    "id": "en-0074",
+    "id": "en-0104",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2630,7 +3710,7 @@
     "explain": "H 的小写是 h。"
   },
   {
-    "id": "en-0075",
+    "id": "en-0105",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2665,7 +3745,7 @@
     "explain": "I 的小写是 i。"
   },
   {
-    "id": "en-0076",
+    "id": "en-0106",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2700,7 +3780,7 @@
     "explain": "j 的大写是 J。"
   },
   {
-    "id": "en-0077",
+    "id": "en-0107",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2735,7 +3815,7 @@
     "explain": "k 的大写是 K。"
   },
   {
-    "id": "en-0078",
+    "id": "en-0108",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2770,7 +3850,7 @@
     "explain": "l 的大写是 L。"
   },
   {
-    "id": "en-0079",
+    "id": "en-0109",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2805,7 +3885,7 @@
     "explain": "m 的大写是 M。"
   },
   {
-    "id": "en-0080",
+    "id": "en-0110",
     "subject": "english",
     "type": "choice",
     "difficulty": 1,
@@ -2840,7 +3920,427 @@
     "explain": "n 的大写是 N。"
   },
   {
-    "id": "en-0081",
+    "id": "en-0111",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 o 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "M"
+      },
+      {
+        "id": "b",
+        "text": "E"
+      },
+      {
+        "id": "c",
+        "text": "C"
+      },
+      {
+        "id": "d",
+        "text": "O"
+      }
+    ],
+    "answer": "d",
+    "explain": "o 的大写是 O。"
+  },
+  {
+    "id": "en-0112",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "大写 P 的小写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "p"
+      },
+      {
+        "id": "b",
+        "text": "q"
+      },
+      {
+        "id": "c",
+        "text": "d"
+      },
+      {
+        "id": "d",
+        "text": "b"
+      }
+    ],
+    "answer": "a",
+    "explain": "P 的小写是 p。"
+  },
+  {
+    "id": "en-0113",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "大写 Q 的小写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "b"
+      },
+      {
+        "id": "b",
+        "text": "p"
+      },
+      {
+        "id": "c",
+        "text": "q"
+      },
+      {
+        "id": "d",
+        "text": "d"
+      }
+    ],
+    "answer": "c",
+    "explain": "Q 的小写是 q。"
+  },
+  {
+    "id": "en-0114",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "大写 R 的小写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "c"
+      },
+      {
+        "id": "b",
+        "text": "f"
+      },
+      {
+        "id": "c",
+        "text": "r"
+      },
+      {
+        "id": "d",
+        "text": "n"
+      }
+    ],
+    "answer": "c",
+    "explain": "R 的小写是 r。"
+  },
+  {
+    "id": "en-0115",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 s 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "S"
+      },
+      {
+        "id": "b",
+        "text": "Z"
+      },
+      {
+        "id": "c",
+        "text": "D"
+      },
+      {
+        "id": "d",
+        "text": "X"
+      }
+    ],
+    "answer": "a",
+    "explain": "s 的大写是 S。"
+  },
+  {
+    "id": "en-0116",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 t 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "L"
+      },
+      {
+        "id": "b",
+        "text": "T"
+      },
+      {
+        "id": "c",
+        "text": "A"
+      },
+      {
+        "id": "d",
+        "text": "F"
+      }
+    ],
+    "answer": "b",
+    "explain": "t 的大写是 T。"
+  },
+  {
+    "id": "en-0117",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 u 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "I"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "N"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "b",
+    "explain": "u 的大写是 U。"
+  },
+  {
+    "id": "en-0118",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 v 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "U"
+      },
+      {
+        "id": "b",
+        "text": "J"
+      },
+      {
+        "id": "c",
+        "text": "W"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "d",
+    "explain": "v 的大写是 V。"
+  },
+  {
+    "id": "en-0119",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 w 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "M"
+      },
+      {
+        "id": "b",
+        "text": "S"
+      },
+      {
+        "id": "c",
+        "text": "W"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "c",
+    "explain": "w 的大写是 W。"
+  },
+  {
+    "id": "en-0120",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "小写 x 的大写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "J"
+      },
+      {
+        "id": "b",
+        "text": "X"
+      },
+      {
+        "id": "c",
+        "text": "Z"
+      },
+      {
+        "id": "d",
+        "text": "K"
+      }
+    ],
+    "answer": "b",
+    "explain": "x 的大写是 X。"
+  },
+  {
+    "id": "en-0121",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "大写 Y 的小写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "d"
+      },
+      {
+        "id": "b",
+        "text": "g"
+      },
+      {
+        "id": "c",
+        "text": "y"
+      },
+      {
+        "id": "d",
+        "text": "v"
+      }
+    ],
+    "answer": "c",
+    "explain": "Y 的小写是 y。"
+  },
+  {
+    "id": "en-0122",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 1,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "大小写配对"
+    ],
+    "stem": {
+      "text": "大写 Z 的小写是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "z"
+      },
+      {
+        "id": "b",
+        "text": "x"
+      },
+      {
+        "id": "c",
+        "text": "w"
+      },
+      {
+        "id": "d",
+        "text": "s"
+      }
+    ],
+    "answer": "a",
+    "explain": "Z 的小写是 z。"
+  },
+  {
+    "id": "en-0123",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -2875,7 +4375,7 @@
     "explain": "A 的下一个字母是 B。"
   },
   {
-    "id": "en-0082",
+    "id": "en-0124",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -2910,7 +4410,7 @@
     "explain": "B 的下一个字母是 C。"
   },
   {
-    "id": "en-0083",
+    "id": "en-0125",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -2945,7 +4445,7 @@
     "explain": "C 的下一个字母是 D。"
   },
   {
-    "id": "en-0084",
+    "id": "en-0126",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -2980,7 +4480,7 @@
     "explain": "D 的上一个字母是 C。"
   },
   {
-    "id": "en-0085",
+    "id": "en-0127",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3015,7 +4515,7 @@
     "explain": "E 的上一个字母是 D。"
   },
   {
-    "id": "en-0086",
+    "id": "en-0128",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3050,7 +4550,7 @@
     "explain": "F 的上一个字母是 E。"
   },
   {
-    "id": "en-0087",
+    "id": "en-0129",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3085,7 +4585,7 @@
     "explain": "G 的上一个字母是 F。"
   },
   {
-    "id": "en-0088",
+    "id": "en-0130",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3120,7 +4620,7 @@
     "explain": "H 的上一个字母是 G。"
   },
   {
-    "id": "en-0089",
+    "id": "en-0131",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3155,7 +4655,7 @@
     "explain": "I 的上一个字母是 H。"
   },
   {
-    "id": "en-0090",
+    "id": "en-0132",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3190,7 +4690,7 @@
     "explain": "J 的上一个字母是 I。"
   },
   {
-    "id": "en-0091",
+    "id": "en-0133",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3225,7 +4725,7 @@
     "explain": "K 的下一个字母是 L。"
   },
   {
-    "id": "en-0092",
+    "id": "en-0134",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3260,7 +4760,7 @@
     "explain": "L 的下一个字母是 M。"
   },
   {
-    "id": "en-0093",
+    "id": "en-0135",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3295,7 +4795,7 @@
     "explain": "M 的下一个字母是 N。"
   },
   {
-    "id": "en-0094",
+    "id": "en-0136",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3330,7 +4830,7 @@
     "explain": "N 的上一个字母是 M。"
   },
   {
-    "id": "en-0095",
+    "id": "en-0137",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3365,7 +4865,7 @@
     "explain": "O 的上一个字母是 N。"
   },
   {
-    "id": "en-0096",
+    "id": "en-0138",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3400,7 +4900,7 @@
     "explain": "P 的上一个字母是 O。"
   },
   {
-    "id": "en-0097",
+    "id": "en-0139",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3435,7 +4935,7 @@
     "explain": "Q 的上一个字母是 P。"
   },
   {
-    "id": "en-0098",
+    "id": "en-0140",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3470,7 +4970,7 @@
     "explain": "R 的上一个字母是 Q。"
   },
   {
-    "id": "en-0099",
+    "id": "en-0141",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3505,7 +5005,7 @@
     "explain": "S 的上一个字母是 R。"
   },
   {
-    "id": "en-0100",
+    "id": "en-0142",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3540,7 +5040,7 @@
     "explain": "T 的下一个字母是 U。"
   },
   {
-    "id": "en-0101",
+    "id": "en-0143",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3575,7 +5075,7 @@
     "explain": "U 的下一个字母是 V。"
   },
   {
-    "id": "en-0102",
+    "id": "en-0144",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3610,7 +5110,7 @@
     "explain": "V 的下一个字母是 W。"
   },
   {
-    "id": "en-0103",
+    "id": "en-0145",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3645,7 +5145,7 @@
     "explain": "W 的上一个字母是 V。"
   },
   {
-    "id": "en-0104",
+    "id": "en-0146",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3680,7 +5180,7 @@
     "explain": "X 的下一个字母是 Y。"
   },
   {
-    "id": "en-0105",
+    "id": "en-0147",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3715,7 +5215,7 @@
     "explain": "Y 的下一个字母是 Z。"
   },
   {
-    "id": "en-0106",
+    "id": "en-0148",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3750,7 +5250,777 @@
     "explain": "Z 的上一个字母是 Y。"
   },
   {
-    "id": "en-0107",
+    "id": "en-0149",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 B 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "E"
+      },
+      {
+        "id": "b",
+        "text": "D"
+      },
+      {
+        "id": "c",
+        "text": "A"
+      },
+      {
+        "id": "d",
+        "text": "F"
+      }
+    ],
+    "answer": "c",
+    "explain": "B 的上一个字母是 A。"
+  },
+  {
+    "id": "en-0150",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 C 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "E"
+      },
+      {
+        "id": "b",
+        "text": "G"
+      },
+      {
+        "id": "c",
+        "text": "B"
+      },
+      {
+        "id": "d",
+        "text": "F"
+      }
+    ],
+    "answer": "c",
+    "explain": "C 的上一个字母是 B。"
+  },
+  {
+    "id": "en-0151",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 D 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "F"
+      },
+      {
+        "id": "b",
+        "text": "H"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "G"
+      }
+    ],
+    "answer": "c",
+    "explain": "D 的下一个字母是 E。"
+  },
+  {
+    "id": "en-0152",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 E 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "G"
+      },
+      {
+        "id": "c",
+        "text": "F"
+      },
+      {
+        "id": "d",
+        "text": "I"
+      }
+    ],
+    "answer": "c",
+    "explain": "E 的下一个字母是 F。"
+  },
+  {
+    "id": "en-0153",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 F 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "J"
+      },
+      {
+        "id": "c",
+        "text": "I"
+      },
+      {
+        "id": "d",
+        "text": "G"
+      }
+    ],
+    "answer": "d",
+    "explain": "F 的下一个字母是 G。"
+  },
+  {
+    "id": "en-0154",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 G 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "I"
+      },
+      {
+        "id": "c",
+        "text": "K"
+      },
+      {
+        "id": "d",
+        "text": "J"
+      }
+    ],
+    "answer": "a",
+    "explain": "G 的下一个字母是 H。"
+  },
+  {
+    "id": "en-0155",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 H 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "L"
+      },
+      {
+        "id": "b",
+        "text": "J"
+      },
+      {
+        "id": "c",
+        "text": "I"
+      },
+      {
+        "id": "d",
+        "text": "K"
+      }
+    ],
+    "answer": "c",
+    "explain": "H 的下一个字母是 I。"
+  },
+  {
+    "id": "en-0156",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 I 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "K"
+      },
+      {
+        "id": "b",
+        "text": "M"
+      },
+      {
+        "id": "c",
+        "text": "L"
+      },
+      {
+        "id": "d",
+        "text": "J"
+      }
+    ],
+    "answer": "d",
+    "explain": "I 的下一个字母是 J。"
+  },
+  {
+    "id": "en-0157",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 J 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "K"
+      },
+      {
+        "id": "b",
+        "text": "M"
+      },
+      {
+        "id": "c",
+        "text": "N"
+      },
+      {
+        "id": "d",
+        "text": "L"
+      }
+    ],
+    "answer": "a",
+    "explain": "J 的下一个字母是 K。"
+  },
+  {
+    "id": "en-0158",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 K 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "N"
+      },
+      {
+        "id": "b",
+        "text": "J"
+      },
+      {
+        "id": "c",
+        "text": "M"
+      },
+      {
+        "id": "d",
+        "text": "O"
+      }
+    ],
+    "answer": "b",
+    "explain": "K 的上一个字母是 J。"
+  },
+  {
+    "id": "en-0159",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 L 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "N"
+      },
+      {
+        "id": "b",
+        "text": "K"
+      },
+      {
+        "id": "c",
+        "text": "P"
+      },
+      {
+        "id": "d",
+        "text": "O"
+      }
+    ],
+    "answer": "b",
+    "explain": "L 的上一个字母是 K。"
+  },
+  {
+    "id": "en-0160",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 M 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Q"
+      },
+      {
+        "id": "b",
+        "text": "L"
+      },
+      {
+        "id": "c",
+        "text": "P"
+      },
+      {
+        "id": "d",
+        "text": "O"
+      }
+    ],
+    "answer": "b",
+    "explain": "M 的上一个字母是 L。"
+  },
+  {
+    "id": "en-0161",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 N 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Q"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "P"
+      },
+      {
+        "id": "d",
+        "text": "R"
+      }
+    ],
+    "answer": "b",
+    "explain": "N 的下一个字母是 O。"
+  },
+  {
+    "id": "en-0162",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 O 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "R"
+      },
+      {
+        "id": "b",
+        "text": "S"
+      },
+      {
+        "id": "c",
+        "text": "Q"
+      },
+      {
+        "id": "d",
+        "text": "P"
+      }
+    ],
+    "answer": "d",
+    "explain": "O 的下一个字母是 P。"
+  },
+  {
+    "id": "en-0163",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 P 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "T"
+      },
+      {
+        "id": "b",
+        "text": "Q"
+      },
+      {
+        "id": "c",
+        "text": "R"
+      },
+      {
+        "id": "d",
+        "text": "S"
+      }
+    ],
+    "answer": "b",
+    "explain": "P 的下一个字母是 Q。"
+  },
+  {
+    "id": "en-0164",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 Q 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "R"
+      },
+      {
+        "id": "b",
+        "text": "S"
+      },
+      {
+        "id": "c",
+        "text": "U"
+      },
+      {
+        "id": "d",
+        "text": "T"
+      }
+    ],
+    "answer": "a",
+    "explain": "Q 的下一个字母是 R。"
+  },
+  {
+    "id": "en-0165",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 R 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "T"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "S"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "c",
+    "explain": "R 的下一个字母是 S。"
+  },
+  {
+    "id": "en-0166",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 S 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "W"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "V"
+      },
+      {
+        "id": "d",
+        "text": "T"
+      }
+    ],
+    "answer": "d",
+    "explain": "S 的下一个字母是 T。"
+  },
+  {
+    "id": "en-0167",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 T 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "X"
+      },
+      {
+        "id": "b",
+        "text": "V"
+      },
+      {
+        "id": "c",
+        "text": "S"
+      },
+      {
+        "id": "d",
+        "text": "W"
+      }
+    ],
+    "answer": "c",
+    "explain": "T 的上一个字母是 S。"
+  },
+  {
+    "id": "en-0168",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 U 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "T"
+      },
+      {
+        "id": "b",
+        "text": "X"
+      },
+      {
+        "id": "c",
+        "text": "W"
+      },
+      {
+        "id": "d",
+        "text": "Y"
+      }
+    ],
+    "answer": "a",
+    "explain": "U 的上一个字母是 T。"
+  },
+  {
+    "id": "en-0169",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 V 的上一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Z"
+      },
+      {
+        "id": "b",
+        "text": "Y"
+      },
+      {
+        "id": "c",
+        "text": "X"
+      },
+      {
+        "id": "d",
+        "text": "U"
+      }
+    ],
+    "answer": "d",
+    "explain": "V 的上一个字母是 U。"
+  },
+  {
+    "id": "en-0170",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "字母顺序"
+    ],
+    "stem": {
+      "text": "字母 W 的下一个字母是哪个？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Y"
+      },
+      {
+        "id": "b",
+        "text": "X"
+      },
+      {
+        "id": "c",
+        "text": "Z"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "b",
+    "explain": "W 的下一个字母是 X。"
+  },
+  {
+    "id": "en-0171",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3785,7 +6055,7 @@
     "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0108",
+    "id": "en-0172",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3820,7 +6090,7 @@
     "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0109",
+    "id": "en-0173",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3855,7 +6125,7 @@
     "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0110",
+    "id": "en-0174",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3890,7 +6160,7 @@
     "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0111",
+    "id": "en-0175",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3925,7 +6195,7 @@
     "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0112",
+    "id": "en-0176",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3960,7 +6230,7 @@
     "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0113",
+    "id": "en-0177",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -3995,7 +6265,7 @@
     "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0114",
+    "id": "en-0178",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4030,7 +6300,7 @@
     "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0115",
+    "id": "en-0179",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4065,7 +6335,7 @@
     "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0116",
+    "id": "en-0180",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4100,7 +6370,7 @@
     "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0117",
+    "id": "en-0181",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4135,7 +6405,7 @@
     "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0118",
+    "id": "en-0182",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4170,7 +6440,7 @@
     "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0119",
+    "id": "en-0183",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4205,7 +6475,7 @@
     "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
   },
   {
-    "id": "en-0120",
+    "id": "en-0184",
     "subject": "english",
     "type": "choice",
     "difficulty": 2,
@@ -4238,5 +6508,565 @@
     ],
     "answer": "b",
     "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0185",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Z"
+      },
+      {
+        "id": "b",
+        "text": "J"
+      },
+      {
+        "id": "c",
+        "text": "U"
+      },
+      {
+        "id": "d",
+        "text": "S"
+      }
+    ],
+    "answer": "c",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0186",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "G"
+      },
+      {
+        "id": "b",
+        "text": "A"
+      },
+      {
+        "id": "c",
+        "text": "Z"
+      },
+      {
+        "id": "d",
+        "text": "S"
+      }
+    ],
+    "answer": "b",
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0187",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "E"
+      },
+      {
+        "id": "b",
+        "text": "N"
+      },
+      {
+        "id": "c",
+        "text": "H"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "a",
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0188",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "B"
+      },
+      {
+        "id": "b",
+        "text": "I"
+      },
+      {
+        "id": "c",
+        "text": "C"
+      },
+      {
+        "id": "d",
+        "text": "T"
+      }
+    ],
+    "answer": "b",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0189",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "O"
+      },
+      {
+        "id": "b",
+        "text": "X"
+      },
+      {
+        "id": "c",
+        "text": "B"
+      },
+      {
+        "id": "d",
+        "text": "V"
+      }
+    ],
+    "answer": "a",
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0190",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Q"
+      },
+      {
+        "id": "b",
+        "text": "U"
+      },
+      {
+        "id": "c",
+        "text": "W"
+      },
+      {
+        "id": "d",
+        "text": "N"
+      }
+    ],
+    "answer": "b",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0191",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "A"
+      },
+      {
+        "id": "b",
+        "text": "G"
+      },
+      {
+        "id": "c",
+        "text": "X"
+      },
+      {
+        "id": "d",
+        "text": "T"
+      }
+    ],
+    "answer": "a",
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0192",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "X"
+      },
+      {
+        "id": "b",
+        "text": "Z"
+      },
+      {
+        "id": "c",
+        "text": "E"
+      },
+      {
+        "id": "d",
+        "text": "P"
+      }
+    ],
+    "answer": "c",
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0193",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "G"
+      },
+      {
+        "id": "b",
+        "text": "Z"
+      },
+      {
+        "id": "c",
+        "text": "J"
+      },
+      {
+        "id": "d",
+        "text": "I"
+      }
+    ],
+    "answer": "d",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0194",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Y"
+      },
+      {
+        "id": "b",
+        "text": "O"
+      },
+      {
+        "id": "c",
+        "text": "P"
+      },
+      {
+        "id": "d",
+        "text": "F"
+      }
+    ],
+    "answer": "b",
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0195",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "U"
+      },
+      {
+        "id": "b",
+        "text": "P"
+      },
+      {
+        "id": "c",
+        "text": "B"
+      },
+      {
+        "id": "d",
+        "text": "X"
+      }
+    ],
+    "answer": "a",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0196",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "G"
+      },
+      {
+        "id": "b",
+        "text": "A"
+      },
+      {
+        "id": "c",
+        "text": "S"
+      },
+      {
+        "id": "d",
+        "text": "N"
+      }
+    ],
+    "answer": "b",
+    "explain": "A 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0197",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "N"
+      },
+      {
+        "id": "b",
+        "text": "P"
+      },
+      {
+        "id": "c",
+        "text": "C"
+      },
+      {
+        "id": "d",
+        "text": "E"
+      }
+    ],
+    "answer": "d",
+    "explain": "E 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0198",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "H"
+      },
+      {
+        "id": "b",
+        "text": "Q"
+      },
+      {
+        "id": "c",
+        "text": "G"
+      },
+      {
+        "id": "d",
+        "text": "I"
+      }
+    ],
+    "answer": "d",
+    "explain": "I 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0199",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "C"
+      },
+      {
+        "id": "b",
+        "text": "H"
+      },
+      {
+        "id": "c",
+        "text": "O"
+      },
+      {
+        "id": "d",
+        "text": "X"
+      }
+    ],
+    "answer": "c",
+    "explain": "O 是元音字母，元音字母一共五个：A E I O U。"
+  },
+  {
+    "id": "en-0200",
+    "subject": "english",
+    "type": "choice",
+    "difficulty": 2,
+    "unit": null,
+    "family": null,
+    "tags": [
+      "元音字母"
+    ],
+    "stem": {
+      "text": "下面哪个是元音字母？",
+      "layout": "grid"
+    },
+    "options": [
+      {
+        "id": "a",
+        "text": "Z"
+      },
+      {
+        "id": "b",
+        "text": "C"
+      },
+      {
+        "id": "c",
+        "text": "U"
+      },
+      {
+        "id": "d",
+        "text": "J"
+      }
+    ],
+    "answer": "c",
+    "explain": "U 是元音字母，元音字母一共五个：A E I O U。"
   }
 ]

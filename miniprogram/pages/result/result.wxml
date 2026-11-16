@@ -1,4 +1,5 @@
 <view class="screen screen-summary">
+  <view class="summary-subject">{{subjectLabel}}</view>
   <view class="summary-emoji">{{emoji}}</view>
   <view class="summary-title">{{title}}</view>
   <view class="summary-score">{{score}}</view>

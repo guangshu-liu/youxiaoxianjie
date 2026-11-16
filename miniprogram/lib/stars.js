@@ -19,14 +19,32 @@ var BADGES = [
 ];
 
 /**
+ * 每科一套星星阈值。
+ *
+ * 现在三科都是 9 / 6，留成一张表是为了**以后能单独调**：数学一局 10 题里
+ * 有 8 成是难度 2（计算、应用题、找规律），如果实际玩下来 3 星太少，
+ * 把 math 的 three 改成 8 就行，不用动逻辑。
+ *
+ * 阈值不再是 8 / 5：旧阈值下「1 星」几乎不会出现（中等水平约 0.4%），
+ * 等于白设一档；9 / 6 之后三科都能真的掉到 1 星，3 星也要做对 9 题
+ * 才拿得到，梯度才是活的。
+ */
+var RULES = {
+  chinese: { three: 9, two: 6 },
+  math:    { three: 9, two: 6 },
+  english: { three: 9, two: 6 }
+};
+
+/**
  * 一局该给几颗星。只看答对题数，不掺随机。
  *
  * 1 星是保底 —— 全错也给。这个游戏的前提是「答错不卡住」，
  * 结算时给 0 星等于把「答错」变成惩罚，和整个设计相反。
  */
-function forCorrect(correct) {
-  if (correct >= 8) return 3;
-  if (correct >= 5) return 2;
+function forCorrect(correct, subject) {
+  var r = RULES[subject] || RULES.chinese;
+  if (correct >= r.three) return 3;
+  if (correct >= r.two) return 2;
   return 1;
 }
 

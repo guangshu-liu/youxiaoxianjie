@@ -5,18 +5,15 @@ gen_ziku.py — 语文（识字）题库生成器
 
 产出两个文件：
     src/data/zi_grade1.json     字表（字 / 拼音 / 笔画 / 部首 / 词语）
-    src/data/chinese.json       识字题库（90 道，全部 choice 题型）
+    src/data/chinese.json       语文题库（200 道，全部 choice 题型）
 
 两条硬约束，都由机器保证，不靠眼睛：
 
   1. **只用一年级字。** GRADE_MAX = 1。字表里没有的字，根本进不了选项。
-  2. **全库不出现拼音。** 出题一律绕开读音：考字形（笔画 / 部首 / 偏旁 /
-     加一笔减一笔）和字义（反义词 / 归类）。selfcheck 里有一条断言直接
-     扫题干、选项、解释里有没有拉丁字母和声调符号，出现就构建失败。
-
-     「不以拼音的形式出现」不等于「生成器不能用拼音」—— split_tone 仍在
-     用来判断两个字的声旁关系（形声字的声旁和整字同音，拿它当干扰项会让
-     题目变成猜出题人想考哪个）。拼音只是内部判据，从不落到产物里。
+  2. **拼音只出现在拼音题里。** 看拼音选字 / 声母韵母这两类之外，题干、
+     选项、解释里一个拉丁字母都不许有 —— selfcheck 按题型分别扫，拼音题
+     豁免，其余照旧拦截。这条是上一版的「全库禁拼音」放宽后的版本：
+     一年级上册第一单元就是拼音，幼小衔接阶段绕不开它。
 
 产物必须可复现：同一个字表跑两次，得到逐字节相同的 JSON，`--check`
 才有意义。公共的确定性随机和校验在 tools/qbank.py，三个科目共用。
@@ -67,6 +64,15 @@ for _b, _ms in MARKED.items():
 # 声母表，长的排前面 —— zh/ch/sh 要先于 z/c/s 匹配
 INITIALS = ['zh', 'ch', 'sh', 'b', 'p', 'm', 'f', 'd', 't', 'n', 'l',
             'g', 'k', 'h', 'j', 'q', 'x', 'r', 'z', 'c', 's', 'y', 'w']
+
+# 韵母表（24 个）。**和声母表没有交集** —— 「下面哪个是声母」的干扰项
+# 全部从这里取，两张表一旦有重叠，那道题就有两个正确答案。
+FINALS = ['a', 'o', 'e', 'i', 'u', 'ü',
+          'ai', 'ei', 'ui', 'ao', 'ou', 'iu', 'ie', 'üe', 'er',
+          'an', 'en', 'in', 'un', 'ün',
+          'ang', 'eng', 'ing', 'ong']
+FINALS_SET = set(FINALS)
+INITIALS_SET = set(INITIALS)
 
 
 def split_tone(py):
@@ -665,6 +671,83 @@ def build_radical_class():
     return out
 
 
+# ---------------------------------------------------------------- 拼音
+
+PINYIN_PICK_STEM = '「%s」是哪个字？'
+SOUND_STEM = '下面哪个是声母？'
+FINAL_STEM = '下面哪个是韵母？'
+
+# 拼音题的两类。selfcheck 用它来放行拉丁字母 —— 除此之外全库照旧禁拼音。
+PINYIN_TAGS = {'看拼音选字', '声母韵母'}
+
+
+def pinyin_pool():
+    """能做读音题的候选字：一年级范围内，且不是多音字。
+
+    多音字挡在外面，是因为字表只记了一个「常用读音」—— 问「长」读什么，
+    孩子按另一个读法答也是对的，那道题就变成猜出题人的意思了。
+    """
+    return [c for c in sorted(CHARS) if in_scope(c) and c not in POLYPHONIC]
+
+
+def build_pinyin_pick():
+    """看拼音选字：「gǒu」是哪个字？
+
+    干扰项优先取**同声母、不同韵母**的字（gǒu → gào / gān）：拼音长得像，
+    必须真的把韵母读出来才能选对。不够再用别的字补齐。
+
+    同音节（同音字）一律不做干扰项 —— 那会让这道题有两个正确答案，
+    而选项全是汉字，肉眼根本看不出来。
+    """
+    pool = pinyin_pool()
+    base = {c: split_tone(CHARS[c][0])[0] for c in pool}
+    ini = {c: split_syllable(CHARS[c][0])[0] for c in pool}
+
+    qs = []
+    for ch in seeded('pinyin-pick').shuffle(pool):
+        py = CHARS[ch][0]
+        b = base[ch]
+        near = [c for c in pool if c != ch and base[c] != b and ini[c] == ini[ch]]
+        far = [c for c in pool if c != ch and base[c] != b and ini[c] != ini[ch]]
+        ds = seeded('pinyin-near' + ch).shuffle(near)[:3]
+        if len(ds) < 3:
+            ds += [c for c in seeded('pinyin-far' + ch).shuffle(far)
+                   if c not in ds][:3 - len(ds)]
+        if len(ds) < 3:
+            continue
+        qs.append(make_choice(
+            'chinese', 'zi-pinyin-%04d' % (len(qs) + 1), '看拼音选字', 2,
+            PINYIN_PICK_STEM % py, ch, ds,
+            '「%s」读「%s」。' % (ch, py),
+        ))
+    return qs
+
+
+def build_initial_final():
+    """声母 / 韵母辨析：下面哪个是声母（韵母）？
+
+    声母表和韵母表**互不相交**，所以「选项里有且只有一个属于目标表」
+    是构造保证的，不是挑出来的。selfcheck 会拿两张表反过来验一遍。
+    """
+    shengmu, yunmu = [], []
+
+    for ini in seeded('sf-initials').shuffle(INITIALS):
+        ds = seeded('sf-i' + ini).shuffle(FINALS)[:3]
+        shengmu.append(make_choice(
+            'chinese', 'zi-shengmu-%04d' % (len(shengmu) + 1), '声母韵母', 1,
+            SOUND_STEM, ini, ds, '「%s」是声母。' % ini,
+        ))
+
+    for fin in seeded('sf-finals').shuffle(FINALS):
+        ds = seeded('sf-f' + fin).shuffle(INITIALS)[:3]
+        yunmu.append(make_choice(
+            'chinese', 'zi-yunmu-%04d' % (len(yunmu) + 1), '声母韵母', 1,
+            FINAL_STEM, fin, ds, '「%s」是韵母。' % fin,
+        ))
+
+    return interleave([shengmu, yunmu])
+
+
 # ---------------------------------------------------------------- 主流程
 
 # (标签, 构造函数, 上限)。上限之和**正好等于** LIMIT —— 这样每类的题量是
@@ -673,15 +756,17 @@ def build_radical_class():
 # 语文一科占 90 道，是「语文:数学:英语 = 3:3:4」里的那份 3（见 build.py
 # 的 SUBJECT_MIX）。
 BUILDERS = [
-    ('归类', build_category, 22),
-    ('反义词', build_antonym, 18),
-    ('笔画', build_strokes, 18),
-    ('部首', build_radical, 14),
-    ('加一笔减一笔', build_stroke_change, 10),
+    ('看拼音选字', build_pinyin_pick, 47),
+    ('声母韵母', build_initial_final, 30),
+    ('归类', build_category, 30),
+    ('加减一笔', build_stroke_change, 23),
+    ('笔画', build_strokes, 22),
+    ('反义词', build_antonym, 20),
+    ('部首', build_radical, 20),
     ('偏旁', build_radical_class, 8),
 ]
 
-LIMIT = 90
+LIMIT = 200
 
 
 # ---------------------------------------------------------------- 自检
@@ -792,16 +877,62 @@ def selfcheck(questions):
                 errs.append('%s：干扰项「%s」也是「%s」旁，题目有两个答案'
                             % (q['id'], o['text'], radical))
 
-    # 全库不许出现拼音。
-    # 「不以拼音的形式出现」是这次改版的硬要求，而拼音最容易从 explain
-    # 里漏出来（「「一」读 yī」这种）。这条断言直接扫题干、选项、解释，
-    # 出现任何拉丁字母或声调符号就判定失败。
+    # 拼音只允许出现在拼音题里。
+    # 一年级上册第一单元就是拼音，幼小衔接阶段绕不开它；但字形题和字义题
+    # 一旦混进拼音，孩子做的就不是同一件事了。所以按题型分别扫：拼音题
+    # 豁免，其余照旧一个拉丁字母都不许有。
     for q in questions:
+        if q['tags'][0] in PINYIN_TAGS:
+            continue
         blob = [q['stem'].get('text') or '', q.get('explain') or '']
         blob += [o['text'] for o in q['options']]
         hit = LATIN_RE.search(' '.join(blob))
         if hit:
             errs.append('%s：出现了拼音/拉丁字母「%s」' % (q['id'], hit.group(0)))
+
+    # 看拼音选字：题干拼音必须真的是答案字的读音，且选项里没有同音字。
+    # 「同音字当干扰项」是这类题唯一会坏的地方 —— 两个汉字选项读音一样，
+    # 字面上看不出任何异常。
+    for q in questions:
+        if q['tags'] != ['看拼音选字']:
+            continue
+        m = re.match(r'^「(.+?)」是哪个字？$', q['stem']['text'])
+        if not m:
+            errs.append('%s：看拼音选字的题干写成了 %r'
+                        % (q['id'], q['stem']['text']))
+            continue
+        py = m.group(1)
+        got = answer_text(q)
+        if CHARS.get(got, (None,))[0] != py:
+            errs.append('%s：题干拼音「%s」，答案却是「%s」（读 %s）'
+                        % (q['id'], py, got, CHARS.get(got, ('?',))[0]))
+        base = split_tone(py)[0]
+        hits = [o['text'] for o in q['options']
+                if o['text'] in CHARS
+                and split_tone(CHARS[o['text']][0])[0] == base]
+        if len(hits) != 1:
+            errs.append('%s：选项里和「%s」同音的字有 %d 个（%s）'
+                        % (q['id'], py, len(hits), '/'.join(hits)))
+
+    # 声母 / 韵母：选项里有且只有一个属于目标表。
+    for q in questions:
+        if q['tags'] != ['声母韵母']:
+            continue
+        stem = q['stem']['text']
+        texts = [o['text'] for o in q['options']]
+        if stem == SOUND_STEM:
+            table = INITIALS_SET
+        elif stem == FINAL_STEM:
+            table = FINALS_SET
+        else:
+            errs.append('%s：声母韵母的题干写成了 %r' % (q['id'], stem))
+            continue
+        hits = [t for t in texts if t in table]
+        if len(hits) != 1:
+            errs.append('%s：选项里属于目标表的项有 %d 个（%s）'
+                        % (q['id'], len(hits), '/'.join(hits)))
+        elif hits[0] != answer_text(q):
+            errs.append('%s：答案「%s」不属于目标表' % (q['id'], answer_text(q)))
 
     # 出题范围：**孩子要认的那个字**必须是一年级的。
     #
@@ -862,8 +993,8 @@ def build_zibiao():
         })
     return {
         '_comment': '幼小衔接识字范围（小学一年级）。由 tools/gen_ziku.py '
-                    '生成，不要手改。这里的 pinyin 只给家长看 —— 题库里'
-                    '一道拼音题都没有，出题一律绕开读音。',
+                    '生成，不要手改。pinyin 既给家长看，也是「看拼音选字」'
+                    '题的答案来源。',
         'chars': rows,
     }
 
@@ -872,7 +1003,7 @@ def main():
     qpath = os.path.join(DATA, 'chinese.json')
     zpath = os.path.join(DATA, 'zi_grade1.json')
 
-    code = run('语文（识字）', 'chinese', qpath, generate, LIMIT,
+    code = run('语文（识字 + 拼音）', 'chinese', qpath, generate, LIMIT,
                extra_checks=selfcheck,
                report_extra=lambda qs: '  字表 %d 个字（全部一年级）' % len(build_zibiao()['chars']))
     if code != 0:

@@ -17,6 +17,7 @@ var SINGLE_RE = /^(?:[一-鿿]|[A-Za-z])$/;
 
 Page({
   data: {
+    subjectLabel: '',
     total: 0,
     stars: 0,
     dots: [],
@@ -34,9 +35,23 @@ Page({
     confettiPieces: []
   },
 
-  onLoad: function () {
+  onLoad: function (query) {
+    var subject = (query && query.subject) || '';
+
+    // 没有科目参数就直接回首页 —— 旧版本跳转过来时会是这种情况。
+    if (G.SUBJECTS.indexOf(subject) < 0) {
+      wx.reLaunch({ url: '/pages/home/home' });
+      return;
+    }
+
+    this.subject = subject;
+    // 顶部标题写成科目名，孩子一眼知道自己在做哪一科
+    try {
+      wx.setNavigationBarTitle({ title: G.SUBJECT_LABEL[subject] || '闯关' });
+    } catch (e) { /* 低版本忽略 */ }
+
     this.save = getApp().globalData.save;
-    this.round = G.Runner.buildRound(this.save);
+    this.round = G.Runner.buildSubjectRound(this.save, subject, G.ROUND_SIZE);
     this.idx = 0;
     this.results = this.round.questions.map(function () { return null; });
     this.items = [];
@@ -70,6 +85,7 @@ Page({
     this.qStartAt = Date.now();
 
     this.setData({
+      subjectLabel: G.SUBJECT_LABEL[this.subject] || '',
       total: this.round.questions.length,
       stars: this.save.points.balance,
       dots: this.buildDots(),
@@ -173,7 +189,7 @@ Page({
   finish: function () {
     var correct = this.results.filter(function (r) { return r === true; }).length;
     var total = this.results.length;
-    var nominal = stars.forCorrect(correct);
+    var nominal = stars.forCorrect(correct, this.subject);
 
     // 顺序不能反：finishSession 记的是**实际到账**的星星。
     // 先 awardPoints 拿到被每日上限削过的值，再把它传给 finishSession，
@@ -183,6 +199,7 @@ Page({
     G.Runner.finishSession(this.save, this.round, this.items, [], award.awarded);
 
     getApp().globalData.lastResult = {
+      subject: this.subject,
       correct: correct,
       total: total,
       stars: award.awarded,

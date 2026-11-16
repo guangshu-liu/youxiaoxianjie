@@ -117,7 +117,7 @@ def build_calc():
     add_qs, sub_qs = [], []
 
     for a, b in adds:
-        if len(add_qs) >= 13:
+        if len(add_qs) >= 50:
             break
         r = a + b
         # 干扰项：忘了进位（少 10）、多写一个十（多 10）、差 1、差 2、
@@ -135,7 +135,7 @@ def build_calc():
             layout='big-number'))
 
     for a, b in subs:
-        if len(sub_qs) >= 13:
+        if len(sub_qs) >= 50:
             break
         r = a - b
         # 干扰项：忘了退位（多 10）、退多了（少 10）、差 1、差 2、
@@ -178,7 +178,7 @@ def build_chaishu():
 
     ones, tens = [], []
     for n in ones_pool:
-        if len(ones) >= 6:
+        if len(ones) >= 7:
             break
         tens_digit, ones_digit = n // 10, n % 10
         tens_val = tens_digit * 10
@@ -197,7 +197,7 @@ def build_chaishu():
             layout='big-number'))
 
     for n in tens_pool:
-        if len(tens) >= 6:
+        if len(tens) >= 7:
             break
         tens_digit, ones_digit = n // 10, n % 10
         tens_val = tens_digit * 10
@@ -219,7 +219,7 @@ def build_chaishu():
     couple = []
     pairs = [(a, b) for a in range(2, 10) for b in range(2, 10) if a + b > 10]
     for a, b in seeded('chaishu-couple').shuffle(pairs):
-        if len(couple) >= 6:
+        if len(couple) >= 7:
             break
         fill = 10 - a                  # 8 拆成 3 和 5 里的那个 3
         r = b - fill                   # = a + b - 10，1..8
@@ -237,7 +237,7 @@ def build_chaishu():
     # 数位：56 里面有 5 个十和几个一
     digit = []
     for n in digit_pool:
-        if len(digit) >= 6:
+        if len(digit) >= 7:
             break
         tens_digit, ones_digit = n // 10, n % 10
         # 干扰项里的 5（十位数字）是专门留给「把几个十当成几个一」的
@@ -315,26 +315,36 @@ def word_numbers(rng, op, used):
 
 
 def build_word():
-    """应用题：一句话情境，孩子要自己判断该加还是该减。"""
+    """应用题：一句话情境，孩子要自己判断该加还是该减。
+
+    20 道 = 14 个模板各一道 + 再从模板里补 6 道（换一组数字）。
+    模板不够用，但补题时用的数字和第一轮完全不同（`used` 挡着），
+    所以不会出现「同一道题换个数字又来一遍」。
+    """
     add_qs, sub_qs = [], []
     used = set()
 
-    for ti, (fmt, op) in enumerate(WORD_PROBLEMS):
-        a, b = word_numbers(seeded('word', ti), op, used)
-        used.add((a, b, op))
-        r = a + b if op == '+' else a - b
-        # 干扰项：差 1、差 10，以及「该加的时候减了 / 该减的时候加了」。
-        # 最后那个是最值钱的 —— 孩子列错算式时写的就是它。
-        ds = near_miss(r, [r - 1, r + 1, r - 10, r + 10,
-                           (a - b) if op == '+' else (a + b), r + 2],
-                       'word%d-%d-%d' % (ti, a, b))
-        if len(ds) < 3:
-            continue
-        q = make_choice(
-            'math', 'ma-word-%04d' % (ti + 1), '应用题', 2,
-            fmt % (a, b), str(r), ds,
-            '用%s法：%d %s %d = %d。' % ('加' if op == '+' else '减', a, op, b, r))
-        (add_qs if op == '+' else sub_qs).append(q)
+    for rnd in range(2):
+        for ti, (fmt, op) in enumerate(WORD_PROBLEMS):
+            if len(add_qs) + len(sub_qs) >= 20:
+                break
+            a, b = word_numbers(seeded('word', rnd, ti), op, used)
+            used.add((a, b, op))
+            r = a + b if op == '+' else a - b
+            # 干扰项：差 1、差 10，以及「该加的时候减了 / 该减的时候加了」。
+            # 最后那个是最值钱的 —— 孩子列错算式时写的就是它。
+            ds = near_miss(r, [r - 1, r + 1, r - 10, r + 10,
+                               (a - b) if op == '+' else (a + b), r + 2],
+                           'word%d-%d-%d' % (ti, a, b))
+            if len(ds) < 3:
+                continue
+            n = len(add_qs) + len(sub_qs) + 1
+            q = make_choice(
+                'math', 'ma-word-%04d' % n, '应用题', 2,
+                fmt % (a, b), str(r), ds,
+                '用%s法：%d %s %d = %d。'
+                % ('加' if op == '+' else '减', a, op, b, r))
+            (add_qs if op == '+' else sub_qs).append(q)
 
     # 加一道减一道，不然连着七道都是同一种算式
     return interleave([add_qs, sub_qs])
@@ -357,7 +367,7 @@ def build_compare():
     used = set()
 
     for _ in range(400):
-        if len(just_max) >= 4 and len(just_min) >= 4:
+        if len(just_max) >= 6 and len(just_min) >= 6:
             break
         nums = pick(rng, range(1, MAX_NUM + 1), 4)
         if not nums:
@@ -371,7 +381,7 @@ def build_compare():
         # 一轮只喂给一个问法。两个问法共用同一组四位数的话，轮着抽出来就是
         # 「哪个最大？[49,24,1,42]」紧跟「哪个最小？[49,24,1,42]」——
         # 同一组数连问两遍，第二遍孩子是背出来的，不是比出来的。
-        if len(just_max) < 4 and len(just_max) <= len(just_min):
+        if len(just_max) < 6 and len(just_max) <= len(just_min):
             ds = [str(x) for x in nums if x != mx]      # 四个数互不相同，答案唯一
             just_max.append(make_choice(
                 'math', 'ma-big-%04d' % (len(just_max) + 1), '比大小', 1,
@@ -380,7 +390,7 @@ def build_compare():
                 % (mx, '、'.join(str(x) for x in sorted(nums)[:-1]), mx)))
             continue
 
-        if len(just_min) < 4:
+        if len(just_min) < 6:
             ds = [str(x) for x in nums if x != mn]
             just_min.append(make_choice(
                 'math', 'ma-small-%04d' % (len(just_min) + 1), '比大小', 1,
@@ -393,7 +403,7 @@ def build_compare():
     two = []
     rng2 = seeded('compare-two')
     for _ in range(200):
-        if len(two) >= 4:
+        if len(two) >= 6:
             break
         a = rng2.int(5, MAX_NUM)
         b = rng2.int(5, MAX_NUM)
@@ -443,7 +453,7 @@ def build_seq():
         cands = rng.shuffle(cands)
         qs = []
         for start, d in cands:
-            if len(qs) >= 4:
+            if len(qs) >= 7:
                 break
             t1, t2, t3 = start, start + d, start + 2 * d
             r = t3 + d
@@ -573,15 +583,15 @@ def build_classify():
 # 数学占 90 道，是「语文:数学:英语 = 3:3:4」里的那份 3（见 build.py 的
 # SUBJECT_MIX）。
 BUILDERS = [
-    ('直接计算', build_calc, 26),
-    ('拆数凑十', build_chaishu, 18),
-    ('应用题', build_word, 14),
-    ('比大小', build_compare, 12),
-    ('找规律', build_seq, 12),
-    ('分类', build_classify, 8),
+    ('直接计算', build_calc, 100),
+    ('拆数凑十', build_chaishu, 28),
+    ('应用题', build_word, 20),
+    ('比大小', build_compare, 18),
+    ('找规律', build_seq, 20),
+    ('分类', build_classify, 14),
 ]
 
-LIMIT = 90
+LIMIT = 200
 
 
 # ---------------------------------------------------------------- 自检

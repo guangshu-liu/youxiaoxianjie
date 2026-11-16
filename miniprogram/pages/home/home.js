@@ -6,7 +6,7 @@ var sfx = require('../../lib/sfx.js');
 Page({
   data: {
     stars: 0,
-    mixText: '',
+    subTitle: '',
     badges: [],
     progressPct: 0,
     nextBadge: null,
@@ -22,11 +22,7 @@ Page({
 
     this.setData({
       stars: save.points.balance || 0,
-      // 一局的构成在开始前就说清楚 —— 孩子和家长都该知道
-      // 这一局会遇到什么，而不是玩到第 4 题才发现有数学。
-      mixText: G.SUBJECTS.map(function (s) {
-        return (G.SUBJECT_LABEL[s] || s) + ' ' + (G.DEFAULT_MIX[s] || 0);
-      }).join(' · '),
+      subTitle: '选一科，每局 ' + G.ROUND_SIZE + ' 题',
       badges: stars.badgeState(lifetime),
       progressPct: stars.progressPct(lifetime),
       nextBadge: stars.nextBadge(lifetime),
@@ -34,9 +30,11 @@ Page({
     });
   },
 
-  onStart: function () {
+  /** 三科入口。一局只出一科 —— 孩子清楚自己在练什么，家长也好看成绩。 */
+  onStart: function (e) {
     sfx.play('ui.tap');
-    wx.navigateTo({ url: '/pages/play/play' });
+    var subject = e.currentTarget.dataset.subject;
+    wx.navigateTo({ url: '/pages/play/play?subject=' + subject });
   },
 
   onParent: function () {

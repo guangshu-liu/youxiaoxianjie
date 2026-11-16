@@ -129,6 +129,30 @@ view, text, button, input, textarea {
 .home-row { display: flex; gap: var(--gap); width: 100%; max-width: 520px; }
 .home-row .btn { flex: 1; }
 
+/* 三科入口。一局只出一科。 */
+.subject-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+}
+
+.subject-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.subject-emoji { font-size: 32px; }
+.subject-name { font-size: 30px; font-weight: 800; letter-spacing: 4px; }
+
+.subject-en {
+  background: linear-gradient(180deg, #8BE58B 0%, #66BB6A 100%);
+  color: #fff;
+}
+
 .home-last { margin-top: 18px; font-size: 17px; color: var(--c-ink-soft); }
 
 .screen-home .btn-xl { max-width: 520px; }
@@ -399,6 +423,7 @@ view, text, button, input, textarea {
   gap: 14px;
 }
 
+.summary-subject { font-size: 20px; color: var(--c-ink-soft); letter-spacing: 4px; }
 .summary-emoji { font-size: 76px; line-height: 1; animation: pop-ok .7s ease-out; }
 .summary-title { font-size: 34px; font-weight: 800; color: var(--c-primary-d); }
 .summary-score { font-size: 54px; font-weight: 800; color: var(--c-second); letter-spacing: 3px; }

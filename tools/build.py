@@ -219,13 +219,20 @@ def template():
 
 # ---------------------------------------------------------------- 校验
 
-# 题量上限。需求是「控制在 300 以内」，这里是它的机器版本。
-QUESTION_LIMIT = 300
+# 题量上限。三科各 200、合计 600，这里是它的机器版本。
+QUESTION_LIMIT = 600
 
 # 三科的配比，3:3:4。**这是配比的唯一真相源** —— 生成器的 BUILDERS 上限
 # 之和、这里对题库的校验、以及产物里内联给运行时的 G.DATA.mix，全都由它
 # 推出来，不存在「改了这里忘了改那里」。
 SUBJECT_MIX = {'chinese': 3, 'math': 3, 'english': 4}
+
+# 题库的配比：三科等量（各 200 道）。
+#
+# 注意它和 SUBJECT_MIX 是**两件事**：SUBJECT_MIX 是一局里三科各出几道
+# （网页版仍然是 3:3:4 的混合局），BANK_RATIO 是题库里三科的题量分布。
+# 小程序改成了「选一科、10 题」的单科局，更说明这两个数不能混用。
+BANK_RATIO = {'chinese': 1, 'math': 1, 'english': 1}
 
 SUBJECT_LABEL = {'chinese': '语文', 'math': '数学', 'english': '英语'}
 
@@ -249,8 +256,8 @@ def expected_counts(total):
     用最大余数法，保证分出来的和**正好**等于 total —— 直接四舍五入会
     出现 90+90+119=299 这种差一道的结果。
     """
-    weight = sum(SUBJECT_MIX.values())
-    exact = {s: total * w / weight for s, w in SUBJECT_MIX.items()}
+    weight = sum(BANK_RATIO.values())
+    exact = {s: total * w / weight for s, w in BANK_RATIO.items()}
     out = {s: int(v) for s, v in exact.items()}
     rest = total - sum(out.values())
     for s in sorted(exact, key=lambda s: -(exact[s] - int(exact[s]))):
@@ -296,10 +303,10 @@ def validate(entries):
     want = expected_counts(total)
     for s, n in sorted(banks.items()):
         if abs(len(n) - want[s]) > 1:
-            errors.append('配比不对：%s 应约 %d 道（%d:%d:%d），实际 %d 道'
+            errors.append('题库配比不对：%s 应约 %d 道（%d:%d:%d），实际 %d 道'
                           % (SUBJECT_LABEL[s], want[s],
-                             SUBJECT_MIX['chinese'], SUBJECT_MIX['math'],
-                             SUBJECT_MIX['english'], len(n)))
+                             BANK_RATIO['chinese'], BANK_RATIO['math'],
+                             BANK_RATIO['english'], len(n)))
 
     # ---- 逐题 ----
     all_ids = set()
@@ -352,12 +359,16 @@ def validate(entries):
                                 errors.append('%s：选项「%s」不在字表内'
                                               % (qid, o.get('text')))
 
-                # 全库不许出现拼音
-                blob = ' '.join([stem.get('text') or '', q.get('explain') or ''] + texts)
-                m = LATIN_RE.search(blob)
-                if m:
-                    errors.append('%s：识字题里出现了拼音/拉丁字母「%s」'
-                                  % (qid, m.group(0)))
+                # 拼音只允许出现在拼音题里（一年级上册第一单元就是拼音）。
+                # 字形题和字义题一旦混进拼音，孩子做的就不是同一件事了 ——
+                # 所以「看拼音选字 / 声母韵母」豁免，其余照旧拦截。
+                PINYIN_TAGS = {'看拼音选字', '声母韵母'}
+                if not (set(tags) & PINYIN_TAGS):
+                    blob = ' '.join([stem.get('text') or '', q.get('explain') or ''] + texts)
+                    m = LATIN_RE.search(blob)
+                    if m:
+                        errors.append('%s：识字题里出现了拼音/拉丁字母「%s」'
+                                      % (qid, m.group(0)))
 
             # 音频引用必须存在
             for aid in audio_refs(q):

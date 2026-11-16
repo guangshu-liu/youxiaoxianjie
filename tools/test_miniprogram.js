@@ -49,6 +49,7 @@ const wx = {
   vibrateShort() {},
 
   setInnerAudioOption() {},
+  setNavigationBarTitle() {},
   showToast() {},
   showModal() {},
   setClipboardData(o) { if (o && o.success) o.success(); },
@@ -116,10 +117,10 @@ eq(G.SUBJECTS.join(','), 'chinese,math,english', '三科名称');
 eq(G.DEFAULT_MIX.chinese + ':' + G.DEFAULT_MIX.math + ':' + G.DEFAULT_MIX.english,
    '3:3:4', '配比来自 bank.mix');
 eq(G.ROUND_SIZE, 10, '一局 10 题');
-eq(G.Bank.all().length, 300, '题库 300 道');
-eq(G.Bank.of('chinese').length, 90, '语文 90 道');
-eq(G.Bank.of('math').length, 90, '数学 90 道');
-eq(G.Bank.of('english').length, 120, '英语 120 道');
+eq(G.Bank.all().length, 600, '题库 600 道');
+eq(G.Bank.of('chinese').length, 200, '语文 200 道');
+eq(G.Bank.of('math').length, 200, '数学 200 道');
+eq(G.Bank.of('english').length, 200, '英语 200 道');
 ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
 /* ---- 2. 存档 ---- */
@@ -143,18 +144,35 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const bySubject = {};
   round.questions.forEach((q) => { bySubject[q.subject] = (bySubject[q.subject] || 0) + 1; });
 
-  eq(round.questions.length, 10, '一局 10 题');
-  eq(bySubject.chinese, 3, '一局语文 3 题');
-  eq(bySubject.math, 3, '一局数学 3 题');
-  eq(bySubject.english, 4, '一局英语 4 题');
-  eq(new Set(round.questions.map((q) => q.id)).size, 10, '一局内不重题');
+  eq(round.questions.length, 10, '混合局 10 题');
+  eq(bySubject.chinese, 3, '混合局语文 3 题');
+  eq(bySubject.math, 3, '混合局数学 3 题');
+  eq(bySubject.english, 4, '混合局英语 4 题');
+  eq(new Set(round.questions.map((q) => q.id)).size, 10, '混合局内不重题');
+}
+
+/* ---- 3b. 单科局（小程序实际用的） ---- */
+{
+  const save = G.Store.load();
+  G.SUBJECTS.forEach((subject) => {
+    const round = G.Runner.buildSubjectRound(save, subject, 10);
+    eq(round.questions.length, 10, subject + ' 单科局 10 题');
+    eq(round.questions.filter((q) => q.subject === subject).length, 10,
+       subject + ' 单科局只出这一科');
+    eq(new Set(round.questions.map((q) => q.id)).size, 10,
+       subject + ' 单科局内不重题');
+  });
 }
 
 /* ---- 4. 星星规则 ---- */
 {
-  const cases = [[0, 1], [4, 1], [5, 2], [7, 2], [8, 3], [10, 3]];
-  cases.forEach(([correct, want]) => {
-    eq(stars.forCorrect(correct), want, '答对 ' + correct + ' 题 → ' + want + ' 星');
+  // 阈值 9 / 6：做对 9 题才 3 星，6 题才 2 星，其余 1 星保底。
+  const cases = [[0, 1], [5, 1], [6, 2], [8, 2], [9, 3], [10, 3]];
+  G.SUBJECTS.forEach((subject) => {
+    cases.forEach(([correct, want]) => {
+      eq(stars.forCorrect(correct, subject), want,
+         subject + ' 答对 ' + correct + ' 题 → ' + want + ' 星');
+    });
   });
 
   const names = stars.badgeState(100).map((b) => b.name).join(',');
@@ -172,9 +190,10 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(!!cfg && typeof cfg.onLoad === 'function', 'play 页能加载');
 
   const page = makeInstance(cfg);
-  page.onLoad();
+  page.onLoad({ subject: 'chinese' });
 
   eq(page.data.total, 10, 'play 页读到 10 道题');
+  eq(page.data.subjectLabel, '语文', 'play 页显示科目名');
   eq(page.data.options.length, 4, '第一题 4 个选项');
   eq(page.data.dots.length, 10, '进度点 10 个');
   eq(page.data.dots[0].state, 'now', '第一个点是当前题');
@@ -210,7 +229,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 {
   const cfg = loadPage('pages/play/play.js');
   const page = makeInstance(cfg);
-  page.onLoad();
+  page.onLoad({ subject: 'math' });
 
   for (let i = 0; i < 10; i++) {
     const q = page.round.questions[page.idx];

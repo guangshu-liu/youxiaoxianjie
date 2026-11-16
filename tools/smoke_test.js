@@ -326,7 +326,7 @@ function testRenderer() {
 
   const withAudio = all.filter((q) => q.stem && q.stem.audio);
   const silent = all.filter((q) => !(q.stem && q.stem.audio));
-  ok(withAudio.length === 40, '题库里 40 道带音频（听音选字母）',
+  ok(withAudio.length === 70, '题库里 70 道带音频（听音选字母）',
      '带音频 ' + withAudio.length);
 
   // ---- 带音频的题：题干文字必须渲染出来 ----
@@ -498,15 +498,15 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
   const all = Bank.all();
   const sum = G.SUBJECTS.reduce((n, s) => n + data[s].length, 0);
   eq(all.length, sum, 'Bank.all() 与三科题库总和等长');
-  ok(all.length <= 300, '题量在上限 300 以内', all.length + ' 道');
+  ok(all.length <= 600, '题量在上限 600 以内', all.length + ' 道');
 
-  // 需求是「三类知识控制在 300 题，比例 3:3:4」。
-  // 用最大余数法算期望值，允许 ±1 的取整误差 —— 300 不能被 10 整除到
-  // 每一份都是整数，硬要求相等会要求改题目数量去凑，本末倒置。
-  const want = { chinese: 90, math: 90, english: 120 };
+  // 三科等量：各 200 道。
+  // 注意这和「一局 3:3:4」是两件事 —— 题库配比是等量的，一局的构成
+  // 仍然由 G.DEFAULT_MIX 决定（见下面单独一条）。
+  const want = { chinese: 200, math: 200, english: 200 };
   G.SUBJECTS.forEach((s) => {
-    ok(Math.abs(data[s].length - want[s]) <= 1,
-       s + ' 题量约 ' + want[s] + ' 道（3:3:4）', data[s].length + ' 道');
+    ok(data[s].length === want[s],
+       s + ' 题量 ' + want[s] + ' 道', data[s].length + ' 道');
   });
 
   const chars = new Set(ZI.chars.map((c) => c.char));
@@ -586,27 +586,28 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
 }
 
 {
-  // ---- 全库不得出现拼音 ----
-  // 需求第 1 条：「汉字以简单认字为主，不以拼音的形式出现，全部题库内
-  // 拒绝出现拼音」。这条是硬约束，而且是最容易在加题时悄悄破掉的一条 ——
-  // 混进一道带拼音的题，孩子照样能做，只是做的是另一件事。
-  //
-  // 判定：拉丁字母 + 声调元音（ā á ǎ à …）。不查「看起来像拼音」，
-  // 查「里面有拉丁字符」—— 宁可误伤也绝不漏掉。英语题本来就该有拉丁
-  // 字母，所以只查语文和数学。
+  // ---- 拼音只允许出现在拼音题里 ----
+  // 上一版是「全库禁拼音」。一年级上册第一单元就是拼音，幼小衔接绕不开，
+  // 所以现在放开两类题（看拼音选字 / 声母韵母）。其余题型仍然一个字都
+  // 不许有 —— 字形题混进拼音，孩子做的就不是同一件事了。
   const LATIN = /[A-Za-zÀ-ɏḀ-ỿ]/;
+  const PINYIN_TAGS = new Set(['看拼音选字', '声母韵母']);
   const withPinyin = [];
-  G.SUBJECTS.filter((s) => s !== 'english').forEach((s) => {
-    Bank.of(s).forEach((q) => {
-      const parts = [q.stem && q.stem.text, q.explain]
-        .concat((q.options || []).map((o) => o.text));
-      parts.forEach((t) => {
-        if (t && LATIN.test(t)) withPinyin.push(q.id + '：' + t);
-      });
+  Bank.all().forEach((q) => {
+    if (q.subject === 'english') return;
+    if (PINYIN_TAGS.has((q.tags || [])[0])) return;
+    const parts = [q.stem && q.stem.text, q.explain]
+      .concat((q.options || []).map((o) => o.text));
+    parts.forEach((t) => {
+      if (t && LATIN.test(t)) withPinyin.push(q.id + '：' + t);
     });
   });
-  ok(withPinyin.length === 0, '语文 / 数学题库里没有一处拼音或拉丁字母',
+  ok(withPinyin.length === 0, '拼音只出现在拼音题里',
      withPinyin.slice(0, 4).join(' | '));
+
+  // 反过来：拼音题必须真的有拼音，否则那两类等于白设。
+  const pinyinQs = Bank.all().filter((q) => PINYIN_TAGS.has((q.tags || [])[0]));
+  ok(pinyinQs.length > 0, '存在拼音题', pinyinQs.length + ' 道');
 }
 
 {

@@ -22,7 +22,7 @@ OPW1 只教三件事：字母的名字、大写和小写的形状、字母在词
 
 新题型全部只依赖字母，不需要读任何英语单词：
 
-    听音选字母 40 · 大小写配对 40 · 字母顺序 26 · 元音字母 14 = 120
+    听音选字母 70 · 大小写配对 52 · 字母顺序 48 · 元音字母 30 = 200
 
 四者的共同点：**唯一答案都是构造保证的**，不靠出题人的语感。听音题是
 「四个选项两两不同音」，配对题是「只有一个选项是那个字母的另一半」，
@@ -327,7 +327,7 @@ def build_vowel():
     groups = []
     for v in VOWELS:
         qs = []
-        for k in range(4):
+        for k in range(6):
             ds = seeded('vowel|%s|%d' % (v, k)).shuffle(CONSONANTS)[:3]
             qs.append(make_choice(
                 'english', 'en-vowel-%s-%d' % (v.lower(), k + 1), '元音字母', 2,
@@ -350,15 +350,16 @@ def build_vowel():
 # 顺序 26 × 2 − 2（A 前 / Z 后）= 50；元音 5 × 4 = 20。
 # 都大于各自的上限，上限才是真的配额。
 BUILDERS = [
-    ('听音选字母', build_listen, 40),
-    ('大小写配对', build_case, 40),
-    # 26 = 每个字母正好一道：interleave() 一轮就把 26 个字母各取一道，
-    # 方向由 seeded 打散，所以「上一个 / 下一个」两种都会出现。
-    ('字母顺序', build_order, 26),
-    ('元音字母', build_vowel, 14),
+    # 可出题量：听音 25 字母 × 3 词 = 75；配对 26 × 2 = 52；
+    # 顺序 26 × 2 − 2（A 前 / Z 后）= 50；元音 5 × 6 = 30。
+    # 上限都卡在可出量以内，selfcheck 会验「每类正好出满」。
+    ('听音选字母', build_listen, 70),
+    ('大小写配对', build_case, 52),
+    ('字母顺序', build_order, 48),
+    ('元音字母', build_vowel, 30),
 ]
 
-LIMIT = 120
+LIMIT = 200
 
 
 def generate():
