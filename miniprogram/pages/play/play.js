@@ -10,6 +10,7 @@ var G = require('../../generated/lib/game.js');
 var stars = require('../../lib/stars.js');
 var sfx = require('../../lib/sfx.js');
 var audio = require('../../lib/audio.js');
+var tts = require('../../lib/tts.js');
 var confetti = require('../../lib/confetti.js');
 
 /** 单个汉字或单个字母要放大（b/d/p/q 长得像，不放大只能靠猜）。 */
@@ -25,6 +26,8 @@ Page({
     layout: 'grid',
     hasAudio: false,
     audioId: '',
+    canRead: false,
+    readText: '',
     options: [],
     answered: false,
     fb: '',
@@ -62,6 +65,7 @@ Page({
 
   onUnload: function () {
     this.clearTimers();
+    tts.stop();
   },
 
   /* ---------- 渲染 ---------- */
@@ -81,8 +85,17 @@ Page({
     });
 
     this.clearTimers();
+    // 先掐掉上一题的朗读和自动播定时器，否则会念出已经翻过去的题干。
+    tts.stop();
     this._answered = false;
     this.qStartAt = Date.now();
+
+    // 只朗读题干、不朗读选项；听音题有自带音频，跳过朗读。
+    // 规则在 generated/lib/game.js 里，和网页版共用同一份实现。
+    var readInfo = G.TTSText ? G.TTSText.forQuestion(q) : { text: '', skip: true };
+    var canRead = !readInfo.skip && !!readInfo.text
+      && !(this.save.settings && this.save.settings.readStem === false)
+      && tts.available();
 
     this.setData({
       subjectLabel: G.SUBJECT_LABEL[this.subject] || '',
@@ -93,6 +106,8 @@ Page({
       layout: layout,
       hasAudio: !!(q.stem && q.stem.audio),
       audioId: (q.stem && q.stem.audio) || '',
+      canRead: canRead,
+      readText: canRead ? readInfo.text : '',
       options: options,
       answered: false,
       fb: '',
@@ -108,6 +123,9 @@ Page({
     if (q.stem && q.stem.audio) {
       var id = q.stem.audio;
       this.later(350, function () { audio.play(id); });
+    } else if (canRead) {
+      var text = readInfo.text;
+      tts.schedule(text, 350);
     }
   },
 
@@ -220,6 +238,11 @@ Page({
     if (this.data.audioId) audio.play(this.data.audioId);
   },
 
+  onReadStem: function () {
+    sfx.play('ui.tap');
+    if (this.data.readText) tts.speak(this.data.readText);
+  },
+
   onExit: function () {
     sfx.play('ui.tap');
     var self = this;
@@ -231,6 +254,7 @@ Page({
       success: function (res) {
         if (!res.confirm) return;
         self.clearTimers();
+        tts.stop();
         wx.navigateBack({ delta: 1 });
       }
     });

@@ -174,6 +174,18 @@ function makeSandbox() {
   sandbox.addEventListener = () => {};
   sandbox.matchMedia = () => ({ matches: false, addListener() {}, addEventListener() {} });
 
+  // Web Speech API 桩：记录每次念了什么，用来断言「只念题干、不念选项」。
+  // 不提供 onerror/onend 的自动回调 —— 让按钮状态保留，方便检查类名。
+  sandbox.__spoken = [];
+  sandbox.__cancelled = 0;
+  sandbox.speechSynthesis = {
+    speak(u) { sandbox.__spoken.push(u && u.text); },
+    cancel() { sandbox.__cancelled++; },
+    getVoices() { return [{ lang: 'zh-CN', name: 'Tingting' }]; },
+    addEventListener() {}
+  };
+  sandbox.SpeechSynthesisUtterance = function (text) { this.text = text; };
+
   return sandbox;
 }
 
@@ -187,7 +199,9 @@ function makeSandbox() {
 // if/else if 让英语题的文字题干全都不显示，就是这么漏的）。桩只要
 // 把 className/classList 和事件监听做真，这一整类 bug 是能在无头环境里
 // 抓住的，所以 41 加进来了。
-const LOGIC = /^(00|05|10|20|21|30|40|41|50|60)0?-|^(00|10|20|21|30|40|41|50|60)-/;
+// 22/23 是题干朗读：22 是纯规则（两端共用），23 是浏览器播放层。
+// 都放进无头测试，才能在没有真机的情况下挡住「念了选项 / 念错拼音」。
+const LOGIC = /^(00|05|10|20|21|22|23|30|40|41|50|60)-/;
 
 function loadGame(sandbox, fromBuild) {
   const loaded = [];
@@ -372,10 +386,80 @@ function testRenderer() {
     }
   }
 
-  // ---- 没有音频的题不该凭空多一个喇叭 ----
+  // ---- 没有音频的题不该凭空多一个「播放音频文件」的喇叭 ----
+  // 题干朗读用的是另一个 read-stem 按钮，不算在这一条里。
   let straySpeaker = 0;
-  silent.forEach((q) => { if (render(q).of('speaker').length) straySpeaker++; });
-  eq(straySpeaker, 0, '没有音频的题不会出现喇叭按钮');
+  silent.forEach((q) => {
+    const spk = render(q).of('speaker').filter((n) => !n.classList.contains('read-stem'));
+    if (spk.length) straySpeaker++;
+  });
+  eq(straySpeaker, 0, '没有音频的题不会出现音频播放喇叭');
+
+  /* ---- 题干朗读：只念题干，不念选项 ---- */
+  section('9. 题干朗读（22-tts-text.js / 23-tts.js）');
+  const TT = G.TTSText;
+  ok(!!TT && typeof TT.forQuestion === 'function', 'TTSText 规则已加载');
+  ok(!!G.TTS && G.TTS.available(), '浏览器语音合成可用（无头桩）');
+
+  if (TT) {
+    ok(withAudio.every((q) => TT.forQuestion(q).skip),
+       '自带音频的听音题一律不朗读题干（不和单词音频抢喇叭）');
+
+    const pinyin = all.filter((q) => (q.tags || [])[0] === '看拼音选字');
+    ok(pinyin.length > 0 && pinyin.every((q) => {
+      const r = TT.forQuestion(q);
+      // 带声调的拉丁字母交给中文 TTS 会读成「何文红」，甚至念出答案字
+      return !r.skip && !/[A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/.test(r.text);
+    }), '拼音题改成不含拼音的固定提示（不会念出答案）', pinyin.length + ' 道');
+
+    const calc = all.filter((q) => q.subject === 'math' && /[+\-=?]/.test(q.stem.text));
+    ok(calc.length > 0 && calc.every((q) => {
+      const t = TT.forQuestion(q).text;
+      return t && !/[+\-=?]/.test(t);
+    }), '算式 + - = ? 换成中文读法', calc.length + ' 道');
+
+    const en = all.filter((q) => q.subject === 'english' && !q.stem.audio);
+    ok(en.length > 0 && en.every((q) => !/[A-Za-z]{2,}/.test(TT.forQuestion(q).text)),
+       '英语题干不留多字母英文片段（中文音色会念成别的词）', en.length + ' 道');
+
+    ok(silent.every((q) => TT.forQuestion(q).text.length > 0),
+       '每道非听音题都有可朗读的题干');
+    ok(all.every((q) => TT.forQuestion(q).text.indexOf('\n') < 0),
+       '朗读文本里没有换行等脏字符');
+  }
+
+  const qPlain = silent[0];
+  const qListen = withAudio[0];
+  ok(render(qPlain).of('read-stem').length === 1, '非听音题有且只有一个读题喇叭');
+  ok(render(qListen).of('read-stem').length === 0, '听音题不出现读题喇叭');
+
+  // 喇叭只挂在题干区，选项按钮上不能出现任何喇叭
+  let optionSpeaker = 0;
+  silent.forEach((q) => {
+    render(q).of('option').forEach((o) => {
+      if (o.classList.contains('speaker') || o.classList.contains('read-stem')) optionSpeaker++;
+    });
+  });
+  eq(optionSpeaker, 0, '选项按钮上没有喇叭（不朗读选项）');
+
+  // 自动播进去的是题干，不是选项文本
+  const origSchedule = G.TTS.schedule;
+  const scheduled = [];
+  G.TTS.schedule = function (text) { scheduled.push(text); };
+  render(qPlain);
+  G.TTS.schedule = origSchedule;
+  eq(scheduled.length, 1, '进题自动安排一次朗读');
+  ok(scheduled[0] === TT.forQuestion(qPlain).text,
+     '自动朗读的是归一化后的题干');
+  ok(qPlain.options.every((o) => scheduled[0] !== o.text),
+     '自动朗读文本不是某个选项（不会把答案念出来）');
+
+  // 家长开关：关掉后喇叭消失
+  const save = G.Store.load();
+  save.settings.readStem = false;
+  ok(render(qPlain).of('read-stem').length === 0, '家长关掉朗读后不出现读题喇叭');
+  save.settings.readStem = true;
+  ok(render(qPlain).of('read-stem').length === 1, '重新打开后读题喇叭回来');
 }
 
 /* ---- 1. 核心工具 ---- */

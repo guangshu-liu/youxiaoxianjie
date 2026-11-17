@@ -19,6 +19,11 @@
         <button wx:if="{{hasAudio}}" class="speaker" bindtap="onSpeaker">
           <text class="speaker-icon">🔊</text>
         </button>
+        <!-- 只朗读题干：听音题走上面的单词音频，其余题才有这个按钮 -->
+        <button wx:if="{{canRead}}" class="speaker read-stem" bindtap="onReadStem">
+          <text class="speaker-icon">🔊</text>
+          <text class="speaker-label">读题</text>
+        </button>
       </view>
 
       <view class="options options-{{layout}}">

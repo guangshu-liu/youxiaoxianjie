@@ -169,6 +169,24 @@
     today.appendChild(row('今日兑换', dc.redemptions + ' / ' + save.limits.maxRedemptionsPerDay));
     box.appendChild(section('今天', today));
 
+    /* --- 题干朗读 --- */
+    var readBox = G.el('div', { class: 'stat-card' });
+    readBox.appendChild(G.el('div', {
+      class: 'muted',
+      text: '进题自动念一遍题干，点喇叭可以重听。只念题目，不念选项。'
+    }));
+    var isOff = save.settings.readStem === false;
+    readBox.appendChild(G.el('button', {
+      class: 'btn btn-sm ' + (isOff ? '' : 'btn-primary'),
+      text: isOff ? '题干朗读：关（点这里打开）' : '题干朗读：开（点这里关闭）',
+      onclick: function () {
+        save.settings.readStem = isOff;
+        G.Store.save(save);
+        rerender();
+      }
+    }));
+    box.appendChild(section('朗读设置', readBox));
+
     /* --- 待确认兑换 --- */
     var pending = G.Redeem.pendingList(save);
     var pendBox = G.el('div', { class: 'stat-card' });

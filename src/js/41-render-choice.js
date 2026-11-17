@@ -45,6 +45,14 @@
 
     var hasAudio = !!(q.stem && q.stem.audio);
 
+    // 题干朗读只给「没有自带音频」的题。听音题已经有英文单词音频，
+    // 再念一句中文提示会和它抢喇叭；拼音题、算式题由 TTSText 换过说法。
+    // 选项一律不朗读 —— 它们就是孩子要辨认的对象。
+    var readInfo = (G.TTSText && G.TTSText.forQuestion)
+      ? G.TTSText.forQuestion(q) : { text: '', skip: true };
+    var canRead = !readInfo.skip && !!readInfo.text
+      && !!(G.TTS && G.TTS.available() && G.TTS.enabled());
+
     if (q.stem && q.stem.prompt) {
       stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
     }
@@ -58,6 +66,8 @@
 
     if (hasAudio) {
       stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    } else if (canRead) {
+      stem.appendChild(G.UI.readStemButton(readInfo.text, { autoplay: true }));
     }
 
     root.appendChild(stem);

@@ -94,7 +94,8 @@ Page({
     sessions: [],
     backupHint: '',
     backupWarn: false,
-    importText: ''
+    importText: '',
+    readStem: true
   },
 
   onLoad: function () {
@@ -146,6 +147,18 @@ Page({
     wx.navigateBack({ delta: 1 });
   },
 
+  /* ---------- 题干朗读开关 ---------- */
+
+  onToggleReadStem: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.readStem = v;
+    G.Store.save(save);
+    this.setData({ readStem: v });
+    sfx.play('ui.tap');
+  },
+
   /* ---------- 面板 ---------- */
 
   buildPanel: function () {
@@ -158,7 +171,8 @@ Page({
       zibiao: this.buildZibiao(save),
       bySubject: this.buildBySubject(save),
       wrong: this.buildWrong(save),
-      sessions: this.buildSessions(save)
+      sessions: this.buildSessions(save),
+      readStem: !(save.settings && save.settings.readStem === false)
     });
     this.buildBackupHint();
   },

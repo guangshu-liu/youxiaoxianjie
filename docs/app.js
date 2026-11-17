@@ -346,6 +346,37 @@
     return btn;
   }
 
+  /**
+   * 「读题」按钮 —— 只念题干，不念选项。
+   *
+   * 和上面的音频喇叭长得一样（孩子只需认一个按钮），但走的是系统语音
+   * 合成而不是 G.Audio 的固定音频文件，所以单独一个 read-stem 类做区分。
+   * 两类喇叭在一道题里互斥：听音题有单词音频，其余题才有读题喇叭。
+   */
+  function readStemButton(text, opts) {
+    opts = opts || {};
+    var btn = G.el('button', {
+      class: 'speaker read-stem',
+      onclick: function () {
+        btn.classList.add('playing');
+        G.TTS.speak(text, {
+          onEnd: function () { btn.classList.remove('playing'); }
+        });
+      }
+    }, [
+      G.el('span', { class: 'speaker-icon', text: '🔊' }),
+      G.el('span', { class: 'speaker-label', text: opts.label || '读题' })
+    ]);
+
+    if (opts.autoplay) {
+      btn.classList.add('playing');
+      G.TTS.schedule(text, 350, {
+        onEnd: function () { btn.classList.remove('playing'); }
+      });
+    }
+    return btn;
+  }
+
   G.UI = {
     toast: toast,
     banner: banner,
@@ -354,7 +385,8 @@
     feedback: feedback,
     confetti: confetti,
     screen: screen,
-    speakerButton: speakerButton
+    speakerButton: speakerButton,
+    readStemButton: readStemButton
   };
 
   // 供 10-store / 20-audio 里的降级路径调用
@@ -416,7 +448,10 @@
       settings: {
         audioEnabled: true,
         mutedAudio: [],
-        weakMode: false
+        weakMode: false,
+        // 题干朗读：默认开。孩子认字少时，题目问什么全靠它。
+        // 老存档没有这个字段，migrate() 会补成 true；不想听可在家长面板关。
+        readStem: true
       },
       // settings.mix 删掉了：它存了一份一局配比的副本，但从头到尾没人读。
       // 配比的唯一真相源是 tools/qbank.py 的 SUBJECT_MIX → 产物里的
@@ -1539,6 +1574,214 @@
 
 })(window);
 
+/* ===== 22-tts-text.js ===== */
+/* 22-tts-text.js — 「题干该念成什么」的纯规则
+ *
+ * 只朗读题干，不朗读选项：选项是单汉字 / 数字 / 字母 / 单词，本来就是
+ * 孩子要辨认的对象，念出来会把识字题变成听力题（英语听音题更会直接泄答案）。
+ *
+ * 这个文件**不碰 DOM、不碰音频 API**，所以两端共用同一份：
+ *   · 网页版：随 src/js/*.js 一起拼进 app.js
+ *   · 小程序：由 build_miniprogram.py 拼进 generated/lib/game.js
+ * 规则只写一次，避免出现「网页版把拼音念对了、小程序还在念何文红」。
+ *
+ * 为什么不直接把 stem.text 丢给 TTS —— 实测（macOS 中文音色 + 语音识别）：
+ *   「大」的反义词是哪个字？  → 「大的反义词是哪个字？」   ✅
+ *   「hóng」是哪个字？        → 「何文红是哪个字？」       ❌ 乱读且泄答案
+ *   66 + 4 = ?                → 「66+4等于」              ⚠️ 没念出「几」
+ * 下面两条规则就是为这两类题干写的。
+ */
+(function (window) {
+  'use strict';
+
+  var G = window.G;
+
+  // 这三种题的题干自带英语音频（stem.audio）。再念一遍中文提示会和单词
+  // 音频抢同一时刻的喇叭，孩子反而听不清要听的词。
+  var LISTEN_TAGS = ['听音选字母', '听音选词', '辨短元音'];
+
+  var PINYIN_TAG = '看拼音选字';
+  var PINYIN_RE = /[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüǹńň]/;
+
+  // 英语题干里夹着 `ram` / `d + am` 这样的片段时，中文音色会把它念成
+  // 含糊的「when」或逐字母拼读，正好和「学拼读」的目标打架。实测后给
+  // 这两类题换成纯中文提示；单个字母（大写 A / 字母 d）中文音色读的是
+  // 字母名，实测没问题，其余英语题干照常念。
+  var EN_FIXED = {
+    '押韵配对': '选出和例词押韵的词',
+    '拼合 CVC': '把字母拼起来，选出正确的词'
+  };
+
+  /**
+   * 把题干里的算式符号换成中文读法。
+   * TTS 见到 `+ - = ?` 会跳过或读成「加号」，孩子听不出要算什么。
+   * 阿拉伯数字保留 —— 中文音色会把 `66` 正确读成「六十六」。
+   */
+  function normalizeText(text) {
+    var t = String(text || '').trim();
+    if (!t) return '';
+
+    // 找规律题：'14、17、20、（　）' 里的全角括号 + 全角空格
+    t = t.replace(/（[\s\u3000]*）/g, '，括号里该填几');
+    t = t.replace(/、，/g, '，');
+
+    t = t.replace(/\+/g, ' 加 ')
+         .replace(/-/g, ' 减 ')
+         .replace(/=/g, ' 等于 ')
+         .replace(/\?/g, ' 几 ');
+
+    return t.replace(/\s+/g, ' ').trim();
+  }
+
+  /**
+   * 决定这道题要不要朗读、念什么。
+   * 返回 { text, skip, why }；skip 为 true 时调用方不要渲染读题喇叭。
+   */
+  function forQuestion(q) {
+    if (!q || !q.stem || !q.stem.text) {
+      return { text: '', skip: true, why: 'no-text' };
+    }
+
+    var tag = (q.tags || [])[0] || '';
+    if (q.stem.audio || LISTEN_TAGS.indexOf(tag) >= 0) {
+      return { text: '', skip: true, why: 'listen' };
+    }
+
+    var raw = String(q.stem.text);
+
+    // 拼音题：把带声调的拉丁字母交给中文 TTS 会读成「何文红」，甚至把
+    // 答案字念出来。改成一句不含拼音的固定提示 —— 孩子听懂「在问什么」，
+    // 拼音本身仍在屏幕上，要拼的还是要拼的。
+    if (tag === PINYIN_TAG || PINYIN_RE.test(raw)) {
+      return { text: '看拼音，选出正确的字', skip: false, why: 'pinyin' };
+    }
+
+    if (EN_FIXED[tag]) {
+      return { text: EN_FIXED[tag], skip: false, why: 'en-fixed' };
+    }
+
+    var text = normalizeText(raw);
+    if (!text) return { text: '', skip: true, why: 'empty' };
+    return { text: text, skip: false, why: 'plain' };
+  }
+
+  G.TTSText = {
+    forQuestion: forQuestion,
+    normalizeText: normalizeText,
+    LISTEN_TAGS: LISTEN_TAGS
+  };
+
+})(window);
+
+/* ===== 23-tts.js ===== */
+/* 23-tts.js — 网页版题干朗读（Web Speech API）
+ *
+ * 为什么不生成音频文件：600 道题去重后有 375 条不同题干，按中文短句
+ * 算下来约 3 MB，小程序主包上限 2 MB，单文件版也会从 1.0 MB 涨到 4 MB。
+ * 浏览器自带的 speechSynthesis 用系统语音，零文件、断网也能念。
+ *
+ * 一次只念一句：进下一题或重播时先 cancel()，否则两句会叠在一起。
+ * 自动播的定时器由本模块持有 —— 切题时 stop() 能把它一起清掉，
+ * 不然已经从 DOM 里摘掉的旧按钮会在 350ms 后念出上一题。
+ *
+ * 已知限制（只能真机验）：iOS Safari 的 speechSynthesis 走的是和
+ * InnerAudioContext 不同的音频通道，拨到静音时是否还出声不能假定
+ * 「app.js 里设过 obeyMuteSwitch」就万事大吉。见 README 验收清单。
+ */
+(function (window) {
+  'use strict';
+
+  var G = window.G;
+  var timer = null;
+  var voices = [];
+
+  function synth() {
+    return window.speechSynthesis;
+  }
+
+  function available() {
+    return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+  }
+
+  function refreshVoices() {
+    try {
+      voices = (synth().getVoices && synth().getVoices()) || [];
+    } catch (e) { voices = []; }
+  }
+
+  /** 家长开关。老存档没有这个字段时视为开启（孩子认字少是默认场景）。 */
+  function enabled() {
+    try {
+      var s = G.Store && G.Store.load && G.Store.load();
+      return !!(s && s.settings && s.settings.readStem !== false);
+    } catch (e) { return true; }
+  }
+
+  function stop() {
+    if (timer) { clearTimeout(timer); timer = null; }
+    try { if (available()) synth().cancel(); } catch (e) { /* 忽略 */ }
+  }
+
+  function speak(text, opts) {
+    opts = opts || {};
+    if (!text || !available()) return false;
+    try {
+      var s = synth();
+      s.cancel();                       // 同一时刻只保留一句
+      var u = new window.SpeechSynthesisUtterance(text);
+      u.lang = 'zh-CN';
+      u.rate = 0.9;                     // 稍慢一点，6 岁孩子跟得上
+      u.pitch = 1;
+      u.volume = 1;
+
+      if (!voices.length) refreshVoices();
+      for (var i = 0; i < voices.length; i++) {
+        if (/^zh[-_]?CN/i.test(voices[i].lang || '')) {
+          u.voice = voices[i];
+          break;
+        }
+      }
+
+      u.onend = function () { if (opts.onEnd) opts.onEnd(); };
+      u.onerror = function (ev) {
+        G.log('题干朗读失败', ev && ev.error);
+        if (opts.onEnd) opts.onEnd();
+      };
+      s.speak(u);
+      return true;
+    } catch (e) {
+      G.log('题干朗读异常', e);
+      if (opts.onEnd) opts.onEnd();
+      return false;
+    }
+  }
+
+  /** 进题后延迟一小会儿再念，让画面先出来（和听音题的 350ms 一致）。 */
+  function schedule(text, ms, opts) {
+    stop();
+    timer = setTimeout(function () {
+      timer = null;
+      speak(text, opts);
+    }, ms || 350);
+  }
+
+  // getVoices() 在 Chrome / Safari 上是异步填充的，首次调用常返回空数组。
+  if (available() && synth().addEventListener) {
+    try {
+      synth().addEventListener('voiceschanged', refreshVoices);
+    } catch (e) { /* 低版本忽略，按 lang 让浏览器自己挑 */ }
+  }
+
+  G.TTS = {
+    available: available,
+    enabled: enabled,
+    speak: speak,
+    stop: stop,
+    schedule: schedule
+  };
+
+})(window);
+
 /* ===== 30-bank.js ===== */
 /* 30-bank.js — 题库：三科分仓 + 加权抽题
  *
@@ -2079,6 +2322,14 @@
 
     var hasAudio = !!(q.stem && q.stem.audio);
 
+    // 题干朗读只给「没有自带音频」的题。听音题已经有英文单词音频，
+    // 再念一句中文提示会和它抢喇叭；拼音题、算式题由 TTSText 换过说法。
+    // 选项一律不朗读 —— 它们就是孩子要辨认的对象。
+    var readInfo = (G.TTSText && G.TTSText.forQuestion)
+      ? G.TTSText.forQuestion(q) : { text: '', skip: true };
+    var canRead = !readInfo.skip && !!readInfo.text
+      && !!(G.TTS && G.TTS.available() && G.TTS.enabled());
+
     if (q.stem && q.stem.prompt) {
       stem.appendChild(G.el('div', { class: 'stem-hint', text: q.stem.prompt }));
     }
@@ -2092,6 +2343,8 @@
 
     if (hasAudio) {
       stem.appendChild(G.UI.speakerButton(q.stem.audio, null, { autoplay: true }));
+    } else if (canRead) {
+      stem.appendChild(G.UI.readStemButton(readInfo.text, { autoplay: true }));
     }
 
     root.appendChild(stem);
@@ -2791,6 +3044,24 @@
     today.appendChild(row('今日兑换', dc.redemptions + ' / ' + save.limits.maxRedemptionsPerDay));
     box.appendChild(section('今天', today));
 
+    /* --- 题干朗读 --- */
+    var readBox = G.el('div', { class: 'stat-card' });
+    readBox.appendChild(G.el('div', {
+      class: 'muted',
+      text: '进题自动念一遍题干，点喇叭可以重听。只念题目，不念选项。'
+    }));
+    var isOff = save.settings.readStem === false;
+    readBox.appendChild(G.el('button', {
+      class: 'btn btn-sm ' + (isOff ? '' : 'btn-primary'),
+      text: isOff ? '题干朗读：关（点这里打开）' : '题干朗读：开（点这里关闭）',
+      onclick: function () {
+        save.settings.readStem = isOff;
+        G.Store.save(save);
+        rerender();
+      }
+    }));
+    box.appendChild(section('朗读设置', readBox));
+
     /* --- 待确认兑换 --- */
     var pending = G.Redeem.pendingList(save);
     var pendBox = G.el('div', { class: 'stat-card' });
@@ -3197,6 +3468,7 @@
 
   function showHome() {
     G.clear(root);
+    if (G.TTS) G.TTS.stop();
     G.UI.dismissBanner();
 
     var s = G.UI.screen('screen-home');
@@ -3283,6 +3555,9 @@
 
   function showQuestion() {
     G.clear(root);
+    // 切题先掐掉上一题的朗读和它的自动播定时器，否则旧按钮会在 350ms
+    // 后念出上一题的题干（按钮已经不在 DOM 里，孩子只会听到莫名一句）。
+    if (G.TTS) G.TTS.stop();
 
     if (idx >= round.questions.length) { showSummary(); return; }
 
@@ -3356,6 +3631,7 @@
   function showSummary() {
     var session = G.Runner.finishSession(save, round, items, spins, roundPoints);
     G.clear(root);
+    if (G.TTS) G.TTS.stop();
 
     var s = G.UI.screen('screen-summary');
 

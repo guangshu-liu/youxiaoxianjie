@@ -3,13 +3,13 @@
 """
 build_miniprogram.py — 生成微信小程序需要的四类产物。
 
-    miniprogram/generated/lib/game.js     纯逻辑（浏览器版四个文件拼成）
+    miniprogram/generated/lib/game.js     纯逻辑（浏览器版五个纯逻辑文件拼成）
     miniprogram/generated/data/bank.js    题库 + 字表 + 配比
     miniprogram/generated/data/audio.js   音频 id → 包内绝对路径
     miniprogram/generated/audio/en/*.m4a  音频文件
 
-**为什么不复制一份逻辑**：网页版的 00-core / 10-store / 30-bank / 40-runner
-全都写成 `(function (window) { ... })(window)`，只依赖 `window.G`。给一个同名
+**为什么不复制一份逻辑**：网页版的 00-core / 10-store / 22-tts-text /
+30-bank / 40-runner 全都写成 `(function (window) { ... })(window)`，只依赖 `window.G`。给一个同名
 垫片就能原样跑，于是两端的抽样、组局、错题加权、存档迁移永远是同一份实现 ——
 网页版改了，小程序重新构建就跟着变。
 
@@ -41,12 +41,18 @@ DATA = os.path.join(SRC, 'data')
 #   00 定义 G 的常量和工具 → 10 用 G.LIMITS → 30/40 用 G.SUBJECTS / G.DEFAULT_MIX
 # 界面层（05/41/50/60/70/90）不进来 —— 小程序用 WXML 重写。
 # 音频（20/21）也不进来 —— 浏览器的 Web Audio + IndexedDB 录音在小程序里没有对应物。
-LOGIC_FILES = ['00-core.js', '10-store.js', '30-bank.js', '40-runner.js']
+LOGIC_FILES = [
+    '00-core.js',
+    '10-store.js',
+    '22-tts-text.js',   # 「题干该念成什么」的纯规则，网页版共用同一份
+    '30-bank.js',
+    '40-runner.js'
+]
 
 PRELUDE = r"""/* ============================================================================
  * 由 tools/build_miniprogram.py 生成，不要手改。
  *
- * 下面四个文件是网页版的纯逻辑，原样搬过来。它们都写成
+ * 下面五个文件是网页版的纯逻辑，原样搬过来。它们都写成
  *     (function (window) { ... })(window)
  * 只依赖 window.G，所以给一个同名垫片就能跑。
  *

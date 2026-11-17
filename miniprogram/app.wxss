@@ -299,6 +299,11 @@ view, text, button, input, textarea {
 .speaker-icon { font-size: 52px; line-height: 1; }
 .speaker.playing { animation: pulse .55s infinite; }
 
+/* 读题喇叭：同形，靠「读题」二字区分。只念题干，不念选项。 */
+.read-stem { flex-direction: column; gap: 2px; }
+.read-stem .speaker-icon { font-size: 40px; }
+.read-stem .speaker-label { font-size: 15px; font-weight: 600; }
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.06); }

@@ -50,7 +50,10 @@
       settings: {
         audioEnabled: true,
         mutedAudio: [],
-        weakMode: false
+        weakMode: false,
+        // 题干朗读：默认开。孩子认字少时，题目问什么全靠它。
+        // 老存档没有这个字段，migrate() 会补成 true；不想听可在家长面板关。
+        readStem: true
       },
       // settings.mix 删掉了：它存了一份一局配比的副本，但从头到尾没人读。
       // 配比的唯一真相源是 tools/qbank.py 的 SUBJECT_MIX → 产物里的

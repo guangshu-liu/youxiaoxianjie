@@ -60,6 +60,20 @@ const wx = {
 };
 
 global.wx = wx;
+
+// 微信同声传译插件桩：把每次合成的文本记下来，用来断言
+// 「只念题干、不念选项」「听音题不朗读」「家长关掉后不再请求」。
+global.__ttsCalls = [];
+global.requirePlugin = function (name) {
+  if (name !== 'WechatSI') return null;
+  return {
+    textToSpeech: function (o) {
+      global.__ttsCalls.push(o && o.content);
+      if (o && o.success) o.success({ filename: '/tmp/fake-tts.mp3' });
+    }
+  };
+};
+
 global.Page = function (cfg) { global.__lastPage = cfg; };
 global.App = function (cfg) { global.__lastApp = cfg; };
 
@@ -285,6 +299,56 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(page.data.unlocked, true, '答对后解锁');
   ok(page.data.zibiao.chars.length === 136, '字表渲染了 136 字');
   ok(page.data.bySubject.length > 0, '按题型统计有内容');
+}
+
+/* ---- 8b. 题干朗读（lib/tts.js + game.js 里的 TTSText） ---- */
+{
+  const tts = require(path.join(MP, 'lib/tts.js'));
+  ok(!!G.TTSText && typeof G.TTSText.forQuestion === 'function',
+     'game.js 带上了和网页版共用的朗读规则');
+  ok(tts.available(), '同声传译插件桩可用，走得到合成路径');
+
+  global.__ttsCalls.length = 0;
+  const cfg = loadPage('pages/play/play.js');
+  const page = makeInstance(cfg);
+  page.onLoad({ subject: 'chinese' });
+
+  const q0 = page.round.questions[0];
+  const want = G.TTSText.forQuestion(q0).text;
+  eq(page.data.canRead, true, '语文题出现读题按钮');
+  eq(page.data.readText, want, '读题文本来自共用规则');
+  ok(global.__ttsCalls.indexOf(want) >= 0, '进题自动合成了一次题干');
+  ok(q0.options.every((o) => want !== o.text),
+     '朗读文本不是某个选项（不会把答案念出来）');
+  ok(page.data.options.every((o) => o.readText === undefined),
+     '朗读文本没有塞进选项里（选项不可朗读）');
+
+  // 听音题有自带英文音频，不该再念一句中文提示抢喇叭
+  const listen = G.Bank.of('english').filter((q) => q.stem.audio)[0];
+  ok(!!listen && G.TTSText.forQuestion(listen).skip,
+     '听音题不朗读的规则在小程序产物里同样生效');
+
+  // 家长关掉开关：按钮消失、不再发起合成
+  const save = app.globalData.save;
+  save.settings.readStem = false;
+  global.__ttsCalls.length = 0;
+  const cfg2 = loadPage('pages/play/play.js');
+  const page2 = makeInstance(cfg2);
+  page2.onLoad({ subject: 'chinese' });
+  eq(page2.data.canRead, false, '关掉朗读后不出现读题按钮');
+  eq(global.__ttsCalls.length, 0, '关掉朗读后不再请求语音合成');
+  save.settings.readStem = true;      // 恢复，别污染后面的备份测试
+
+  // 家长页开关要真的写进存档
+  const pcfg = loadPage('pages/parent/parent.js');
+  const ppage = makeInstance(pcfg);
+  ppage.onLoad();
+  ppage.setData({ gateInput: String(G.PARENT_GATE.answer) });
+  ppage.onGateSubmit();
+  eq(ppage.data.readStem, true, '家长页显示朗读为开启');
+  ppage.onToggleReadStem({ detail: { value: false } });
+  eq(G.Store.load().settings.readStem, false, '家长页开关写进存档');
+  G.Store.load().settings.readStem = true;
 }
 
 /* ---- 9. 备份 ---- */

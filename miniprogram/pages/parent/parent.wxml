@@ -68,6 +68,17 @@
   </view>
 
   <view class="p-section">
+    <view class="p-section-title">朗读设置</view>
+    <view class="stat-card">
+      <view class="stat-row">
+        <text class="stat-label">进题自动读题干</text>
+        <switch checked="{{readStem}}" bindchange="onToggleReadStem" color="#4FC3F7" />
+      </view>
+      <view class="muted">进题自动念一遍题目，点喇叭可重听。只念题目，不念选项。</view>
+    </view>
+  </view>
+
+  <view class="p-section">
     <view class="p-section-title">语文认字范围</view>
     <view class="stat-card">
       <view class="muted">{{zibiao.summary}}</view>

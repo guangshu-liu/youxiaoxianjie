@@ -86,6 +86,7 @@
 
   function showHome() {
     G.clear(root);
+    if (G.TTS) G.TTS.stop();
     G.UI.dismissBanner();
 
     var s = G.UI.screen('screen-home');
@@ -172,6 +173,9 @@
 
   function showQuestion() {
     G.clear(root);
+    // 切题先掐掉上一题的朗读和它的自动播定时器，否则旧按钮会在 350ms
+    // 后念出上一题的题干（按钮已经不在 DOM 里，孩子只会听到莫名一句）。
+    if (G.TTS) G.TTS.stop();
 
     if (idx >= round.questions.length) { showSummary(); return; }
 
@@ -245,6 +249,7 @@
   function showSummary() {
     var session = G.Runner.finishSession(save, round, items, spins, roundPoints);
     G.clear(root);
+    if (G.TTS) G.TTS.stop();
 
     var s = G.UI.screen('screen-summary');
 

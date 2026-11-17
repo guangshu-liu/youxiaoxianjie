@@ -116,6 +116,37 @@
     return btn;
   }
 
+  /**
+   * 「读题」按钮 —— 只念题干，不念选项。
+   *
+   * 和上面的音频喇叭长得一样（孩子只需认一个按钮），但走的是系统语音
+   * 合成而不是 G.Audio 的固定音频文件，所以单独一个 read-stem 类做区分。
+   * 两类喇叭在一道题里互斥：听音题有单词音频，其余题才有读题喇叭。
+   */
+  function readStemButton(text, opts) {
+    opts = opts || {};
+    var btn = G.el('button', {
+      class: 'speaker read-stem',
+      onclick: function () {
+        btn.classList.add('playing');
+        G.TTS.speak(text, {
+          onEnd: function () { btn.classList.remove('playing'); }
+        });
+      }
+    }, [
+      G.el('span', { class: 'speaker-icon', text: '🔊' }),
+      G.el('span', { class: 'speaker-label', text: opts.label || '读题' })
+    ]);
+
+    if (opts.autoplay) {
+      btn.classList.add('playing');
+      G.TTS.schedule(text, 350, {
+        onEnd: function () { btn.classList.remove('playing'); }
+      });
+    }
+    return btn;
+  }
+
   G.UI = {
     toast: toast,
     banner: banner,
@@ -124,7 +155,8 @@
     feedback: feedback,
     confetti: confetti,
     screen: screen,
-    speakerButton: speakerButton
+    speakerButton: speakerButton,
+    readStemButton: readStemButton
   };
 
   // 供 10-store / 20-audio 里的降级路径调用

@@ -108,6 +108,10 @@
 
 .speaker.playing { animation: pulse .55s infinite; }
 
+/* 读题喇叭和音频喇叭同形，靠「读题」两个字区分用途。
+   只念题干，不念选项 —— 按钮上写清楚，家长也不会误以为点选项能听。 */
+.read-stem .speaker-label { font-size: 14px; font-weight: 600; letter-spacing: .04em; }
+
 .speaker-sm {
   min-width: 66px;
   min-height: 66px;

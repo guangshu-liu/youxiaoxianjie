@@ -12,6 +12,12 @@
     "backgroundColor": "#FFF8E7",
     "backgroundTextStyle": "light"
   },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.3.6",
+      "provider": "wx069ba97219f66d99"
+    }
+  },
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
