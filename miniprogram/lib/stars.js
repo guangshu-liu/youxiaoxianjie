@@ -17,7 +17,7 @@
 var BADGES = [
   { need: 10,  emoji: '🍟', name: '薯条' },
   { need: 30,  emoji: '🤖', name: '布鲁克' },
-  { need: 60,  emoji: '📺', name: '动画片' },
+  { need: 50,  emoji: '📺', name: '动画片' },
   { need: 100, emoji: '🛒', name: '超市' }
 ];
 

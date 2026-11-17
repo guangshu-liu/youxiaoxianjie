@@ -198,6 +198,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(names, '薯条,布鲁克,动画片,超市', '四个徽章');
   eq(stars.badgeState(29).filter((b) => b.got).length, 1, '29 星只解锁 1 个徽章');
   eq(stars.badgeState(30).filter((b) => b.got).length, 2, '30 星解锁 2 个徽章');
+  eq(stars.badgeState(49).filter((b) => b.got).length, 2, '49 星还没解锁动画片');
+  eq(stars.badgeState(50).filter((b) => b.got).length, 3, '50 星解锁动画片');
   eq(stars.nextBadge(100), null, '100 星后没有下一个徽章');
   eq(stars.progressPct(0), 0, '0 星进度 0%');
   eq(stars.progressPct(100), 100, '满徽章进度 100%');
