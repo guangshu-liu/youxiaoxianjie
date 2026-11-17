@@ -195,7 +195,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   });
 
   const names = stars.badgeState(100).map((b) => b.name).join(',');
-  eq(names, '薯条,布鲁克积木,动画片,积木', '四个徽章');
+  eq(names, '薯条,布鲁克,动画片,超市', '四个徽章');
   eq(stars.badgeState(29).filter((b) => b.got).length, 1, '29 星只解锁 1 个徽章');
   eq(stars.badgeState(30).filter((b) => b.got).length, 2, '30 星解锁 2 个徽章');
   eq(stars.nextBadge(100), null, '100 星后没有下一个徽章');
