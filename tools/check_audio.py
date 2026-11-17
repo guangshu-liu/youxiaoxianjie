@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-check_audio.py — 英语语音全链路体检（零依赖，只要 macOS 自带的 afinfo / afconvert）
+check_audio.py — 语音全链路体检（零依赖，只要 macOS 自带的 afinfo / afconvert）
+
+覆盖两类音频：
+  · 英语单词语音（audio/en，三处副本 + 两端映射）
+  · 中文题干朗读语音（miniprogram/pkgTts/audio，小程序分包）
 
 `npm run audio:check` 只回答「文件齐不齐」，回答不了「文件是不是能响」。
 历史上出过两件光看文件查不出来的事：
   · 非 macOS 上生成的占位蜂鸣（都是 12204 字节，文件在、声音是假的）；
   · 网页版 / 小程序包里的音频副本和 audio/ 主副本不一致（一边更新一边没更新）。
 
-所以这里分五层检查，任何一层挂了都以非 0 退出：
+所以这里分六层检查，任何一层挂了都以非 0 退出：
   1. 引用：三科题库引用的 id ↔ english_audio.json ↔ audio_manifest.json
   2. 文件：存在、m4a 头、体积、时长（单词 0.25–3.0 s）
   3. 内容：实际解码成 PCM，看峰值 / RMS / 有声帧占比，挡住静音和占位蜂鸣
   4. 副本：audio/ · docs/audio/ · miniprogram/generated/audio/ 逐字节一致
   5. 映射：docs/data.js 的 AUDIO_MAP 与 miniprogram/generated/data/audio.js
           都覆盖全部 id，且指向的文件真的存在
+  6. 题干：pkgTts 分包里的中文朗读音频，清单 ↔ 22-tts-text.js 规则 ↔
+          tts-map.js ↔ 文件 ↔ PCM，并检查分包体积不逼近 2 MB 上限
 
 用法：
     python3 tools/check_audio.py             # 完整体检
@@ -60,6 +66,16 @@ MAX_SEC = 3.0
 MIN_PEAK = 0.02          # 峰值至少 -34 dBFS
 MIN_RMS = 0.002          # RMS 至少 -54 dBFS
 MIN_VOICED = 0.12        # 至少 12% 的采样窗是有声的（挡住极短的滴声）
+
+# 中文题干朗读音频：只在小程序分包里，没有副本；单句 1–3 s。
+TTS_SPEC = os.path.join(DATA, 'tts_audio.json')
+TTS_DIR = os.path.join(ROOT, 'miniprogram', 'pkgTts', 'audio')
+TTS_MAP = os.path.join(ROOT, 'miniprogram', 'generated', 'data', 'tts-map.js')
+# 中文音色约 5 字/秒；最长题干 31 字（应用题）实测 5.8 s，所以按字数
+# 给上限，而不是一刀切 3 s —— 那样会把最长的应用题误判成异常。
+TTS_SEC_PER_CHAR = 0.28
+TTS_MAX_SEC = 10.0                  # 绝对兜底，挡住卡死/拼接错的文件
+TTS_MAX_BYTES = 1.9 * 1024 * 1024   # 小程序单个分包上限 2 MB，留点余量
 
 
 def read(path):
@@ -174,6 +190,88 @@ def parse_map(path):
         return None
 
 
+def check_tts(errs, stats, tmpdir, quick, have_tools):
+    """中文题干朗读音频（小程序分包）：清单 ↔ 规则 ↔ 映射 ↔ 文件 ↔ 解码。"""
+    if not os.path.exists(TTS_SPEC):
+        errs.append('缺少 %s' % relpath(TTS_SPEC))
+        return
+    entries = (load(TTS_SPEC).get('entries') or [])
+    if not entries:
+        errs.append('题干音频清单是空的')
+        return
+
+    # 规则漂移：清单必须和 22-tts-text.js 现在的输出逐字一致。
+    # 有人改了归一化规则却没重生成音频，这里会立刻挡住。
+    r = subprocess.run(['node', os.path.join(ROOT, 'tools', 'tts_texts.js')],
+                       capture_output=True, text=True)
+    if r.returncode:
+        errs.append('tools/tts_texts.js 跑不动：' + r.stderr.strip()[:120])
+    elif json.loads(r.stdout) != sorted(e['text'] for e in entries):
+        errs.append('题干音频清单与朗读规则不一致，跑 npm run tts:audio 重建')
+
+    if not os.path.exists(TTS_MAP):
+        errs.append('缺少 %s' % relpath(TTS_MAP))
+    else:
+        amap = parse_map(TTS_MAP)
+        want = {e['text']: '/pkgTts/audio/' + e['file'] for e in entries}
+        if amap is None:
+            errs.append('tts-map.js 里的映射解析不出来')
+        elif amap != want:
+            errs.append('tts-map.js 与清单不一致，跑 npm run tts:audio 重建')
+
+    wanted = set(e['file'] for e in entries)
+    total = 0
+    for e in entries:
+        path = os.path.join(TTS_DIR, e['file'])
+        if not os.path.exists(path):
+            errs.append('题干音频缺文件 %s' % e['file'])
+            continue
+        size = os.path.getsize(path)
+        total += size
+        stats['tts_files'] += 1
+        stats['tts_bytes'] += size
+        if size < 1000:
+            errs.append('%s 只有 %d 字节，可能是空音频' % (e['file'], size))
+        with open(path, 'rb') as f:
+            head = f.read(12)
+        if head[4:8] != b'ftyp':
+            errs.append('%s 不是 m4a（缺 ftyp 头）' % e['file'])
+
+        if have_tools:
+            sec = duration(path)
+            if sec is None:
+                errs.append('%s 无法被 afinfo 解析' % e['file'])
+            else:
+                stats['tts_min_sec'] = sec if stats['tts_min_sec'] is None else min(stats['tts_min_sec'], sec)
+                stats['tts_max_sec'] = sec if stats['tts_max_sec'] is None else max(stats['tts_max_sec'], sec)
+                limit = min(TTS_MAX_SEC, max(3.0, len(e['text']) * TTS_SEC_PER_CHAR))
+                if sec > limit:
+                    errs.append('%s 时长 %.2fs，超过按 %d 字估算的 %.2fs 上限'
+                                % (e['file'], sec, len(e['text']), limit))
+            if not quick:
+                try:
+                    _s, peak, rms, voiced = pcm_stats(path, tmpdir)
+                except Exception as ex:
+                    errs.append('%s 解码失败：%s' % (e['file'], ex))
+                else:
+                    stats['tts_decoded'] += 1
+                    for key, val in (('tts_min_peak', peak), ('tts_min_rms', rms),
+                                     ('tts_min_voiced', voiced)):
+                        stats[key] = val if stats[key] is None else min(stats[key], val)
+                    if peak < MIN_PEAK or rms < MIN_RMS:
+                        errs.append('%s 几乎是静音（峰值 %.3f / RMS %.3f）' % (e['file'], peak, rms))
+                    elif voiced < MIN_VOICED:
+                        errs.append('%s 只有 %.0f%% 的时长有声' % (e['file'], voiced * 100))
+
+    extra = [n for n in os.listdir(TTS_DIR)
+             if n.endswith('.m4a') and n not in wanted]
+    if extra:
+        errs.append('题干音频目录有 %d 个多余文件：%s' % (len(extra), ', '.join(extra[:4])))
+    if total > TTS_MAX_BYTES:
+        errs.append('题干音频 %.2f MB，逼近小程序 2 MB 分包上限'
+                    % (total / 1024.0 / 1024.0))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--quick', action='store_true', help='跳过 PCM 解码')
@@ -184,7 +282,10 @@ def main():
     warns = []
     stats = {'files': 0, 'decoded': 0, 'bytes': 0,
              'min_sec': None, 'max_sec': None,
-             'min_peak': None, 'min_rms': None, 'min_voiced': None}
+             'min_peak': None, 'min_rms': None, 'min_voiced': None,
+             'tts_files': 0, 'tts_decoded': 0, 'tts_bytes': 0,
+             'tts_min_sec': None, 'tts_max_sec': None,
+             'tts_min_peak': None, 'tts_min_rms': None, 'tts_min_voiced': None}
 
     # ---- 1. 引用层 ----
     spec = load(SPEC)['entries'] if os.path.exists(SPEC) else []
@@ -306,6 +407,9 @@ def main():
                     continue
                 if not os.path.exists(os.path.join(base, rel)):
                     errs.append('%s 里 %s 指向的 %s 不存在' % (label, aid, rel))
+
+        # ---- 6. 中文题干朗读音频（小程序分包） ----
+        check_tts(errs, stats, tmpdir, args.quick, have_tools)
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
 
@@ -329,6 +433,16 @@ def main():
     elif not args.quick and have_tools:
         print('  已解码   0 条')
     print('')
+    print('题干朗读音频（小程序 pkgTts 分包）')
+    print('-' * 52)
+    print('  文件     %3d 条   %.2f MB' % (stats['tts_files'], stats['tts_bytes'] / 1024.0 / 1024.0))
+    if stats['tts_min_sec'] is not None:
+        print('  时长     %.2f – %.2f s' % (stats['tts_min_sec'], stats['tts_max_sec']))
+    if stats['tts_decoded']:
+        print('  已解码   %3d 条   最低峰值 %.3f / 最低 RMS %.3f / 最低有声占比 %.0f%%'
+              % (stats['tts_decoded'], stats['tts_min_peak'], stats['tts_min_rms'],
+                 stats['tts_min_voiced'] * 100))
+    print('')
     for w in warns:
         print('  ⚠️  %s' % w)
     if errs:
@@ -339,7 +453,7 @@ def main():
             print('   …… 还有 %d 条' % (len(errs) - 25))
         print('')
         return 1
-    print('✅ 语音正常：清单、文件、内容、三处副本、两端映射全部通过')
+    print('✅ 语音正常：单词音频的清单/文件/内容/三处副本/两端映射，以及题干朗读分包全部通过')
     print('')
     return 0
 

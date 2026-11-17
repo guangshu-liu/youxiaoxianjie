@@ -38,11 +38,23 @@ const wx = {
   setStorageSync: (k, v) => { storage.set(k, v); },
   removeStorageSync: (k) => { storage.delete(k); },
 
-  createInnerAudioContext: () => ({
-    src: '',
-    play() {}, stop() {}, destroy() {},
-    onEnded() {}, onError() {}
-  }),
+  createInnerAudioContext: function () {
+    const ctx = {
+      src: '',
+      play() {
+        // 只记题干朗读（分包路径）；英文单词音频走 /generated/audio/，不混进来。
+        if (typeof ctx.src === 'string' && ctx.src.indexOf('/pkgTts/') === 0) {
+          global.__ttsPlays.push(ctx.src);
+        }
+      },
+      stop() {}, destroy() {}, onEnded() {}, onError() {}
+    };
+    return ctx;
+  },
+  loadSubpackage: function (o) {
+    global.__subpackageCalls.push(o && o.name);
+    if (o && o.success) o.success();
+  },
 
   // 故意不提供 createWebAudioContext：验证「拿不到音频上下文时退化成震动」，
   // 这条分支在低版本基础库上真的会走到。
@@ -61,18 +73,10 @@ const wx = {
 
 global.wx = wx;
 
-// 微信同声传译插件桩：把每次合成的文本记下来，用来断言
-// 「只念题干、不念选项」「听音题不朗读」「家长关掉后不再请求」。
-global.__ttsCalls = [];
-global.requirePlugin = function (name) {
-  if (name !== 'WechatSI') return null;
-  return {
-    textToSpeech: function (o) {
-      global.__ttsCalls.push(o && o.content);
-      if (o && o.success) o.success({ filename: '/tmp/fake-tts.mp3' });
-    }
-  };
-};
+// 题干朗读改用分包内的预生成音频：记录实际播放的分包路径，用来断言
+// 「只念题干、不念选项」「听音题/算式题不朗读」「家长关掉后不再播放」。
+global.__ttsPlays = [];
+global.__subpackageCalls = [];
 
 global.Page = function (cfg) { global.__lastPage = cfg; };
 global.App = function (cfg) { global.__lastApp = cfg; };
@@ -304,11 +308,31 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 /* ---- 8b. 题干朗读（lib/tts.js + game.js 里的 TTSText） ---- */
 {
   const tts = require(path.join(MP, 'lib/tts.js'));
+  const MAP = require(path.join(MP, 'generated/data/tts-map.js'));
   ok(!!G.TTSText && typeof G.TTSText.forQuestion === 'function',
      'game.js 带上了和网页版共用的朗读规则');
-  ok(tts.available(), '同声传译插件桩可用，走得到合成路径');
+  ok(tts.available(), '题干音频分包已就绪，喇叭可以显示');
+  ok(global.__subpackageCalls.indexOf('tts') >= 0, '启动时预下载了题干音频分包');
 
-  global.__ttsCalls.length = 0;
+  // 题库里每一条需要朗读的文本都必须有对应音频，否则那道题的喇叭点了没声音
+  const missingAudio = [];
+  ['chinese', 'math', 'english'].forEach((s) => {
+    G.Bank.of(s).forEach((q) => {
+      const t = G.TTSText.forQuestion(q).text;
+      if (t && !MAP[t]) missingAudio.push(q.id + ':' + t);
+    });
+  });
+  eq(missingAudio.length, 0, '需朗读的题干全部有分包音频', missingAudio.slice(0, 3).join(' | '));
+
+  // 算式题的题干全是数字和符号，不识字也不影响看题，不朗读也不生成音频
+  const formula = G.Bank.of('math').filter((q) => !/[\u3400-\u9fff]/.test(q.stem.text));
+  ok(formula.length > 0 && formula.every((q) => G.TTSText.forQuestion(q).why === 'formula'),
+     '纯算式题不朗读（省下四成音频体积）', formula.length + ' 道');
+
+  ok(tts.has('题库里不存在的题干') === false && tts.speak('题库里不存在的题干') === false,
+     '查不到映射的文本不会被播放');
+
+  global.__ttsPlays.length = 0;
   const cfg = loadPage('pages/play/play.js');
   const page = makeInstance(cfg);
   page.onLoad({ subject: 'chinese' });
@@ -317,7 +341,11 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const want = G.TTSText.forQuestion(q0).text;
   eq(page.data.canRead, true, '语文题出现读题按钮');
   eq(page.data.readText, want, '读题文本来自共用规则');
-  ok(global.__ttsCalls.indexOf(want) >= 0, '进题自动合成了一次题干');
+  ok(!!want && !!MAP[want] && global.__ttsPlays.indexOf(MAP[want]) >= 0,
+     '进题自动播放了一次题干音频（走分包映射）');
+  page.onReadStem();
+  eq(global.__ttsPlays.filter((p) => p === MAP[want]).length, 2,
+     '点读题喇叭能重播一次');
   ok(q0.options.every((o) => want !== o.text),
      '朗读文本不是某个选项（不会把答案念出来）');
   ok(page.data.options.every((o) => o.readText === undefined),
@@ -331,12 +359,12 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   // 家长关掉开关：按钮消失、不再发起合成
   const save = app.globalData.save;
   save.settings.readStem = false;
-  global.__ttsCalls.length = 0;
+  global.__ttsPlays.length = 0;
   const cfg2 = loadPage('pages/play/play.js');
   const page2 = makeInstance(cfg2);
   page2.onLoad({ subject: 'chinese' });
   eq(page2.data.canRead, false, '关掉朗读后不出现读题按钮');
-  eq(global.__ttsCalls.length, 0, '关掉朗读后不再请求语音合成');
+  eq(global.__ttsPlays.length, 0, '关掉朗读后不再播放题干音频');
   save.settings.readStem = true;      // 恢复，别污染后面的备份测试
 
   // 家长页开关要真的写进存档

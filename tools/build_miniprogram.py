@@ -190,11 +190,25 @@ def build_audio_js():
             % json.dumps(mapping, ensure_ascii=False, separators=(',', ':')))
 
 
+def build_tts_map_js():
+    """题干朗读文本 → pkgTts 分包内路径。
+
+    和 tools/gen_tts_audio.py 用同一个 map_source()，保证「生成音频」和
+    「重建小程序产物」两条路径写出来的映射逐字相同。generated/ 不进 git，
+    所以这份映射必须由 mp:build 重建，不能只靠音频生成器写一次。
+    """
+    import gen_tts_audio as tts_gen
+    entries = load_json('tts_audio.json',
+                        root=os.path.join(ROOT, 'src', 'data'))['entries']
+    return tts_gen.map_source(entries)
+
+
 def expected_outputs():
     return {
         os.path.join(GEN, 'lib', 'game.js'): build_game_js(),
         os.path.join(GEN, 'data', 'bank.js'): build_bank_js(),
         os.path.join(GEN, 'data', 'audio.js'): build_audio_js(),
+        os.path.join(GEN, 'data', 'tts-map.js'): build_tts_map_js(),
     }
 
 
@@ -261,6 +275,42 @@ def build():
     return 0
 
 
+def check_tts_subpackage():
+    """题干朗读分包：映射、音频文件、app.json 声明三者都要对得上。"""
+    bad = []
+    import gen_tts_audio as tts_gen
+
+    spec_path = os.path.join(ROOT, 'src', 'data', 'tts_audio.json')
+    if not os.path.exists(spec_path):
+        return ['缺少 src/data/tts_audio.json（跑 npm run tts:audio）']
+    entries = load_json('tts_audio.json', root=os.path.join(ROOT, 'src', 'data'))['entries']
+
+    map_path = os.path.join(GEN, 'data', 'tts-map.js')
+    if not os.path.exists(map_path):
+        bad.append('缺少 %s（跑 npm run tts:audio）' % os.path.relpath(map_path, ROOT))
+    elif read(map_path) != tts_gen.map_source(entries):
+        bad.append('tts-map.js 与音频清单不一致（跑 npm run tts:audio）')
+
+    audio_dir = os.path.join(MP, 'pkgTts', 'audio')
+    total = 0
+    for e in entries:
+        path = os.path.join(audio_dir, e['file'])
+        if not os.path.exists(path):
+            bad.append('题干音频缺文件 %s' % e['file'])
+        else:
+            total += os.path.getsize(path)
+    if total > 1.9 * 1024 * 1024:
+        bad.append('题干音频分包 %.2f MB，逼近 2 MB 上限' % (total / 1024.0 / 1024.0))
+
+    app_json = load_json('app.json', root=MP)
+    if app_json.get('plugins'):
+        bad.append('app.json 里还声明着未授权的插件，未授权时小程序会启动失败')
+    roots = [p.get('root') for p in (app_json.get('subPackages') or [])]
+    if 'pkgTts' not in roots:
+        bad.append('app.json 里没有 pkgTts 分包声明')
+    return bad
+
+
 def check():
     outs = expected_outputs()
     bad = []
@@ -274,6 +324,8 @@ def check():
     for rel in expected_audio():
         if not os.path.exists(os.path.join(GEN, 'audio', rel)):
             bad.append('缺少音频 %s' % rel)
+
+    bad += check_tts_subpackage()
 
     if bad:
         print('❌ 小程序产物不是最新的：')

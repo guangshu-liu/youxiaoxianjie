@@ -412,18 +412,23 @@ function testRenderer() {
       return !r.skip && !/[A-Za-zāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü]/.test(r.text);
     }), '拼音题改成不含拼音的固定提示（不会念出答案）', pinyin.length + ' 道');
 
-    const calc = all.filter((q) => q.subject === 'math' && /[+\-=?]/.test(q.stem.text));
-    ok(calc.length > 0 && calc.every((q) => {
-      const t = TT.forQuestion(q).text;
-      return t && !/[+\-=?]/.test(t);
-    }), '算式 + - = ? 换成中文读法', calc.length + ' 道');
+    eq(TT.normalizeText('66 + 4 = ?'), '66 加 4 等于 几',
+       '算式 + - = ? 能换成中文读法（归一化函数本身）');
+
+    // 纯数字/符号题干不朗读：不识字也看得懂，念了反而占四成音频体积。
+    // 小程序把中文题干预生成成分包音频，这类题跳过后才装得进单个 2 MB 分包。
+    const formula = all.filter((q) => !/[\u3400-\u9fff]/.test(q.stem.text));
+    ok(formula.length > 0 && formula.every((q) => TT.forQuestion(q).why === 'formula'),
+       '纯数字/符号题干不朗读', formula.length + ' 道');
 
     const en = all.filter((q) => q.subject === 'english' && !q.stem.audio);
     ok(en.length > 0 && en.every((q) => !/[A-Za-z]{2,}/.test(TT.forQuestion(q).text)),
        '英语题干不留多字母英文片段（中文音色会念成别的词）', en.length + ' 道');
 
-    ok(silent.every((q) => TT.forQuestion(q).text.length > 0),
-       '每道非听音题都有可朗读的题干');
+    ok(silent.every((q) => {
+      const r = TT.forQuestion(q);
+      return r.why === 'formula' ? r.skip && !r.text : r.text.length > 0;
+    }), '非听音、非算式题都有可朗读的题干');
     ok(all.every((q) => TT.forQuestion(q).text.indexOf('\n') < 0),
        '朗读文本里没有换行等脏字符');
   }
@@ -432,6 +437,9 @@ function testRenderer() {
   const qListen = withAudio[0];
   ok(render(qPlain).of('read-stem').length === 1, '非听音题有且只有一个读题喇叭');
   ok(render(qListen).of('read-stem').length === 0, '听音题不出现读题喇叭');
+  const qFormula = silent.filter((q) => TT.forQuestion(q).why === 'formula')[0];
+  ok(!!qFormula && render(qFormula).of('read-stem').length === 0,
+     '算式题不出现读题喇叭');
 
   // 喇叭只挂在题干区，选项按钮上不能出现任何喇叭
   let optionSpeaker = 0;
