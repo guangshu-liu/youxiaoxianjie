@@ -12,13 +12,6 @@
     "backgroundColor": "#FFF8E7",
     "backgroundTextStyle": "light"
   },
-  "subPackages": [
-    {
-      "root": "pkgTts",
-      "name": "tts",
-      "pages": ["pages/blank/blank"]
-    }
-  ],
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

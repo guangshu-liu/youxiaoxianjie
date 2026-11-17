@@ -9,7 +9,6 @@
 var G = require('./generated/lib/game.js');
 var bank = require('./generated/data/bank.js');
 var audio = require('./lib/audio.js');
-var tts = require('./lib/tts.js');
 
 App({
   globalData: {
@@ -49,10 +48,8 @@ App({
       console.warn('[app] 当前基础库不支持 setInnerAudioOption', e);
     }
 
-    // 题干朗读音频在 pkgTts 分包里，启动时后台预下载。家长把朗读关掉也照下：
-    // 开关随时能打开，等打开了才下会让第一题没声音。失败也只是没有读题喇叭，
-    // 听音题的包内单词音频照常可用。
-    tts.prepare();
+    // 题干朗读音频在主包 ttsAudio/ 里，随小程序一起下载，无需预热。
+    // 和英文单词音频走同一条 InnerAudioContext 路径，断网也能播。
   },
 
   onHide: function () {

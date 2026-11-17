@@ -42,12 +42,12 @@ const wx = {
     const ctx = {
       src: '',
       play() {
-        // 只记题干朗读（分包路径）；英文单词音频走 /generated/audio/，不混进来。
-        if (typeof ctx.src === 'string' && ctx.src.indexOf('/pkgTts/') === 0) {
+        // 只记题干朗读（主包 ttsAudio/）；英文单词音频走 /generated/audio/，不混进来。
+        if (typeof ctx.src === 'string' && ctx.src.indexOf('/ttsAudio/') === 0) {
           global.__ttsPlays.push(ctx.src);
         }
       },
-      stop() {}, destroy() {}, onEnded() {}, onError() {}
+      stop() {}, destroy() {}, onEnded() {}, onError() {}, onPlay() {}
     };
     return ctx;
   },
@@ -73,8 +73,10 @@ const wx = {
 
 global.wx = wx;
 
-// 题干朗读改用分包内的预生成音频：记录实际播放的分包路径，用来断言
+// 题干朗读改用主包 ttsAudio/ 内的预生成音频：记录实际播放的路径，用来断言
 // 「只念题干、不念选项」「听音题/算式题不朗读」「家长关掉后不再播放」。
+// __subpackageCalls 故意留着：任何一次分包加载都说明朗读又退回异步前置条件，
+// 真机上会重现「喇叭在但没声音」。
 global.__ttsPlays = [];
 global.__subpackageCalls = [];
 
@@ -311,8 +313,10 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const MAP = require(path.join(MP, 'generated/data/tts-map.js'));
   ok(!!G.TTSText && typeof G.TTSText.forQuestion === 'function',
      'game.js 带上了和网页版共用的朗读规则');
-  ok(tts.available(), '题干音频分包已就绪，喇叭可以显示');
-  ok(global.__subpackageCalls.indexOf('tts') >= 0, '启动时预下载了题干音频分包');
+  ok(tts.available(), '主包题干音频映射齐全，喇叭可以显示');
+  eq(global.__subpackageCalls.length, 0, '朗读不依赖分包预下载（进题即播，无排队）');
+  ok(Object.keys(MAP).every((t) => MAP[t].indexOf('/ttsAudio/') === 0),
+     '所有映射都指向主包内的音频路径');
 
   // 题库里每一条需要朗读的文本都必须有对应音频，否则那道题的喇叭点了没声音
   const missingAudio = [];
@@ -322,12 +326,12 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
       if (t && !MAP[t]) missingAudio.push(q.id + ':' + t);
     });
   });
-  eq(missingAudio.length, 0, '需朗读的题干全部有分包音频', missingAudio.slice(0, 3).join(' | '));
+  eq(missingAudio.length, 0, '需朗读的题干全部有主包音频', missingAudio.slice(0, 3).join(' | '));
 
   // 算式题的题干全是数字和符号，不识字也不影响看题，不朗读也不生成音频
   const formula = G.Bank.of('math').filter((q) => !/[\u3400-\u9fff]/.test(q.stem.text));
   ok(formula.length > 0 && formula.every((q) => G.TTSText.forQuestion(q).why === 'formula'),
-     '纯算式题不朗读（省下四成音频体积）', formula.length + ' 道');
+     '纯算式题不朗读（省体积，171 条才装得进主包）', formula.length + ' 道');
 
   ok(tts.has('题库里不存在的题干') === false && tts.speak('题库里不存在的题干') === false,
      '查不到映射的文本不会被播放');
@@ -342,7 +346,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(page.data.canRead, true, '语文题出现读题按钮');
   eq(page.data.readText, want, '读题文本来自共用规则');
   ok(!!want && !!MAP[want] && global.__ttsPlays.indexOf(MAP[want]) >= 0,
-     '进题自动播放了一次题干音频（走分包映射）');
+     '进题自动播放了一次题干音频（走主包映射）');
   page.onReadStem();
   eq(global.__ttsPlays.filter((p) => p === MAP[want]).length, 2,
      '点读题喇叭能重播一次');
@@ -356,7 +360,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(!!listen && G.TTSText.forQuestion(listen).skip,
      '听音题不朗读的规则在小程序产物里同样生效');
 
-  // 家长关掉开关：按钮消失、不再发起合成
+  // 家长关掉开关：按钮消失、不再播放音频
   const save = app.globalData.save;
   save.settings.readStem = false;
   global.__ttsPlays.length = 0;

@@ -147,13 +147,17 @@ function makeSandbox() {
     getElementById: () => null,
     querySelector: () => null,
     querySelectorAll: () => [],
-    addEventListener() {},
+    // 捕获阶段的手势监听记下来，测试里手动触发一次，验证 iOS 语音通道解锁。
+    addEventListener(type, fn, capture) {
+      if (capture && typeof fn === 'function') sandbox.__gestureHandlers.push(fn);
+    },
     removeEventListener() {},
     visibilityState: 'visible',
     hidden: false,
     cookie: '',
     title: '',
   };
+  sandbox.__gestureHandlers = [];
   sandbox.document = doc;
   sandbox.navigator = {
     userAgent: 'Mozilla/5.0 (Macintosh) SmokeTest/1.0',
@@ -178,9 +182,11 @@ function makeSandbox() {
   // 不提供 onerror/onend 的自动回调 —— 让按钮状态保留，方便检查类名。
   sandbox.__spoken = [];
   sandbox.__cancelled = 0;
+  sandbox.__resumed = 0;
   sandbox.speechSynthesis = {
     speak(u) { sandbox.__spoken.push(u && u.text); },
     cancel() { sandbox.__cancelled++; },
+    resume() { sandbox.__resumed++; },
     getVoices() { return [{ lang: 'zh-CN', name: 'Tingting' }]; },
     addEventListener() {}
   };
@@ -401,6 +407,18 @@ function testRenderer() {
   ok(!!TT && typeof TT.forQuestion === 'function', 'TTSText 规则已加载');
   ok(!!G.TTS && G.TTS.available(), '浏览器语音合成可用（无头桩）');
 
+  // iOS Safari / 微信浏览器只允许用户手势栈里的第一次 speak()。进题自动播
+  // 是 350ms 后的定时器，不预热就整局静默；这里模拟用户点「开始闯关」。
+  ok(typeof G.TTS.unlock === 'function', '网页版提供手势解锁入口');
+  const beforeUnlock = sandbox.__spoken.length;
+  sandbox.__gestureHandlers.slice().forEach((fn) => fn());
+  eq(sandbox.__spoken.length, beforeUnlock + 1,
+     '首次用户手势会预热语音通道（自动播不会被 iOS 拦掉）');
+  ok(sandbox.__spoken[sandbox.__spoken.length - 1] === ' ',
+     '预热用的是音量为 0 的静音短句，不会念出多余内容');
+  sandbox.__gestureHandlers.slice().forEach((fn) => fn());
+  eq(sandbox.__spoken.length, beforeUnlock + 1, '解锁只做一次');
+
   if (TT) {
     ok(withAudio.every((q) => TT.forQuestion(q).skip),
        '自带音频的听音题一律不朗读题干（不和单词音频抢喇叭）');
@@ -416,7 +434,7 @@ function testRenderer() {
        '算式 + - = ? 能换成中文读法（归一化函数本身）');
 
     // 纯数字/符号题干不朗读：不识字也看得懂，念了反而占四成音频体积。
-    // 小程序把中文题干预生成成分包音频，这类题跳过后才装得进单个 2 MB 分包。
+    // 小程序把中文题干预生成成主包音频，这类题跳过后才装得进 2 MB 主包。
     const formula = all.filter((q) => !/[\u3400-\u9fff]/.test(q.stem.text));
     ok(formula.length > 0 && formula.every((q) => TT.forQuestion(q).why === 'formula'),
        '纯数字/符号题干不朗读', formula.length + ' 道');

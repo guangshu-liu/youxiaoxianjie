@@ -11,6 +11,12 @@
  * 已知限制（只能真机验）：iOS Safari 的 speechSynthesis 走的是和
  * InnerAudioContext 不同的音频通道，拨到静音时是否还出声不能假定
  * 「app.js 里设过 obeyMuteSwitch」就万事大吉。见 README 验收清单。
+ *
+ * 另一个坑：iOS Safari / 微信内置浏览器要求**第一次** speak() 发生在用户
+ * 手势的调用栈里，之后才允许异步 speak()。进题自动播是 350ms 后的定时器，
+ * 不在手势栈里，不解锁的话整局都静默失败（连 onerror 都不一定来）。
+ * 所以模块加载时在 document 捕获阶段挂一次性监听，用一条音量为 0 的空
+ * utterance 把语音通道激活；点「开始闯关」这一下就够了。
  */
 (function (window) {
   'use strict';
@@ -18,6 +24,8 @@
   var G = window.G;
   var timer = null;
   var voices = [];
+  var unlocked = false;
+  var unlockBound = false;
 
   function synth() {
     return window.speechSynthesis;
@@ -25,6 +33,37 @@
 
   function available() {
     return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+  }
+
+  /** 必须在用户手势的调用栈里调一次，iOS 之后才肯异步朗读。 */
+  function unlock() {
+    if (unlocked || !available()) return;
+    unlocked = true;
+    try {
+      var s = synth();
+      if (s.resume) s.resume();
+      var warm = new window.SpeechSynthesisUtterance(' ');
+      warm.lang = 'zh-CN';
+      warm.volume = 0;
+      s.speak(warm);
+    } catch (e) { /* 浏览器不支持预热就作罢，真朗读时再试一次 */ }
+  }
+
+  function bindUnlock() {
+    var d = window.document;
+    if (unlockBound || !d || typeof d.addEventListener !== 'function') return;
+    unlockBound = true;
+    var onGesture = function () {
+      unlock();
+      try {
+        d.removeEventListener('pointerdown', onGesture, true);
+        d.removeEventListener('touchend', onGesture, true);
+        d.removeEventListener('click', onGesture, true);
+      } catch (e) { /* 旧浏览器忽略 */ }
+    };
+    ['pointerdown', 'touchend', 'click'].forEach(function (t) {
+      try { d.addEventListener(t, onGesture, true); } catch (e) {}
+    });
   }
 
   function refreshVoices() {
@@ -51,6 +90,8 @@
     if (!text || !available()) return false;
     try {
       var s = synth();
+      unlock();                         // 手势监听没覆盖到时再兜一次
+      if (s.resume) s.resume();         // Chrome 偶尔停在 paused 状态
       s.cancel();                       // 同一时刻只保留一句
       var u = new window.SpeechSynthesisUtterance(text);
       u.lang = 'zh-CN';
@@ -96,9 +137,12 @@
     } catch (e) { /* 低版本忽略，按 lang 让浏览器自己挑 */ }
   }
 
+  bindUnlock();
+
   G.TTS = {
     available: available,
     enabled: enabled,
+    unlock: unlock,
     speak: speak,
     stop: stop,
     schedule: schedule

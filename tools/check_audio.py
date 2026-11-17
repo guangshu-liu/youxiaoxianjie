@@ -5,7 +5,7 @@ check_audio.py — 语音全链路体检（零依赖，只要 macOS 自带的 af
 
 覆盖两类音频：
   · 英语单词语音（audio/en，三处副本 + 两端映射）
-  · 中文题干朗读语音（miniprogram/pkgTts/audio，小程序分包）
+  · 中文题干朗读语音（miniprogram/ttsAudio，小程序主包）
 
 `npm run audio:check` 只回答「文件齐不齐」，回答不了「文件是不是能响」。
 历史上出过两件光看文件查不出来的事：
@@ -19,8 +19,8 @@ check_audio.py — 语音全链路体检（零依赖，只要 macOS 自带的 af
   4. 副本：audio/ · docs/audio/ · miniprogram/generated/audio/ 逐字节一致
   5. 映射：docs/data.js 的 AUDIO_MAP 与 miniprogram/generated/data/audio.js
           都覆盖全部 id，且指向的文件真的存在
-  6. 题干：pkgTts 分包里的中文朗读音频，清单 ↔ 22-tts-text.js 规则 ↔
-          tts-map.js ↔ 文件 ↔ PCM，并检查分包体积不逼近 2 MB 上限
+  6. 题干：主包 ttsAudio/ 里的中文朗读音频，清单 ↔ 22-tts-text.js 规则 ↔
+          tts-map.js ↔ 文件 ↔ PCM，并检查主包预算够不够
 
 用法：
     python3 tools/check_audio.py             # 完整体检
@@ -67,15 +67,16 @@ MIN_PEAK = 0.02          # 峰值至少 -34 dBFS
 MIN_RMS = 0.002          # RMS 至少 -54 dBFS
 MIN_VOICED = 0.12        # 至少 12% 的采样窗是有声的（挡住极短的滴声）
 
-# 中文题干朗读音频：只在小程序分包里，没有副本；单句 1–3 s。
+# 中文题干朗读音频：只在小程序主包里，没有副本；单句 1–6 s。
+# 主包上限 2 MB，其余文件约 885 KB，音频预算 1.15 MB（现约 0.97 MB）。
 TTS_SPEC = os.path.join(DATA, 'tts_audio.json')
-TTS_DIR = os.path.join(ROOT, 'miniprogram', 'pkgTts', 'audio')
+TTS_DIR = os.path.join(ROOT, 'miniprogram', 'ttsAudio')
 TTS_MAP = os.path.join(ROOT, 'miniprogram', 'generated', 'data', 'tts-map.js')
 # 中文音色约 5 字/秒；最长题干 31 字（应用题）实测 5.8 s，所以按字数
 # 给上限，而不是一刀切 3 s —— 那样会把最长的应用题误判成异常。
 TTS_SEC_PER_CHAR = 0.28
 TTS_MAX_SEC = 10.0                  # 绝对兜底，挡住卡死/拼接错的文件
-TTS_MAX_BYTES = 1.9 * 1024 * 1024   # 小程序单个分包上限 2 MB，留点余量
+TTS_MAX_BYTES = int(1.15 * 1024 * 1024)
 
 
 def read(path):
@@ -191,7 +192,7 @@ def parse_map(path):
 
 
 def check_tts(errs, stats, tmpdir, quick, have_tools):
-    """中文题干朗读音频（小程序分包）：清单 ↔ 规则 ↔ 映射 ↔ 文件 ↔ 解码。"""
+    """中文题干朗读音频（小程序主包）：清单 ↔ 规则 ↔ 映射 ↔ 文件 ↔ 解码。"""
     if not os.path.exists(TTS_SPEC):
         errs.append('缺少 %s' % relpath(TTS_SPEC))
         return
@@ -213,7 +214,7 @@ def check_tts(errs, stats, tmpdir, quick, have_tools):
         errs.append('缺少 %s' % relpath(TTS_MAP))
     else:
         amap = parse_map(TTS_MAP)
-        want = {e['text']: '/pkgTts/audio/' + e['file'] for e in entries}
+        want = {e['text']: '/ttsAudio/' + e['file'] for e in entries}
         if amap is None:
             errs.append('tts-map.js 里的映射解析不出来')
         elif amap != want:
@@ -268,8 +269,8 @@ def check_tts(errs, stats, tmpdir, quick, have_tools):
     if extra:
         errs.append('题干音频目录有 %d 个多余文件：%s' % (len(extra), ', '.join(extra[:4])))
     if total > TTS_MAX_BYTES:
-        errs.append('题干音频 %.2f MB，逼近小程序 2 MB 分包上限'
-                    % (total / 1024.0 / 1024.0))
+        errs.append('题干音频 %.2f MB，超出主包预算 %.2f MB'
+                    % (total / 1024.0 / 1024.0, TTS_MAX_BYTES / 1024.0 / 1024.0))
 
 
 def main():
@@ -408,7 +409,7 @@ def main():
                 if not os.path.exists(os.path.join(base, rel)):
                     errs.append('%s 里 %s 指向的 %s 不存在' % (label, aid, rel))
 
-        # ---- 6. 中文题干朗读音频（小程序分包） ----
+        # ---- 6. 中文题干朗读音频（小程序主包） ----
         check_tts(errs, stats, tmpdir, args.quick, have_tools)
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
@@ -433,7 +434,7 @@ def main():
     elif not args.quick and have_tools:
         print('  已解码   0 条')
     print('')
-    print('题干朗读音频（小程序 pkgTts 分包）')
+    print('题干朗读音频（小程序主包 ttsAudio/）')
     print('-' * 52)
     print('  文件     %3d 条   %.2f MB' % (stats['tts_files'], stats['tts_bytes'] / 1024.0 / 1024.0))
     if stats['tts_min_sec'] is not None:
@@ -453,7 +454,7 @@ def main():
             print('   …… 还有 %d 条' % (len(errs) - 25))
         print('')
         return 1
-    print('✅ 语音正常：单词音频的清单/文件/内容/三处副本/两端映射，以及题干朗读分包全部通过')
+    print('✅ 语音正常：单词音频的清单/文件/内容/三处副本/两端映射，以及题干朗读音频全部通过')
     print('')
     return 0
 

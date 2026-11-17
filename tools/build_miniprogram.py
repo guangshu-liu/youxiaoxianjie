@@ -191,7 +191,7 @@ def build_audio_js():
 
 
 def build_tts_map_js():
-    """题干朗读文本 → pkgTts 分包内路径。
+    """题干朗读文本 → 主包 ttsAudio/ 内的路径。
 
     和 tools/gen_tts_audio.py 用同一个 map_source()，保证「生成音频」和
     「重建小程序产物」两条路径写出来的映射逐字相同。generated/ 不进 git，
@@ -275,8 +275,8 @@ def build():
     return 0
 
 
-def check_tts_subpackage():
-    """题干朗读分包：映射、音频文件、app.json 声明三者都要对得上。"""
+def check_tts_audio():
+    """题干朗读音频在主包：映射、文件、无填充、主包体积、app.json 全要对。"""
     bad = []
     import gen_tts_audio as tts_gen
 
@@ -291,7 +291,7 @@ def check_tts_subpackage():
     elif read(map_path) != tts_gen.map_source(entries):
         bad.append('tts-map.js 与音频清单不一致（跑 npm run tts:audio）')
 
-    audio_dir = os.path.join(MP, 'pkgTts', 'audio')
+    audio_dir = os.path.join(MP, 'ttsAudio')
     total = 0
     for e in entries:
         path = os.path.join(audio_dir, e['file'])
@@ -299,15 +299,30 @@ def check_tts_subpackage():
             bad.append('题干音频缺文件 %s' % e['file'])
         else:
             total += os.path.getsize(path)
-    if total > 1.9 * 1024 * 1024:
-        bad.append('题干音频分包 %.2f MB，逼近 2 MB 上限' % (total / 1024.0 / 1024.0))
+            # 带 free 填充的文件会白白吃掉 3 KB/条，主包装不下。
+            if tts_gen.has_filler(path):
+                bad.append('题干音频仍带 free 填充 %s（跑 npm run tts:audio）' % e['file'])
+    if total > tts_gen.TTS_MAX_BYTES:
+        bad.append('题干音频 %.2f MB，超出主包预算' % (total / 1024.0 / 1024.0))
+
+    # 主包 2 MB 是硬上限：把除 ttsAudio/ 外的所有文件也算进来。
+    other = 0
+    for dirpath, dirnames, filenames in os.walk(MP):
+        if 'ttsAudio' in dirnames:
+            dirnames.remove('ttsAudio')
+        for name in filenames:
+            other += os.path.getsize(os.path.join(dirpath, name))
+    if other + total > 2 * 1024 * 1024:
+        bad.append('小程序主包合计 %.2f MB，超过 2 MB 上限'
+                   % ((other + total) / 1024.0 / 1024.0))
 
     app_json = load_json('app.json', root=MP)
     if app_json.get('plugins'):
         bad.append('app.json 里还声明着未授权的插件，未授权时小程序会启动失败')
-    roots = [p.get('root') for p in (app_json.get('subPackages') or [])]
-    if 'pkgTts' not in roots:
-        bad.append('app.json 里没有 pkgTts 分包声明')
+    if app_json.get('subPackages'):
+        bad.append('app.json 里还留着分包声明（题干音频已移进主包，主包引用分包资源真机无声）')
+    if os.path.isdir(os.path.join(MP, 'pkgTts')):
+        bad.append('miniprogram/pkgTts 目录还在（旧的空白页会白占主包体积）')
     return bad
 
 
@@ -325,7 +340,7 @@ def check():
         if not os.path.exists(os.path.join(GEN, 'audio', rel)):
             bad.append('缺少音频 %s' % rel)
 
-    bad += check_tts_subpackage()
+    bad += check_tts_audio()
 
     if bad:
         print('❌ 小程序产物不是最新的：')
