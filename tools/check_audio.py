@@ -1,0 +1,348 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+check_audio.py — 英语语音全链路体检（零依赖，只要 macOS 自带的 afinfo / afconvert）
+
+`npm run audio:check` 只回答「文件齐不齐」，回答不了「文件是不是能响」。
+历史上出过两件光看文件查不出来的事：
+  · 非 macOS 上生成的占位蜂鸣（都是 12204 字节，文件在、声音是假的）；
+  · 网页版 / 小程序包里的音频副本和 audio/ 主副本不一致（一边更新一边没更新）。
+
+所以这里分五层检查，任何一层挂了都以非 0 退出：
+  1. 引用：三科题库引用的 id ↔ english_audio.json ↔ audio_manifest.json
+  2. 文件：存在、m4a 头、体积、时长（单词 0.25–3.0 s）
+  3. 内容：实际解码成 PCM，看峰值 / RMS / 有声帧占比，挡住静音和占位蜂鸣
+  4. 副本：audio/ · docs/audio/ · miniprogram/generated/audio/ 逐字节一致
+  5. 映射：docs/data.js 的 AUDIO_MAP 与 miniprogram/generated/data/audio.js
+          都覆盖全部 id，且指向的文件真的存在
+
+用法：
+    python3 tools/check_audio.py             # 完整体检
+    python3 tools/check_audio.py --quick    # 跳过 PCM 解码（只看结构 / 文件）
+    python3 tools/check_audio.py --json     # 机器可读的结果
+"""
+
+import argparse
+import hashlib
+import json
+import math
+import os
+import re
+import shutil
+import struct
+import subprocess
+import sys
+import tempfile
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA = os.path.join(ROOT, 'src', 'data')
+SPEC = os.path.join(DATA, 'english_audio.json')
+MANIFEST = os.path.join(ROOT, 'tools', 'audio_manifest.json')
+MASTER = os.path.join(ROOT, 'audio')
+COPIES = [
+    ('网页版', os.path.join(ROOT, 'docs', 'audio')),
+    ('小程序', os.path.join(ROOT, 'miniprogram', 'generated', 'audio')),
+]
+MAPS = [
+    ('网页版 data.js', os.path.join(ROOT, 'docs', 'data.js'),
+     os.path.join(ROOT, 'docs', 'audio')),
+    ('小程序 audio.js',
+     os.path.join(ROOT, 'miniprogram', 'generated', 'data', 'audio.js'),
+     os.path.join(ROOT, 'miniprogram', 'generated', 'audio')),
+]
+
+# 一条正常的单词语音：say -v Samantha 读一个三四个字母的词，
+# 时长 0.4–1.2 s，峰值接近 0 dBFS，RMS 在 -25 dB 上下。
+# 阈值放宽到下面这些，只用来挡「完全没声音 / 是方波蜂鸣」，不用来挑音色。
+MIN_BYTES = 3000
+MIN_SEC = 0.25
+MAX_SEC = 3.0
+MIN_PEAK = 0.02          # 峰值至少 -34 dBFS
+MIN_RMS = 0.002          # RMS 至少 -54 dBFS
+MIN_VOICED = 0.12        # 至少 12% 的采样窗是有声的（挡住极短的滴声）
+
+
+def read(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        return f.read()
+
+
+def load(path):
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def sha1(path):
+    h = hashlib.sha1()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(1 << 16), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def relpath(path):
+    return os.path.relpath(path, ROOT)
+
+
+def refs_in_banks():
+    """三科题库里所有引用到的音频 id。"""
+    refs = set()
+    for name in ('chinese.json', 'math.json', 'english.json'):
+        path = os.path.join(DATA, name)
+        if not os.path.exists(path):
+            continue
+        for q in load(path):
+            stem = q.get('stem') or {}
+            for aid in (stem.get('audio'), stem.get('promptAudio')):
+                if aid:
+                    refs.add(aid)
+            for a in (q.get('audio') or []):
+                if isinstance(a, str) and a:
+                    refs.add(a)
+                elif isinstance(a, dict) and a.get('id'):
+                    refs.add(a['id'])
+    return {a.replace('.mp3', '').replace('.wav', '') for a in refs}
+
+
+def pcm_stats(path, tmpdir):
+    """afconvert 解成 16bit PCM WAV，返回 (时长, 峰值, RMS, 有声窗占比)。
+
+    直接用 wave 模块读，不需要 numpy。窗口取 20 ms，窗内 RMS 超过
+    峰值 * 0.08 就算「有声」—— 比单纯看整段 RMS 更能挡住「只有一个滴声」。
+    """
+    wav = os.path.join(tmpdir, os.path.basename(path) + '.wav')
+    subprocess.run(['afconvert', '-f', 'WAVE', '-d', 'LEI16', path, wav],
+                   check=True, capture_output=True)
+    import wave
+    with wave.open(wav, 'rb') as w:
+        rate = w.getframerate()
+        n = w.getnframes()
+        raw = w.readframes(n)
+    os.remove(wav)
+    vals = struct.unpack('<%dh' % (len(raw) // 2), raw)
+    if not vals:
+        return (0.0, 0.0, 0.0, 0.0)
+    peak = max(abs(v) for v in vals) / 32768.0
+    sq = sum(v * v for v in vals) / len(vals)
+    rms = math.sqrt(sq) / 32768.0
+    win = max(1, int(rate * 0.02))
+    voiced = 0
+    total = 0
+    for i in range(0, len(vals), win):
+        chunk = vals[i:i + win]
+        if not chunk:
+            continue
+        r = math.sqrt(sum(v * v for v in chunk) / len(chunk)) / 32768.0
+        total += 1
+        if peak > 0 and r > peak * 0.08:
+            voiced += 1
+    return (n / float(rate), peak, rms, voiced / float(total or 1))
+
+
+def duration(path):
+    out = subprocess.run(['afinfo', path], capture_output=True, text=True)
+    if out.returncode != 0:
+        return None
+    m = re.search(r'estimated duration:\s+([\d.]+)', out.stdout)
+    return float(m.group(1)) if m else None
+
+
+def parse_map(path):
+    """从 data.js / audio.js 里抠出 AUDIO_MAP 的 id → src。
+
+    docs/data.js 前面还挂着一大段 window.G.DATA（题库），不能用「第一个
+    {...}」去猜 —— 那样会解析到某道题的 stem 上，看起来像「70 条映射全丢
+    了」。这里先定位 AUDIO_MAP / module.exports，再用 JSONDecoder 从它后面
+    那个 { 开始读，读到完整对象为止。
+    """
+    text = read(path)
+    start = -1
+    for marker in ('AUDIO_MAP', 'module.exports'):
+        p = text.find(marker)
+        if p >= 0:
+            start = text.find('{', p)
+            if start >= 0:
+                break
+    if start < 0:
+        start = text.find('{')
+    if start < 0:
+        return None
+    try:
+        obj, _end = json.JSONDecoder().raw_decode(text[start:])
+        return obj if isinstance(obj, dict) else None
+    except ValueError:
+        return None
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--quick', action='store_true', help='跳过 PCM 解码')
+    ap.add_argument('--json', action='store_true', help='输出 JSON')
+    args = ap.parse_args()
+
+    errs = []
+    warns = []
+    stats = {'files': 0, 'decoded': 0, 'bytes': 0,
+             'min_sec': None, 'max_sec': None,
+             'min_peak': None, 'min_rms': None, 'min_voiced': None}
+
+    # ---- 1. 引用层 ----
+    spec = load(SPEC)['entries'] if os.path.exists(SPEC) else []
+    spec_ids = {e['id'] for e in spec}
+    refs = refs_in_banks()
+    if not spec:
+        errs.append('缺少 %s' % relpath(SPEC))
+    else:
+        for aid in sorted(refs - spec_ids):
+            errs.append('题库引用了 %s，但语音清单里没有' % aid)
+        for aid in sorted(spec_ids - refs):
+            errs.append('语音清单里的 %s 没有题目引用' % aid)
+        if len(spec_ids) != len(spec):
+            errs.append('语音清单有重复 id')
+
+    manifest = load(MANIFEST)['entries'] if os.path.exists(MANIFEST) else {}
+    if not manifest:
+        errs.append('缺少 %s' % relpath(MANIFEST))
+    else:
+        for aid in sorted(spec_ids - set(manifest)):
+            errs.append('audio_manifest.json 里缺少 %s' % aid)
+        for aid in sorted(set(manifest) - spec_ids):
+            errs.append('audio_manifest.json 里的 %s 已不在语音清单中' % aid)
+        by_text = {e['id']: e['text'] for e in spec}
+        for aid in sorted(spec_ids & set(manifest)):
+            e = manifest[aid]
+            want = hashlib.sha1(by_text[aid].encode('utf-8')).hexdigest()
+            if e.get('text_sha1') != want:
+                errs.append('%s：清单里的 text_sha1 和要读的文本对不上' % aid)
+
+    have_tools = bool(shutil.which('afinfo') and shutil.which('afconvert'))
+    if not have_tools:
+        warns.append('找不到 afinfo / afconvert，跳过时长与 PCM 检查（只能在 macOS 上做）')
+
+    tmpdir = tempfile.mkdtemp(prefix='check_audio_')
+    try:
+        # ---- 2–4. 文件 / 内容 / 副本 ----
+        for aid in sorted(spec_ids):
+            e = manifest.get(aid) or {}
+            rel = e.get('path') or (aid.replace('.', '/') + '.m4a')
+            master = os.path.join(MASTER, rel)
+            if not os.path.exists(master):
+                errs.append('缺文件 %s' % relpath(master))
+                continue
+            size = os.path.getsize(master)
+            stats['files'] += 1
+            stats['bytes'] += size
+            if size < MIN_BYTES:
+                errs.append('%s 只有 %d 字节，可能是占位文件' % (aid, size))
+            with open(master, 'rb') as f:
+                head = f.read(12)
+            if head[4:8] != b'ftyp':
+                errs.append('%s 不是 m4a（缺 ftyp 头）' % aid)
+            if e.get('sha1') and e['sha1'] != sha1(master):
+                errs.append('%s 的 sha1 与 audio_manifest.json 不符（文件被改过或没重新生成）' % aid)
+
+            if have_tools:
+                sec = duration(master)
+                if sec is None:
+                    errs.append('%s 无法被 afinfo 解析' % aid)
+                else:
+                    stats['min_sec'] = sec if stats['min_sec'] is None else min(stats['min_sec'], sec)
+                    stats['max_sec'] = sec if stats['max_sec'] is None else max(stats['max_sec'], sec)
+                    if not MIN_SEC <= sec <= MAX_SEC:
+                        errs.append('%s 时长 %.2fs，不在 %.2f–%.2fs 之间'
+                                    % (aid, sec, MIN_SEC, MAX_SEC))
+                if not args.quick:
+                    try:
+                        _s, peak, rms, voiced = pcm_stats(master, tmpdir)
+                    except Exception as ex:
+                        errs.append('%s 解码失败：%s' % (aid, ex))
+                    else:
+                        stats['decoded'] += 1
+                        stats['min_peak'] = peak if stats['min_peak'] is None else min(stats['min_peak'], peak)
+                        stats['min_rms'] = rms if stats['min_rms'] is None else min(stats['min_rms'], rms)
+                        stats['min_voiced'] = voiced if stats['min_voiced'] is None else min(stats['min_voiced'], voiced)
+                        if peak < MIN_PEAK or rms < MIN_RMS:
+                            errs.append('%s 几乎是静音（峰值 %.3f / RMS %.3f）'
+                                        % (aid, peak, rms))
+                        elif voiced < MIN_VOICED:
+                            errs.append('%s 只有 %.0f%% 的时长有声，可能是一声滴'
+                                        % (aid, voiced * 100))
+
+            for label, base in COPIES:
+                dest = os.path.join(base, rel)
+                if not os.path.exists(dest):
+                    errs.append('%s 副本缺文件 %s' % (label, relpath(dest)))
+                elif sha1(dest) != sha1(master):
+                    errs.append('%s 副本 %s 与主文件不一致（跑 npm run mp:build / npm run build）'
+                                % (label, relpath(dest)))
+
+        # ---- 5. 映射 ----
+        for label, path, base in MAPS:
+            if not os.path.exists(path):
+                errs.append('%s 不存在' % label)
+                continue
+            amap = parse_map(path)
+            if amap is None:
+                errs.append('%s 里的音频映射解析不出来' % label)
+                continue
+            missing = sorted(spec_ids - set(amap))
+            extra = sorted(set(amap) - spec_ids)
+            if missing:
+                errs.append('%s 少了 %d 条映射：%s'
+                            % (label, len(missing), ', '.join(missing[:6])))
+            if extra:
+                warns.append('%s 有 %d 条多余映射：%s'
+                             % (label, len(extra), ', '.join(extra[:6])))
+            for aid, src in amap.items():
+                if isinstance(src, dict):
+                    src = src.get('src') or ''
+                if src.startswith('data:'):
+                    continue
+                if src.startswith('/generated/audio/'):
+                    rel = src[len('/generated/audio/'):]
+                elif src.startswith('audio/'):
+                    rel = src[len('audio/'):]
+                else:
+                    continue
+                if not os.path.exists(os.path.join(base, rel)):
+                    errs.append('%s 里 %s 指向的 %s 不存在' % (label, aid, rel))
+    finally:
+        shutil.rmtree(tmpdir, ignore_errors=True)
+
+    if args.json:
+        print(json.dumps({'ok': not errs, 'errors': errs, 'warnings': warns,
+                          'stats': stats}, ensure_ascii=False, indent=2))
+        return 0 if not errs else 1
+
+    print('')
+    print('语音体检  audio/ · docs/ · miniprogram/')
+    print('=' * 52)
+    print('  语音清单 %3d 条   题库引用 %3d 条' % (len(spec_ids), len(refs)))
+    print('  主文件   %3d 个   %s' % (stats['files'],
+                                     ('%.1f KB' % (stats['bytes'] / 1024.0))))
+    if stats['min_sec'] is not None:
+        print('  时长     %.2f – %.2f s' % (stats['min_sec'], stats['max_sec']))
+    if stats['decoded']:
+        print('  已解码   %3d 条   最低峰值 %.3f / 最低 RMS %.3f / 最低有声占比 %.0f%%'
+              % (stats['decoded'], stats['min_peak'], stats['min_rms'],
+                 stats['min_voiced'] * 100))
+    elif not args.quick and have_tools:
+        print('  已解码   0 条')
+    print('')
+    for w in warns:
+        print('  ⚠️  %s' % w)
+    if errs:
+        print('❌ 发现 %d 个问题：' % len(errs))
+        for e in errs[:25]:
+            print('   · %s' % e)
+        if len(errs) > 25:
+            print('   …… 还有 %d 条' % (len(errs) - 25))
+        print('')
+        return 1
+    print('✅ 语音正常：清单、文件、内容、三处副本、两端映射全部通过')
+    print('')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -249,6 +249,8 @@ def sync_docs():
 def main():
     ap = argparse.ArgumentParser(description='发布在线版到 GitHub Pages')
     ap.add_argument('--dry-run', action='store_true', help='只构建同步，不碰 git')
+    ap.add_argument('--sync-only', action='store_true',
+                    help='只把已有的 output/online 同步到 docs/，不构建、不碰 git')
     ap.add_argument('--repo', help='远端仓库 URL')
     ap.add_argument('--repo-name', default='youxiaoxianjie',
                     help='GitHub 仓库名（默认 youxiaoxianjie）')
@@ -259,6 +261,11 @@ def main():
     log('')
     log(BG + '发布到 GitHub Pages' + RESET)
     log('=' * 46)
+
+    # 给 npm run verify 用：构建已经跑过了，只需要把产物同步到 docs/，
+    # 这样「网页版和小程序一致」是流水线保证的，不靠人记得执行一次部署。
+    if args.sync_only:
+        return 0 if sync_docs() else 1
 
     if not args.skip_checks and not preflight():
         return 1

@@ -1,4 +1,4 @@
-/* audio.js — 单词语音（听音选字母题）
+/* audio.js — 单词语音（三种听音题：听音选字母 / 听音选词 / 辨短元音）
  *
  * 网页版用 Web Audio 解码 AudioBuffer；小程序里换成 InnerAudioContext 播
  * 包内文件。语音文件随包发布，不走网络，所以：

@@ -14,11 +14,11 @@
       "text_sha1": "d0be2dc421be4fcd0172e5afceea3970e2f3d940",
       "voice": "Samantha"
     },
-    "en.ax": {
-      "path": "en/ax.m4a",
-      "sha1": "15cab32ad05b944edda25f4544b11ccbfaaab7ba",
-      "text": "ax",
-      "text_sha1": "2a2e1206b4222b0d7cc8c8a1d8b302ee70cfe817",
+    "en.bad": {
+      "path": "en/bad.m4a",
+      "sha1": "cdc49a38956b0476b021f8976868060e60332d07",
+      "text": "bad",
+      "text_sha1": "1902e3d6fc4e78a0bcc50ba12b882769afbf4a8c",
       "voice": "Samantha"
     },
     "en.ball": {
@@ -28,18 +28,60 @@
       "text_sha1": "8bec0406497ccf8bb93933005b504d85785dfc14",
       "voice": "Samantha"
     },
-    "en.bear": {
-      "path": "en/bear.m4a",
-      "sha1": "87c1b02599bf439957f66f2c14a29d6aace5aa50",
-      "text": "bear",
-      "text_sha1": "09f5edeb4f5b2a4e4364f6b654682c6758a3fa16",
+    "en.big": {
+      "path": "en/big.m4a",
+      "sha1": "aeb49406ce796648c2114776c6d9f2aa19321fdd",
+      "text": "big",
+      "text_sha1": "95c4bea12e4edcf8aad730a222793324dc42c29d",
       "voice": "Samantha"
     },
-    "en.bed": {
-      "path": "en/bed.m4a",
-      "sha1": "b6dee2b4be6ca059a515fec9085b872de8cc7691",
-      "text": "bed",
-      "text_sha1": "fefe2393a7fc8eafc6f15a3953f6102dfebf6d1a",
+    "en.bin": {
+      "path": "en/bin.m4a",
+      "sha1": "72a8a2deb8554eec423a6babca1dd1a19668ad24",
+      "text": "bin",
+      "text_sha1": "9a5d56716d566997fa290054d161af96305aff9a",
+      "voice": "Samantha"
+    },
+    "en.bit": {
+      "path": "en/bit.m4a",
+      "sha1": "57f4e609a554a5e407333bfa7a14a164763345e7",
+      "text": "bit",
+      "text_sha1": "026e996a3a5897970b058ffb093a163a1d763649",
+      "voice": "Samantha"
+    },
+    "en.bud": {
+      "path": "en/bud.m4a",
+      "sha1": "3a2f8a90f90c27a3957710b7463defc609595cbe",
+      "text": "bud",
+      "text_sha1": "ac9b8061312ba6add42cda53c35f468928ed0512",
+      "voice": "Samantha"
+    },
+    "en.bug": {
+      "path": "en/bug.m4a",
+      "sha1": "68caf8efee4cf198d5b1d029e98d6f0f89660ada",
+      "text": "bug",
+      "text_sha1": "6885858486f31043e5839c735d99457f045affd0",
+      "voice": "Samantha"
+    },
+    "en.bun": {
+      "path": "en/bun.m4a",
+      "sha1": "347ba1d54a7ff2a9cc6ecae3cadbf2f575c0ef1e",
+      "text": "bun",
+      "text_sha1": "b14615a7fdef95956475d555b4973df802dd3ebf",
+      "voice": "Samantha"
+    },
+    "en.can": {
+      "path": "en/can.m4a",
+      "sha1": "0ab2f373c672ea2afbd2da9392fd3cefe40ad7d7",
+      "text": "can",
+      "text_sha1": "7e9219a0599eae1d9601883f894b4fbe60870586",
+      "voice": "Samantha"
+    },
+    "en.cap": {
+      "path": "en/cap.m4a",
+      "sha1": "58093cba3af30e0cd291a9cf23d5834933de0347",
+      "text": "cap",
+      "text_sha1": "ac4be5ac63e1ea62640409f639b010b9fb479c5b",
       "voice": "Samantha"
     },
     "en.car": {
@@ -56,18 +98,25 @@
       "text_sha1": "9d989e8d27dc9e0ec3389fc855f142c3d40f0c50",
       "voice": "Samantha"
     },
-    "en.cup": {
-      "path": "en/cup.m4a",
-      "sha1": "5fb5249cb70d4e6ce2ec045fb6d7431213265e97",
-      "text": "cup",
-      "text_sha1": "ad00c690d667f9dc6834a33aa36f56e2d3df78d9",
+    "en.cop": {
+      "path": "en/cop.m4a",
+      "sha1": "7cc9a4332fa198482b95cc09a67bc227c77ee7d3",
+      "text": "cop",
+      "text_sha1": "3bb4096cd3e137920b80365c7ccb27f9ced60fe0",
       "voice": "Samantha"
     },
-    "en.desk": {
-      "path": "en/desk.m4a",
-      "sha1": "5368fd52c9b2f2e5cc227374827d022d8bf5dc1c",
-      "text": "desk",
-      "text_sha1": "46e7cfa080913f4dae18d802d041de7d664b10e2",
+    "en.cot": {
+      "path": "en/cot.m4a",
+      "sha1": "f4deddf586f324b2f5e4c9bad7b27c7eb4b53ff8",
+      "text": "cot",
+      "text_sha1": "7fd2e982067b387f73dcb93cf080fe66cc2f33b3",
+      "voice": "Samantha"
+    },
+    "en.dig": {
+      "path": "en/dig.m4a",
+      "sha1": "cea0994de108be5a5e249963fb136c8e88437ac4",
+      "text": "dig",
+      "text_sha1": "9080a51cd6de0d21811853987cfdf739788fa5ef",
       "voice": "Samantha"
     },
     "en.dog": {
@@ -77,18 +126,11 @@
       "text_sha1": "e49512524f47b4138d850c9d9d85972927281da0",
       "voice": "Samantha"
     },
-    "en.duck": {
-      "path": "en/duck.m4a",
-      "sha1": "bfaa18fcb1d89b65fcebc02b5fc94ef0c6a6fee2",
-      "text": "duck",
-      "text_sha1": "5ece240085b9ad85b64896082e3761c54ef581de",
-      "voice": "Samantha"
-    },
-    "en.egg": {
-      "path": "en/egg.m4a",
-      "sha1": "a14d7d42940c3936215b397b4e38ad9049979143",
-      "text": "egg",
-      "text_sha1": "4fa6024f12494d3a99d8bda9b7a55f7d140f328a",
+    "en.dot": {
+      "path": "en/dot.m4a",
+      "sha1": "15f588f0066200a69575b96c6f248a9967b54723",
+      "text": "dot",
+      "text_sha1": "348a3c4a81ea6081e50dd1888d577fda55d8e4f6",
       "voice": "Samantha"
     },
     "en.elbow": {
@@ -98,13 +140,6 @@
       "text_sha1": "3b1028122b8e5f2e2db6d15a957a1845fbf4bd53",
       "voice": "Samantha"
     },
-    "en.elephant": {
-      "path": "en/elephant.m4a",
-      "sha1": "712a0dbc426348cc487be1510609619183556223",
-      "text": "elephant",
-      "text_sha1": "0ae9e4deba26021986ffd99636da6601f6393631",
-      "voice": "Samantha"
-    },
     "en.fan": {
       "path": "en/fan.m4a",
       "sha1": "ebdecaf9d08c70067f6115cdde707816c50073fd",
@@ -112,32 +147,46 @@
       "text_sha1": "2899441143e28aee7287e8da3d7211258f5edbd3",
       "voice": "Samantha"
     },
-    "en.fish": {
-      "path": "en/fish.m4a",
-      "sha1": "0edca07051815e724562909dac933a0d3872bf7d",
-      "text": "fish",
-      "text_sha1": "64875fcccaac069fcb3e0e201e7d5b9166641608",
+    "en.fed": {
+      "path": "en/fed.m4a",
+      "sha1": "a316817a6eb66f6971d056cd153e95c904709389",
+      "text": "fed",
+      "text_sha1": "8d0ea520e285791381ab3f7bea5a5a6a0811888c",
       "voice": "Samantha"
     },
-    "en.fork": {
-      "path": "en/fork.m4a",
-      "sha1": "473ecb69e70c552c606b34a8ab1f6a48486e6aea",
-      "text": "fork",
-      "text_sha1": "3f673f2a8e0aacb6d0fa4504233f4f284e4a1b4c",
+    "en.fig": {
+      "path": "en/fig.m4a",
+      "sha1": "920f9fc39947ed1b00cfc90454916375d9ec42a1",
+      "text": "fig",
+      "text_sha1": "b219a5c95dfcc492fe30723b0548f0f88e8c0a7c",
       "voice": "Samantha"
     },
-    "en.gate": {
-      "path": "en/gate.m4a",
-      "sha1": "246ac0565252386957394cc70eb76899f2f8acf6",
-      "text": "gate",
-      "text_sha1": "3c5b492776742690efb6a0f1fd8508693400e2cc",
+    "en.fin": {
+      "path": "en/fin.m4a",
+      "sha1": "b204103c21801b1e44dfad4e1c7de1cbe65de120",
+      "text": "fin",
+      "text_sha1": "b76049e61518de9781f18a52d2d89b5f4ac6ae9f",
       "voice": "Samantha"
     },
-    "en.girl": {
-      "path": "en/girl.m4a",
-      "sha1": "ef4595d127271888a084250e2b67f561f1d5f31b",
-      "text": "girl",
-      "text_sha1": "25b732b3425cf8421a84fbe8e6efa1aaf932ad4b",
+    "en.fit": {
+      "path": "en/fit.m4a",
+      "sha1": "6dc0fabf8883923745ac55651c2ab7809c721685",
+      "text": "fit",
+      "text_sha1": "9c20b9ba55a293ba051d5b5d90b9f0d26026f5b9",
+      "voice": "Samantha"
+    },
+    "en.fix": {
+      "path": "en/fix.m4a",
+      "sha1": "d9803b53eeccb7195fbf72a434b35134f6acd615",
+      "text": "fix",
+      "text_sha1": "99f707ef02f096ed1e08d922e18da99b31d43e4f",
+      "voice": "Samantha"
+    },
+    "en.fun": {
+      "path": "en/fun.m4a",
+      "sha1": "d232fbf3a970216ca254e38de97f4e261bee6747",
+      "text": "fun",
+      "text_sha1": "c84c50d5a767a23bda0ea5ca348fed54c6db9aab",
       "voice": "Samantha"
     },
     "en.goat": {
@@ -147,6 +196,27 @@
       "text_sha1": "162d15a0c695fc8cf15dc1993a627e676194f59e",
       "voice": "Samantha"
     },
+    "en.gum": {
+      "path": "en/gum.m4a",
+      "sha1": "804ea775c742c49422d69aeb0a390f4b9fa02079",
+      "text": "gum",
+      "text_sha1": "db4517266f26a67ab17a8376487d526e2e78847c",
+      "voice": "Samantha"
+    },
+    "en.gun": {
+      "path": "en/gun.m4a",
+      "sha1": "d7669fa67eda17971c49fbd8957359298460dd4c",
+      "text": "gun",
+      "text_sha1": "ebebee19b34c4c0c47e35d517432df7db90993f8",
+      "voice": "Samantha"
+    },
+    "en.ham": {
+      "path": "en/ham.m4a",
+      "sha1": "77c200d6905eb31bfdf52ec3960014633085c9bf",
+      "text": "ham",
+      "text_sha1": "78844960f3ebdb074babae8cc5981cae5981aa32",
+      "voice": "Samantha"
+    },
     "en.hand": {
       "path": "en/hand.m4a",
       "sha1": "5bb2c9634764d2687f171a1c53d44a173622db3d",
@@ -154,32 +224,46 @@
       "text_sha1": "9621a244a447ec749598f8327560ff86095e2c26",
       "voice": "Samantha"
     },
-    "en.hat": {
-      "path": "en/hat.m4a",
-      "sha1": "63697cbc7f207c16b48d43b2a9d09127dcf93f0c",
-      "text": "hat",
-      "text_sha1": "10e5866050d20afe8ccae04456491db7908a96ec",
+    "en.hen": {
+      "path": "en/hen.m4a",
+      "sha1": "222ef41beddc061d137b48aa887b7e93b63cf905",
+      "text": "hen",
+      "text_sha1": "d811086176db6c0937801307297ba5c0a9296324",
       "voice": "Samantha"
     },
-    "en.horse": {
-      "path": "en/horse.m4a",
-      "sha1": "d61696fcc52cb7569baccd528733fba0251916fe",
-      "text": "horse",
-      "text_sha1": "091b5035885c00170fec9ecf24224933e3de3fcc",
+    "en.hit": {
+      "path": "en/hit.m4a",
+      "sha1": "24d5629c149d9bd8d412c45ec47cded6299ac904",
+      "text": "hit",
+      "text_sha1": "d7d390bd9ebac6bfa0b17ab10695fe73916ebcc2",
       "voice": "Samantha"
     },
-    "en.igloo": {
-      "path": "en/igloo.m4a",
-      "sha1": "7c1e4c916496f3248b9eb6f612857d39be0b6009",
-      "text": "igloo",
-      "text_sha1": "18098ec54bfe1f2fc309e5e5697cf1bbd4c2bc57",
+    "en.hop": {
+      "path": "en/hop.m4a",
+      "sha1": "d72e67fb8b2ad55686dc98edc47eca05a4cc76a9",
+      "text": "hop",
+      "text_sha1": "cffb6b20e0eef296772f6c1457cdde0049bdfb56",
       "voice": "Samantha"
     },
-    "en.ink": {
-      "path": "en/ink.m4a",
-      "sha1": "8789c7a079987cb107783ed45e4ce373b1ba1e1e",
-      "text": "ink",
-      "text_sha1": "ec437ab60af367f0fec0f6a3cd47f9cbad7b487f",
+    "en.hot": {
+      "path": "en/hot.m4a",
+      "sha1": "87fa2e832b157281572f53574df6b55570d30431",
+      "text": "hot",
+      "text_sha1": "4bd8eddacb60b41280481c5acce7ea363d1162be",
+      "voice": "Samantha"
+    },
+    "en.hug": {
+      "path": "en/hug.m4a",
+      "sha1": "f73ce8ddc9f95dcdfed9b138658714af0761e8c7",
+      "text": "hug",
+      "text_sha1": "f11fb55cedc6b7d6b24d3f7a53bbb2967846315b",
+      "voice": "Samantha"
+    },
+    "en.hum": {
+      "path": "en/hum.m4a",
+      "sha1": "a030a5c395cf74b9c91ffd687e6d5c752b0753d9",
+      "text": "hum",
+      "text_sha1": "39c9940833ee06ca0624dfdf2580e8ccf7da5b5a",
       "voice": "Samantha"
     },
     "en.insect": {
@@ -187,13 +271,6 @@
       "sha1": "6ef8c01be5ed91fd8e6a7ae9639fdf900160f26c",
       "text": "insect",
       "text_sha1": "1a4e4a7cc4e8f5280a685bccb86f302e7d57710e",
-      "voice": "Samantha"
-    },
-    "en.jam": {
-      "path": "en/jam.m4a",
-      "sha1": "03419fea69778ccaeed64c5c2921a38a2cbbce32",
-      "text": "jam",
-      "text_sha1": "da3dd5c2657fecad769c041097dbd8ecd725687d",
       "voice": "Samantha"
     },
     "en.jet": {
@@ -210,11 +287,11 @@
       "text_sha1": "07ef879175424a11fbc65e95737df3df8822b8a6",
       "voice": "Samantha"
     },
-    "en.key": {
-      "path": "en/key.m4a",
-      "sha1": "4189ecfd068e95adae2e254ae76c95b1ee673d03",
-      "text": "key",
-      "text_sha1": "a62f2225bf70bfaccbc7f1ef2a397836717377de",
+    "en.kid": {
+      "path": "en/kid.m4a",
+      "sha1": "03138ea1e2d2d92d1b5bc65c6b0c4754665ee4e2",
+      "text": "kid",
+      "text_sha1": "3f158d4cc718206818e1356dc8a1a2164987885d",
       "voice": "Samantha"
     },
     "en.king": {
@@ -224,13 +301,6 @@
       "text_sha1": "481902ec14eaf3fcfec6be82bd6a63b972ac517f",
       "voice": "Samantha"
     },
-    "en.kite": {
-      "path": "en/kite.m4a",
-      "sha1": "6edd2fad999cfe144c6b59f7e966b6761e8ef37d",
-      "text": "kite",
-      "text_sha1": "34e1c7876de92195156f44f32c0719a3e7d5cef4",
-      "voice": "Samantha"
-    },
     "en.leaf": {
       "path": "en/leaf.m4a",
       "sha1": "b1d20cbadc6a48803d9fc897c7bc7bbdb9364b78",
@@ -238,25 +308,32 @@
       "text_sha1": "98798241748efaccb230386437b7873a478f5bd4",
       "voice": "Samantha"
     },
-    "en.lemon": {
-      "path": "en/lemon.m4a",
-      "sha1": "810ae0718194df42f01837d53a99d401caa5964f",
-      "text": "lemon",
-      "text_sha1": "dfdd7bce2ad9f89d7204dd83161d66d1e521759c",
+    "en.lot": {
+      "path": "en/lot.m4a",
+      "sha1": "f3cf6687858a5f8a15980e946d4514e40b61c4fc",
+      "text": "lot",
+      "text_sha1": "dcf6aa5497e08b90320d9690984d4484444426af",
       "voice": "Samantha"
     },
-    "en.lion": {
-      "path": "en/lion.m4a",
-      "sha1": "1e98dd80a74893debbf920807b46765de6e4ed60",
-      "text": "lion",
-      "text_sha1": "eaf14a01af23a2750f52c1b1992232c6adc001c4",
+    "en.mat": {
+      "path": "en/mat.m4a",
+      "sha1": "0cd44d7cd8e47188d7f28909656897130121e7d3",
+      "text": "mat",
+      "text_sha1": "cc7c5be316e48d137cbb549833b85d91034d799d",
       "voice": "Samantha"
     },
-    "en.milk": {
-      "path": "en/milk.m4a",
-      "sha1": "fb8769011266580d3c22bc2f2ef8ee59f9a1c0a6",
-      "text": "milk",
-      "text_sha1": "cf5dbf0ec57dff5da56d86c45b3bdd11849a065a",
+    "en.men": {
+      "path": "en/men.m4a",
+      "sha1": "bcb8e66c52afd6e83b27bb0c2a028b0a3dae6096",
+      "text": "men",
+      "text_sha1": "6711b9ebf598e7db0fbc0388eeb05b1473ea3ecf",
+      "voice": "Samantha"
+    },
+    "en.mix": {
+      "path": "en/mix.m4a",
+      "sha1": "5136361c41c534d0cf2d37977e28de0163506def",
+      "text": "mix",
+      "text_sha1": "38743fbb4474f9888eeb292dd9b249a72c19fd24",
       "voice": "Samantha"
     },
     "en.monkey": {
@@ -266,18 +343,32 @@
       "text_sha1": "ab87d24bdc7452e55738deb5f868e1f16dea5ace",
       "voice": "Samantha"
     },
-    "en.moon": {
-      "path": "en/moon.m4a",
-      "sha1": "e7897bd81a025e82345b5370791c64bf832120fc",
-      "text": "moon",
-      "text_sha1": "46dcd4dd65b63d106b8cfb4aad906b23716cc613",
+    "en.mop": {
+      "path": "en/mop.m4a",
+      "sha1": "6fa3c8ef27b63b5eff863a0147fc92f1aca90d2f",
+      "text": "mop",
+      "text_sha1": "e428b54c599d1dcb9fd1a13d21727d17c57422b6",
       "voice": "Samantha"
     },
-    "en.nest": {
-      "path": "en/nest.m4a",
-      "sha1": "5e470d69e95853c45605f5259fe842ad1c3b41de",
-      "text": "nest",
-      "text_sha1": "10eff6288cedaa3ed64db6ca0d8a4f0005844d15",
+    "en.mug": {
+      "path": "en/mug.m4a",
+      "sha1": "0a0bb495f72b63a1dac0a1257539452673d01bb4",
+      "text": "mug",
+      "text_sha1": "41eceaf7561be175b9a1f197706cbf10d2f18292",
+      "voice": "Samantha"
+    },
+    "en.nap": {
+      "path": "en/nap.m4a",
+      "sha1": "1dfa4378c07514092555edbe4990d20021c9ec64",
+      "text": "nap",
+      "text_sha1": "c2640f79b4ed481b838ce4ad75330aa3f825d4d9",
+      "voice": "Samantha"
+    },
+    "en.net": {
+      "path": "en/net.m4a",
+      "sha1": "1d22b881915bfac2a14500a78d1591f236af1001",
+      "text": "net",
+      "text_sha1": "391b6629d9b645d3073c6f5ad432c40537646604",
       "voice": "Samantha"
     },
     "en.nose": {
@@ -287,20 +378,6 @@
       "text_sha1": "1a1f58c9adc75e11a9c4c108e39bb79bfb4435ac",
       "voice": "Samantha"
     },
-    "en.nut": {
-      "path": "en/nut.m4a",
-      "sha1": "1bb73093915dbb1caef9105c18985f8ef307e030",
-      "text": "nut",
-      "text_sha1": "85ae1763938de0e186ccea0a05d89c0940f7faf8",
-      "voice": "Samantha"
-    },
-    "en.octopus": {
-      "path": "en/octopus.m4a",
-      "sha1": "56e092710e1692ed6410a6fccd26789c14385bbc",
-      "text": "octopus",
-      "text_sha1": "460b8dde3c375c9f9b87e3ab44ffce3fa1305744",
-      "voice": "Samantha"
-    },
     "en.ostrich": {
       "path": "en/ostrich.m4a",
       "sha1": "6379aa87a01f93789ecb56810778da0ce2c5cf19",
@@ -308,18 +385,11 @@
       "text_sha1": "5ad8f8849e449aef6e264bc6992d770b76a19e52",
       "voice": "Samantha"
     },
-    "en.ox": {
-      "path": "en/ox.m4a",
-      "sha1": "bc8649b0e6aa0380ac83a87cf8b292fb0c7dd223",
-      "text": "ox",
-      "text_sha1": "d57eb76398ee3dad9754f2548b613db1aa3597f6",
-      "voice": "Samantha"
-    },
-    "en.panda": {
-      "path": "en/panda.m4a",
-      "sha1": "0e873b48980bc241e0416c23141577280567b71f",
-      "text": "panda",
-      "text_sha1": "f91a8ee646a277a2f1359709604b99c1b32d9f24",
+    "en.pad": {
+      "path": "en/pad.m4a",
+      "sha1": "bc72a230f3b58c260e0154e202291125f8fe7334",
+      "text": "pad",
+      "text_sha1": "51da2df9f47e0219a2f38d7fdbfec27d535ed3b2",
       "voice": "Samantha"
     },
     "en.pen": {
@@ -336,11 +406,39 @@
       "text_sha1": "2cd4ba93087f27499adb46f6a91ddeb729b9966b",
       "voice": "Samantha"
     },
-    "en.queen": {
-      "path": "en/queen.m4a",
-      "sha1": "f27ed032732abb9ff7d1897ab9baab1169857be3",
-      "text": "queen",
-      "text_sha1": "410114109270c8ffe4af1706adcad6e29c421f4d",
+    "en.pin": {
+      "path": "en/pin.m4a",
+      "sha1": "68ff63b28237509756f41335a8fdd09f9f048329",
+      "text": "pin",
+      "text_sha1": "d145a2a905bc39aefaf27622d8a008651c4f7b84",
+      "voice": "Samantha"
+    },
+    "en.pit": {
+      "path": "en/pit.m4a",
+      "sha1": "26e9a2b78b46578de2a1d3b7c4e5b51a5beeaeb0",
+      "text": "pit",
+      "text_sha1": "00884428322b305950c6a50314a97c1a288fd28e",
+      "voice": "Samantha"
+    },
+    "en.pop": {
+      "path": "en/pop.m4a",
+      "sha1": "d8b2d861e1b6d6e62cc6bd2db7a81b0576bcf56a",
+      "text": "pop",
+      "text_sha1": "4f197c99a78b8411f1cf48ab409a0a6d176b99b7",
+      "voice": "Samantha"
+    },
+    "en.pot": {
+      "path": "en/pot.m4a",
+      "sha1": "a5274a63143aff31d80713a922feabb62c8ee5ce",
+      "text": "pot",
+      "text_sha1": "cb79bd0ce2a8c435a9bbeddc9ef6c8bc7c3c4b43",
+      "voice": "Samantha"
+    },
+    "en.pup": {
+      "path": "en/pup.m4a",
+      "sha1": "d85a0ac2a2be24fac3b464e651d75fbab80803b5",
+      "text": "pup",
+      "text_sha1": "b7257dfbed6e7316e4ae0901eb209aa24323c1cd",
       "voice": "Samantha"
     },
     "en.question": {
@@ -350,18 +448,18 @@
       "text_sha1": "3b2be2e26344d52bf592711b6d4b6060825e146d",
       "voice": "Samantha"
     },
-    "en.quilt": {
-      "path": "en/quilt.m4a",
-      "sha1": "6e1184a93e316c970f09656c0705e79d6be90998",
-      "text": "quilt",
-      "text_sha1": "2a1acb3a3766ea080e72a3b09f3b3a9374a52247",
+    "en.rag": {
+      "path": "en/rag.m4a",
+      "sha1": "2de0de2fda476268d5639d84c5f4fb8b100cbe2f",
+      "text": "rag",
+      "text_sha1": "69a537093ff93cdd1b1dfcce775d6254a9b999c9",
       "voice": "Samantha"
     },
-    "en.rabbit": {
-      "path": "en/rabbit.m4a",
-      "sha1": "dc40f12c3fa94f678f33ecd9a3741f812b602dff",
-      "text": "rabbit",
-      "text_sha1": "6d0ebbbdce32474db8141d23d2c01bd9628d6e5f",
+    "en.rat": {
+      "path": "en/rat.m4a",
+      "sha1": "cc65950530ac2c00850512585f908f6bc0c4466d",
+      "text": "rat",
+      "text_sha1": "359ce0caae50b7d35ab21e93589a87e806b536b9",
       "voice": "Samantha"
     },
     "en.red": {
@@ -371,11 +469,39 @@
       "text_sha1": "78988010b890ce6f4d2136481f392787ec6d6106",
       "voice": "Samantha"
     },
-    "en.ring": {
-      "path": "en/ring.m4a",
-      "sha1": "34dee61f8218ded4d01b0f361007162706c55d90",
-      "text": "ring",
-      "text_sha1": "5c7d283db5846bba7f892a55ece205a74d7cfd98",
+    "en.rip": {
+      "path": "en/rip.m4a",
+      "sha1": "2d337e2d8fb3dcd314e12102da7ac9f50a224584",
+      "text": "rip",
+      "text_sha1": "ab8e595618bc5f23916675978911ffae75f50e81",
+      "voice": "Samantha"
+    },
+    "en.rug": {
+      "path": "en/rug.m4a",
+      "sha1": "94261abe12ae7bc9fbed90eaa5b912f9c5d155e6",
+      "text": "rug",
+      "text_sha1": "0602f910beee4e2792d47bf1df4bc09d34f738c8",
+      "voice": "Samantha"
+    },
+    "en.sad": {
+      "path": "en/sad.m4a",
+      "sha1": "9c3ebe259672151e5e55e14934d6efee18b287dd",
+      "text": "sad",
+      "text_sha1": "b4914600112ba18af7798b6c1a1363728ae1d96f",
+      "voice": "Samantha"
+    },
+    "en.sit": {
+      "path": "en/sit.m4a",
+      "sha1": "b998177b7d3015c8f33a99f32781d381036ad0c7",
+      "text": "sit",
+      "text_sha1": "abdcde66d68bf5da210f684db67c663b24a82a9c",
+      "voice": "Samantha"
+    },
+    "en.six": {
+      "path": "en/six.m4a",
+      "sha1": "61d8050aae7111b74034820f8955c5d6f1d1d9fb",
+      "text": "six",
+      "text_sha1": "bec9703f7a456cd2b4ab5fb3220ae016e3e394e3",
       "voice": "Samantha"
     },
     "en.snake": {
@@ -385,11 +511,11 @@
       "text_sha1": "148627088915c721ccebb4c611b859031037e6ad",
       "voice": "Samantha"
     },
-    "en.sock": {
-      "path": "en/sock.m4a",
-      "sha1": "041d9068a43ab4cb5883cb3063b44f24adf040f9",
-      "text": "sock",
-      "text_sha1": "18c9667c2999cabf0f54d2a87d10ee9d15aef35d",
+    "en.sum": {
+      "path": "en/sum.m4a",
+      "sha1": "faf70472844f42f591db984a3a260645b15d5559",
+      "text": "sum",
+      "text_sha1": "e9dff3557ded7414ae530834de7011f1388d202a",
       "voice": "Samantha"
     },
     "en.sun": {
@@ -399,18 +525,32 @@
       "text_sha1": "22fa6121da96f43a106e413e65d4f9089c53824c",
       "voice": "Samantha"
     },
-    "en.ten": {
-      "path": "en/ten.m4a",
-      "sha1": "44ad2f9633d2b15f4651c387d1c3b00d43fb81b9",
-      "text": "ten",
-      "text_sha1": "dd3562449147ffc783230d2a13d02a75ac42989b",
+    "en.tag": {
+      "path": "en/tag.m4a",
+      "sha1": "2246e8cc4f1f7ae230a5b9366cf0b10d53df6edf",
+      "text": "tag",
+      "text_sha1": "5e9b60f69165f32f8930843ca718e10fdee30c52",
       "voice": "Samantha"
     },
-    "en.tiger": {
-      "path": "en/tiger.m4a",
-      "sha1": "309004ecf394fa1bba23c891ffe80406bd9dc518",
-      "text": "tiger",
-      "text_sha1": "46e3d772a1888eadff26c7ada47fd7502d796e07",
+    "en.tin": {
+      "path": "en/tin.m4a",
+      "sha1": "e5f495ebf3462847c168dc5df1d6960eddb215a4",
+      "text": "tin",
+      "text_sha1": "f269197686c56c43a35254d877a71994c0b57030",
+      "voice": "Samantha"
+    },
+    "en.tip": {
+      "path": "en/tip.m4a",
+      "sha1": "61a96a6e8d95a02cd29bc4c491bd2fd57c52f62d",
+      "text": "tip",
+      "text_sha1": "306a967f976ebd7de25d9e0aa1cf499e8b6d4928",
+      "voice": "Samantha"
+    },
+    "en.top": {
+      "path": "en/top.m4a",
+      "sha1": "ba588449a6c27cb61332ad2f20fa374f9e024fa4",
+      "text": "top",
+      "text_sha1": "af2c7b4ca07ae6c74d261bc745e174df8ab3ffef",
       "voice": "Samantha"
     },
     "en.tree": {
@@ -427,13 +567,6 @@
       "text_sha1": "3ff95ac9e6b1526fef7920f018e82ef86a34232c",
       "voice": "Samantha"
     },
-    "en.up": {
-      "path": "en/up.m4a",
-      "sha1": "e4fc786be4bfcb2f84cae9dc9a6e39fff178d92b",
-      "text": "up",
-      "text_sha1": "7c0a25c06ea30bae50e39a37a5997e31a1a96e20",
-      "voice": "Samantha"
-    },
     "en.vest": {
       "path": "en/vest.m4a",
       "sha1": "87214941e545e36bfd8d8974770e4df8e0df7b3b",
@@ -441,18 +574,18 @@
       "text_sha1": "7703ba73d7ded8ab59a8556f8ce291341268e11b",
       "voice": "Samantha"
     },
-    "en.violin": {
-      "path": "en/violin.m4a",
-      "sha1": "ecdd3d7680f383054a9a0df8b7c64adfc6cc6788",
-      "text": "violin",
-      "text_sha1": "06384a70e1eb7eb2c16b62e1f60b591dbfa11c87",
+    "en.wig": {
+      "path": "en/wig.m4a",
+      "sha1": "f22f4511973b29ca813782199ef9ed6c0f776388",
+      "text": "wig",
+      "text_sha1": "f6be1064be55fb7fbf8d98c3651dc73525bb5f77",
       "voice": "Samantha"
     },
-    "en.watch": {
-      "path": "en/watch.m4a",
-      "sha1": "29521e975ab12e6ed007d901e96cc660044c796c",
-      "text": "watch",
-      "text_sha1": "292b0901993f7e9d9a0d9b80542f9e59505ba5be",
+    "en.win": {
+      "path": "en/win.m4a",
+      "sha1": "511a8f3afea811e7e2ac8d30e2215837b33bb458",
+      "text": "win",
+      "text_sha1": "c76ac2e9cd86441713c7dfae92c451f3e6d17fdc",
       "voice": "Samantha"
     },
     "en.window": {
@@ -469,18 +602,11 @@
       "text_sha1": "8813acb6df4c58abdb392b18f934525daa03b4a5",
       "voice": "Samantha"
     },
-    "en.yes": {
-      "path": "en/yes.m4a",
-      "sha1": "a44bd7f909a7718d0ffcfec236e510e1777ec57c",
-      "text": "yes",
-      "text_sha1": "fb360f9c09ac8c5edb2f18be5de4e80ea4c430d0",
-      "voice": "Samantha"
-    },
-    "en.zebra": {
-      "path": "en/zebra.m4a",
-      "sha1": "cb3f6125486dc88bfb7fd7514cc5ca0e03bf0966",
-      "text": "zebra",
-      "text_sha1": "38aa53de31c04bcfae9163cc23b7963ed9cf90f7",
+    "en.zip": {
+      "path": "en/zip.m4a",
+      "sha1": "70d00f31f9408d178305281862ebf4d69d624fb2",
+      "text": "zip",
+      "text_sha1": "f13e27693c85aed522df8c3fcb0bb0110ca54e14",
       "voice": "Samantha"
     },
     "en.zoo": {

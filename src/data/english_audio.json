@@ -12,8 +12,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.ax",
-      "text": "ax",
+      "id": "en.bad",
+      "text": "bad",
       "voice": "Samantha"
     },
     {
@@ -22,13 +22,43 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.bear",
-      "text": "bear",
+      "id": "en.big",
+      "text": "big",
       "voice": "Samantha"
     },
     {
-      "id": "en.bed",
-      "text": "bed",
+      "id": "en.bin",
+      "text": "bin",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.bit",
+      "text": "bit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.bud",
+      "text": "bud",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.bug",
+      "text": "bug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.bun",
+      "text": "bun",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.can",
+      "text": "can",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.cap",
+      "text": "cap",
       "voice": "Samantha"
     },
     {
@@ -42,13 +72,18 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.cup",
-      "text": "cup",
+      "id": "en.cop",
+      "text": "cop",
       "voice": "Samantha"
     },
     {
-      "id": "en.desk",
-      "text": "desk",
+      "id": "en.cot",
+      "text": "cot",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.dig",
+      "text": "dig",
       "voice": "Samantha"
     },
     {
@@ -57,13 +92,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.duck",
-      "text": "duck",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.egg",
-      "text": "egg",
+      "id": "en.dot",
+      "text": "dot",
       "voice": "Samantha"
     },
     {
@@ -72,33 +102,38 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.elephant",
-      "text": "elephant",
-      "voice": "Samantha"
-    },
-    {
       "id": "en.fan",
       "text": "fan",
       "voice": "Samantha"
     },
     {
-      "id": "en.fish",
-      "text": "fish",
+      "id": "en.fed",
+      "text": "fed",
       "voice": "Samantha"
     },
     {
-      "id": "en.fork",
-      "text": "fork",
+      "id": "en.fig",
+      "text": "fig",
       "voice": "Samantha"
     },
     {
-      "id": "en.gate",
-      "text": "gate",
+      "id": "en.fin",
+      "text": "fin",
       "voice": "Samantha"
     },
     {
-      "id": "en.girl",
-      "text": "girl",
+      "id": "en.fit",
+      "text": "fit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.fix",
+      "text": "fix",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.fun",
+      "text": "fun",
       "voice": "Samantha"
     },
     {
@@ -107,38 +142,58 @@
       "voice": "Samantha"
     },
     {
+      "id": "en.gum",
+      "text": "gum",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.gun",
+      "text": "gun",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.ham",
+      "text": "ham",
+      "voice": "Samantha"
+    },
+    {
       "id": "en.hand",
       "text": "hand",
       "voice": "Samantha"
     },
     {
-      "id": "en.hat",
-      "text": "hat",
+      "id": "en.hen",
+      "text": "hen",
       "voice": "Samantha"
     },
     {
-      "id": "en.horse",
-      "text": "horse",
+      "id": "en.hit",
+      "text": "hit",
       "voice": "Samantha"
     },
     {
-      "id": "en.igloo",
-      "text": "igloo",
+      "id": "en.hop",
+      "text": "hop",
       "voice": "Samantha"
     },
     {
-      "id": "en.ink",
-      "text": "ink",
+      "id": "en.hot",
+      "text": "hot",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.hug",
+      "text": "hug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.hum",
+      "text": "hum",
       "voice": "Samantha"
     },
     {
       "id": "en.insect",
       "text": "insect",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.jam",
-      "text": "jam",
       "voice": "Samantha"
     },
     {
@@ -152,8 +207,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.key",
-      "text": "key",
+      "id": "en.kid",
+      "text": "kid",
       "voice": "Samantha"
     },
     {
@@ -162,28 +217,28 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.kite",
-      "text": "kite",
-      "voice": "Samantha"
-    },
-    {
       "id": "en.leaf",
       "text": "leaf",
       "voice": "Samantha"
     },
     {
-      "id": "en.lemon",
-      "text": "lemon",
+      "id": "en.lot",
+      "text": "lot",
       "voice": "Samantha"
     },
     {
-      "id": "en.lion",
-      "text": "lion",
+      "id": "en.mat",
+      "text": "mat",
       "voice": "Samantha"
     },
     {
-      "id": "en.milk",
-      "text": "milk",
+      "id": "en.men",
+      "text": "men",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.mix",
+      "text": "mix",
       "voice": "Samantha"
     },
     {
@@ -192,13 +247,23 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.moon",
-      "text": "moon",
+      "id": "en.mop",
+      "text": "mop",
       "voice": "Samantha"
     },
     {
-      "id": "en.nest",
-      "text": "nest",
+      "id": "en.mug",
+      "text": "mug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.nap",
+      "text": "nap",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.net",
+      "text": "net",
       "voice": "Samantha"
     },
     {
@@ -207,28 +272,13 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.nut",
-      "text": "nut",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.octopus",
-      "text": "octopus",
-      "voice": "Samantha"
-    },
-    {
       "id": "en.ostrich",
       "text": "ostrich",
       "voice": "Samantha"
     },
     {
-      "id": "en.ox",
-      "text": "ox",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.panda",
-      "text": "panda",
+      "id": "en.pad",
+      "text": "pad",
       "voice": "Samantha"
     },
     {
@@ -242,8 +292,28 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.queen",
-      "text": "queen",
+      "id": "en.pin",
+      "text": "pin",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pit",
+      "text": "pit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pop",
+      "text": "pop",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pot",
+      "text": "pot",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.pup",
+      "text": "pup",
       "voice": "Samantha"
     },
     {
@@ -252,13 +322,13 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.quilt",
-      "text": "quilt",
+      "id": "en.rag",
+      "text": "rag",
       "voice": "Samantha"
     },
     {
-      "id": "en.rabbit",
-      "text": "rabbit",
+      "id": "en.rat",
+      "text": "rat",
       "voice": "Samantha"
     },
     {
@@ -267,8 +337,28 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.ring",
-      "text": "ring",
+      "id": "en.rip",
+      "text": "rip",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.rug",
+      "text": "rug",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sad",
+      "text": "sad",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.sit",
+      "text": "sit",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.six",
+      "text": "six",
       "voice": "Samantha"
     },
     {
@@ -277,8 +367,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.sock",
-      "text": "sock",
+      "id": "en.sum",
+      "text": "sum",
       "voice": "Samantha"
     },
     {
@@ -287,13 +377,23 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.ten",
-      "text": "ten",
+      "id": "en.tag",
+      "text": "tag",
       "voice": "Samantha"
     },
     {
-      "id": "en.tiger",
-      "text": "tiger",
+      "id": "en.tin",
+      "text": "tin",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.tip",
+      "text": "tip",
+      "voice": "Samantha"
+    },
+    {
+      "id": "en.top",
+      "text": "top",
       "voice": "Samantha"
     },
     {
@@ -307,23 +407,18 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.up",
-      "text": "up",
-      "voice": "Samantha"
-    },
-    {
       "id": "en.vest",
       "text": "vest",
       "voice": "Samantha"
     },
     {
-      "id": "en.violin",
-      "text": "violin",
+      "id": "en.wig",
+      "text": "wig",
       "voice": "Samantha"
     },
     {
-      "id": "en.watch",
-      "text": "watch",
+      "id": "en.win",
+      "text": "win",
       "voice": "Samantha"
     },
     {
@@ -337,13 +432,8 @@
       "voice": "Samantha"
     },
     {
-      "id": "en.yes",
-      "text": "yes",
-      "voice": "Samantha"
-    },
-    {
-      "id": "en.zebra",
-      "text": "zebra",
+      "id": "en.zip",
+      "text": "zip",
       "voice": "Samantha"
     },
     {

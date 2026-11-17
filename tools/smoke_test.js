@@ -326,8 +326,19 @@ function testRenderer() {
 
   const withAudio = all.filter((q) => q.stem && q.stem.audio);
   const silent = all.filter((q) => !(q.stem && q.stem.audio));
-  ok(withAudio.length === 70, '题库里 70 道带音频（听音选字母）',
+  // 只有听音题才带音频。英语改版后听音题从「听音选字母」一种扩到三种
+  // （OPW1 听音选字母 / OPW2 听音选词 / 辨短元音），题数写死 70 会挡住
+  // 正常的内容更新，所以这里改成按题型反推。
+  const AUDIO_TAGS = ['听音选字母', '听音选词', '辨短元音'];
+  const listenQs = all.filter((q) => AUDIO_TAGS.indexOf((q.tags || [])[0]) >= 0);
+  ok(listenQs.length > 0, '题库里有听音题', listenQs.length + ' 道');
+  ok(withAudio.length === listenQs.length,
+     '带音频的题正好是三种听音题（' + listenQs.length + ' 道）',
      '带音频 ' + withAudio.length);
+  ok(listenQs.every((q) => !!(q.stem && q.stem.audio)),
+     '每道听音题都有音频（不然那道题全部信息都没了）');
+  ok(withAudio.every((q) => AUDIO_TAGS.indexOf((q.tags || [])[0]) >= 0),
+     '拼合 / 归类 / 找真词不带音频（音频会念出答案）');
 
   // ---- 带音频的题：题干文字必须渲染出来 ----
   // 这里曾经是 if (audio) … else if (text) …，英语题的文字题干全都不显示，
@@ -646,17 +657,18 @@ ok(ZI.chars.length > 0, '字表非空', ZI.chars.length + ' 字');
 
 {
   // ---- 英语的语音引用 ----
-  // 听音选字母的题干带一段语音；audio id 指向 G.AUDIO_MAP 里的一条文件。
+  // 三种听音题的题干都带一段语音；audio id 指向 G.AUDIO_MAP 里的一条文件。
   // id 写错的话，题目能正常显示、选项也能选，只是**永远没有声音** ——
   // 而那道题的全部信息都在声音里。这是最典型的「静默失败」。
   const audio = Object.keys((G.DATA && G.DATA.audioMap) || G.AUDIO_MAP || {});
   const hasMap = audio.length > 0;
   const refs = [];
+  const LISTEN_TAGS = ['听音选字母', '听音选词', '辨短元音'];
   Bank.of('english').forEach((q) => {
     const id = q.stem && q.stem.audio;
     if (id) refs.push([q.id, id]);
-    else if ((q.tags || [])[0] === '听音选字母') {
-      ok(false, q.id + ' 是听音选字母却没有 stem.audio');
+    else if (LISTEN_TAGS.indexOf((q.tags || [])[0]) >= 0) {
+      ok(false, q.id + ' 是听音题却没有 stem.audio');
     }
   });
 
