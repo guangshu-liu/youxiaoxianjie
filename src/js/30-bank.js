@@ -85,14 +85,22 @@
 
   /**
    * 一道题的抽取权重。
-   *   - 错过的题，错得越多权重越高（+1.5 × 错误次数）
-   *   - 连对两次（cleared）的题降到 0.4 —— 不是不出，是少出
-   *   - 没做过的题权重 1
+   *   - 错过的题优先重出，但**封顶 4 倍**：以前 w = 1 + 1.5 × 错次，
+   *     连错 6 次就是 10 倍，跨局反复撞同一道题；cleared 后再错一次又
+   *     立刻弹回 10 倍，孩子会觉得「怎么老是我不会的那道」。
+   *   - 距上次答错越久，权重越低（10 天降到 0.35 倍封底），老错题
+   *     不该永远霸占抽题池。
+   *   - 连对两次（cleared）降到 0.4 —— 不是不出，是少出。
    */
   function weightOf(q, wrongIndex) {
     var w = 1;
     var rec = wrongIndex[q.id];
-    if (rec && !rec.cleared) w += 1.5 * rec.wrongCount;
+    if (rec && !rec.cleared) {
+      var days = rec.lastWrongAt
+        ? Math.max(0, (Date.now() - rec.lastWrongAt) / 86400000) : 0;
+      var decay = Math.max(0.35, 1 - days * 0.1);
+      w = Math.min(4, 1 + 1.5 * (rec.wrongCount || 0)) * decay;
+    }
     if (rec && rec.cleared) w *= 0.4;
     return w;
   }
@@ -111,10 +119,12 @@
    * 查不到就跳过，不拿失效记录充数。
    *
    * 样本不足 6 次（新用户 / 刚清了存档 / 题库更新）一律留在基础档；
-   * 正确率 ≥ 0.8 才解锁进阶档，掉下来再降回去。20 次的窗口是为了
-   * 别因为一局失手就立刻把孩子打回原地。
+   * 返回 { level, acc, seen }。acc 供 drawOne 决定进阶题的混入比例：
+   * 以前 ≥0.8 就从「20 以内不进位」整局跳到「100 以内进位」，
+   * 掉回 0.79 又立刻打回原地，跨度太硬且来回震荡。现在档位仍是
+   * 1/2 两级，但进阶题按比例渐进放开（见 drawOne）。
    */
-  function levelOf(save, subject) {
+  function levelDetailOf(save, subject) {
     var sessions = (save && save.sessions) || [];
     var seen = 0, correct = 0;
 
@@ -129,8 +139,21 @@
       }
     }
 
-    if (seen < 6) return 1;
-    return (correct / seen >= 0.8) ? 2 : 1;
+    if (seen < 6) return { level: 1, acc: 0, seen: seen };
+    var acc = correct / seen;
+    return { level: acc >= 0.8 ? 2 : 1, acc: acc, seen: seen };
+  }
+
+  /** 对外只暴露档位，语义不变（1 = 基础，2 = 进阶）。 */
+  function levelOf(save, subject) {
+    return levelDetailOf(save, subject).level;
+  }
+
+  /** 把字符串确定性地映射到 [0,1)。用题目 id 划分进阶题，不消耗注入的 rng。 */
+  function stableUnit(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return (h >>> 0) / 4294967296;
   }
 
   /**
@@ -148,14 +171,26 @@
     var excluded = {};
     (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-    var level = levelOf(save, subject);
+    var detail = levelDetailOf(save, subject);
+    var level = detail.level;
+    // 刚跨过 80% 只放 25% 的进阶题，越熟练放得越多，全对才全放开。
+    // 这样「升档」不再是一夜之间整局换难度，也不会因为一局失手在
+    // 两档之间反复横跳。划分用题目 id 的确定性哈希，不额外调用 rng ——
+    // 否则固定随机种子的测试断言会整体位移。
+    var d2Ratio = level === 2
+      ? G.clamp((detail.acc - 0.75) / 0.2, 0.25, 1) : 0;
+    var inLevel = function (q) {
+      var d = q.difficulty || 1;
+      if (d <= 1) return true;
+      return d2Ratio > 0 && stableUnit(q.id) < d2Ratio;
+    };
     var avail = pool.filter(function (q) {
-      return !excluded[q.id] && (q.difficulty || 1) <= level;
+      return !excluded[q.id] && inLevel(q);
     });
     // 本档的题被这一局抽光时，允许本档重题，也不让一局短题；
     // 更重要的是**不借这个机会把超纲题放进来**。
     if (!avail.length) {
-      avail = pool.filter(function (q) { return (q.difficulty || 1) <= level; });
+      avail = pool.filter(inLevel);
     }
     // 极端兜底：题库里连本档都没有（裁剪过的测试题库）时才退回全池。
     if (!avail.length) avail = pool;
@@ -182,6 +217,7 @@
     zibiao: zibiaoData,
     weightOf: weightOf,
     levelOf: levelOf,
+    levelDetailOf: levelDetailOf,
     drawOne: drawOne
   };
 

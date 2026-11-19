@@ -109,6 +109,36 @@
   }
 
   /**
+   * 组一局**错题复习**（小程序用）。
+   *
+   * 只从错题本里还没 cleared 的题抽，错得最多的排前面；不足一局就出
+   * 几道算几道，不用普通题凑数 —— 复习局的意义就是「只练不会的」。
+   * 仍然走 arrange()：第 1 题和最后 1 题给孩子最可能答对的，避免
+   * 一上来连错两道就把人劝退。
+   */
+  function buildReviewRound(save, size) {
+    var want = size || G.ROUND_SIZE;
+    var ids = (save.wrongBook || [])
+      .filter(function (w) { return !w.cleared; })
+      .sort(function (a, b) {
+        return (b.wrongCount - a.wrongCount) || ((b.lastWrongAt || 0) - (a.lastWrongAt || 0));
+      })
+      .map(function (w) { return w.qid; });
+
+    var picked = [];
+    for (var i = 0; i < ids.length && picked.length < want; i++) {
+      var q = G.Bank.byId(ids[i]);
+      if (q) picked.push(q);       // 题库更新后旧 qid 会查不到，跳过
+    }
+
+    return {
+      questions: arrange(picked, save),
+      startedAt: Date.now(),
+      review: true
+    };
+  }
+
+  /**
    * 排位置：
    *   1. 最可能答对的两道，分给第 1 题和第 10 题
    *   2. 剩下的打散，且相邻两题尽量不同科、同科内尽量不同题型
@@ -287,14 +317,45 @@
     return session;
   }
 
+  /**
+   * 中途退出：把已答题记成一条「未完成」局，不发星星。
+   *
+   * 为什么不直接回滚：recordAnswer 在每道题 advance() 时就已经写进
+   * wrongBook 和 progress 了，精确撤销要存快照，成本高且容易漏。
+   * 记一条 aborted 局更诚实 —— 难度评估（levelOf 读 sessions.items）
+   * 和家长页统计能认这些作答，账目又完全不受影响（pointsEarned = 0）。
+   * 一题都没答就退出时不写，避免往 sessions 里塞垃圾。
+   */
+  function abandonSession(save, round, items) {
+    if (!items || !items.length) return null;
+
+    var session = {
+      id: 's_' + round.startedAt,
+      ts: Date.now(),
+      correct: items.filter(function (x) { return x.correct; }).length,
+      total: items.length,
+      pointsEarned: 0,
+      items: items,
+      spins: [],
+      aborted: true
+    };
+    save.sessions.push(session);
+    while (save.sessions.length > 30) save.sessions.shift();
+    G.Store.pruneCounters(save);
+    G.Store.save(save);
+    return session;
+  }
+
   G.Runner = {
     buildRound: buildRound,
     buildSubjectRound: buildSubjectRound,
+    buildReviewRound: buildReviewRound,
     successProb: successProb,
     recordAnswer: recordAnswer,
     awardPoints: awardPoints,
     awardTvMinutes: awardTvMinutes,
-    finishSession: finishSession
+    finishSession: finishSession,
+    abandonSession: abandonSession
   };
 
 })(window);

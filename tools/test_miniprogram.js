@@ -383,6 +383,63 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   G.Store.load().settings.readStem = true;
 }
 
+/* ---- 8c. 音频停止 / 中途退出 / 错题复习 / 听音题指令 ---- */
+{
+  // 单词音频必须能显式停：切题和退出靠它，否则上一题的词会漏进下一题。
+  const audio = require(path.join(MP, 'lib/audio.js'));
+  eq(typeof audio.stop, 'function', '单词音频提供 stop()，切题/退出可掐断');
+
+  // 中途退出把已答题记成未完成局，不发星、不重复记、不破坏账目。
+  const save = app.globalData.save;
+  const round = G.Runner.buildSubjectRound(save, 'math', 10);
+  const items = round.questions.slice(0, 3).map((q) => ({
+    qid: q.id, subject: q.subject, type: q.type, tags: q.tags || [],
+    correct: true, ms: 900
+  }));
+  const s = G.Runner.abandonSession(save, round, items);
+  ok(!!s && s.aborted === true, '中途退出记成 aborted 局');
+  eq(s.pointsEarned, 0, '未完成局不发星星');
+  eq(s.items.length, 3, '未完成局带上已答的 3 题（难度评估能认）');
+  ok(save.sessions[save.sessions.length - 1] === s, '未完成局写进 sessions 末尾');
+  ok(save.sessions.length <= 30, 'sessions 仍只保留最近 30 局');
+  eq(G.Runner.abandonSession(save, round, []), null, '一题没答时不写垃圾局');
+  eq(G.Store.audit(save).ok, true, '未完成局不破坏三方审计');
+
+  // 错题复习局：只出未掌握的错题，cleared 和失效 qid 都跳过。
+  const rs = G.Store.defaultSave();
+  const pool = G.Bank.of('chinese');
+  const now = Date.now();
+  rs.wrongBook = [
+    { qid: pool[0].id, cleared: false, wrongCount: 5, lastWrongAt: now },
+    { qid: pool[1].id, cleared: false, wrongCount: 2, lastWrongAt: now },
+    { qid: pool[2].id, cleared: true,  wrongCount: 9, lastWrongAt: now },
+    { qid: 'gone-999', cleared: false, wrongCount: 8, lastWrongAt: now }
+  ];
+  const rr = G.Runner.buildReviewRound(rs, 10);
+  eq(rr.questions.length, 2, '复习局只出未掌握的错题，跳过 cleared 和失效 qid');
+  eq(rr.questions[0].id, pool[0].id, '错得最多的排在最前');
+
+  // 听音题固定中文指令：三种题型各一句，且都已在主包音频映射里。
+  const MAP = require(path.join(MP, 'generated/data/tts-map.js'));
+  ['听音选字母', '听音选词', '辨短元音'].forEach((tag) => {
+    const q = G.Bank.of('english')
+      .filter((x) => (x.tags || [])[0] === tag && x.stem.audio)[0];
+    const ins = G.TTSText.instructionFor(q);
+    ok(!!q && !!ins, tag + ' 有中文指令');
+    ok(!!MAP[ins], tag + ' 的指令有主包音频');
+    eq(G.TTSText.forQuestion(q).skip, true, tag + ' 仍不朗读题干（不抢喇叭）');
+  });
+  eq(G.TTSText.instructionFor(pool[0]), '', '非听音题没有指令');
+
+  // 难度档与权重：档位语义不变，进阶题渐进放开，错题权重封顶。
+  eq(G.Bank.levelDetailOf(save, 'chinese').level, G.Bank.levelOf(save, 'chinese'),
+     'levelOf 与 levelDetailOf 档位一致');
+  const w = G.Bank.weightOf(pool[0], {
+    [pool[0].id]: { wrongCount: 20, cleared: false, lastWrongAt: now }
+  });
+  ok(w <= 4, '错题权重封顶 4 倍（连错 20 次也不会变成 30 倍）', '实际 ' + w);
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

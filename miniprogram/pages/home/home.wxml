@@ -36,6 +36,7 @@
   </view>
 
   <view class="home-row">
+    <button wx:if="{{reviewCount >= 3}}" class="btn btn-ghost" bindtap="onReview">🔁 复习错题（{{reviewCount}}）</button>
     <button class="btn btn-ghost" bindtap="onParent">👨‍👩‍👧 家长</button>
   </view>
 

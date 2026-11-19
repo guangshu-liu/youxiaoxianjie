@@ -23,6 +23,18 @@
   // 音频抢同一时刻的喇叭，孩子反而听不清要听的词。
   var LISTEN_TAGS = ['听音选字母', '听音选词', '辨短元音'];
 
+  // 听音题的题干不朗读（会和单词音频抢同一时刻的喇叭），但孩子不认汉字：
+  // 只听到一个词、屏幕上是一行看不懂的「听一听…」，第一次遇到全靠猜。
+  // 所以小程序在**播放单词之前**先念一句固定中文指令，两种声音顺序错开，
+  // 既不冲突也不泄答案。三种题型各一句，全题库复用，只需 3 条音频。
+  // 规则放在共用文件里，是为了让 tools/tts_texts.js 能自动把这几句
+  // 纳入待生成清单，不会出现「代码里念了、包里没有音频」。
+  var LISTEN_INSTRUCTIONS = {
+    '听音选字母': '听一听，这个词开头是哪个大写字母？',
+    '听音选词': '听一听，选出你听到的词。',
+    '辨短元音': '听一听，这个词的中间是哪个元音字母？'
+  };
+
   var PINYIN_TAG = '看拼音选字';
   var PINYIN_RE = /[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüǹńň]/;
 
@@ -99,10 +111,23 @@
     return { text: text, skip: false, why: 'plain' };
   }
 
+  /**
+   * 听音题的「这题要干什么」指令。非听音题返回空串。
+   * forQuestion 仍然对听音题 skip —— 这条是额外的、播在单词之前的提示，
+   * 不是把题干念一遍，也不朗读选项。
+   */
+  function instructionFor(q) {
+    if (!q) return '';
+    var tag = (q.tags || [])[0] || '';
+    return LISTEN_INSTRUCTIONS[tag] || '';
+  }
+
   G.TTSText = {
     forQuestion: forQuestion,
     normalizeText: normalizeText,
-    LISTEN_TAGS: LISTEN_TAGS
+    instructionFor: instructionFor,
+    LISTEN_TAGS: LISTEN_TAGS,
+    LISTEN_INSTRUCTIONS: LISTEN_INSTRUCTIONS
   };
 
 })(window);

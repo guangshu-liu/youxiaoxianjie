@@ -121,20 +121,56 @@ def refs_in_banks():
     return {a.replace('.mp3', '').replace('.wav', '') for a in refs}
 
 
+def read_wav_pcm(path):
+    """读 afconvert 产出的 16bit PCM WAV，返回 (采样率, 帧数, 原始字节)。
+
+    **不能用标准库 wave。** 新版 macOS 的 afconvert 即使指定 `-d LEI16`，
+    写出来的也是 WAVE_FORMAT_EXTENSIBLE（0xFFFE）而不是格式 1，而 Python
+    3.9 的 wave 模块只认格式 1，直接抛 `unknown format: 65534`。表现为
+    「语音体检 259 条全部解码失败」—— 音频本身是好的，是读的人不认识容器。
+    这里手写解析，格式 1 和 0xFFFE 都接受。
+    """
+    data = open(path, 'rb').read()
+    if data[:4] != b'RIFF' or data[8:12] != b'WAVE':
+        raise ValueError('不是 RIFF/WAVE')
+
+    fmt_tag = channels = bits = rate = None
+    pcm = None
+    i = 12
+    while i + 8 <= len(data):
+        cid = data[i:i + 4]
+        size = struct.unpack('<I', data[i + 4:i + 8])[0]
+        body = i + 8
+        if cid == b'fmt ' and size >= 16:
+            (fmt_tag, channels, rate, _byte_rate, _align, bits) = \
+                struct.unpack('<HHIIHH', data[body:body + 16])
+        elif cid == b'data':
+            pcm = data[body:body + size]
+            break
+        i = body + size + (size & 1)
+
+    if fmt_tag is None or pcm is None:
+        raise ValueError('缺少 fmt / data 块')
+    if fmt_tag not in (1, 0xFFFE):
+        raise ValueError('不支持的 WAV 格式 %d' % fmt_tag)
+    if bits != 16:
+        raise ValueError('期望 16bit，实际 %d bit' % bits)
+    if not channels:
+        raise ValueError('声道数为 0')
+
+    return rate, len(pcm) // 2 // channels, pcm
+
+
 def pcm_stats(path, tmpdir):
     """afconvert 解成 16bit PCM WAV，返回 (时长, 峰值, RMS, 有声窗占比)。
 
-    直接用 wave 模块读，不需要 numpy。窗口取 20 ms，窗内 RMS 超过
-    峰值 * 0.08 就算「有声」—— 比单纯看整段 RMS 更能挡住「只有一个滴声」。
+    窗口取 20 ms，窗内 RMS 超过峰值 * 0.08 就算「有声」—— 比单纯看整段
+    RMS 更能挡住「只有一个滴声」。
     """
     wav = os.path.join(tmpdir, os.path.basename(path) + '.wav')
     subprocess.run(['afconvert', '-f', 'WAVE', '-d', 'LEI16', path, wav],
                    check=True, capture_output=True)
-    import wave
-    with wave.open(wav, 'rb') as w:
-        rate = w.getframerate()
-        n = w.getnframes()
-        raw = w.readframes(n)
+    rate, n, raw = read_wav_pcm(wav)
     os.remove(wav)
     vals = struct.unpack('<%dh' % (len(raw) // 2), raw)
     if not vals:

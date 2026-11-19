@@ -30,6 +30,9 @@ for (const subject of ['chinese', 'math', 'english']) {
   for (const q of questions) {
     const r = TTSText.forQuestion(q);
     if (!r.skip && r.text) texts.add(r.text);
+    // 听音题的固定中文指令也是要预生成音频的文本，不能漏。
+    const ins = TTSText.instructionFor(q);
+    if (ins) texts.add(ins);
   }
 }
 

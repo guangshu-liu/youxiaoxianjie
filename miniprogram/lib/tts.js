@@ -60,9 +60,17 @@ function warnOnce(msg) {
   } catch (e) {}
 }
 
-function playNow(text, mySeq) {
+/**
+ * onEnd 是可选的「这句念完了」回调，用来把中文指令串到后面的单词音频。
+ * stop() 会 seq++，所以切题 / 点喇叭掐掉指令时回调不会漏到下一题。
+ * 播放失败也走 onEnd：宁可没听到指令，也不能让整道听音题只剩静默。
+ */
+function playNow(text, mySeq, onEnd) {
   if (mySeq !== seq || !has(text)) return false;
   var src = MAP[text];
+  var fire = function () {
+    if (mySeq === seq && onEnd) onEnd();
+  };
   try {
     var ctx = wx.createInnerAudioContext();
     current = ctx;
@@ -71,35 +79,39 @@ function playNow(text, mySeq) {
     try { ctx.obeyMuteSwitch = false; } catch (e) {}
     ctx.src = src;
     ctx.onPlay(function () { console.log('[tts] 播放开始', src); });
-    ctx.onEnded(function () { release(ctx); });
+    ctx.onEnded(function () { release(ctx); fire(); });
     ctx.onError(function (r) {
       console.warn('[tts] 播放失败', src, r && (r.errMsg || r.errCode));
       warnOnce('读题音频加载失败，请检查 /ttsAudio/ 路径');
       release(ctx);
+      fire();
     });
     ctx.play();
     return true;
   } catch (e) {
     console.warn('[tts] 创建播放器异常', e);
     warnOnce('无法创建播放器');
+    fire();
     return false;
   }
 }
 
-function speak(text) {
+function speak(text, onEnd) {
   if (!has(text)) return false;
   stop();
-  return playNow(text, seq);
+  return playNow(text, seq, onEnd);
 }
 
 /** 进题后延迟一小会儿再念，让画面先出来（和听音题的 350ms 一致）。 */
-function schedule(text, ms) {
+function schedule(text, ms, onEnd) {
   stop();
   var mySeq = seq;
   timer = setTimeout(function () {
     timer = null;
     if (mySeq !== seq) return;
-    speak(text);
+    // 不能直接调 speak()：它内部的 stop() 会 seq++，把刚记下的 mySeq
+    // 作废，onEnd 就永远不触发，单词音频也就播不出来。
+    playNow(text, mySeq, onEnd);
   }, ms || 350);
 }
 

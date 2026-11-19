@@ -115,7 +115,10 @@
       </block>
 
       <block wx:if="{{wrong.length}}">
-        <view class="stat-title">待巩固的题（{{wrong.length}}）</view>
+        <view class="stat-title">待巩固的题（{{wrongTotal}}）</view>
+        <button wx:if="{{wrongTotal >= 3}}" class="btn btn-sm btn-primary" bindtap="onReview">
+          🔁 开始复习（最多 10 题）
+        </button>
         <view class="wrong-row" wx:for="{{wrong}}" wx:key="id">
           <text class="wrong-stem">{{item.stem}}</text>
           <text class="wrong-count">错 {{item.count}} 次</text>

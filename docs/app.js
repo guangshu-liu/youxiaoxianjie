@@ -1600,6 +1600,18 @@
   // 音频抢同一时刻的喇叭，孩子反而听不清要听的词。
   var LISTEN_TAGS = ['听音选字母', '听音选词', '辨短元音'];
 
+  // 听音题的题干不朗读（会和单词音频抢同一时刻的喇叭），但孩子不认汉字：
+  // 只听到一个词、屏幕上是一行看不懂的「听一听…」，第一次遇到全靠猜。
+  // 所以小程序在**播放单词之前**先念一句固定中文指令，两种声音顺序错开，
+  // 既不冲突也不泄答案。三种题型各一句，全题库复用，只需 3 条音频。
+  // 规则放在共用文件里，是为了让 tools/tts_texts.js 能自动把这几句
+  // 纳入待生成清单，不会出现「代码里念了、包里没有音频」。
+  var LISTEN_INSTRUCTIONS = {
+    '听音选字母': '听一听，这个词开头是哪个大写字母？',
+    '听音选词': '听一听，选出你听到的词。',
+    '辨短元音': '听一听，这个词的中间是哪个元音字母？'
+  };
+
   var PINYIN_TAG = '看拼音选字';
   var PINYIN_RE = /[āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüǹńň]/;
 
@@ -1676,10 +1688,23 @@
     return { text: text, skip: false, why: 'plain' };
   }
 
+  /**
+   * 听音题的「这题要干什么」指令。非听音题返回空串。
+   * forQuestion 仍然对听音题 skip —— 这条是额外的、播在单词之前的提示，
+   * 不是把题干念一遍，也不朗读选项。
+   */
+  function instructionFor(q) {
+    if (!q) return '';
+    var tag = (q.tags || [])[0] || '';
+    return LISTEN_INSTRUCTIONS[tag] || '';
+  }
+
   G.TTSText = {
     forQuestion: forQuestion,
     normalizeText: normalizeText,
-    LISTEN_TAGS: LISTEN_TAGS
+    instructionFor: instructionFor,
+    LISTEN_TAGS: LISTEN_TAGS,
+    LISTEN_INSTRUCTIONS: LISTEN_INSTRUCTIONS
   };
 
 })(window);
@@ -1925,14 +1950,22 @@
 
   /**
    * 一道题的抽取权重。
-   *   - 错过的题，错得越多权重越高（+1.5 × 错误次数）
-   *   - 连对两次（cleared）的题降到 0.4 —— 不是不出，是少出
-   *   - 没做过的题权重 1
+   *   - 错过的题优先重出，但**封顶 4 倍**：以前 w = 1 + 1.5 × 错次，
+   *     连错 6 次就是 10 倍，跨局反复撞同一道题；cleared 后再错一次又
+   *     立刻弹回 10 倍，孩子会觉得「怎么老是我不会的那道」。
+   *   - 距上次答错越久，权重越低（10 天降到 0.35 倍封底），老错题
+   *     不该永远霸占抽题池。
+   *   - 连对两次（cleared）降到 0.4 —— 不是不出，是少出。
    */
   function weightOf(q, wrongIndex) {
     var w = 1;
     var rec = wrongIndex[q.id];
-    if (rec && !rec.cleared) w += 1.5 * rec.wrongCount;
+    if (rec && !rec.cleared) {
+      var days = rec.lastWrongAt
+        ? Math.max(0, (Date.now() - rec.lastWrongAt) / 86400000) : 0;
+      var decay = Math.max(0.35, 1 - days * 0.1);
+      w = Math.min(4, 1 + 1.5 * (rec.wrongCount || 0)) * decay;
+    }
     if (rec && rec.cleared) w *= 0.4;
     return w;
   }
@@ -1951,10 +1984,12 @@
    * 查不到就跳过，不拿失效记录充数。
    *
    * 样本不足 6 次（新用户 / 刚清了存档 / 题库更新）一律留在基础档；
-   * 正确率 ≥ 0.8 才解锁进阶档，掉下来再降回去。20 次的窗口是为了
-   * 别因为一局失手就立刻把孩子打回原地。
+   * 返回 { level, acc, seen }。acc 供 drawOne 决定进阶题的混入比例：
+   * 以前 ≥0.8 就从「20 以内不进位」整局跳到「100 以内进位」，
+   * 掉回 0.79 又立刻打回原地，跨度太硬且来回震荡。现在档位仍是
+   * 1/2 两级，但进阶题按比例渐进放开（见 drawOne）。
    */
-  function levelOf(save, subject) {
+  function levelDetailOf(save, subject) {
     var sessions = (save && save.sessions) || [];
     var seen = 0, correct = 0;
 
@@ -1969,8 +2004,21 @@
       }
     }
 
-    if (seen < 6) return 1;
-    return (correct / seen >= 0.8) ? 2 : 1;
+    if (seen < 6) return { level: 1, acc: 0, seen: seen };
+    var acc = correct / seen;
+    return { level: acc >= 0.8 ? 2 : 1, acc: acc, seen: seen };
+  }
+
+  /** 对外只暴露档位，语义不变（1 = 基础，2 = 进阶）。 */
+  function levelOf(save, subject) {
+    return levelDetailOf(save, subject).level;
+  }
+
+  /** 把字符串确定性地映射到 [0,1)。用题目 id 划分进阶题，不消耗注入的 rng。 */
+  function stableUnit(s) {
+    var h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return (h >>> 0) / 4294967296;
   }
 
   /**
@@ -1988,14 +2036,26 @@
     var excluded = {};
     (excludeIds || []).forEach(function (id) { excluded[id] = true; });
 
-    var level = levelOf(save, subject);
+    var detail = levelDetailOf(save, subject);
+    var level = detail.level;
+    // 刚跨过 80% 只放 25% 的进阶题，越熟练放得越多，全对才全放开。
+    // 这样「升档」不再是一夜之间整局换难度，也不会因为一局失手在
+    // 两档之间反复横跳。划分用题目 id 的确定性哈希，不额外调用 rng ——
+    // 否则固定随机种子的测试断言会整体位移。
+    var d2Ratio = level === 2
+      ? G.clamp((detail.acc - 0.75) / 0.2, 0.25, 1) : 0;
+    var inLevel = function (q) {
+      var d = q.difficulty || 1;
+      if (d <= 1) return true;
+      return d2Ratio > 0 && stableUnit(q.id) < d2Ratio;
+    };
     var avail = pool.filter(function (q) {
-      return !excluded[q.id] && (q.difficulty || 1) <= level;
+      return !excluded[q.id] && inLevel(q);
     });
     // 本档的题被这一局抽光时，允许本档重题，也不让一局短题；
     // 更重要的是**不借这个机会把超纲题放进来**。
     if (!avail.length) {
-      avail = pool.filter(function (q) { return (q.difficulty || 1) <= level; });
+      avail = pool.filter(inLevel);
     }
     // 极端兜底：题库里连本档都没有（裁剪过的测试题库）时才退回全池。
     if (!avail.length) avail = pool;
@@ -2022,6 +2082,7 @@
     zibiao: zibiaoData,
     weightOf: weightOf,
     levelOf: levelOf,
+    levelDetailOf: levelDetailOf,
     drawOne: drawOne
   };
 
@@ -2135,6 +2196,36 @@
       questions: arrange(picked, save),
       startedAt: Date.now(),
       subject: subject
+    };
+  }
+
+  /**
+   * 组一局**错题复习**（小程序用）。
+   *
+   * 只从错题本里还没 cleared 的题抽，错得最多的排前面；不足一局就出
+   * 几道算几道，不用普通题凑数 —— 复习局的意义就是「只练不会的」。
+   * 仍然走 arrange()：第 1 题和最后 1 题给孩子最可能答对的，避免
+   * 一上来连错两道就把人劝退。
+   */
+  function buildReviewRound(save, size) {
+    var want = size || G.ROUND_SIZE;
+    var ids = (save.wrongBook || [])
+      .filter(function (w) { return !w.cleared; })
+      .sort(function (a, b) {
+        return (b.wrongCount - a.wrongCount) || ((b.lastWrongAt || 0) - (a.lastWrongAt || 0));
+      })
+      .map(function (w) { return w.qid; });
+
+    var picked = [];
+    for (var i = 0; i < ids.length && picked.length < want; i++) {
+      var q = G.Bank.byId(ids[i]);
+      if (q) picked.push(q);       // 题库更新后旧 qid 会查不到，跳过
+    }
+
+    return {
+      questions: arrange(picked, save),
+      startedAt: Date.now(),
+      review: true
     };
   }
 
@@ -2317,14 +2408,45 @@
     return session;
   }
 
+  /**
+   * 中途退出：把已答题记成一条「未完成」局，不发星星。
+   *
+   * 为什么不直接回滚：recordAnswer 在每道题 advance() 时就已经写进
+   * wrongBook 和 progress 了，精确撤销要存快照，成本高且容易漏。
+   * 记一条 aborted 局更诚实 —— 难度评估（levelOf 读 sessions.items）
+   * 和家长页统计能认这些作答，账目又完全不受影响（pointsEarned = 0）。
+   * 一题都没答就退出时不写，避免往 sessions 里塞垃圾。
+   */
+  function abandonSession(save, round, items) {
+    if (!items || !items.length) return null;
+
+    var session = {
+      id: 's_' + round.startedAt,
+      ts: Date.now(),
+      correct: items.filter(function (x) { return x.correct; }).length,
+      total: items.length,
+      pointsEarned: 0,
+      items: items,
+      spins: [],
+      aborted: true
+    };
+    save.sessions.push(session);
+    while (save.sessions.length > 30) save.sessions.shift();
+    G.Store.pruneCounters(save);
+    G.Store.save(save);
+    return session;
+  }
+
   G.Runner = {
     buildRound: buildRound,
     buildSubjectRound: buildSubjectRound,
+    buildReviewRound: buildReviewRound,
     successProb: successProb,
     recordAnswer: recordAnswer,
     awardPoints: awardPoints,
     awardTvMinutes: awardTvMinutes,
-    finishSession: finishSession
+    finishSession: finishSession,
+    abandonSession: abandonSession
   };
 
 })(window);

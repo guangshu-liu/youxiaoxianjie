@@ -21,6 +21,21 @@ function release(ctx) {
 }
 
 /**
+ * 停掉当前这条语音。
+ *
+ * 切题、退出页面、弹出退出确认时都必须调它。单词音频 0.55~0.78s，
+ * 进题又延后 350ms 才播，合计约 1.1s；而答对 620ms 就切下一题，
+ * 不显式停的话上一题的词会漏进下一题，退出页面后也还在响。
+ * tts.js 有自己的播放器实例，tts.stop() 管不到这里。
+ */
+function stop() {
+  if (current) {
+    try { current.stop(); } catch (e) {}
+    release(current);
+  }
+}
+
+/**
  * 播一条语音。同一时刻只播一条 —— 连点喇叭时把上一条掐掉，
  * 否则两段语音叠在一起听不清。
  */
@@ -29,11 +44,7 @@ function play(audioId) {
   if (!src) return Promise.resolve(false);
 
   try {
-    if (current) {
-      try { current.stop(); } catch (e) {}
-      release(current);
-    }
-
+    stop();
     var ctx = wx.createInnerAudioContext();
     current = ctx;
     ctx.src = src;
@@ -71,6 +82,7 @@ function loadOverrides() { return Promise.resolve(0); }
 
 module.exports = {
   play: play,
+  stop: stop,
   has: has,
   preload: preload,
   dumpOverrides: dumpOverrides,

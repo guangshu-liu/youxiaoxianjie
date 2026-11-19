@@ -91,6 +91,7 @@ Page({
     zibiao: { summary: '', weak: [], chars: [] },
     bySubject: [],
     wrong: [],
+    wrongTotal: 0,
     sessions: [],
     backupHint: '',
     backupWarn: false,
@@ -171,6 +172,7 @@ Page({
       zibiao: this.buildZibiao(save),
       bySubject: this.buildBySubject(save),
       wrong: this.buildWrong(save),
+      wrongTotal: save.wrongBook.filter(function (w) { return !w.cleared; }).length,
       sessions: this.buildSessions(save),
       readStem: !(save.settings && save.settings.readStem === false)
     });
@@ -194,9 +196,16 @@ Page({
       points: dc.pointsEarned,
       cap: save.limits.maxPointsPerDay,
       sessions: save.sessions.filter(function (s) {
-        return G.localDateStr(new Date(s.ts)) === G.localDateStr();
+        // 中途退出的局不算「玩了一局」，否则今日局数会虚高。
+        return !s.aborted && G.localDateStr(new Date(s.ts)) === G.localDateStr();
       }).length
     };
+  },
+
+  /** 家长面板里直接开一局错题复习。 */
+  onReview: function () {
+    sfx.play('ui.tap');
+    wx.navigateTo({ url: '/pages/play/play?mode=review' });
   },
 
   buildZibiao: function (save) {
@@ -273,7 +282,8 @@ Page({
     return save.sessions.slice(-10).reverse().map(function (s) {
       return {
         id: s.id,
-        label: G.localDateStr(new Date(s.ts)).slice(5) + ' · ' + s.correct + '/' + s.total,
+        label: G.localDateStr(new Date(s.ts)).slice(5) + ' · ' +
+               s.correct + '/' + s.total + (s.aborted ? ' · 中途退出' : ''),
         pct: s.total ? Math.round(s.correct / s.total * 100) : 0
       };
     });

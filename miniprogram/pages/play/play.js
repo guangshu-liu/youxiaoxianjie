@@ -40,32 +40,50 @@ Page({
 
   onLoad: function (query) {
     var subject = (query && query.subject) || '';
+    this.review = !!(query && query.mode === 'review');
 
     // 没有科目参数就直接回首页 —— 旧版本跳转过来时会是这种情况。
-    if (G.SUBJECTS.indexOf(subject) < 0) {
+    // 复习局没有科目，走另一条路。
+    if (!this.review && G.SUBJECTS.indexOf(subject) < 0) {
       wx.reLaunch({ url: '/pages/home/home' });
       return;
     }
 
     this.subject = subject;
-    // 顶部标题写成科目名，孩子一眼知道自己在做哪一科
     try {
-      wx.setNavigationBarTitle({ title: G.SUBJECT_LABEL[subject] || '闯关' });
+      wx.setNavigationBarTitle({
+        title: this.review ? '错题复习' : (G.SUBJECT_LABEL[subject] || '闯关')
+      });
     } catch (e) { /* 低版本忽略 */ }
 
     this.save = getApp().globalData.save;
-    this.round = G.Runner.buildSubjectRound(this.save, subject, G.ROUND_SIZE);
+    this.round = this.review
+      ? G.Runner.buildReviewRound(this.save, G.ROUND_SIZE)
+      : G.Runner.buildSubjectRound(this.save, subject, G.ROUND_SIZE);
+
+    // 错题被清空（比如刚导入了备份）时别开一局空的。
+    if (!this.round.questions.length) {
+      this._closed = true;
+      wx.showToast({ title: '暂时没有要复习的题', icon: 'none' });
+      wx.navigateBack({ delta: 1 });
+      return;
+    }
+
     this.idx = 0;
     this.results = this.round.questions.map(function () { return null; });
     this.items = [];
     this._answered = false;
     this._timers = [];
+    this._closed = false;      // 已结算 / 已记未完成局，防止重复记账
     this.renderQuestion();
   },
 
   onUnload: function () {
     this.clearTimers();
     tts.stop();
+    audio.stop();
+    // 系统返回键和左滑退出不走 onExit，这里兜底把已答题记下来。
+    this.closeRound();
   },
 
   /* ---------- 渲染 ---------- */
@@ -85,8 +103,10 @@ Page({
     });
 
     this.clearTimers();
-    // 先掐掉上一题的朗读和自动播定时器，否则会念出已经翻过去的题干。
+    // 先掐掉上一题的朗读、自动播定时器和正在播的单词音频，
+    // 否则会念出已经翻过去的题干 / 把上一题的词漏进这一题。
     tts.stop();
+    audio.stop();
     this._answered = false;
     this.qStartAt = Date.now();
 
@@ -96,6 +116,18 @@ Page({
     var canRead = !readInfo.skip && !!readInfo.text
       && !(this.save.settings && this.save.settings.readStem === false)
       && tts.available();
+
+    // 听音题的题干不朗读（会和单词音频抢喇叭），但孩子不认汉字，
+    // 只听到一个词、看不懂屏幕上的「听一听…」，第一次遇到全靠猜。
+    // 这里给三种听音题型各配一句固定中文指令，进题先念指令、念完再播词。
+    // 音频不存在（旧包）时静默降级成原来的行为。
+    var instruction = '';
+    if (!(this.save.settings && this.save.settings.readStem === false)
+        && G.TTSText && G.TTSText.instructionFor) {
+      var want = G.TTSText.instructionFor(q);
+      if (want && tts.has(want)) instruction = want;
+    }
+    this.instruction = instruction;
 
     this.setData({
       subjectLabel: G.SUBJECT_LABEL[this.subject] || '',
@@ -118,11 +150,16 @@ Page({
       confettiPieces: []
     });
 
-    // 听音题进来就自动播一遍（对应网页版的 autoplay）。延后 350ms
-    // 让页面先画出来，否则声音会比画面早，孩子不知道在听什么。
+    // 听音题进来就自动播一遍（对应网页版的 autoplay）。
+    // 有中文指令时先念指令，靠 onEnded 串到单词音频 —— 两个播放器是不同
+    // 实例，用固定延时会叠音；指令被 stop() 掐掉时回调也不会再触发。
     if (q.stem && q.stem.audio) {
       var id = q.stem.audio;
-      this.later(350, function () { audio.play(id); });
+      if (instruction) {
+        tts.schedule(instruction, 250, function () { audio.play(id); });
+      } else {
+        this.later(350, function () { audio.play(id); });
+      }
     } else if (canRead) {
       var text = readInfo.text;
       tts.schedule(text, 350);
@@ -205,9 +242,10 @@ Page({
   /* ---------- 结算 ---------- */
 
   finish: function () {
+    this._closed = true;       // 正常结算，onUnload 不要再记未完成局
     var correct = this.results.filter(function (r) { return r === true; }).length;
     var total = this.results.length;
-    var nominal = stars.forCorrect(correct, this.subject);
+    var nominal = stars.forCorrect(correct, this.subject || 'chinese');
 
     // 顺序不能反：finishSession 记的是**实际到账**的星星。
     // 先 awardPoints 拿到被每日上限削过的值，再把它传给 finishSession，
@@ -217,7 +255,8 @@ Page({
     G.Runner.finishSession(this.save, this.round, this.items, [], award.awarded);
 
     getApp().globalData.lastResult = {
-      subject: this.subject,
+      subject: this.subject || 'chinese',
+      review: this.review,
       correct: correct,
       total: total,
       stars: award.awarded,
@@ -231,10 +270,28 @@ Page({
     wx.redirectTo({ url: '/pages/result/result' });
   },
 
+  /**
+   * 中途退出：把已经答过的题记成一条「未完成」局。
+   *
+   * recordAnswer 在 advance() 里已经写进错题本和 progress 了，以前却
+   * 不写 sessions —— 结果 levelOf 只统计 sessions.items，这些作答不参与
+   * 难度评估，家长页「最近 N 局」也看不到，数据是半吊子的。
+   * 未完成局不发球、不计入今日局数，只补上学习记录。
+   */
+  closeRound: function () {
+    if (this._closed) return;
+    this._closed = true;
+    if (!this.save || !this.round) return;
+    G.Runner.abandonSession(this.save, this.round, this.items);
+  },
+
   /* ---------- 交互 ---------- */
 
   onSpeaker: function () {
     sfx.play('ui.tap');
+    // 孩子可能在中文指令还没念完时就点喇叭：先停掉指令（连带取消它的
+    // 播完回调），再直接播单词，避免两段声音叠在一起。
+    tts.stop();
     if (this.data.audioId) audio.play(this.data.audioId);
   },
 
@@ -248,13 +305,15 @@ Page({
     var self = this;
     wx.showModal({
       title: '退出这一局？',
-      content: '这一局的进度不会保存。',
+      content: '已经答过的题会记下来，但这一局不算完成，也不发星星。',
       confirmText: '退出',
       cancelText: '继续玩',
       success: function (res) {
         if (!res.confirm) return;
         self.clearTimers();
         tts.stop();
+        audio.stop();
+        self.closeRound();
         wx.navigateBack({ delta: 1 });
       }
     });

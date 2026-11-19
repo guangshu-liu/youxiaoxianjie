@@ -10,7 +10,8 @@ Page({
     badges: [],
     progressPct: 0,
     nextBadge: null,
-    lastText: ''
+    lastText: '',
+    reviewCount: 0
   },
 
   onShow: function () {
@@ -26,7 +27,11 @@ Page({
       badges: stars.badgeState(lifetime),
       progressPct: stars.progressPct(lifetime),
       nextBadge: stars.nextBadge(lifetime),
-      lastText: last ? ('上次：' + last.correct + ' / ' + last.total + ' 题') : ''
+      lastText: last ? ('上次：' + last.correct + ' / ' + last.total + ' 题') : '',
+      // 少于 3 道错题不摆复习入口：一局太短，孩子刚进入状态就结束了。
+      reviewCount: (save.wrongBook || []).filter(function (w) {
+        return !w.cleared;
+      }).length
     });
   },
 
@@ -40,5 +45,11 @@ Page({
   onParent: function () {
     sfx.play('ui.tap');
     wx.navigateTo({ url: '/pages/parent/parent' });
+  },
+
+  /** 只练错题本里还没掌握的题，最多 10 道。 */
+  onReview: function () {
+    sfx.play('ui.tap');
+    wx.navigateTo({ url: '/pages/play/play?mode=review' });
   }
 });

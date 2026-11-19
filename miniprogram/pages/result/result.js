@@ -31,6 +31,7 @@ Page({
     }
 
     this.subject = r.subject;
+    this.review = !!r.review;
     var pct = Math.round(r.correct / r.total * 100);
     var praise = pct >= 90 ? '太棒了！'
                : pct >= 70 ? '做得很好！'
@@ -45,7 +46,7 @@ Page({
     })[0] || null;
 
     this.setData({
-      subjectLabel: G.SUBJECT_LABEL[r.subject] || '',
+      subjectLabel: r.review ? '错题复习' : (G.SUBJECT_LABEL[r.subject] || ''),
       emoji: pct >= 70 ? '🌟' : '💪',
       title: praise,
       score: r.correct + ' / ' + r.total,
@@ -63,8 +64,11 @@ Page({
 
   onAgain: function () {
     sfx.play('ui.tap');
-    // 再来一局仍是同一科 —— 连续练一科比跳来跳去更像「闯关」。
-    wx.redirectTo({ url: '/pages/play/play?subject=' + (this.subject || 'chinese') });
+    // 复习局没有科目参数，「再来一局」要回到复习，不能掉回语文闯关。
+    var url = this.review
+      ? '/pages/play/play?mode=review'
+      : '/pages/play/play?subject=' + (this.subject || 'chinese');
+    wx.redirectTo({ url: url });
   },
 
   onHome: function () {

@@ -202,6 +202,14 @@ npm run mp:build     # 生成 miniprogram/generated/
 | 语音 | Web Audio + 文件 | `InnerAudioContext` + 包内文件 |
 | 题干朗读 | 系统 `speechSynthesis`，零文件、离线可用（首次需手势解锁） | 主包 `ttsAudio/` 内预生成 m4a，离线可用、进题即播 |
 | 音效 | 振荡器合成 | 同左，走 `wx.createWebAudioContext()` |
+| 一局构成 | 3 语文 + 3 数学 + 4 英语混合 | 选一科 10 题；另有错题复习局 |
+| 中途退出 | 不记录 | 已答题记成「未完成」局，不发星，家长页可见 |
+
+前三个共用逻辑模块（`00-core / 10-store / 22-tts-text / 30-bank / 40-runner`）
+是同一份实现，所以题库、抽题规则、错题加权、难度分档、存档迁移不会分叉。
+**但一局构成不同**：网页版用 `buildRound`（3:3:4），小程序用
+`buildSubjectRound`（单科）和 `buildReviewRound`（错题），两端「一局 10 题」
+的科目分布不一样，成绩不能直接横向比较。这是刻意保留的产品差异，不是遗漏。
 
 两套存档靠**备份 JSON 互通**：网页版导出的备份可以直接粘进小程序的家长页恢复
 （音频录音会丢，其余都在）。
@@ -229,7 +237,7 @@ npm run mp:build     # 生成 miniprogram/generated/
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，102 项断言
+npm run mp:test      # wx 桩 + Node，124 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、
