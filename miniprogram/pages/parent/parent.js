@@ -97,7 +97,8 @@ Page({
     backupWarn: false,
     importText: '',
     readStem: true,
-    visualMath: true
+    visualMath: true,
+    visualSteps: true
   },
 
   onLoad: function () {
@@ -173,6 +174,18 @@ Page({
     sfx.play('ui.tap');
   },
 
+  // 分步讲解单独一个开关：它把切题窗口从 620ms 拉到 1900ms，家长可能
+  // 只想保留积木图、不想要慢节奏，关掉后节奏立刻恢复原样。
+  onToggleVisualSteps: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.visualSteps = v;
+    G.Store.save(save);
+    this.setData({ visualSteps: v });
+    sfx.play('ui.tap');
+  },
+
   /* ---------- 面板 ---------- */
 
   buildPanel: function () {
@@ -188,7 +201,8 @@ Page({
       wrongTotal: save.wrongBook.filter(function (w) { return !w.cleared; }).length,
       sessions: this.buildSessions(save),
       readStem: !(save.settings && save.settings.readStem === false),
-      visualMath: !(save.settings && save.settings.visualMath === false)
+      visualMath: !(save.settings && save.settings.visualMath === false),
+      visualSteps: !(save.settings && save.settings.visualSteps === false)
     });
     this.buildBackupHint();
   },

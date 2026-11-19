@@ -456,6 +456,68 @@ view, text, button, input, textarea {
 .v-hint-op { font-size: 20px; font-weight: 800; color: var(--c-primary-d); }
 .v-bar-hint { height: 26px; width: 12px; }
 
+/* ---------- 分步讲解：进位 / 借位 / 凑十的过程帧（1.2.12） ----------
+   两帧并排，未到的帧压暗；stepNow 推进时只把当前帧点亮并播一次弹跳。
+   没有循环、没有背景动效，眼睛始终跟着「这一步变了什么」。 */
+.v-steps {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 8px; width: 100%;
+  padding-top: 8px; border-top: 2px dashed var(--c-line);
+}
+.v-step-arrow { font-size: 22px; font-weight: 800; color: var(--c-ink-soft); }
+.v-step {
+  min-width: 76px; min-height: 52px;
+  padding: 6px 8px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--c-bg-alt); border: 2px solid var(--c-line);
+  border-radius: 12px;
+  opacity: .3;
+  transition: opacity .22s ease-out, border-color .22s ease-out;
+}
+.v-step-on {
+  opacity: 1; border-color: var(--c-primary);
+  animation: v-step-pop .36s ease-out 1;
+}
+@keyframes v-step-pop {
+  0%   { transform: scale(.88); }
+  55%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+/* 帧里积木小一号，借位题「9 根棒 → 8 根棒 + 14 个点」才塞得进一张卡片。 */
+.v-step .v-blocks { max-width: 190px; min-height: 0; gap: 2px; }
+.v-step .v-bar { width: 10px; height: 26px; }
+.v-step .v-dot { width: 10px; height: 10px; }
+
+/* 要搬走的圆点：橙色 + 一次向左的小位移，表达「拿过去凑十」。
+   动画挂在 .v-step-on 下，帧没点亮时不会偷偷演完。 */
+.v-step-on .v-dot-take {
+  background: var(--c-warn); border-color: #D97B22;
+  animation: v-dot-move .5s ease-out 1;
+}
+@keyframes v-dot-move {
+  0%   { transform: translateX(8px); }
+  60%  { transform: translateX(-5px); }
+  100% { transform: none; }
+}
+/* 剩下的点浅一点，别和「要搬走的」抢眼睛。 */
+.v-dot-rest { background: #CFE8F5; border-color: #9BC9E0; }
+/* 被减掉的点：半透明 + 虚线，表示划掉。 */
+.v-dot-cut { opacity: .35; border-style: dashed; background: transparent; }
+/* 新凑出来的十棒：换成绿色刻度并放大出现，仍是「一根有十道刻度的棒」。 */
+.v-step-on .v-bar-new {
+  border-color: #43A047;
+  background: repeating-linear-gradient(180deg,
+    #A5D6A7 0, #A5D6A7 2px, #43A047 2px, #43A047 2.8px);
+  animation: v-bar-grow .42s ease-out 1;
+}
+@keyframes v-bar-grow {
+  0%   { transform: scale(.5); opacity: .3; }
+  60%  { transform: scale(1.16); opacity: 1; }
+  100% { transform: scale(1); }
+}
+/* 要拆开的十棒：虚线，下一帧它就变成 10 个圆点。 */
+.v-bar-break { border-style: dashed; border-color: var(--c-warn); }
+
 /* ---------- 英语词族 / 音位格子 / 拼音拆合 ---------- */
 .v-blend { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; }
 .v-chip {
@@ -673,6 +735,8 @@ view, text, button, input, textarea {
   background: var(--c-warn);
   animation: timer-shrink 1.5s linear forwards;
 }
+/* 分步题的切题窗口是 1900ms，倒计时条要走满，别提前归零误导孩子。 */
+.explain-timer-bar.explain-timer-long { animation-duration: 1.9s; }
 @keyframes timer-shrink { from { width: 100%; } to { width: 0%; } }
 
 /* ---------- 结算 ---------- */

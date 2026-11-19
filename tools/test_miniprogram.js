@@ -686,6 +686,193 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(replayed2, null, '答对不重播音频，避免 620ms 窗口内串音');
 }
 
+/* ---- 8g. 分步讲解：进位 / 借位 / 凑十（1.2.12） ---- */
+{
+  const fs = require('fs');
+  const V = require(path.join(MP, 'lib/visual.js'));
+  const vm = V.math;
+  const math = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/math.json'), 'utf8'));
+  const findQ = (t) => math.find((q) => q.stem.text === t);
+  const answerOf = (q) => q.options.find((o) => o.id === q.answer).id;
+
+  // 全题库：只有进位 / 借位 / 凑十挂 steps，其余 551 道题节奏必须完全不变。
+  let withSteps = 0, carry = 0, borrow = 0, ten = 0;
+  const bad = [];
+  math.forEach((q) => {
+    const v = V.forQuestion(q, true);
+    if (!v || !v.steps) return;
+    withSteps++;
+    if (v.kind === 'math-calc' && v.carry) carry++;
+    if (v.kind === 'math-calc' && v.borrow) borrow++;
+    if (v.mode === 'make-ten') ten++;
+    if (v.steps.frames.length !== 2) bad.push(q.stem.text + ':帧数');
+    v.steps.frames.forEach((f) => {
+      if (f.bars.length + f.dots.length > 25) bad.push(q.stem.text + ':帧过大');
+      if (f.bars.some((b) => typeof b.cls !== 'string') ||
+          f.dots.some((d) => typeof d.cls !== 'string')) bad.push(q.stem.text + ':cls 缺失');
+    });
+  });
+  eq(withSteps, 49, '全题库 49 道题有分步（进位 21 + 借位 21 + 凑十 7）');
+  eq(carry, 21, '进位 21 道');
+  eq(borrow, 21, '借位 21 道');
+  eq(ten, 7, '凑十 7 道');
+  eq(bad.length, 0, '所有过程帧 2 帧、积木不过量、class 齐备', bad.join(' '));
+
+  const carryQ = findQ('66 + 4 = ?');
+  const borrowQ = findQ('94 - 7 = ?');
+  const tenQ = findQ('8 + 8 = 8 + 2 + ?');
+  const plainQ = findQ('12 + 4 = ?');
+
+  const cs = V.forQuestion(carryQ, true).steps;
+  eq(cs.need, 4, '66 + 4 要搬 4 个点');
+  eq(cs.rest, 0, '66 + 4 补完十不剩点');
+  eq(cs.frames[0].dots.filter((d) => d.cls === 'v-dot-take').length, 4,
+     '进位帧① 4 个橙色要搬点');
+  eq(cs.frames[1].bars.filter((b) => b.cls === 'v-bar-new').length, 1,
+     '进位帧② 出现一根新十棒');
+
+  const bs = V.forQuestion(borrowQ, true).steps;
+  eq(bs.need, 7, '94 - 7 要减 7 个点');
+  eq(bs.rest, 7, '94 - 7 拆棒后剩 7 个点');
+  eq(bs.frames[0].bars.filter((b) => b.cls === 'v-bar-break').length, 1,
+     '借位帧① 一根十棒标成要拆开');
+  eq(bs.frames[1].bars.length, 8, '借位帧② 少了一根棒');
+  eq(bs.frames[1].dots.filter((d) => d.cls === 'v-dot-cut').length, 7,
+     '借位帧② 划掉 7 个点');
+
+  const ts = V.forQuestion(tenQ, true).steps;
+  eq(ts.need, 2, '凑十题拿 2 个去补');
+  eq(ts.rest, 6, '凑十题剩 6 个，就是问号的答案');
+  eq(ts.frames[0].dots.length, 8, '凑十帧① 画的是题干里的第二个 8');
+  eq(ts.frames[1].bars.filter((b) => b.cls === 'v-bar-new').length, 1,
+     '凑十帧② 2 个凑成一根十棒');
+
+  eq(V.forQuestion(plainQ, true).steps, null, '不进位题没有分步帧，节奏不变');
+  eq(vm.forQuestion(carryQ, false), null, '总开关关掉时不解析');
+  eq(vm.makeTenSteps(8, 2, 6).rest, 6, '凑十帧生成器可直接复用');
+  eq(vm.calcSteps(12, 4, '+'), null, '个位相加不满十不分步');
+  eq(vm.calcSteps(94, 3, '-'), null, '个位够减不用借位');
+
+  // WXML / WXSS：过程帧只在作答后渲染，得数改由 revealed 控制。
+  const wxml = fs.readFileSync(path.join(MP, 'pages/play/play.wxml'), 'utf8');
+  ok(/wx:if="\{\{answered && visual\.steps\}\}"/.test(wxml),
+     '过程帧只在作答后渲染，答题前一个得数都不露');
+  ok(/wx:if="\{\{revealed && visual\.kind === 'math-calc'\}\}"/.test(wxml),
+     '得数行由 revealed 控制，可延后到分步最后一步');
+  ok(/wx:if="\{\{!revealed\}\}" class="v-q"/.test(wxml),
+     '拆数题问号也由 revealed 控制');
+  ok(/stepNow >= fr\.i/.test(wxml), '过程帧按 stepNow 依次点亮');
+  ok(/explainLong \? 'explain-timer-long'/.test(wxml), '分步题倒计时条走长时');
+  const wxss = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const stepCss = wxss.slice(wxss.indexOf('/* ---------- 分步讲解'),
+                             wxss.indexOf('/* ---------- 英语词族'));
+  ok(stepCss.length > 0 && stepCss.indexOf('infinite') < 0,
+     '分步样式是一次性动画，没有循环');
+  ok(/explain-timer-long \{ animation-duration: 1\.9s/.test(wxss),
+     '1.9s 倒计时有对应样式');
+
+  // play 页状态机：有分步时作答瞬间盖着得数，走完两帧才揭晓。
+  const save = app.globalData.save;
+  save.settings.visualMath = true;
+  save.settings.visualSteps = true;
+  G.Store.save(save);
+
+  function stepPage(q) {
+    const p = makeInstance(loadPage('pages/play/play.js'));
+    p.onLoad({ subject: 'math' });
+    p.round.questions[p.idx] = q;
+    p.renderQuestion();
+    return p;
+  }
+
+  const p = stepPage(carryQ);
+  ok(!!p.data.visual.steps, '进位题进题带分步数据');
+  eq(p.data.answered, false, '答题前未作答');
+  eq(p.data.revealed, false, '答题前得数盖着');
+  eq(p.data.stepNow, -1, '答题前没有点亮任何过程帧');
+
+  const calls = [];
+  p.later = (ms) => { calls.push(ms); };
+  p.onOption({ currentTarget: { dataset: { id: answerOf(carryQ) } } });
+  eq(p.data.answered, true, '作答后进入已作答态');
+  eq(p.data.revealed, false, '分步题作答瞬间仍不揭晓得数');
+  eq(p.data.stepNow, -1, '分步帧等定时器依次点亮');
+  eq(p.data.explainLong, true, '分步题倒计时条标记为长时');
+  eq(Math.max.apply(null, calls), 1900, '分步题切题窗口延长到 1900ms');
+  ok(calls.indexOf(120) >= 0 && calls.indexOf(600) >= 0 && calls.indexOf(1080) >= 0,
+     '三个时刻 120 / 600 / 1080ms 依次排好');
+
+  p.setStep(0, false);
+  eq(p.data.stepNow, 0, '点亮第一帧');
+  eq(p.data.revealed, false, '第一帧还不揭晓得数');
+  p.setStep(1, false);
+  eq(p.data.stepNow, 1, '点亮第二帧');
+  eq(p.data.revealed, false, '第二帧仍不揭晓得数');
+  p.setStep(2, true);
+  eq(p.data.revealed, true, '第三步才揭晓得数');
+
+  // 定时器必须全部登记在册，切题 / 退出时一次性清掉。
+  // 桩里的 setTimeout 为「跑完整局」会立刻执行回调（见文件头），所以这里
+  // 把 later 换成只登记、不触发的版本，专测登记与清理。
+  const timerPage = stepPage(carryQ);
+  timerPage.later = function (ms) { this._timers.push(ms); return 0; };
+  timerPage.onOption({ currentTarget: { dataset: { id: answerOf(carryQ) } } });
+  eq(timerPage._timers.length, 4, '分步 3 个定时器 + 切题 1 个都登记在册');
+  eq(timerPage._timers[3], 1900, '切题窗口排在分步之后，不会提前翻页');
+  eq(timerPage.data.revealed, false, '分步期间得数一直盖着');
+  timerPage.clearTimers();
+  eq(timerPage._timers.length, 0, '一次性清空，不会把揭晓漏到下一题');
+
+  // 桩的 setTimeout 立刻执行：三步回调全部跑完也必须落到「已揭晓」，
+  // 不能因为中间某帧异常而把得数永远盖住。
+  const seqPage = stepPage(carryQ);
+  seqPage.setData({ answered: true, revealed: false, stepNow: -1 });
+  seqPage.runSteps();
+  eq(seqPage.data.stepNow, 2, '三步走完停在第 2 帧之后');
+  eq(seqPage.data.revealed, true, '最后一步必定揭晓得数，不会卡住');
+
+  // 无分步题 / 关掉开关：作答即揭晓，窗口恢复原样。
+  const plain = stepPage(plainQ);
+  const plainCalls = [];
+  plain.later = (ms) => { plainCalls.push(ms); };
+  plain.onOption({ currentTarget: { dataset: { id: answerOf(plainQ) } } });
+  eq(plain.data.revealed, true, '无分步题作答即揭晓，和旧版一致');
+  eq(Math.max.apply(null, plainCalls), 620, '无分步题窗口仍是 620ms');
+
+  save.settings.visualSteps = false;
+  G.Store.save(save);
+  const off = stepPage(carryQ);
+  const offCalls = [];
+  off.later = (ms) => { offCalls.push(ms); };
+  off.onOption({ currentTarget: { dataset: { id: answerOf(carryQ) } } });
+  eq(off.data.revealed, true, '家长关掉分步后作答即揭晓');
+  eq(Math.max.apply(null, offCalls), 620, '关掉分步后节奏恢复 620ms');
+  ok(!!off.data.visual, '关掉分步不影响积木图');
+
+  // 家长页开关：默认开、能往返、能序列化、总开关关掉时禁用。
+  const parent = makeInstance(loadPage('pages/parent/parent.js'));
+  parent.onLoad();
+  parent.buildPanel();
+  eq(parent.data.visualSteps, false, '家长页分步开关反映当前存档值');
+  parent.onToggleVisualSteps({ detail: { value: true } });
+  eq(parent.data.visualSteps, true, '家长页可重新打开分步');
+  eq(save.settings.visualSteps, true, '开关写进 save.settings');
+  parent.onToggleVisualSteps({ detail: { value: false } });
+  parent.onToggleVisualSteps({ detail: { value: true } });
+  eq(parent.data.visualSteps, true, '开关往返后状态正确');
+  const dumped = Array.from(storage.keys()).map((k) => {
+    const v = storage.get(k);
+    return typeof v === 'string' ? v : JSON.stringify(v);
+  }).join('');
+  ok(dumped.indexOf('visualSteps') >= 0, 'visualSteps 能随存档序列化');
+  const pWxml = fs.readFileSync(path.join(MP, 'pages/parent/parent.wxml'), 'utf8');
+  ok(/disabled="\{\{!visualMath\}\}"/.test(pWxml), '总开关关掉时分步开关禁用');
+  ok(/bindchange="onToggleVisualSteps"/.test(pWxml), '分步开关绑到对应处理函数');
+
+  save.settings.visualSteps = true;
+  G.Store.save(save);
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

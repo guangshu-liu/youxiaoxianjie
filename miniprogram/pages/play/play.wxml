@@ -58,17 +58,6 @@
               </view>
             </view>
           </view>
-          <view wx:if="{{answered}}" class="v-result {{visual.regroup ? 'v-regroup' : ''}}">
-            <text class="v-eq">=</text>
-            <view class="v-num">
-              <text class="v-label v-label-result">{{visual.result.label}}</text>
-              <view class="v-blocks">
-                <view wx:for="{{visual.result.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
-                <view wx:for="{{visual.result.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
-                <text wx:if="{{visual.result.empty}}" class="v-zero">0</text>
-              </view>
-            </view>
-          </view>
         </block>
 
         <!-- 拆数 / 凑十：原数在上，拆开的块在下，问号原位翻出答案 -->
@@ -93,7 +82,7 @@
               <text wx:if="{{pi > 0}}" class="v-op v-op-sm">+</text>
               <view class="v-card {{part.unknown ? 'v-card-unknown' : ''}}" style="animation-delay:{{part.delay}}s">
                 <block wx:if="{{part.unknown}}">
-                  <text wx:if="{{!answered}}" class="v-q">?</text>
+                  <text wx:if="{{!revealed}}" class="v-q">?</text>
                   <block wx:else>
                     <text class="v-label v-label-result">{{part.solved.label}}</text>
                     <view class="v-blocks">
@@ -146,6 +135,35 @@
             <view class="v-chip v-chip-full">{{visual.full}}</view>
           </view>
         </block>
+
+        <!-- 进位 / 借位 / 凑十：作答后才演「怎么算」。两帧过程依次点亮，
+             第三步才由 revealed 打开下面的结果行 / 让问号翻出得数。
+             答题前整个 v-steps 连节点都不渲染，一个得数都不露。 -->
+        <view wx:if="{{answered && visual.steps}}" class="v-steps">
+          <block wx:for="{{visual.steps.frames}}" wx:for-item="fr" wx:key="i">
+            <text wx:if="{{fr.i > 0}}" class="v-step-arrow">→</text>
+            <view class="v-step {{stepNow >= fr.i ? 'v-step-on' : ''}}">
+              <view class="v-blocks">
+                <view wx:for="{{fr.bars}}" wx:for-item="bar" wx:key="i" class="v-bar {{bar.cls}}"></view>
+                <view wx:for="{{fr.dots}}" wx:for-item="dot" wx:key="i" class="v-dot {{dot.cls}}"></view>
+              </view>
+            </view>
+          </block>
+        </view>
+
+        <!-- 得数积木：没有分步的题作答即揭晓；有分步的题等两帧演完。 -->
+        <view wx:if="{{revealed && visual.kind === 'math-calc'}}"
+              class="v-result {{visual.regroup ? 'v-regroup' : ''}}">
+          <text class="v-eq">=</text>
+          <view class="v-num">
+            <text class="v-label v-label-result">{{visual.result.label}}</text>
+            <view class="v-blocks">
+              <view wx:for="{{visual.result.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
+              <view wx:for="{{visual.result.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
+              <text wx:if="{{visual.result.empty}}" class="v-zero">0</text>
+            </view>
+          </view>
+        </view>
       </view>
 
       <view class="options options-{{layout}}">
@@ -163,7 +181,7 @@
 
       <view wx:if="{{showExplain}}" class="explain">{{explain}}</view>
       <view wx:if="{{showExplain}}" class="explain-timer">
-        <view class="explain-timer-bar"></view>
+        <view class="explain-timer-bar {{explainLong ? 'explain-timer-long' : ''}}"></view>
       </view>
 
       <view

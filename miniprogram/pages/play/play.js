@@ -44,6 +44,11 @@ Page({
     starPop: false,
     // 内容型演示；null 表示这题不演示（解析不出来或家长关了开关）。
     visual: null,
+    // 分步讲解（进位 / 借位 / 凑十）：stepNow 是当前点亮到第几帧，
+    // revealed 控制得数何时揭晓。没有分步的题 revealed 就是 answered。
+    stepNow: -1,
+    revealed: false,
+    explainLong: false,
     // 音位格子 / 字母卡片「跟音频依次点亮」的脉冲 class。
     // a/b 交替是为了强制重播 CSS 动画，和 enterFlag 同一套机制。
     pulse: 'a',
@@ -169,6 +174,10 @@ Page({
       // 纯函数解析题干，不改题库；家长关掉开关时传 false 直接返回 null。
       visual: visual.forQuestion(q,
         !(this.save.settings && this.save.settings.visualMath === false)),
+      // 新题把分步演示整体归零，上一题的定时器已由 clearTimers 清掉。
+      stepNow: -1,
+      revealed: false,
+      explainLong: false,
       // 新题先不点亮音位格子，等单词音频真正开播时再 pulse。
       slotsClass: '',
       lettersClass: ''
@@ -243,6 +252,13 @@ Page({
       return { id: o.id, text: o.text, single: o.single, state: state, delay: 0 };
     });
 
+    var v = this.data.visual;
+    // 进位 / 借位 / 凑十题有过程帧：作答后分三个时刻演完再揭晓得数，
+    // 窗口延长到 1900ms。其它题（含全部语文英语）节奏完全不变。家长可以
+    // 只关「分步讲解」，积木图仍保留，节奏立刻回到 620 / 1500。
+    var stepsOff = !!(this.save.settings && this.save.settings.visualSteps === false);
+    var stepsOn = !!(v && v.steps && !stepsOff);
+
     this.setData({
       answered: true,
       options: options,
@@ -256,13 +272,19 @@ Page({
       // 只加「本局答对数」这个视觉计数，不动 save.points ——
       // 真账目在整局结束时结算，逐题改会和每日上限、家长页审计对不上。
       roundCorrect: correct ? this.data.roundCorrect + 1 : this.data.roundCorrect,
-      starPop: correct
+      starPop: correct,
+      // 有分步时先盖着得数，等 runSteps 走到最后一步再打开；没有分步的题
+      // 仍是「作答即揭晓」，和 1.2.11 之前完全一样。
+      revealed: !stepsOn,
+      stepNow: -1,
+      explainLong: stepsOn
     });
+
+    if (stepsOn) this.runSteps();
 
     // 英语听音题答错时重播一次单词，让字母卡片的高亮真正跟着声音走。
     // 只有答错分支有 1500ms 窗口；答对 620ms 不重播，避免和切题抢时间、
     // 也避免 1.2.8 刚修好的「上一题串音」复发（advance 里有 audio.stop 兜底）。
-    var v = this.data.visual;
     if (!correct && v && v.kind === 'english' && v.audioId) {
       this.playWord(v.audioId);
     } else {
@@ -271,7 +293,34 @@ Page({
     }
 
     var self = this;
-    this.later(correct ? 620 : 1500, function () { self.advance(correct); });
+    // 分步题答对答错统一 1900ms：两帧 + 结果揭晓共 1080ms，留约 800ms 看结果。
+    this.later(stepsOn ? 1900 : (correct ? 620 : 1500),
+      function () { self.advance(correct); });
+  },
+
+  /* ---------- 分步讲解（进位 / 借位 / 凑十） ---------- */
+
+  /**
+   * 两帧过程 + 一次结果揭晓，共三个时刻：120 / 600 / 1080ms。
+   * 定时器一律走 later()，切题、退出、结算时 clearTimers 会全部清掉，
+   * 不会把上一题的揭晓动作漏到下一题。
+   */
+  runSteps: function () {
+    var v = this.data.visual;
+    var n = (v && v.steps) ? v.steps.frames.length : 0;
+    if (!n) return;
+    var self = this;
+    for (var i = 0; i < n; i++) {
+      (function (k) {
+        self.later(120 + k * 480, function () { self.setStep(k, false); });
+      })(i);
+    }
+    self.later(120 + n * 480, function () { self.setStep(n, true); });
+  },
+
+  /** 抽成方法，无头测试可以直接推进到某一帧，不必等真实定时器。 */
+  setStep: function (n, reveal) {
+    this.setData({ stepNow: n, revealed: !!reveal });
   },
 
   advance: function (correct) {
