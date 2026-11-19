@@ -558,7 +558,132 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const cfg2 = loadPage('pages/play/play.js');
   const p2 = makeInstance(cfg2);
   p2.onLoad({ subject: 'chinese' });
-  eq(p2.data.visual, null, '语文题不出现积木');
+  // 1.2.11 起语文的「看拼音选字」也会出图形，但不能串进数学积木模板。
+  ok(!p2.data.visual || p2.data.visual.kind === 'pinyin',
+     '语文题即使出图形也只会是拼音拆合，不会串进积木');
+}
+
+/* ---- 8f. 三科内容型演示（1.2.11） ---- */
+{
+  const fs = require('fs');
+  const V = require(path.join(MP, 'lib/visual.js'));
+  const loadBank = (f) => JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'src/data/' + f + '.json'), 'utf8'));
+  const math = loadBank('math');
+  const ch = loadBank('chinese');
+  const en = loadBank('english');
+
+  // 全题库覆盖：解析不出来的题必须静默退回纯文字，不能抛错。
+  const cover = { 'math-calc': 0, 'math-split': 0, english: 0, pinyin: 0, none: 0 };
+  [math, ch, en].forEach((d) => d.forEach((q) => {
+    const v = V.forQuestion(q, true);
+    cover[v ? v.kind : 'none']++;
+  }));
+  eq(cover['math-calc'], 100, '数学计算题 100 道全部可演示');
+  eq(cover['math-split'], 28, '数学拆数题 28 道全部可演示');
+  eq(cover.english, 84, '英语 84 道可演示（听音选词/辨短元音/押韵/拼合 CVC）');
+  eq(cover.pinyin, 45, '语文 45 道看拼音选字可演示，2 道零声母跳过');
+  eq(cover.none, 343, '其余 343 道静默跳过');
+
+  // 拆数 / 凑十：四种题干格式，每种只有一个未知块，答案藏在 solved 里。
+  const modes = {};
+  math.filter((q) => q.tags[0] === '拆数').forEach((q) => {
+    const v = V.forQuestion(q, true);
+    if (!v) return;
+    modes[v.mode] = (modes[v.mode] || 0) + 1;
+    const unknowns = v.parts.filter((p) => p.unknown);
+    eq(unknowns.length, 1, '每道拆数题只有一个未知块：' + q.stem.text);
+    const ans = q.options.find((o) => o.id === q.answer).text;
+    eq(unknowns[0].solved.label, ans, '未知块备好正确答案：' + q.stem.text);
+  });
+  eq(modes.place, 14, '位值拆分 14 道');
+  eq(modes['make-ten'], 7, '凑十 7 道');
+  eq(modes.count, 7, '数一数 7 道');
+
+  const tenQ = math.find((q) => q.stem.text === '8 + 8 = 8 + 2 + ?');
+  const ten = V.forQuestion(tenQ, true);
+  eq(ten.mode, 'make-ten', '凑十题识别为 make-ten');
+  eq(ten.hint.a + ten.hint.c, 10, '凑十提示的两个数正好凑成十');
+  eq(ten.parts.filter((p) => p.unknown)[0].solved.label, '6', '凑十题得数 6 备在 unknown 里');
+  eq(ten.top, null, '凑十题不画总量积木，避免把 16 直接摆出来');
+  eq(V.math.forSplitQuestion(Object.assign({}, tenQ,
+    { stem: { text: '8 + 8 = 8 + 3 + ?' } }), true), null,
+     '凑十题数据不自洽时拒绝演示');
+
+  // 拼音：zh/ch/sh 最长匹配优先，声调留在韵母里，拆完能还原。
+  eq(V.chinese.split('shēng').sheng, 'sh', 'zh/ch/sh 最长匹配优先');
+  eq(V.chinese.split('hóng').yun, 'óng', '韵母保留声调');
+  eq(V.forQuestion(ch.find((q) => q.stem.text.indexOf('「èr」') >= 0), true), null,
+     '零声母拼音（èr / ěr）没有可拆的两块，静默跳过');
+  const py = V.forQuestion(ch.find((q) => q.stem.text.indexOf('「xué」') >= 0), true);
+  eq(py.sheng + py.yun, py.full, '拼音拆完能还原成原串');
+  ok(ch.filter((q) => q.tags[0] === '看拼音选字').every((q) => {
+    const v = V.forQuestion(q, true);
+    return !v || v.sheng + v.yun === v.full;
+  }), '45 道拼音拆合全部自洽');
+
+  // 英语：答题前绝不显示答案词，作答后才给字母。
+  const blendQ = en.find((q) => q.tags[0] === '拼合 CVC');
+  const blend = V.forQuestion(blendQ, true);
+  eq(blend.before.type, 'split', '拼合 CVC 题画词族两块');
+  ok(!blend.before.word, '拼合题答题前不显示合并后的答案词');
+  eq(blend.after.word, 'dam', '作答后才揭晓正确词');
+  const listenQ = en.find((q) => q.tags[0] === '听音选词');
+  const listen = V.forQuestion(listenQ, true);
+  eq(listen.before.type, 'slots', '听音题答题前只画音位格子');
+  ok(listen.before.slots.length >= 3 && listen.before.slots.length <= 5,
+     '音位格子 3~5 个，长词不画满');
+  ok(!listen.before.slots.some((s) => s.ch), '格子里没有字母，答题前不泄答案');
+  eq(listen.after.word, 'yam', '作答后才给正确词');
+  eq(listen.audioId, 'en.yam', '答错重播用的音频 id 保留');
+  ok(listen.after.letters.every((L, i) => L.delay === (i * 0.12).toFixed(2)),
+     '字母卡片依次高亮，各差 120ms');
+  const rhyme = V.forQuestion(en.find((q) => q.tags[0] === '押韵配对'), true);
+  eq(rhyme.before.rime, 'am', 'ram 拆出词族 am，把「结尾音」摆出来');
+  eq(V.forQuestion(blendQ, false), null, '家长关掉开关后三科都不演示');
+
+  // WXML 四个模板齐全，缺一个就会静默白屏。
+  const wxml = fs.readFileSync(path.join(MP, 'pages/play/play.wxml'), 'utf8');
+  ['math-calc', 'math-split', 'english', 'pinyin'].forEach((k) => {
+    ok(wxml.indexOf("visual.kind === '" + k + "'") >= 0, 'WXML 有 ' + k + ' 模板');
+  });
+
+  // play 页：拆数题走对应模板；答题前问号不翻答案。
+  const cfg = loadPage('pages/play/play.js');
+  const page = makeInstance(cfg);
+  page.onLoad({ subject: 'math' });
+  page.round.questions[page.idx] = tenQ;
+  page.renderQuestion();
+  eq(page.data.visual.kind, 'math-split', '拆数题进题走 math-split 模板');
+  eq(page.data.answered, false, '答题前问号不翻答案');
+  ok(page.data.visual.parts.some((p) => p.unknown), '未知块存在');
+
+  // 音频开播那一刻才挂脉冲 class，格子才会跟着声音依次亮。
+  page.playWord('en.yam');
+  ok(/^v-slots-pulse-[ab]$/.test(page.data.slotsClass), '音频开播时挂上格子脉冲 class');
+  ok(/^v-letters-pulse-[ab]$/.test(page.data.lettersClass), '字母卡片也用同一脉冲重播');
+
+  // 英语听音题：答错重播单词让高亮跟声音走，答对不重播（620ms 窗口 + 防串音）。
+  function englishPage() {
+    const p = makeInstance(loadPage('pages/play/play.js'));
+    p.onLoad({ subject: 'english' });
+    p.round.questions[p.idx] = listenQ;
+    p.renderQuestion();
+    return p;
+  }
+  const wrongPage = englishPage();
+  let replayed = null;
+  wrongPage.playWord = (id) => { replayed = id; };
+  wrongPage.later = () => {};
+  const wrongOpt = listenQ.options.find((o) => o.id !== listenQ.answer).id;
+  wrongPage.onOption({ currentTarget: { dataset: { id: wrongOpt } } });
+  eq(replayed, 'en.yam', '英语听音题答错时重播单词，字母高亮跟着声音');
+  const rightPage = englishPage();
+  let replayed2 = null;
+  rightPage.playWord = (id) => { replayed2 = id; };
+  rightPage.later = () => {};
+  rightPage.onOption({ currentTarget: { dataset: { id: listenQ.answer } } });
+  eq(replayed2, null, '答对不重播音频，避免 620ms 窗口内串音');
 }
 
 /* ---- 9. 备份 ---- */

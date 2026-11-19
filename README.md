@@ -53,10 +53,10 @@ npm run mp:build   # 生成微信小程序的题库/逻辑/音频（见 miniprog
 | `npm run qbank:check` | 三科题库是否与生成器一致（手改过 JSON 会在这里被挡住） |
 | `npm run audio:check` | 每条被引用的语音是否都已生成、且与文本一致 |
 | `npm run validate` | 题库结构 + 配比 + 出题范围校验（构建前必跑） |
-| `npm test` | 无头冒烟测试，从 `src/` 加载，157 项断言，0.5 秒 |
+| `npm test` | 无头冒烟测试，从 `src/` 加载，253 项断言，0.5 秒 |
 | `npm run build` | 产出两种产物 |
 | `npm run test:build` | 同样的断言，但**从构建产物里抽内联代码跑**，158 项 |
-| `npm run mp:build` + `mp:test` | 生成小程序产物并跑 157 项断言（见 `miniprogram/README.md`） |
+| `npm run mp:build` + `mp:test` | 生成小程序产物并跑 253 项断言（见 `miniprogram/README.md`） |
 
 最后一条不是多余的。拼接 15 个 JS 文件有真实风险：某个文件少个结尾分号、
 下一个文件以 `(` 开头，就会变成一个调用表达式 —— 这类 bug 只在运行时炸，
@@ -703,15 +703,16 @@ npm run build:single    # → output/幼小衔接-v1.0.html（约 1.1 MB）
    `buildReviewRound` 的错题复习局。题库、抽题规则、徽章、存档格式都共用
    同一份实现，但**两端一局的题目构成不同，成绩数字不能直接比较** ——
    家长在两端看到的「一局 10 题」不是同一件事。
-5. **数学计算题的图形演示是小程序端试点（1.2.10 起）。** 用十进制积木把算式
-   里的数画出来，孩子认字少也能看懂题目在问什么。它只解析题干字符串，
-   **题库 JSON、生成器、`docs/` 产物全都不变**，网页版不受影响，也不算
-   「两端不一致」；家长面板可随时关掉。细节见
+5. **题目图形演示是小程序端试点（1.2.10 起，1.2.11 扩到三科）。** 数学算式
+   和拆数画成十进制积木、英语单词拆成词族和字母、拼音拆成声母韵母，孩子
+   认字少也能看懂题目在问什么。全部只解析题干字符串，**题库 JSON、生成器、
+   `docs/` 产物都不变**，网页版不受影响，也不算「两端不一致」；答题前不显
+   得数，家长面板可随时关掉。细节见
    [`miniprogram/README.md`](miniprogram/README.md) 的「内容型演示」一节。
 
 ```bash
 npm run mp:build   # 生成 generated/（不进 git）
-npm run mp:test    # wx 桩 + Node，157 项断言
+npm run mp:test    # wx 桩 + Node，253 项断言
 npm run tts:audio  # 改动朗读规则 / 题库后重新生成主包音频
 npm run mp:appid -- wx1234567890abcdef   # 注册后写入正式 AppID，走体验版
 ```

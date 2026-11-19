@@ -423,6 +423,96 @@ view, text, button, input, textarea {
 @keyframes v-result-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @keyframes v-regroup-hint { 0%, 100% { background: transparent; } 50% { background: #FFF3E0; } }
 
+/* ---------- 拆数 / 凑十的积木方程 ---------- */
+.v-split-top { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.v-split-row {
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 8px; width: 100%;
+}
+.v-card {
+  min-width: 84px;
+  min-height: 62px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  background: var(--c-bg-alt);
+  border: 2px solid var(--c-line);
+  border-radius: 14px;
+}
+/* 和题干/选项一样用交替 class 重播：setData 换文本不重建节点，动画不会自播。 */
+.q-enter-a .v-card { animation: v-card-in-a .3s ease-out backwards; }
+.q-enter-b .v-card { animation: v-card-in-b .3s ease-out backwards; }
+@keyframes v-card-in-a { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes v-card-in-b { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.v-card-unknown { border-style: dashed; border-color: var(--c-primary); }
+.v-q { font-size: 36px; font-weight: 800; color: var(--c-primary-d); line-height: 1; }
+.v-op-sm { font-size: 26px; }
+.v-hint {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 10px; border-radius: 10px; background: #FFF3E0;
+}
+.v-hint-num { font-size: 22px; font-weight: 800; color: var(--c-ink); }
+.v-hint-op { font-size: 20px; font-weight: 800; color: var(--c-primary-d); }
+.v-bar-hint { height: 26px; width: 12px; }
+
+/* ---------- 英语词族 / 音位格子 / 拼音拆合 ---------- */
+.v-blend { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; }
+.v-chip {
+  min-width: 56px;
+  padding: 10px 16px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--c-ink);
+  background: var(--c-bg-alt);
+  border: 3px solid var(--c-line);
+  border-radius: 14px;
+}
+.q-enter-a .v-chip { animation: v-chip-in-a .34s ease-out backwards; }
+.q-enter-b .v-chip { animation: v-chip-in-b .34s ease-out backwards; }
+@keyframes v-chip-in-a { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+@keyframes v-chip-in-b { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+/* 两块先来、合成结果最后到，孩子看到的是「拼起来」这个动作。 */
+.v-chip:nth-child(3) { animation-delay: .14s; }
+.v-chip-full { border-color: var(--c-ok); color: var(--c-ok); animation-delay: .34s; }
+.v-chip-sheng { border-color: var(--c-second); }
+.v-chip-yun { border-color: var(--c-primary); }
+.v-blend-arrow { font-size: 26px; font-weight: 800; color: var(--c-ink-soft); }
+
+.v-slots { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 6px 0; }
+.v-slot {
+  width: 22px; height: 22px; box-sizing: border-box;
+  border-radius: 50%; border: 3px solid var(--c-second); background: transparent;
+}
+/* 只在单词音频真正开始播的那一刻挂上 pulse class，格子才跟着声音依次亮。 */
+.v-slots-pulse-a .v-slot { animation: v-slot-a .34s ease-out backwards; }
+.v-slots-pulse-b .v-slot { animation: v-slot-b .34s ease-out backwards; }
+@keyframes v-slot-a { 0%,100% { background: transparent; transform: scale(1); } 45% { background: var(--c-second); transform: scale(1.25); } }
+@keyframes v-slot-b { 0%,100% { background: transparent; transform: scale(1); } 45% { background: var(--c-second); transform: scale(1.25); } }
+
+.v-letters {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding-top: 8px; border-top: 2px solid var(--c-line);
+}
+.v-letter {
+  min-width: 40px;
+  padding: 6px 4px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--c-ok);
+  background: #E8F5E9;
+  border: 2px solid var(--c-ok);
+  border-radius: 10px;
+}
+.v-letters-pulse-a .v-letter { animation: v-letter-a .34s ease-out backwards; }
+.v-letters-pulse-b .v-letter { animation: v-letter-b .34s ease-out backwards; }
+@keyframes v-letter-a { 0%,100% { transform: scale(1); background: #E8F5E9; } 45% { transform: scale(1.18); background: #C8E6C9; } }
+@keyframes v-letter-b { 0%,100% { transform: scale(1); background: #E8F5E9; } 45% { transform: scale(1.18); background: #C8E6C9; } }
+
 /* ---------- 选项 ---------- */
 
 .options { display: grid; gap: var(--gap); width: 100%; }

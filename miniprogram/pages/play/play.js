@@ -12,7 +12,7 @@ var sfx = require('../../lib/sfx.js');
 var audio = require('../../lib/audio.js');
 var tts = require('../../lib/tts.js');
 var confetti = require('../../lib/confetti.js');
-var visualMath = require('../../lib/visual-math.js');
+var visual = require('../../lib/visual.js');
 
 /** 单个汉字或单个字母要放大（b/d/p/q 长得像，不放大只能靠猜）。 */
 var SINGLE_RE = /^(?:[一-鿿]|[A-Za-z])$/;
@@ -42,8 +42,13 @@ Page({
     speaking: false,
     roundCorrect: 0,
     starPop: false,
-    // 数学计算题的十进制积木；null 表示这题不演示。
-    visual: null
+    // 内容型演示；null 表示这题不演示（解析不出来或家长关了开关）。
+    visual: null,
+    // 音位格子 / 字母卡片「跟音频依次点亮」的脉冲 class。
+    // a/b 交替是为了强制重播 CSS 动画，和 enterFlag 同一套机制。
+    pulse: 'a',
+    slotsClass: '',
+    lettersClass: ''
   },
 
   onLoad: function (query) {
@@ -162,28 +167,46 @@ Page({
       speaking: false,
       starPop: false,
       // 纯函数解析题干，不改题库；家长关掉开关时传 false 直接返回 null。
-      visual: visualMath.forQuestion(q,
-        !(this.save.settings && this.save.settings.visualMath === false))
+      visual: visual.forQuestion(q,
+        !(this.save.settings && this.save.settings.visualMath === false)),
+      // 新题先不点亮音位格子，等单词音频真正开播时再 pulse。
+      slotsClass: '',
+      lettersClass: ''
     });
 
     // 听音题进来就自动播一遍（对应网页版的 autoplay）。
     // 有中文指令时先念指令，靠 onEnded 串到单词音频 —— 两个播放器是不同
     // 实例，用固定延时会叠音；指令被 stop() 掐掉时回调也不会再触发。
+    var self = this;
     if (q.stem && q.stem.audio) {
       var id = q.stem.audio;
       if (instruction) {
-        tts.schedule(instruction, 250, function () { audio.play(id); });
+        tts.schedule(instruction, 250, function () { self.playWord(id); });
       } else {
-        this.later(350, function () { audio.play(id); });
+        this.later(350, function () { self.playWord(id); });
       }
     } else if (canRead) {
       var text = readInfo.text;
-      var self = this;
       // 喇叭只在真的出声时脉冲，念完立刻停 —— 不是常驻的呼吸动画。
       tts.schedule(text, 350,
         function () { self.setData({ speaking: false }); },
         function () { self.setData({ speaking: true }); });
     }
+  },
+
+  /**
+   * 播单词音频，同时让音位格子 / 字母卡片跟着依次点亮。
+   * 挂 class 而不是用固定延时的原因：中文指令可能让音频晚 1s 才开始，
+   * 从进题时刻算的动画会早在声音之前就演完，孩子看不到「跟着声音」。
+   */
+  playWord: function (id) {
+    audio.play(id);
+    var p = this.data.pulse === 'a' ? 'b' : 'a';
+    this.setData({
+      pulse: p,
+      slotsClass: 'v-slots-pulse-' + p,
+      lettersClass: 'v-letters-pulse-' + p
+    });
   },
 
   buildDots: function () {
@@ -235,6 +258,17 @@ Page({
       roundCorrect: correct ? this.data.roundCorrect + 1 : this.data.roundCorrect,
       starPop: correct
     });
+
+    // 英语听音题答错时重播一次单词，让字母卡片的高亮真正跟着声音走。
+    // 只有答错分支有 1500ms 窗口；答对 620ms 不重播，避免和切题抢时间、
+    // 也避免 1.2.8 刚修好的「上一题串音」复发（advance 里有 audio.stop 兜底）。
+    var v = this.data.visual;
+    if (!correct && v && v.kind === 'english' && v.audioId) {
+      this.playWord(v.audioId);
+    } else {
+      var p = this.data.pulse === 'a' ? 'b' : 'a';
+      this.setData({ pulse: p, lettersClass: 'v-letters-pulse-' + p });
+    }
 
     var self = this;
     this.later(correct ? 620 : 1500, function () { self.advance(correct); });
@@ -318,7 +352,7 @@ Page({
     // 孩子可能在中文指令还没念完时就点喇叭：先停掉指令（连带取消它的
     // 播完回调），再直接播单词，避免两段声音叠在一起。
     tts.stop();
-    if (this.data.audioId) audio.play(this.data.audioId);
+    if (this.data.audioId) this.playWord(this.data.audioId);
   },
 
   onReadStem: function () {

@@ -84,6 +84,7 @@ function forQuestion(q, enabled) {
   if (op === '-' && a - b !== r) return null;
 
   return {
+    kind: 'math-calc',
     op: op,
     opLabel: op === '+' ? '+' : '−',
     left: blocks(a, 0),
@@ -97,8 +98,115 @@ function forQuestion(q, enabled) {
   };
 }
 
+/* ---------- 拆数 / 凑十（28 道，四种题干格式） ----------
+ *
+ * 统一画成「积木方程」：上面是原数，下面是拆开的几块，其中一块是 `?`。
+ * 答题前 `?` 就是个问号；作答后同一位置翻出正确积木 —— 孩子看到的是
+ * 「这里应该填几」，而不是凭空多出一行答案。
+ *
+ * 凑十题（`8 + 8 = 8 + 2 + ?`）额外给一条提示：8 + 2 → 一根十棒。
+ * 这两个数题干里已经写了，不算泄答案；真正要算的 `?` 仍然盖着。
+ */
+
+var PLACE_KNOWN_RE   = /^(\d{1,2})\s*=\s*(\d{1,2})\s*\+\s*\?$/;
+var PLACE_UNKNOWN_RE = /^(\d{1,2})\s*=\s*\?\s*\+\s*(\d{1,2})$/;
+var MAKE_TEN_RE      = /^(\d)\s*\+\s*(\d)\s*=\s*(\d)\s*\+\s*(\d)\s*\+\s*\?$/;
+var COUNT_RE         = /^(\d{1,2})\s*里面有\s*(\d)\s*个十和几个一？$/;
+
+function card(n, i) {
+  var b = blocks(n, 0);
+  b.i = i;                 // WXML 的 wx:key 要用
+  b.unknown = false;
+  b.delay = (i * 0.09).toFixed(2);
+  return b;
+}
+
+function unknownCard(i, solved) {
+  return {
+    i: i,
+    label: '?',
+    unknown: true,
+    solved: solved,          // 作答后由 WXML 在原位翻出，不新增一行
+    bars: [], dots: [], empty: false,
+    delay: (i * 0.09).toFixed(2)
+  };
+}
+
+function numAnswer(q) {
+  var opts = (q && q.options) || [];
+  for (var i = 0; i < opts.length; i++) {
+    if (opts[i].id === q.answer) {
+      var t = String(opts[i].text || '').trim();
+      if (/^\d{1,3}$/.test(t)) return parseInt(t, 10);
+    }
+  }
+  return -1;
+}
+
+function splitResult(mode, top, parts, solved, hint) {
+  return {
+    kind: 'math-split',
+    mode: mode,
+    top: top,
+    parts: parts,
+    answer: solved,
+    hint: hint
+  };
+}
+
+function forSplitQuestion(q, enabled) {
+  if (enabled === false) return null;
+  if (!q || q.subject !== 'math' || !hasTag(q, '拆数')) return null;
+
+  var text = (q.stem && q.stem.text) ? String(q.stem.text).trim() : '';
+  var ans = numAnswer(q);
+  if (ans < 0 || ans > 99) return null;
+  var solved = blocks(ans, 0);
+  var m, n, k;
+
+  // 13 = 10 + ?
+  m = PLACE_KNOWN_RE.exec(text);
+  if (m) {
+    n = +m[1]; k = +m[2];
+    if (n > 99 || k + ans !== n) return null;
+    return splitResult('place', card(n, 0),
+      [card(k, 0), unknownCard(1, solved)], solved, null);
+  }
+
+  // 66 = ? + 6
+  m = PLACE_UNKNOWN_RE.exec(text);
+  if (m) {
+    n = +m[1]; k = +m[2];
+    if (n > 99 || ans + k !== n) return null;
+    return splitResult('place', card(n, 0),
+      [unknownCard(0, solved), card(k, 1)], solved, null);
+  }
+
+  // 8 + 8 = 8 + 2 + ?  —— 先凑十，再算剩下几个
+  m = MAKE_TEN_RE.exec(text);
+  if (m) {
+    var a = +m[1], b = +m[2], a2 = +m[3], c = +m[4];
+    if (a !== a2 || a + c !== 10 || c + ans !== b) return null;
+    return splitResult('make-ten', null,
+      [card(a, 0), card(c, 1), unknownCard(2, solved)],
+      solved, { a: a, c: c });
+  }
+
+  // 34 里面有 3 个十和几个一？
+  m = COUNT_RE.exec(text);
+  if (m) {
+    n = +m[1]; var tens = +m[2];
+    if (n > 99 || Math.floor(n / 10) !== tens || ans !== n % 10) return null;
+    return splitResult('count', card(n, 0),
+      [card(tens * 10, 0), unknownCard(1, solved)], solved, null);
+  }
+
+  return null;
+}
+
 module.exports = {
   forQuestion: forQuestion,
+  forSplitQuestion: forSplitQuestion,
   blocks: blocks,
   CALC_RE: CALC_RE
 };

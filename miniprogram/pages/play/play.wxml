@@ -32,41 +32,120 @@
         </button>
       </view>
 
-      <!-- 数学计算题的十进制积木：一根十棒 = 10，一个圆点 = 1。
-           答题前只画两个操作数（不出现得数，不提前泄答案）；
-           作答后结果行才从下方滑入，那时答案已在选项里标绿，图形只是复核。 -->
-      <view wx:if="{{visual}}" class="visual">
-        <view class="v-row">
-          <view class="v-num">
-            <text class="v-label">{{visual.left.label}}</text>
-            <view class="v-blocks">
-              <view wx:for="{{visual.left.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
-              <view wx:for="{{visual.left.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
-              <text wx:if="{{visual.left.empty}}" class="v-zero">0</text>
-            </view>
-          </view>
-          <text class="v-op">{{visual.opLabel}}</text>
-          <view class="v-num">
-            <text class="v-label">{{visual.right.label}}</text>
-            <view class="v-blocks">
-              <view wx:for="{{visual.right.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
-              <view wx:for="{{visual.right.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
-              <text wx:if="{{visual.right.empty}}" class="v-zero">0</text>
-            </view>
-          </view>
-        </view>
+      <!-- 内容型演示：按题目的 kind 选模板。共同纪律：答题前不显示得数。
+           math-calc 一根十棒 = 10、一个圆点 = 1；math-split 问号原位翻答案；
+           english 答题前只给词族/音位格子、作答后才出字母；pinyin 拆声母韵母。 -->
+      <view wx:if="{{visual}}" class="visual visual-{{visual.kind}}">
 
-        <view wx:if="{{answered}}" class="v-result {{visual.regroup ? 'v-regroup' : ''}}">
-          <text class="v-eq">=</text>
-          <view class="v-num">
-            <text class="v-label v-label-result">{{visual.result.label}}</text>
-            <view class="v-blocks">
-              <view wx:for="{{visual.result.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
-              <view wx:for="{{visual.result.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
-              <text wx:if="{{visual.result.empty}}" class="v-zero">0</text>
+        <!-- 数学计算题 -->
+        <block wx:if="{{visual.kind === 'math-calc'}}">
+          <view class="v-row">
+            <view class="v-num">
+              <text class="v-label">{{visual.left.label}}</text>
+              <view class="v-blocks">
+                <view wx:for="{{visual.left.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
+                <view wx:for="{{visual.left.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
+                <text wx:if="{{visual.left.empty}}" class="v-zero">0</text>
+              </view>
+            </view>
+            <text class="v-op">{{visual.opLabel}}</text>
+            <view class="v-num">
+              <text class="v-label">{{visual.right.label}}</text>
+              <view class="v-blocks">
+                <view wx:for="{{visual.right.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
+                <view wx:for="{{visual.right.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
+                <text wx:if="{{visual.right.empty}}" class="v-zero">0</text>
+              </view>
             </view>
           </view>
-        </view>
+          <view wx:if="{{answered}}" class="v-result {{visual.regroup ? 'v-regroup' : ''}}">
+            <text class="v-eq">=</text>
+            <view class="v-num">
+              <text class="v-label v-label-result">{{visual.result.label}}</text>
+              <view class="v-blocks">
+                <view wx:for="{{visual.result.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
+                <view wx:for="{{visual.result.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
+                <text wx:if="{{visual.result.empty}}" class="v-zero">0</text>
+              </view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 拆数 / 凑十：原数在上，拆开的块在下，问号原位翻出答案 -->
+        <block wx:elif="{{visual.kind === 'math-split'}}">
+          <view wx:if="{{visual.top}}" class="v-split-top">
+            <text class="v-label">{{visual.top.label}}</text>
+            <view class="v-blocks">
+              <view wx:for="{{visual.top.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
+              <view wx:for="{{visual.top.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
+            </view>
+          </view>
+          <view wx:if="{{visual.hint}}" class="v-hint">
+            <text class="v-hint-num">{{visual.hint.a}}</text>
+            <text class="v-hint-op">+</text>
+            <text class="v-hint-num">{{visual.hint.c}}</text>
+            <text class="v-hint-op">→</text>
+            <view class="v-bar v-bar-hint"></view>
+            <text class="v-hint-num">10</text>
+          </view>
+          <view class="v-split-row">
+            <block wx:for="{{visual.parts}}" wx:for-item="part" wx:key="i" wx:for-index="pi">
+              <text wx:if="{{pi > 0}}" class="v-op v-op-sm">+</text>
+              <view class="v-card {{part.unknown ? 'v-card-unknown' : ''}}" style="animation-delay:{{part.delay}}s">
+                <block wx:if="{{part.unknown}}">
+                  <text wx:if="{{!answered}}" class="v-q">?</text>
+                  <block wx:else>
+                    <text class="v-label v-label-result">{{part.solved.label}}</text>
+                    <view class="v-blocks">
+                      <view wx:for="{{part.solved.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
+                      <view wx:for="{{part.solved.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
+                      <text wx:if="{{part.solved.empty}}" class="v-zero">0</text>
+                    </view>
+                  </block>
+                </block>
+                <block wx:else>
+                  <text class="v-label">{{part.label}}</text>
+                  <view class="v-blocks">
+                    <view wx:for="{{part.bars}}" wx:for-item="bar" wx:key="i" class="v-bar"></view>
+                    <view wx:for="{{part.dots}}" wx:for-item="dot" wx:key="i" class="v-dot"></view>
+                    <text wx:if="{{part.empty}}" class="v-zero">0</text>
+                  </view>
+                </block>
+              </view>
+            </block>
+          </view>
+        </block>
+
+        <!-- 英语：答题前摆词族或音位格子，作答后才出字母 -->
+        <block wx:elif="{{visual.kind === 'english'}}">
+          <view wx:if="{{visual.before.type === 'split'}}" class="v-blend">
+            <view class="v-chip">{{visual.before.onset}}</view>
+            <text class="v-op v-op-sm">+</text>
+            <view class="v-chip">{{visual.before.rime}}</view>
+            <block wx:if="{{!answered}}">
+              <text class="v-blend-arrow">→</text>
+              <text class="v-q">?</text>
+            </block>
+          </view>
+          <!-- 作答后格子让位给字母卡片，避免两层提示叠在一起。 -->
+          <view wx:elif="{{!answered}}" class="v-slots {{slotsClass}}">
+            <view wx:for="{{visual.before.slots}}" wx:for-item="slot" wx:key="i" class="v-slot" style="animation-delay:{{slot.delay}}s"></view>
+          </view>
+          <view wx:if="{{answered}}" class="v-letters {{lettersClass}}">
+            <view wx:for="{{visual.after.letters}}" wx:for-item="L" wx:key="i" class="v-letter" style="animation-delay:{{L.delay}}s">{{L.ch}}</view>
+          </view>
+        </block>
+
+        <!-- 拼音：声母 + 韵母 → 完整拼音（题干里本来就有，不算泄答案） -->
+        <block wx:elif="{{visual.kind === 'pinyin'}}">
+          <view class="v-blend v-pinyin">
+            <view class="v-chip v-chip-sheng">{{visual.sheng}}</view>
+            <text class="v-op v-op-sm">+</text>
+            <view class="v-chip v-chip-yun">{{visual.yun}}</view>
+            <text class="v-blend-arrow">→</text>
+            <view class="v-chip v-chip-full">{{visual.full}}</view>
+          </view>
+        </block>
       </view>
 
       <view class="options options-{{layout}}">
