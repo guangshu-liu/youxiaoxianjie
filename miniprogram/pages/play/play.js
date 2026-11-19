@@ -35,7 +35,12 @@ Page({
     showExplain: false,
     explain: '',
     confetti: false,
-    confettiPieces: []
+    confettiPieces: [],
+    // 动态展示的状态。都只在换题/作答的瞬间变一次，不做持续动画。
+    enterFlag: 'a',
+    speaking: false,
+    roundCorrect: 0,
+    starPop: false
   },
 
   onLoad: function (query) {
@@ -93,12 +98,13 @@ Page({
     var layout = (q.stem && q.stem.layout) ||
                  (q.options.length <= 2 ? 'row' : 'grid');
 
-    var options = q.options.map(function (o) {
+    var options = q.options.map(function (o, i) {
       return {
         id: o.id,
         text: o.text,
         single: SINGLE_RE.test(o.text || ''),
-        state: ''
+        state: '',
+        delay: (i * 0.06).toFixed(2)   // 选项错峰入场，眼睛有落点
       };
     });
 
@@ -147,7 +153,11 @@ Page({
       showExplain: false,
       explain: '',
       confetti: false,
-      confettiPieces: []
+      confettiPieces: [],
+      // 交替 class 强制重播入场动画；新题一律先清掉上一题的播放状态。
+      enterFlag: this.data.enterFlag === 'a' ? 'b' : 'a',
+      speaking: false,
+      starPop: false
     });
 
     // 听音题进来就自动播一遍（对应网页版的 autoplay）。
@@ -162,7 +172,11 @@ Page({
       }
     } else if (canRead) {
       var text = readInfo.text;
-      tts.schedule(text, 350);
+      var self = this;
+      // 喇叭只在真的出声时脉冲，念完立刻停 —— 不是常驻的呼吸动画。
+      tts.schedule(text, 350,
+        function () { self.setData({ speaking: false }); },
+        function () { self.setData({ speaking: true }); });
     }
   },
 
@@ -196,7 +210,8 @@ Page({
       var state = 'locked';
       if (o.id === q.answer) state = 'answer';
       else if (o.id === id) state = 'wrong';
-      return { id: o.id, text: o.text, single: o.single, state: state };
+      // 作答后把入场 delay 清零，反馈动画（pop-ok）才能立刻播。
+      return { id: o.id, text: o.text, single: o.single, state: state, delay: 0 };
     });
 
     this.setData({
@@ -207,7 +222,12 @@ Page({
       showExplain: !correct,
       explain: q.explain || '',
       confetti: correct,
-      confettiPieces: correct ? confetti.pieces() : []
+      // 答题页只有 620ms 窗口，彩纸的随机延迟也要压进去。
+      confettiPieces: correct ? confetti.pieces(18, 0.06) : [],
+      // 只加「本局答对数」这个视觉计数，不动 save.points ——
+      // 真账目在整局结束时结算，逐题改会和每日上限、家长页审计对不上。
+      roundCorrect: correct ? this.data.roundCorrect + 1 : this.data.roundCorrect,
+      starPop: correct
     });
 
     var self = this;
@@ -297,7 +317,11 @@ Page({
 
   onReadStem: function () {
     sfx.play('ui.tap');
-    if (this.data.readText) tts.speak(this.data.readText);
+    if (!this.data.readText) return;
+    var self = this;
+    tts.speak(this.data.readText,
+      function () { self.setData({ speaking: false }); },
+      function () { self.setData({ speaking: true }); });
   },
 
   onExit: function () {

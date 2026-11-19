@@ -61,15 +61,19 @@ function warnOnce(msg) {
 }
 
 /**
- * onEnd 是可选的「这句念完了」回调，用来把中文指令串到后面的单词音频。
- * stop() 会 seq++，所以切题 / 点喇叭掐掉指令时回调不会漏到下一题。
+ * onEnd / onStart 是可选的播放状态回调：前者把中文指令串到后面的单词音频，
+ * 后者让「读题」喇叭只在真的出声时脉冲。stop() 会 seq++，所以切题 /
+ * 点喇叭掐掉朗读时两个回调都不会漏到下一题。
  * 播放失败也走 onEnd：宁可没听到指令，也不能让整道听音题只剩静默。
  */
-function playNow(text, mySeq, onEnd) {
+function playNow(text, mySeq, onEnd, onStart) {
   if (mySeq !== seq || !has(text)) return false;
   var src = MAP[text];
   var fire = function () {
     if (mySeq === seq && onEnd) onEnd();
+  };
+  var kick = function () {
+    if (mySeq === seq && onStart) onStart();
   };
   try {
     var ctx = wx.createInnerAudioContext();
@@ -78,7 +82,7 @@ function playNow(text, mySeq, onEnd) {
     // iOS 拨静音时别让题目变哑巴。
     try { ctx.obeyMuteSwitch = false; } catch (e) {}
     ctx.src = src;
-    ctx.onPlay(function () { console.log('[tts] 播放开始', src); });
+    ctx.onPlay(function () { console.log('[tts] 播放开始', src); kick(); });
     ctx.onEnded(function () { release(ctx); fire(); });
     ctx.onError(function (r) {
       console.warn('[tts] 播放失败', src, r && (r.errMsg || r.errCode));
@@ -96,14 +100,14 @@ function playNow(text, mySeq, onEnd) {
   }
 }
 
-function speak(text, onEnd) {
+function speak(text, onEnd, onStart) {
   if (!has(text)) return false;
   stop();
-  return playNow(text, seq, onEnd);
+  return playNow(text, seq, onEnd, onStart);
 }
 
 /** 进题后延迟一小会儿再念，让画面先出来（和听音题的 350ms 一致）。 */
-function schedule(text, ms, onEnd) {
+function schedule(text, ms, onEnd, onStart) {
   stop();
   var mySeq = seq;
   timer = setTimeout(function () {
@@ -111,7 +115,7 @@ function schedule(text, ms, onEnd) {
     if (mySeq !== seq) return;
     // 不能直接调 speak()：它内部的 stop() 会 seq++，把刚记下的 mySeq
     // 作废，onEnd 就永远不触发，单词音频也就播不出来。
-    playNow(text, mySeq, onEnd);
+    playNow(text, mySeq, onEnd, onStart);
   }, ms || 350);
 }
 

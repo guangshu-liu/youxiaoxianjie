@@ -440,6 +440,42 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(w <= 4, '错题权重封顶 4 倍（连错 20 次也不会变成 30 倍）', '实际 ' + w);
 }
 
+/* ---- 8d. 动态展示（只做反馈型，不碰账目） ---- */
+{
+  const confetti = require(path.join(MP, 'lib/confetti.js'));
+  ok(confetti.pieces(18, 0.06).every((p) => +p.delay <= 0.06),
+     '答题页彩纸的随机延迟压进 620ms 窗口');
+  ok(confetti.pieces(18).every((p) => +p.delay <= 0.25),
+     '结算页彩纸仍用 0.25s 上限，停留时间长可以完整下落');
+
+  const cfg = loadPage('pages/play/play.js');
+  const page = makeInstance(cfg);
+  page.onLoad({ subject: 'chinese' });
+  const flag0 = page.data.enterFlag;
+  page.renderQuestion();
+  ok(page.data.enterFlag !== flag0, '切题交替 class，入场动画会重播');
+  ok(page.data.options.every((o) => o.delay !== undefined),
+     '每个选项都带错峰延迟');
+  eq(page.data.roundCorrect, 0, '本局答对数从 0 开始');
+
+  const save = app.globalData.save;
+  const before = save.points.balance;
+  const q = page.round.questions[page.idx];
+  // 测试桩把 later() 做成同步执行，620ms 后会立刻 advance 到下一题。
+  // 要看「作答那一瞬间」的状态，先临时冻住自动推进。
+  const realLater = page.later;
+  page.later = function () {};
+  page.onOption({ currentTarget: { dataset: { id: q.answer } } });
+  eq(page.data.roundCorrect, 1, '答对后本局答对数 +1');
+  eq(page.data.starPop, true, '答对弹出 +1 提示');
+  eq(save.points.balance, before, '过程中的即时反馈不动真星星账目');
+  ok(page.data.options.every((o) => o.delay === 0),
+     '作答后清掉入场延迟，反馈动画立即播');
+  page.later = realLater;
+  page.renderQuestion();
+  eq(page.data.starPop, false, '换题清掉 +1 提示');
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

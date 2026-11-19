@@ -220,6 +220,13 @@ view, text, button, input, textarea {
   flex-shrink: 0;
 }
 
+.game-points-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
 .game-points {
   font-size: 18px;
   font-weight: 800;
@@ -240,8 +247,16 @@ view, text, button, input, textarea {
 }
 
 .dot-now { background: var(--c-second); transform: scale(1.45); box-shadow: 0 0 0 4px rgba(79,195,247,.22); }
-.dot-ok  { background: var(--c-ok); }
+.dot-ok  { background: var(--c-ok); animation: dot-pop .42s ease-out; }
 .dot-bad { background: var(--c-bad); }
+
+/* 答对时该点弹一下，让孩子看见「进度往前走了一格」。
+   class 从空变成 dot-ok 时动画天然重播，不需要额外触发。 */
+@keyframes dot-pop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.6); }
+  100% { transform: scale(1); }
+}
 
 .game-body {
   flex: 1;
@@ -260,6 +275,21 @@ view, text, button, input, textarea {
   gap: 20px;
   position: relative;
 }
+
+/* ---------- 切题入场（只在换题时播一次） ----------
+   setData 只换文本不会重建节点，CSS 动画不会自己重播。所以用两个内容
+   相同、名字不同的 keyframes 交替挂 class，每换一题强制重播一次。
+   一律 backwards：错峰 delay 期间保持起始状态，播完立刻交还普通样式，
+   不会覆盖 :active 和答对/答错的反馈动画。 */
+.q-enter-a .stem-text { animation: stem-in-a .28s ease-out backwards; }
+.q-enter-b .stem-text { animation: stem-in-b .28s ease-out backwards; }
+.q-enter-a .option    { animation: opt-in-a .3s ease-out backwards; }
+.q-enter-b .option    { animation: opt-in-b .3s ease-out backwards; }
+
+@keyframes stem-in-a { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes stem-in-b { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+@keyframes opt-in-a  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes opt-in-b  { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 .stem {
   display: flex;
@@ -297,7 +327,9 @@ view, text, button, input, textarea {
 
 .speaker::after { border: none; }
 .speaker-icon { font-size: 52px; line-height: 1; }
-.speaker.playing { animation: pulse .55s infinite; }
+/* 只在「正在朗读」期间脉冲，且最多 3 次（约 1.65s）后自己停下。
+   无限循环会一直抓孩子的眼睛 —— 这是状态指示，不是装饰。 */
+.speaker.playing { animation: pulse .55s ease-in-out 3; }
 
 /* 读题喇叭：同形，靠「读题」二字区分。只念题干，不念选项。 */
 .read-stem { flex-direction: column; gap: 2px; }
@@ -381,8 +413,9 @@ view, text, button, input, textarea {
 
 /* ---------- 反馈动画 ---------- */
 
-.fb-ok  { animation: pop-ok .5s ease-out; }
-.fb-bad { animation: flash-bad .5s ease-out; }
+/* 特异性要高于 .q-enter-* .option，否则答对时入场动画会把反馈动画盖掉。 */
+.q .option.fb-ok  { animation: pop-ok .5s ease-out; }
+.q .option.fb-bad { animation: flash-bad .5s ease-out; }
 
 @keyframes pop-ok {
   0%   { transform: scale(1); }
@@ -418,6 +451,57 @@ view, text, button, input, textarea {
   0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
   100% { opacity: 0; transform: translateY(320px) rotate(560deg); }
 }
+
+/* 答题页答对后 620ms 就切题，1.3s 的彩纸每次只播一半就被销毁。
+   答题页压到 550ms 一次演完；结算页停留时间长，仍用完整的 1.3s。 */
+.confetti.confetti-quick { animation-duration: .55s; }
+
+/* ---------- 本局答对数（即时反馈，不碰星星账目） ----------
+   真账目在整局结束时结算（有每日上限削减），过程中只显示「本局 ✓N」，
+   逐题改 save.points 会和审计、上限对不上。 */
+.round-score-wrap { position: relative; min-width: 74px; }
+.round-score {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-ink-soft);
+  white-space: nowrap;
+}
+.star-pop {
+  position: absolute;
+  top: -16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--c-warn);
+  pointer-events: none;
+  animation: star-pop .5s ease-out backwards;
+}
+@keyframes star-pop {
+  0%   { opacity: 0; transform: translateY(10px) scale(.8); }
+  35%  { opacity: 1; transform: translateY(-4px) scale(1.15); }
+  100% { opacity: 0; transform: translateY(-22px) scale(1); }
+}
+
+/* 答错后要停 1500ms 才切题。给一条会走完的进度条，孩子知道还有多久，
+   而不是毫无征兆地被翻走。 */
+.explain-timer {
+  width: 100%;
+  max-width: 460px;
+  height: 6px;
+  border-radius: 999px;
+  background: #F3E2CE;
+  overflow: hidden;
+}
+.explain-timer-bar {
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--c-warn);
+  animation: timer-shrink 1.5s linear forwards;
+}
+@keyframes timer-shrink { from { width: 100%; } to { width: 0%; } }
 
 /* ---------- 结算 ---------- */
 
@@ -473,7 +557,13 @@ view, text, button, input, textarea {
   border-radius: var(--r-md);
   background: #FFF3E0;
   border-left: 5px solid var(--c-warn);
-  animation: pop-ok .7s ease-out;
+  animation: pop-ok .7s ease-out, unlock-glow .9s ease-out;
+}
+
+/* 一次性扩散光环，不是循环呼吸 —— 解锁是这一局最值得看的一眼。 */
+@keyframes unlock-glow {
+  0%   { box-shadow: 0 0 0 0 rgba(255,183,77,.85); }
+  100% { box-shadow: 0 0 0 22px rgba(255,183,77,0); }
 }
 
 .badge-unlock-emoji { font-size: 30px; }

@@ -50,7 +50,7 @@ Page({
       emoji: pct >= 70 ? '🌟' : '💪',
       title: praise,
       score: r.correct + ' / ' + r.total,
-      stars: r.stars,
+      stars: 0,               // 下面 countUp 滚到 r.stars
       capped: r.capped,
       totalStars: r.lifetime,
       badges: all,
@@ -60,6 +60,34 @@ Page({
     });
 
     sfx.play('ui.star');
+    this.countUp(r.stars);
+  },
+
+  /**
+   * 本局星星从 0 滚到实际值 —— 一局结束唯一一次「成果揭晓」。
+   * 用递归 setTimeout 而不是 setInterval：每次都留着句柄，页面一卸载就能
+   * 清干净；无头测试里加载这一页时，链条也会在 ~0.4s 后自己结束，
+   * 不会把 Node 事件循环挂住。
+   */
+  countUp: function (target) {
+    var self = this;
+    var steps = 12;
+    var i = 0;
+    if (this._countTimer) clearTimeout(this._countTimer);
+    var tick = function () {
+      i++;
+      self.setData({ stars: Math.round(target * i / steps) });
+      if (i < steps) self._countTimer = setTimeout(tick, 32);
+      else self._countTimer = null;
+    };
+    this._countTimer = setTimeout(tick, 32);
+  },
+
+  onUnload: function () {
+    if (this._countTimer) {
+      clearTimeout(this._countTimer);
+      this._countTimer = null;
+    }
   },
 
   onAgain: function () {

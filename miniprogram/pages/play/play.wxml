@@ -9,18 +9,24 @@
         class="dot dot-{{item.state}}"></view>
     </view>
 
-    <view class="game-points">{{stars}}★</view>
+    <view class="game-points-wrap">
+      <view class="game-points">{{stars}}★</view>
+      <view class="round-score-wrap">
+        <text class="round-score">本局 ✓{{roundCorrect}}</text>
+        <view wx:if="{{starPop}}" class="star-pop">+1 ★</view>
+      </view>
+    </view>
   </view>
 
   <view class="game-body">
-    <view class="q q-layout-{{layout}} {{shake ? 'shake' : ''}}">
+    <view class="q q-layout-{{layout}} q-enter-{{enterFlag}} {{shake ? 'shake' : ''}}">
       <view class="stem">
         <view class="stem-text">{{stemText}}</view>
         <button wx:if="{{hasAudio}}" class="speaker" bindtap="onSpeaker">
           <text class="speaker-icon">🔊</text>
         </button>
         <!-- 只朗读题干：听音题走上面的单词音频，其余题才有这个按钮 -->
-        <button wx:if="{{canRead}}" class="speaker read-stem" bindtap="onReadStem">
+        <button wx:if="{{canRead}}" class="speaker read-stem {{speaking ? 'playing' : ''}}" bindtap="onReadStem">
           <text class="speaker-icon">🔊</text>
           <text class="speaker-label">读题</text>
         </button>
@@ -31,6 +37,7 @@
           wx:for="{{options}}"
           wx:key="id"
           class="option {{item.single ? 'option-single' : ''}} {{item.state === 'answer' ? 'is-answer' : ''}} {{item.state === 'wrong' ? 'is-wrong' : ''}} {{item.state ? 'locked' : ''}} {{item.state === 'answer' && fb === 'ok' ? 'fb-ok' : ''}}"
+          style="animation-delay:{{item.delay}}s"
           data-id="{{item.id}}"
           bindtap="onOption">
           <text class="option-text">{{item.text}}</text>
@@ -39,11 +46,14 @@
       </view>
 
       <view wx:if="{{showExplain}}" class="explain">{{explain}}</view>
+      <view wx:if="{{showExplain}}" class="explain-timer">
+        <view class="explain-timer-bar"></view>
+      </view>
 
       <view
         wx:for="{{confettiPieces}}"
         wx:key="id"
-        class="confetti"
+        class="confetti confetti-quick"
         style="left:{{item.left}}%; animation-delay:{{item.delay}}s; background:{{item.color}}"></view>
     </view>
   </view>

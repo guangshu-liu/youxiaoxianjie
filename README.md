@@ -56,7 +56,7 @@ npm run mp:build   # 生成微信小程序的题库/逻辑/音频（见 miniprog
 | `npm test` | 无头冒烟测试，从 `src/` 加载，157 项断言，0.5 秒 |
 | `npm run build` | 产出两种产物 |
 | `npm run test:build` | 同样的断言，但**从构建产物里抽内联代码跑**，158 项 |
-| `npm run mp:build` + `mp:test` | 生成小程序产物并跑 124 项断言（见 `miniprogram/README.md`） |
+| `npm run mp:build` + `mp:test` | 生成小程序产物并跑 134 项断言（见 `miniprogram/README.md`） |
 
 最后一条不是多余的。拼接 15 个 JS 文件有真实风险：某个文件少个结尾分号、
 下一个文件以 `(` 开头，就会变成一个调用表达式 —— 这类 bug 只在运行时炸，
@@ -706,7 +706,7 @@ npm run build:single    # → output/幼小衔接-v1.0.html（约 1.1 MB）
 
 ```bash
 npm run mp:build   # 生成 generated/（不进 git）
-npm run mp:test    # wx 桩 + Node，124 项断言
+npm run mp:test    # wx 桩 + Node，134 项断言
 npm run tts:audio  # 改动朗读规则 / 题库后重新生成主包音频
 npm run mp:appid -- wx1234567890abcdef   # 注册后写入正式 AppID，走体验版
 ```

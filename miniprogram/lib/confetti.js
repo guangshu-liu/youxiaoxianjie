@@ -6,14 +6,19 @@
  */
 var COLORS = ['#FF8A65', '#4FC3F7', '#66BB6A', '#FFB74D', '#BA68C8'];
 
-function pieces(n) {
+/**
+ * maxDelay 给答题页用：答对后 620ms 就切题，彩纸连同随机延迟必须在窗口内
+ * 演完；结算页停留时间长，不传就用原来的 0.25s 上限。
+ */
+function pieces(n, maxDelay) {
   var count = n || 18;
+  var spread = (maxDelay === undefined) ? 0.25 : maxDelay;
   var out = [];
   for (var i = 0; i < count; i++) {
     out.push({
       id: i,
       left: 10 + Math.round(Math.random() * 80),
-      delay: (Math.random() * 0.25).toFixed(2),
+      delay: (Math.random() * spread).toFixed(2),
       color: COLORS[i % COLORS.length]
     });
   }
