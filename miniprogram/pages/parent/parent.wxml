@@ -79,6 +79,17 @@
   </view>
 
   <view class="p-section">
+    <view class="p-section-title">算式图形演示</view>
+    <view class="stat-card">
+      <view class="stat-row">
+        <text class="stat-label">数学计算题画数量</text>
+        <switch checked="{{visualMath}}" bindchange="onToggleVisualMath" color="#4FC3F7" />
+      </view>
+      <view class="muted">把加减法里的数画成十棒和圆点，帮孩子看懂题目在问什么；作答后才出现得数。目前只对数学计算题生效，觉得分散注意力可随时关掉。</view>
+    </view>
+  </view>
+
+  <view class="p-section">
     <view class="p-section-title">语文认字范围</view>
     <view class="stat-card">
       <view class="muted">{{zibiao.summary}}</view>

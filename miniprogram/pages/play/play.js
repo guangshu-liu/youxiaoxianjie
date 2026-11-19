@@ -12,6 +12,7 @@ var sfx = require('../../lib/sfx.js');
 var audio = require('../../lib/audio.js');
 var tts = require('../../lib/tts.js');
 var confetti = require('../../lib/confetti.js');
+var visualMath = require('../../lib/visual-math.js');
 
 /** 单个汉字或单个字母要放大（b/d/p/q 长得像，不放大只能靠猜）。 */
 var SINGLE_RE = /^(?:[一-鿿]|[A-Za-z])$/;
@@ -40,7 +41,9 @@ Page({
     enterFlag: 'a',
     speaking: false,
     roundCorrect: 0,
-    starPop: false
+    starPop: false,
+    // 数学计算题的十进制积木；null 表示这题不演示。
+    visual: null
   },
 
   onLoad: function (query) {
@@ -157,7 +160,10 @@ Page({
       // 交替 class 强制重播入场动画；新题一律先清掉上一题的播放状态。
       enterFlag: this.data.enterFlag === 'a' ? 'b' : 'a',
       speaking: false,
-      starPop: false
+      starPop: false,
+      // 纯函数解析题干，不改题库；家长关掉开关时传 false 直接返回 null。
+      visual: visualMath.forQuestion(q,
+        !(this.save.settings && this.save.settings.visualMath === false))
     });
 
     // 听音题进来就自动播一遍（对应网页版的 autoplay）。

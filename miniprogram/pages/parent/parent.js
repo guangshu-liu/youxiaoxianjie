@@ -96,7 +96,8 @@ Page({
     backupHint: '',
     backupWarn: false,
     importText: '',
-    readStem: true
+    readStem: true,
+    visualMath: true
   },
 
   onLoad: function () {
@@ -160,6 +161,18 @@ Page({
     sfx.play('ui.tap');
   },
 
+  onToggleVisualMath: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    // 不写进共用 Store 的默认字段：网页版产物要保持不变。migrate() 只补
+    // 字段、不删未知字段，所以这个键能随存档正常保存 / 导出 / 恢复。
+    save.settings.visualMath = v;
+    G.Store.save(save);
+    this.setData({ visualMath: v });
+    sfx.play('ui.tap');
+  },
+
   /* ---------- 面板 ---------- */
 
   buildPanel: function () {
@@ -174,7 +187,8 @@ Page({
       wrong: this.buildWrong(save),
       wrongTotal: save.wrongBook.filter(function (w) { return !w.cleared; }).length,
       sessions: this.buildSessions(save),
-      readStem: !(save.settings && save.settings.readStem === false)
+      readStem: !(save.settings && save.settings.readStem === false),
+      visualMath: !(save.settings && save.settings.visualMath === false)
     });
     this.buildBackupHint();
   },

@@ -476,6 +476,91 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(page.data.starPop, false, '换题清掉 +1 提示');
 }
 
+/* ---- 8e. 数学题图形演示（P1 试点） ---- */
+{
+  const fs = require('fs');
+  const vm = require(path.join(MP, 'lib/visual-math.js'));
+  const allMath = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/math.json'), 'utf8'));
+  const calc = allMath.filter((q) => q.tags.indexOf('计算') >= 0);
+
+  const b = vm.blocks(66);
+  eq(b.bars.length, 6, '66 画成 6 根十棒');
+  eq(b.dots.length, 6, '66 画成 6 个圆点');
+  eq(b.label, '66', '积木上方保留阿拉伯数字标签');
+  ok(vm.blocks(0).empty, '0 有专门的空占位');
+
+  let parsed = 0, carry = 0, borrow = 0;
+  const bad = [];
+  calc.forEach((q) => {
+    const v = vm.forQuestion(q, true);
+    if (!v) { bad.push(q.id + ':未解析'); return; }
+    parsed++;
+    if (v.carry) carry++;
+    if (v.borrow) borrow++;
+    const m = /^(\d+)\s*([+-])\s*(\d+)/.exec(q.stem.text);
+    const expect = m[2] === '+' ? +m[1] + +m[3] : +m[1] - +m[3];
+    if (v.result.value !== expect) bad.push(q.id + ':得数不符');
+    if (v.left.value !== +m[1] || v.right.value !== +m[3]) bad.push(q.id + ':操作数不符');
+    if (v.left.bars.length + v.left.dots.length > 18) bad.push(q.id + ':积木过量');
+  });
+  eq(calc.length, 100, '题库里正好 100 道计算题');
+  eq(parsed, 100, '100 道计算题题干 100% 可解析，不用改题库');
+  eq(bad.length, 0, '积木数量与算式、得数全部一致', bad.join(' '));
+  ok(carry > 0 && borrow > 0, '进位题和借位题都被识别出来');
+
+  const sample = calc[0];
+  const nonCalc = allMath.filter((q) => q.tags.indexOf('计算') < 0)[0];
+  eq(vm.forQuestion(sample, false), null, '家长关掉开关时整块演示不渲染');
+  eq(vm.forQuestion(nonCalc, true), null, '非计算题不演示');
+  eq(vm.forQuestion(Object.assign({}, sample, { subject: 'chinese' }), true), null,
+     '非数学题不演示');
+  eq(vm.forQuestion(Object.assign({}, sample, { stem: { text: '3 + 8 = 3 + 7 + ?' } }), true), null,
+     '拆数题超出试点范围，静默跳过');
+  eq(vm.forQuestion(Object.assign({}, sample, {
+    stem: { text: '99 + 99 = ?' },
+    options: [{ id: 'a', text: '198' }], answer: 'a'
+  }), true), null, '结果超过 99 时不演示，避免积木刷屏');
+  eq(vm.forQuestion({
+    subject: 'math', tags: ['计算'], stem: { text: '12 + 4 = ?' },
+    options: [{ id: 'a', text: '99' }], answer: 'a'
+  }, true), null, '题库得数与算式不符时拒绝演示，不画错图形');
+
+  // 关键：答题前只画两个操作数，结果行靠 WXML 的 answered 关着。
+  const cfg = loadPage('pages/play/play.js');
+  const page = makeInstance(cfg);
+  page.onLoad({ subject: 'math' });
+  page.round.questions[page.idx] = sample;
+  page.renderQuestion();
+  ok(!!page.data.visual, '数学计算题进题带积木数据');
+  eq(page.data.visual.left.value, /^(\d+)/.exec(sample.stem.text)[1] * 1,
+     '左侧积木对应算式第一个数');
+  eq(page.data.answered, false, '答题前结果行不显示，不提前泄答案');
+  ok(!!page.data.visual.result, '得数数据已备好，作答后直接揭晓');
+
+  const save = app.globalData.save;
+  save.settings.visualMath = false;
+  G.Store.save(save);
+  page.renderQuestion();
+  eq(page.data.visual, null, '家长关闭后切题不再出现积木');
+  const dumped = Array.from(storage.keys()).map((k) => {
+    const v = storage.get(k);
+    return typeof v === 'string' ? v : JSON.stringify(v);
+  }).join('');
+  ok(dumped.indexOf('visualMath') >= 0, '开关写进存档并能被序列化');
+  const storeSrc = fs.readFileSync(path.join(ROOT, 'src/js/10-store.js'), 'utf8');
+  ok(/Object\.keys\(def\.settings\)\.forEach/.test(storeSrc),
+     '共用 Store 的 migrate 只补默认键，不删 visualMath（网页版产物零改动）');
+  save.settings.visualMath = true;
+  G.Store.save(save);
+  page.renderQuestion();
+  ok(!!page.data.visual, '重新打开开关后恢复演示');
+
+  const cfg2 = loadPage('pages/play/play.js');
+  const p2 = makeInstance(cfg2);
+  p2.onLoad({ subject: 'chinese' });
+  eq(p2.data.visual, null, '语文题不出现积木');
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

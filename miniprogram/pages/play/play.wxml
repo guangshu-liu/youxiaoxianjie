@@ -32,6 +32,43 @@
         </button>
       </view>
 
+      <!-- 数学计算题的十进制积木：一根十棒 = 10，一个圆点 = 1。
+           答题前只画两个操作数（不出现得数，不提前泄答案）；
+           作答后结果行才从下方滑入，那时答案已在选项里标绿，图形只是复核。 -->
+      <view wx:if="{{visual}}" class="visual">
+        <view class="v-row">
+          <view class="v-num">
+            <text class="v-label">{{visual.left.label}}</text>
+            <view class="v-blocks">
+              <view wx:for="{{visual.left.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
+              <view wx:for="{{visual.left.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
+              <text wx:if="{{visual.left.empty}}" class="v-zero">0</text>
+            </view>
+          </view>
+          <text class="v-op">{{visual.opLabel}}</text>
+          <view class="v-num">
+            <text class="v-label">{{visual.right.label}}</text>
+            <view class="v-blocks">
+              <view wx:for="{{visual.right.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
+              <view wx:for="{{visual.right.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
+              <text wx:if="{{visual.right.empty}}" class="v-zero">0</text>
+            </view>
+          </view>
+        </view>
+
+        <view wx:if="{{answered}}" class="v-result {{visual.regroup ? 'v-regroup' : ''}}">
+          <text class="v-eq">=</text>
+          <view class="v-num">
+            <text class="v-label v-label-result">{{visual.result.label}}</text>
+            <view class="v-blocks">
+              <view wx:for="{{visual.result.bars}}" wx:for-item="bar" wx:key="i" class="v-bar" style="animation-delay:{{bar.delay}}s"></view>
+              <view wx:for="{{visual.result.dots}}" wx:for-item="dot" wx:key="i" class="v-dot" style="animation-delay:{{dot.delay}}s"></view>
+              <text wx:if="{{visual.result.empty}}" class="v-zero">0</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <view class="options options-{{layout}}">
         <button
           wx:for="{{options}}"
