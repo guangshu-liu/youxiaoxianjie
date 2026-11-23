@@ -13,6 +13,7 @@ var G = require('../../generated/lib/game.js');
 var sfx = require('../../lib/sfx.js');
 var stars = require('../../lib/stars.js');
 var rewards = require('../../lib/rewards.js');
+var progress = require('../../lib/progress.js');
 
 var COOLDOWN_KEY = 'yxjx.parent.cooldown';
 var FAIL_KEY = 'yxjx.parent.fails';
@@ -103,7 +104,10 @@ Page({
     visualSteps: true,
     badges: [],
     monsters: true,
-    dailyGoal: true
+    dailyGoal: true,
+    levelMap: true,
+    bigText: false,
+    trend: { count: 0, avg: 0, points: [], segments: [] }
   },
 
   onLoad: function () {
@@ -235,6 +239,27 @@ Page({
     sfx.play('ui.tap');
   },
 
+  onToggleLevelMap: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.levelMap = v;
+    G.Store.save(save);
+    this.setData({ levelMap: v });
+    sfx.play('ui.tap');
+  },
+
+  /** 大字模式只影响三个孩子可见页面的字号，家长面板自身不放大。 */
+  onToggleBigText: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.bigText = v;
+    G.Store.save(save);
+    this.setData({ bigText: v });
+    sfx.play('ui.tap');
+  },
+
   /* ---------- 面板 ---------- */
 
   buildPanel: function () {
@@ -254,7 +279,11 @@ Page({
       visualSteps: !(save.settings && save.settings.visualSteps === false),
       badges: rewards.badgeList(save, stars.badgeState(save.points.lifetime)),
       monsters: !(save.settings && save.settings.monsters === false),
-      dailyGoal: !(save.settings && save.settings.dailyGoal === false)
+      dailyGoal: !(save.settings && save.settings.dailyGoal === false),
+      levelMap: !(save.settings && save.settings.levelMap === false),
+      bigText: progress.bigTextOf(save),
+      // 折线只用已完成的局，中途退出的局不进来拉低正确率。
+      trend: progress.trend(save)
     });
     this.buildBackupHint();
   },

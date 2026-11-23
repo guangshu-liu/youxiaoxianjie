@@ -109,10 +109,37 @@ function forQuestion(q, enabled) {
   var stem = q.stem || {};
   var text = String(stem.text || '').trim();
   var ans = answerText(q);
-  if (!WORD_RE.test(ans)) return null;   // 答案是大写字母的题不走这套演示
+  var audioId = stem.audio || '';
+
+  /* 听音选字母（26 道）：答案是单个大写字母，以前被 WORD_RE 直接挡掉，
+   * 一题都不演示。它和听音选词用同一套节奏 —— 答题前只给音位格子，
+   * 作答后才把音频里的整个单词摆出来，并把开头字母标绿。孩子看到的
+   * 是「听到的第一个音 → 那个大写字母」，而不是凭空多出一行答案。 */
+  var initialQ = hasTag(q, '听音选字母') && /^[A-Z]$/.test(ans) && !!audioId;
+  if (!WORD_RE.test(ans) && !initialQ) return null;
+
+  if (initialQ) {
+    var w = wordFromAudioId(audioId);
+    if (!w) return null;
+    // 不改 letters() 的返回结构，只在这条分支里补高亮 class，
+    // 老的听音选词 / 辨短元音题行为一个字段都不变。
+    var ls = letters(w, 0.12).map(function (L) {
+      L.cls = L.i === 0 ? 'v-letter-lead' : '';
+      return L;
+    });
+    return {
+      kind: 'english',
+      before: {
+        type: 'slots',
+        slots: slots(Math.max(3, Math.min(5, phonemeCount(w) || 3)))
+      },
+      after: { word: w, letters: ls },
+      audioId: audioId,
+      initial: true
+    };
+  }
 
   var before = null;
-  var audioId = stem.audio || '';
 
   var m = BLEND_RE.exec(text);
   if (m && hasTag(q, '拼合 CVC')) {

@@ -1,6 +1,6 @@
 /* visual.js — 内容型演示的统一入口
  *
- * play 页只需要认识这一个模块。四个 kind 各返回自己那套数据，
+ * play 页只需要认识这一个模块。六个 kind 各返回自己那套数据，
  * WXML 按 kind 选模板；解析全是纯函数，不读存档、不碰题库、不碰音频。
  *
  * 共同纪律（写新 kind 时照抄）：
@@ -22,6 +22,7 @@
 var math = require('./visual-math.js');
 var english = require('./visual-english.js');
 var chinese = require('./visual-chinese.js');
+var pairs = require('./visual-pairs.js');
 
 /** 一眼就是答案的字段。新增 kind 时若也写了得数，要加进这张表。 */
 var ANSWER_KEYS = ['result', 'answer', 'after'];
@@ -30,11 +31,20 @@ var ANSWER_KEYS = ['result', 'answer', 'after'];
 function full(q, enabled) {
   if (enabled === false || !q) return null;
   if (q.subject === 'math') {
-    // 计算题优先；拆数题是另一种题干格式，互斥。
-    return math.forQuestion(q, enabled) || math.forSplitQuestion(q, enabled);
+    // 每一类都有自己的 tag 和题干格式，互斥；最后一个都匹配不上才轮到
+    // 通用对照卡。1.2.16 新增应用题 / 找规律，仍是纯解析、不动题库。
+    return math.forQuestion(q, enabled) ||
+           math.forSplitQuestion(q, enabled) ||
+           math.forWordQuestion(q, enabled) ||
+           math.forSequenceQuestion(q, enabled) ||
+           pairs.forQuestion(q, enabled);
   }
-  if (q.subject === 'english') return english.forQuestion(q, enabled);
-  if (q.subject === 'chinese') return chinese.forQuestion(q, enabled);
+  if (q.subject === 'english') {
+    return english.forQuestion(q, enabled) || pairs.forQuestion(q, enabled);
+  }
+  if (q.subject === 'chinese') {
+    return chinese.forQuestion(q, enabled) || pairs.forQuestion(q, enabled);
+  }
   return null;
 }
 
@@ -90,5 +100,6 @@ module.exports = {
   ANSWER_KEYS: ANSWER_KEYS,
   math: math,
   english: english,
-  chinese: chinese
+  chinese: chinese,
+  pairs: pairs
 };

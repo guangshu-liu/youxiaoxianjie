@@ -562,9 +562,11 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const cfg2 = loadPage('pages/play/play.js');
   const p2 = makeInstance(cfg2);
   p2.onLoad({ subject: 'chinese' });
-  // 1.2.11 起语文的「看拼音选字」也会出图形，但不能串进数学积木模板。
-  ok(!p2.data.visual || p2.data.visual.kind === 'pinyin',
-     '语文题即使出图形也只会是拼音拆合，不会串进积木');
+  // 1.2.11 起语文的「看拼音选字」也会出图形，1.2.16 起反义词 / 笔画
+  // 等题走通用对照卡；两者都不能串进数学积木或算式模板。
+  ok(!p2.data.visual ||
+     ['pinyin', 'pair'].indexOf(p2.data.visual.kind) >= 0,
+     '语文题的图形只会是拼音拆合或对照卡，不会串进积木');
 }
 
 /* ---- 8f. 三科内容型演示（1.2.11） ---- */
@@ -578,16 +580,23 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const en = loadBank('english');
 
   // 全题库覆盖：解析不出来的题必须静默退回纯文字，不能抛错。
-  const cover = { 'math-calc': 0, 'math-split': 0, english: 0, pinyin: 0, none: 0 };
+  // 1.2.16 补覆盖后从 257/600 涨到 446/600，新增的 kind 是
+  // math-sequence（找规律）和 pair（语文词语 / 英语字母对照卡）。
+  const cover = {
+    'math-calc': 0, 'math-split': 0, 'math-sequence': 0,
+    english: 0, pinyin: 0, pair: 0, none: 0
+  };
   [math, ch, en].forEach((d) => d.forEach((q) => {
     const v = V.forQuestion(q, true);
     cover[v ? v.kind : 'none']++;
   }));
-  eq(cover['math-calc'], 100, '数学计算题 100 道全部可演示');
+  eq(cover['math-calc'], 120, '数学计算 100 + 应用题 20 都走积木模板');
   eq(cover['math-split'], 28, '数学拆数题 28 道全部可演示');
-  eq(cover.english, 84, '英语 84 道可演示（听音选词/辨短元音/押韵/拼合 CVC）');
+  eq(cover['math-sequence'], 20, '找规律 20 道全部可演示');
+  eq(cover.english, 110, '英语 84 + 听音选字母 26 道可演示');
   eq(cover.pinyin, 45, '语文 45 道看拼音选字可演示，2 道零声母跳过');
-  eq(cover.none, 343, '其余 343 道静默跳过');
+  eq(cover.pair, 123, '语文 93 + 英语 30 道走通用对照卡');
+  eq(cover.none, 154, '其余 154 道静默跳过');
 
   // 1.2.13：答案字段在数据结构上就不进答题前的 visual。
   let leaked = 0;
@@ -1250,6 +1259,247 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   saveB.settings.monsters = monstersB;
   saveB.settings.dailyGoal = dailyGoalB;
   G.Store.save(saveB);
+}
+
+/* ---- 8k. 1.2.16：关卡地图 / 视觉补覆盖 / 大字模式 / 正确率折线 ---- */
+{
+  const fs = require('fs');
+  const P = require(path.join(MP, 'lib/progress.js'));
+  const V = require(path.join(MP, 'lib/visual.js'));
+  const homeWxmlK = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const playWxmlK = fs.readFileSync(path.join(MP, 'pages/play/play.wxml'), 'utf8');
+  const resultWxmlK = fs.readFileSync(path.join(MP, 'pages/result/result.wxml'), 'utf8');
+  const parentWxmlK = fs.readFileSync(path.join(MP, 'pages/parent/parent.wxml'), 'utf8');
+  const parentWxssK = fs.readFileSync(path.join(MP, 'pages/parent/parent.wxss'), 'utf8');
+  const parentSrcK = fs.readFileSync(path.join(MP, 'pages/parent/parent.js'), 'utf8');
+  const appWxssK = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const progressSrc = fs.readFileSync(path.join(MP, 'lib/progress.js'), 'utf8');
+  const pairsSrc = fs.readFileSync(path.join(MP, 'lib/visual-pairs.js'), 'utf8');
+
+  const saveK = app.globalData.save;
+  const sessionsK = saveK.sessions;
+  const levelMapK = saveK.settings.levelMap;
+  const bigTextK = saveK.settings.bigText;
+  const lastResultK = app.globalData.lastResult;
+
+  const mkS = (subject, extra) => Object.assign(
+    { ts: Date.now(), subject: subject, correct: 8, total: 10 }, extra || {});
+  const loadBankK = (f) => JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'src/data/' + f + '.json'), 'utf8'));
+  const bankK = [].concat(loadBankK('math'), loadBankK('chinese'), loadBankK('english'));
+  const byTag = (t) => bankK.filter((q) => (q.tags || [])[0] === t);
+
+  // --- 关卡地图：累计局数、轮次、边界 ---
+  eq(P.LAP, 6, '每 6 关一轮');
+  saveK.sessions = [];
+  let lm = P.levelMap(saveK);
+  eq(lm.length, 3, '三科各一条地图');
+  eq(lm[0].cleared, 0, '没玩过时一格都不亮');
+  eq(lm[0].nodes.filter((n) => n.done).length, 0, '没玩过时没有已过关节点');
+  eq(lm[0].nodes[0].now, true, '第 1 关标成「下一关」');
+  ok(/第 1 关/.test(lm[0].title), '标题是第 1 关');
+
+  saveK.sessions = [mkS('math'), mkS('math'), mkS('math')];
+  const mathRow = P.levelMapBySubject(saveK).math;
+  eq(mathRow.cleared, 3, '玩 3 局点亮 3 格');
+  eq(mathRow.nodes[3].now, true, '下一关是第 4 关');
+  eq(P.levelMapBySubject(saveK).chinese.cleared, 0, '数学的点不会串到语文');
+  ok(!!P.levelMapBySubject(saveK).english, '按科目取，不依赖数组下标');
+
+  saveK.sessions = [];
+  for (let i = 0; i < 6; i++) saveK.sessions.push(mkS('math'));
+  const fullRow = P.levelMapBySubject(saveK).math;
+  eq(fullRow.cleared, 6, '刚走满一轮仍是 6 格全亮，不立刻清零');
+  eq(fullRow.justFinished, true, '刚通关标记');
+  ok(/通关/.test(fullRow.title), '通关文案');
+  saveK.sessions.push(mkS('math'));
+  const nextRow = P.levelMapBySubject(saveK).math;
+  eq(nextRow.cleared, 1, '第 7 局开新一轮回到第 1 格');
+  ok(/第 2 轮/.test(nextRow.lapText), '轮次 +1，孩子看到的是新地图不是倒退');
+
+  saveK.sessions = [mkS('math'), mkS('math', { aborted: true }),
+                    mkS(undefined, { review: true }), mkS('chinese')];
+  eq(P.roundsOf(saveK, 'math'), 1, '中途退出不算一关');
+  eq(P.roundsOf(saveK, 'english'), 0, '复习局没有 subject，不计入任何一科');
+  eq(P.roundsOf(saveK, 'chinese'), 1, '语文按自己的局数走');
+
+  // --- 正确率折线：坐标、角度、脏数据、上限 ---
+  saveK.sessions = [
+    { ts: 1, correct: 5, total: 10, subject: 'math' },
+    { ts: 2, correct: 10, total: 10, subject: 'math' },
+    { ts: 3, correct: 0, total: 10, subject: 'math', aborted: true },
+    { ts: 4, correct: 10, total: 0, subject: 'math' }
+  ];
+  let tr = P.trend(saveK);
+  eq(tr.count, 2, '排除中途退出和 0 题的局');
+  eq(tr.avg, 75, '平均正确率 75%');
+  eq(tr.points.length, 2, '两个点');
+  eq(tr.segments.length, 1, '两点一段线');
+  eq(tr.points[0].y, 75, '50% 落在 18 + 57 的 rpx 坐标');
+  eq(tr.points[1].y, 132, '100% 落在绘图区顶');
+  ok(tr.segments[0].deg < 0, '正确率上升时线段向上，角度为负');
+  eq(tr.segments[0].x, 30, '线段从左点起');
+
+  saveK.sessions = [{ ts: 1, correct: 7, total: 10 }, { ts: 2, correct: 7, total: 10 }];
+  eq(P.trend(saveK).segments[0].deg, 0, '两点一样高时是水平线');
+  saveK.sessions = [{ ts: 1, correct: 7, total: 10 }];
+  tr = P.trend(saveK);
+  eq(tr.segments.length, 0, '只有一局时不画线');
+  eq(tr.points[0].x, 300, '单个点居中');
+  saveK.sessions = [];
+  for (let i = 0; i < 12; i++) saveK.sessions.push({ ts: i, correct: 7, total: 10 });
+  eq(P.trend(saveK).count, 10, '默认只取最近 10 局');
+  eq(P.trend(saveK, 3).count, 3, '上限可传参');
+  eq(P.trend(saveK, 3).segments.length, 2, '3 个点 2 段线');
+
+  // --- 大字模式口径 ---
+  ok(!P.bigTextOf({}), '老存档（没有 settings）默认关');
+  ok(!P.bigTextOf({ settings: {} }), '有 settings 但没这个键也默认关');
+  ok(P.bigTextOf({ settings: { bigText: true } }), '显式打开才放大');
+  ok(!P.bigTextOf({ settings: { bigText: false } }), '关掉就不放大');
+
+  // --- 首页：两个新开关、默认开、不影响复习入口 ---
+  delete saveK.settings.levelMap;
+  delete saveK.settings.bigText;
+  saveK.sessions = [mkS('math'), mkS('math')];
+  const hpK = makeInstance(loadPage('pages/home/home.js'));
+  hpK.onShow();
+  ok(!!hpK.data.levels, '关卡地图默认开');
+  eq(hpK.data.levels.math.cleared, 2, '首页地图读到 2 局');
+  eq(hpK.data.bigText, false, '大字模式默认关');
+  saveK.settings.levelMap = false;
+  hpK.onShow();
+  eq(hpK.data.levels, null, '关掉后首页不渲染关卡点');
+  eq(hpK.data.reviewRoundSize, Math.min(saveK.wrongBook.filter((w) => !w.cleared).length, G.ROUND_SIZE),
+     '显示开关不影响复习入口');
+  saveK.settings.bigText = true;
+  hpK.onShow();
+  eq(hpK.data.bigText, true, '首页读到大字模式');
+
+  // --- 家长页：新开关写存档、折线数据进面板 ---
+  const ppK = makeInstance(loadPage('pages/parent/parent.js'));
+  ppK.onLoad();
+  ppK.setData({ gateInput: String(G.PARENT_GATE.answer) });
+  ppK.onGateSubmit();
+  eq(ppK.data.unlocked, true, '门禁通过');
+  ppK.buildPanel();
+  ok(!!ppK.data.trend && ppK.data.trend.count >= 1, '面板拿到折线数据');
+  eq(ppK.data.levelMap, false, '面板同步地图开关状态');
+  const lifetimeK0 = saveK.points.lifetime;
+  const balanceK0 = saveK.points.balance;
+  const redemptionsK0 = saveK.redemptions.length;
+  ppK.onToggleLevelMap({ detail: { value: true } });
+  eq(saveK.settings.levelMap, true, '地图开关写进存档');
+  eq(ppK.data.levelMap, true, '面板状态同步');
+  ppK.onToggleBigText({ detail: { value: false } });
+  eq(saveK.settings.bigText, false, '大字开关写进存档');
+  eq(ppK.data.bigText, false, '面板状态同步');
+  eq(saveK.points.lifetime, lifetimeK0, '两个新开关不碰累计星星');
+  eq(saveK.points.balance, balanceK0, '两个新开关不碰当前星星');
+  eq(saveK.redemptions.length, redemptionsK0, '两个新开关不写兑换记录');
+
+  // --- play 页：大字模式不影响组局 ---
+  saveK.settings.bigText = true;
+  const plK = makeInstance(loadPage('pages/play/play.js'));
+  plK.onLoad({ subject: 'math' });
+  eq(plK.data.bigText, true, '答题页读到大字模式');
+  ok(plK.data.total > 0, '大字模式照样正常组局');
+  saveK.settings.bigText = false;
+  const plK2 = makeInstance(loadPage('pages/play/play.js'));
+  plK2.onLoad({ subject: 'math' });
+  eq(plK2.data.bigText, false, '关掉后恢复原字号');
+
+  // --- 视觉演示补覆盖 ---
+  const wordQ = byTag('应用题')[0];                  // 74 + 6 = 80
+  let vK = V.forQuestion(wordQ, true);
+  eq(vK.kind, 'math-calc', '应用题复用积木模板，零 WXML 改动');
+  eq(vK.op, '+', '正确答案反推出加法');
+  eq(vK.story, true, '带上应用题标记');
+  eq(vK.steps, null, '应用题不拉长切题窗口');
+  eq(vK.left.label, '74', '左操作数是题干第一个数');
+  eq(vK.right.label, '6', '右操作数是题干第二个数');
+  eq(vK.result, undefined, '答题前没有得数积木');
+  eq(V.reveal(wordQ, true).result.label, '80', '作答后才揭晓得数');
+  const minusQ = byTag('应用题').filter((q) => /吃了/.test(q.stem.text))[0];
+  eq(V.forQuestion(minusQ, true).op, '-', '减法应用题也能反推');
+  const badWord = JSON.parse(JSON.stringify(wordQ));
+  badWord.options.forEach((o) => { if (o.id === badWord.answer) o.text = '999'; });
+  eq(V.forQuestion(badWord, true), null, '得数对不上就不演示，绝不画错图');
+
+  const seqQ = byTag('找规律')[0];                  // 14、17、20、（ ）= 23
+  vK = V.forQuestion(seqQ, true);
+  eq(vK.kind, 'math-sequence', '找规律走新模板');
+  eq(vK.items.length, 3, '题干三个数摆成三张卡');
+  eq(vK.items[0].gap, '+3', '差值是解题过程，只在 revealed 后渲染');
+  eq(vK.answer, undefined, '答题前没有答案字段');
+  eq(V.reveal(seqQ, true).answer.label, '23', '作答后原位翻出得数');
+
+  const antiQ = byTag('反义词')[0];                 // 「大」→「小」
+  vK = V.forQuestion(antiQ, true);
+  eq(vK.kind, 'pair', '反义词走通用对照卡');
+  eq(vK.left, '大', '已知项来自题干');
+  eq(vK.op, '反义词', '问什么写清楚');
+  eq(vK.big, true, '单字放大');
+  eq(vK.answer, undefined, '对照卡答题前没有答案');
+  eq(V.reveal(antiQ, true).answer.label, '小', '作答后才翻出正确字');
+  eq(V.forQuestion(byTag('笔画')[0], true).op, '几笔', '笔画题也进对照卡');
+  eq(V.forQuestion(byTag('偏旁')[0], true).op, '字旁', '偏旁题也进对照卡');
+  eq(V.forQuestion(byTag('大小写配对').filter((q) => /^小写/.test(q.stem.text))[0], true).op,
+     '大写', '小写找大写的反向题也覆盖');
+  const orderQ = byTag('字母顺序').filter((q) => /下一个/.test(q.stem.text))[0];
+  eq(V.forQuestion(orderQ, true).op, '下一个字母', '字母顺序跟着题干走，不写死');
+
+  const iniQ = byTag('听音选字母')[0];              // en.ant → A
+  vK = V.forQuestion(iniQ, true);
+  eq(vK.kind, 'english', '听音选字母复用英语模板');
+  eq(vK.before.type, 'slots', '答题前只有音位格子');
+  ok(vK.before.slots.length >= 3, '格子按音素数给');
+  eq(vK.after, undefined, '答题前没有单词');
+  const iniReveal = V.reveal(iniQ, true);
+  eq(iniReveal.after.word, 'ant', '作答后显示音频里的整词');
+  eq(iniReveal.after.letters[0].cls, 'v-letter-lead', '开头字母高亮');
+  eq(iniReveal.after.letters[1].cls, '', '其余字母不高亮');
+  eq(V.forQuestion(byTag('听音选词')[0], true).after, undefined,
+     '老的听音选词题行为不变');
+
+  eq(V.forQuestion(wordQ, false), null, '家长关掉演示后应用题也不画');
+  eq(V.forQuestion(seqQ, false), null, '关掉后找规律也不画');
+  eq(V.forQuestion(antiQ, false), null, '关掉后对照卡也不画');
+  eq(V.forQuestion(iniQ, false), null, '关掉后听音选字母也不画');
+
+  let leakK = 0;
+  bankK.forEach((q) => {
+    const v = V.forQuestion(q, true);
+    if (v && V.ANSWER_KEYS.some((k) => v[k] !== undefined)) leakK++;
+  });
+  eq(leakK, 0, '补覆盖后全题库答题前仍一个答案字段都没有');
+
+  // --- 静态结构：只在小程序端，网页版产物零改动 ---
+  ok(/visual\.kind === 'math-sequence'/.test(playWxmlK) &&
+     /visual\.kind === 'pair'/.test(playWxmlK), '答题页两个新模板分支都在');
+  ok(/class="v-letter \{\{L\.cls\}\}"/.test(playWxmlK), '字母卡片支持首字母高亮');
+  ok(/\.level-inline/.test(appWxssK) && /levels\.math\.nodes/.test(homeWxmlK),
+     '关卡点挂在三科按钮内部，不新增一行');
+  ok(/big-text/.test(homeWxmlK) && /big-text/.test(playWxmlK) &&
+     /big-text/.test(resultWxmlK), '三个孩子可见页面都挂大字 class');
+  ok(/\.big-text \.stem-text/.test(appWxssK) &&
+     /\.big-text \.option-text/.test(appWxssK), '大字规则覆盖题干和选项');
+  ok(/bindchange="onToggleLevelMap"/.test(parentWxmlK) &&
+     /bindchange="onToggleBigText"/.test(parentWxmlK), '两个新家长开关都在面板里');
+  ok(/progress\.trend\(save\)/.test(parentSrcK), '折线数据走纯函数');
+  ok(/transform:rotate\(\{\{item\.deg\}\}deg\)/.test(parentWxmlK) &&
+     /\.trend-seg/.test(parentWxssK), '折线由绝对定位的线段和点组成，无 canvas');
+  ok(!/require\([^)]*\bsrc\//.test(progressSrc) &&
+     !/require\([^)]*\bsrc\//.test(pairsSrc), '新模块不引用共用 src/ 逻辑');
+
+  // --- 恢复现场，别污染备份导出测试 ---
+  saveK.sessions = sessionsK;
+  if (levelMapK === undefined) delete saveK.settings.levelMap;
+  else saveK.settings.levelMap = levelMapK;
+  if (bigTextK === undefined) delete saveK.settings.bigText;
+  else saveK.settings.bigText = bigTextK;
+  app.globalData.lastResult = lastResultK;
+  G.Store.save(saveK);
 }
 
 /* ---- 9. 备份 ---- */

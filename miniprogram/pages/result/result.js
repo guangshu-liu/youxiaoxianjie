@@ -7,6 +7,7 @@ var G = require('../../generated/lib/game.js');
 var stars = require('../../lib/stars.js');
 var sfx = require('../../lib/sfx.js');
 var confetti = require('../../lib/confetti.js');
+var progress = require('../../lib/progress.js');
 
 Page({
   data: {
@@ -22,7 +23,8 @@ Page({
     confetti: false,
     pieces: [],
     // 结算页的错题复习入口：只报「点进去这一局几题」，口径和首页一致。
-    reviewRoundSize: 0
+    reviewRoundSize: 0,
+    bigText: false
   },
 
   onLoad: function () {
@@ -77,7 +79,8 @@ Page({
       newBadge: fresh,
       confetti: pct >= 70,
       pieces: pct >= 70 ? confetti.pieces() : [],
-      reviewRoundSize: reviewRoundSize
+      reviewRoundSize: reviewRoundSize,
+      bigText: progress.bigTextOf(getApp().globalData.save)
     });
 
     sfx.play('ui.star');

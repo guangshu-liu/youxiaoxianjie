@@ -149,6 +149,29 @@ view, text, button, input, textarea {
 .subject-emoji { font-size: 32px; }
 .subject-name { font-size: 30px; font-weight: 800; letter-spacing: 4px; }
 
+/* ---------- 三科闯关地图（1.2.16） ----------
+ * 关卡点塞在原有三科按钮内部右侧，不新增一行：首页已经被徽章、进度条、
+ * 小怪物占满，再叠一排会把底部复习按钮顶出小屏。白点在彩色按钮上都
+ * 看得清；「下一关」用空心圈标出，没有循环动画。 */
+.level-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  margin-left: auto;
+}
+.level-track { display: flex; gap: 5px; }
+.level-node {
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.32);
+  border: 1px solid rgba(255,255,255,.65);
+}
+.level-done { background: #fff; border-color: #fff; }
+.level-now { width: 13px; height: 13px; background: transparent; border: 2px solid #fff; }
+.level-title { font-size: 12px; line-height: 1; opacity: .92; white-space: nowrap; }
+
 .subject-en {
   background: linear-gradient(180deg, #8BE58B 0%, #66BB6A 100%);
   color: #fff;
@@ -631,6 +654,50 @@ view, text, button, input, textarea {
 @keyframes v-letter-a { 0%,100% { transform: scale(1); background: #E8F5E9; } 45% { transform: scale(1.18); background: #C8E6C9; } }
 @keyframes v-letter-b { 0%,100% { transform: scale(1); background: #E8F5E9; } 45% { transform: scale(1.18); background: #C8E6C9; } }
 
+/* 听音选字母：作答后把音频里的词摆出来，开头那个字母标绿，
+   让「听到的第一个音」和要选的大写字母对上。 */
+.v-letter-lead { color: #1B7A3E; border-color: #1B7A3E; background: #C8E6C9; }
+
+/* ---------- 找规律 / 通用对照卡（1.2.16） ---------- */
+
+.v-seq {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+.v-seq-card {
+  min-width: 58px;
+  padding: 10px 8px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--c-ink);
+  background: var(--c-bg-alt);
+  border: 3px solid var(--c-line);
+  border-radius: 14px;
+}
+.q-enter-a .v-seq-card { animation: v-chip-in-a .34s ease-out backwards; }
+.q-enter-b .v-seq-card { animation: v-chip-in-b .34s ease-out backwards; }
+.v-seq-unknown { border-style: dashed; border-color: var(--c-primary); color: var(--c-primary-d); }
+.v-seq-gap { font-size: 18px; font-weight: 800; color: var(--c-ok); }
+.v-seq-dot { font-size: 18px; color: var(--c-ink-soft); }
+
+.v-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+.v-pair-left { border-color: var(--c-second); }
+.v-pair-right { border-style: dashed; border-color: var(--c-primary); color: var(--c-primary-d); }
+.v-pair-big { font-size: 44px; min-width: 76px; }
+.v-pair-op { font-size: 20px; font-weight: 800; color: var(--c-ink-soft); }
+
 /* ---------- 选项 ---------- */
 
 .options { display: grid; gap: var(--gap); width: 100%; }
@@ -868,3 +935,27 @@ view, text, button, input, textarea {
 
 .badge-unlock-emoji { font-size: 30px; }
 .badge-unlock-text { font-size: 18px; font-weight: 700; color: #7A3B1E; }
+
+/* ---------- 大字模式（1.2.16，家长开关，默认关） ----------
+ * 只放大「孩子要读的字」：题干、选项、科目名、结算数字、解释。
+ * 徽章角标、家长面板、进度条一律不动 —— 家长面板是长滚动页，放大
+ * 会把开关挤出屏幕。根 class 挂在三个孩子可见页面的 .screen 上，
+ * 老存档没有 settings.bigText 时这些规则一条都不生效。 */
+.big-text .stem-text { font-size: 50px; }
+.big-text .q-layout-big-number .stem-text { font-size: 62px; }
+.big-text .option-text { font-size: 36px; }
+.big-text .option-single .option-text { font-size: 62px; }
+.big-text .options-big-number .option-text { font-size: 56px; }
+.big-text .explain { font-size: 24px; }
+.big-text .subject-name { font-size: 36px; }
+.big-text .home-sub { font-size: 22px; }
+.big-text .home-next { font-size: 19px; }
+.big-text .home-last { font-size: 19px; }
+.big-text .badge-name { font-size: 17px; }
+.big-text .summary-subject { font-size: 24px; }
+.big-text .summary-title { font-size: 40px; }
+.big-text .summary-score { font-size: 62px; }
+.big-text .stat-row { font-size: 21px; }
+.big-text .v-label { font-size: 30px; }
+.big-text .v-chip { font-size: 34px; }
+.big-text .v-letter { font-size: 32px; }

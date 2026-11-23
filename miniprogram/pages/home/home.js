@@ -2,6 +2,7 @@
 var G = require('../../generated/lib/game.js');
 var stars = require('../../lib/stars.js');
 var rewards = require('../../lib/rewards.js');
+var progress = require('../../lib/progress.js');
 var sfx = require('../../lib/sfx.js');
 
 Page({
@@ -17,7 +18,10 @@ Page({
     // 1.2.15 第一批：错题小怪物、每日小目标、徽章已兑现角标
     monsters: [],
     monsterTotal: 0,
-    goalReached: false
+    goalReached: false,
+    // 1.2.16 第二批：三科闯关地图（关掉时为 null）、大字模式
+    levels: null,
+    bigText: false
   },
 
   onShow: function () {
@@ -35,6 +39,7 @@ Page({
     var settings = save.settings || {};
     var monstersOn = settings.monsters !== false;
     var goalOn = settings.dailyGoal !== false;
+    var mapOn = settings.levelMap !== false;
     var m = monstersOn ? rewards.monstersOf(save) : { total: 0, shown: [] };
     var g = goalOn ? rewards.goalState(save) : null;
 
@@ -53,7 +58,11 @@ Page({
       reviewRoundSize: Math.min(reviewCount, G.ROUND_SIZE),
       monsters: m.shown,
       monsterTotal: m.total,
-      goalReached: !!(g && g.reached)
+      goalReached: !!(g && g.reached),
+      // 关卡点挂在三科按钮内部，不新增一行 —— 首页已经被徽章和小怪物
+      // 占满了，小屏 iPhone 再塞一排会把复习按钮顶出屏幕。
+      levels: mapOn ? progress.levelMapBySubject(save) : null,
+      bigText: progress.bigTextOf(save)
     });
   },
 

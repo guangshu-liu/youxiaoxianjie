@@ -218,3 +218,54 @@
 }
 
 .stat-card .btn { width: 100%; margin: 6px 0; }
+
+/* ---------- 正确率折线（1.2.16） ----------
+ * 容器固定 600rpx 宽、150rpx 高；progress.trend() 里的坐标也是 rpx，
+ * 两者一起随屏幕等比缩放，所以线段的旋转角度在任何机型上都对得上端点。
+ * 纯 view + CSS，不用 canvas（无头测试测不到、还要异步量尺寸）。 */
+.trend-chart {
+  position: relative;
+  width: 600rpx;
+  max-width: 100%;
+  height: 150rpx;
+  margin: 4px auto;
+  background: #FAF6EC;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.trend-grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1rpx;
+  background: #E5DBC4;
+}
+.trend-grid-mid { bottom: 75rpx; }     /* 50% */
+.trend-grid-top { bottom: 132rpx; }    /* 100% */
+
+.trend-seg {
+  position: absolute;
+  height: 4rpx;
+  background: #4FC3F7;
+  transform-origin: 0 50%;
+}
+
+.trend-point {
+  position: absolute;
+  width: 14rpx;
+  height: 14rpx;
+  margin-left: -7rpx;
+  margin-bottom: -7rpx;
+  border-radius: 50%;
+  background: #fff;
+  border: 3rpx solid #4FC3F7;
+}
+
+.trend-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--c-ink-soft);
+}

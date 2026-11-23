@@ -94,7 +94,15 @@
         <text class="stat-label">今日 2 局小目标</text>
         <switch checked="{{dailyGoal}}" bindchange="onToggleDailyGoal" color="#4FC3F7" />
       </view>
-      <view class="muted">小怪物按错题本里还没掌握的题生成，连对两次就收服；今日目标只打勾、不发星星。觉得分散注意力可随时关掉。</view>
+      <view class="stat-row">
+        <text class="stat-label">三科闯关地图</text>
+        <switch checked="{{levelMap}}" bindchange="onToggleLevelMap" color="#4FC3F7" />
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">大字模式</text>
+        <switch checked="{{bigText}}" bindchange="onToggleBigText" color="#4FC3F7" />
+      </view>
+      <view class="muted">小怪物按错题本里还没掌握的题生成，连对两次就收服；今日目标只打勾、不发星星。闯关地图每完成一局点亮一格，6 关一轮；大字模式只放大题干和选项，不改动任何题目或账目。觉得分散注意力可随时关掉。</view>
     </view>
   </view>
 
@@ -169,6 +177,27 @@
           <text class="wrong-stem">{{item.stem}}</text>
           <text class="wrong-count">错 {{item.count}} 次</text>
         </view>
+      </block>
+
+      <!-- 正确率折线：坐标在 progress.trend() 里用 rpx 算好，这里只摆点和线段。
+           不引入 canvas、不量屏幕宽度，任何机型上角度和端点都对得上。 -->
+      <block wx:if="{{trend.count}}">
+        <view class="stat-title">正确率趋势（最近 {{trend.count}} 局 · 平均 {{trend.avg}}%）</view>
+        <view class="trend-chart">
+          <view class="trend-grid trend-grid-mid"></view>
+          <view class="trend-grid trend-grid-top"></view>
+          <view
+            wx:for="{{trend.segments}}"
+            wx:key="i"
+            class="trend-seg"
+            style="left:{{item.x}}rpx; bottom:{{item.y}}rpx; width:{{item.w}}rpx; transform:rotate({{item.deg}}deg)"></view>
+          <view
+            wx:for="{{trend.points}}"
+            wx:key="i"
+            class="trend-point"
+            style="left:{{item.x}}rpx; bottom:{{item.y}}rpx"></view>
+        </view>
+        <view class="trend-axis"><text>最早</text><text>最近</text></view>
       </block>
 
       <block wx:if="{{sessions.length}}">

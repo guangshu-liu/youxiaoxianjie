@@ -280,11 +280,85 @@ function forSplitQuestion(q, enabled) {
   return null;
 }
 
+/* ---------- 应用题 / 找规律（1.2.16 补覆盖） ----------
+ *
+ * 这两类以前完全没有图形演示，但题干格式非常规整，纯字符串解析就够。
+ * 刻意用「正确答案反推运算」而不是中文分词判加减：只有 a+b 或 a-b
+ * 恰好有一个等于得数时才画，题库改了措辞也不会把加号画成减号；
+ * 两种都不成立就静默退回纯文字题。
+ *
+ * 应用题直接复用 math-calc 的 WXML（两根十棒 + 得数积木），所以 zero
+ * 模板改动；找规律用新的 math-sequence 模板。
+ */
+
+var WORD_NUM_RE = /\d{1,3}/g;
+var SEQ_RE = /^(\d{1,3})、(\d{1,3})、(\d{1,3})、（[\s\u3000]*）$/;
+
+function forWordQuestion(q, enabled) {
+  if (enabled === false) return null;
+  if (!q || q.subject !== 'math' || !hasTag(q, '应用题')) return null;
+
+  var text = (q.stem && q.stem.text) ? String(q.stem.text).trim() : '';
+  var nums = text.match(WORD_NUM_RE) || [];
+  if (nums.length !== 2) return null;          // 多于两个数字说明题干格式变了
+
+  var a = +nums[0], b = +nums[1];
+  var r = numAnswer(q);
+  if (r < 0 || a > 99 || b > 99 || r > 99) return null;
+  var plus = a + b === r;
+  var minus = a - b === r;
+  if (plus === minus) return null;              // 都不成立，或 b=0 时两者都成立
+  var op = plus ? '+' : '-';
+
+  return {
+    kind: 'math-calc',
+    story: true,
+    op: op,
+    opLabel: plus ? '+' : '−',
+    left: blocks(a, 0),
+    right: blocks(b, 0.14),
+    result: blocks(r, 0),
+    carry: plus && (a % 10) + (b % 10) >= 10,
+    borrow: !plus && (a % 10) < (b % 10),
+    regroup: (plus && (a % 10) + (b % 10) >= 10) ||
+             (!plus && (a % 10) < (b % 10)),
+    // 应用题不拉长切题窗口：文字题本身就要读，再分步会拖慢节奏。
+    steps: null
+  };
+}
+
+function forSequenceQuestion(q, enabled) {
+  if (enabled === false) return null;
+  if (!q || q.subject !== 'math' || !hasTag(q, '找规律')) return null;
+
+  var text = (q.stem && q.stem.text) ? String(q.stem.text).trim() : '';
+  var m = SEQ_RE.exec(text);
+  if (!m) return null;
+  var a = +m[1], b = +m[2], c = +m[3];
+  var d = b - a;
+  if (d <= 0 || c - b !== d) return null;      // 只画等差数列
+  var r = numAnswer(q);
+  if (r < 0 || c + d !== r) return null;       // 校验得数，题库错乱就不演示
+
+  // gap 是「怎么算」的过程数据，不是得数：和 1.2.12 的 steps 一样留在
+  // 答题前那半边，但 WXML 只在 revealed 之后才渲染，答题前一格都不露。
+  return {
+    kind: 'math-sequence',
+    items: [a, b, c].map(function (n, i) {
+      return { i: i, label: String(n), gap: '+' + d };
+    }),
+    answer: { label: String(r) }
+  };
+}
+
 module.exports = {
   forQuestion: forQuestion,
   forSplitQuestion: forSplitQuestion,
+  forWordQuestion: forWordQuestion,
+  forSequenceQuestion: forSequenceQuestion,
   blocks: blocks,
   calcSteps: calcSteps,
   makeTenSteps: makeTenSteps,
-  CALC_RE: CALC_RE
+  CALC_RE: CALC_RE,
+  SEQ_RE: SEQ_RE
 };

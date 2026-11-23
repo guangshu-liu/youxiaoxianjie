@@ -13,6 +13,7 @@ var audio = require('../../lib/audio.js');
 var tts = require('../../lib/tts.js');
 var confetti = require('../../lib/confetti.js');
 var visual = require('../../lib/visual.js');
+var progress = require('../../lib/progress.js');
 
 /** 单个汉字或单个字母要放大（b/d/p/q 长得像，不放大只能靠猜）。 */
 var SINGLE_RE = /^(?:[一-鿿]|[A-Za-z])$/;
@@ -53,7 +54,8 @@ Page({
     // a/b 交替是为了强制重播 CSS 动画，和 enterFlag 同一套机制。
     pulse: 'a',
     slotsClass: '',
-    lettersClass: ''
+    lettersClass: '',
+    bigText: false
   },
 
   onLoad: function (query) {
@@ -75,6 +77,8 @@ Page({
     } catch (e) { /* 低版本忽略 */ }
 
     this.save = getApp().globalData.save;
+    // 大字模式只改字号，不影响组局、朗读、动画节奏；老存档默认关。
+    this.setData({ bigText: progress.bigTextOf(this.save) });
     this.round = this.review
       ? G.Runner.buildReviewRound(this.save, G.ROUND_SIZE)
       : G.Runner.buildSubjectRound(this.save, subject, G.ROUND_SIZE);

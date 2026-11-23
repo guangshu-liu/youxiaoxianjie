@@ -1,4 +1,4 @@
-<view class="screen screen-summary">
+<view class="screen screen-summary {{bigText ? 'big-text' : ''}}">
   <view class="summary-subject">{{subjectLabel}}</view>
   <view class="summary-emoji">{{emoji}}</view>
   <view class="summary-title">{{title}}</view>
