@@ -765,6 +765,14 @@ view, text, button, input, textarea {
 
 .screen-summary .btn { max-width: 460px; width: 100%; }
 
+/* 「再练一次错题」是打完一局最自然的下一步：不抢主按钮，但用暖色描边
+   和徽章解锁提示同一套颜色，让孩子一眼能找到。 */
+.btn-review {
+  background: #FFF3E0;
+  border: 2px solid var(--c-warn);
+  color: #7A3B1E;
+}
+
 .stat-row {
   display: flex;
   justify-content: space-between;

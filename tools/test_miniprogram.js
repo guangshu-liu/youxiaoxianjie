@@ -922,8 +922,9 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(stars8.forCorrect(1, 'chinese', 1), 1, '单题局固定 1 星');
 
   const finishSrc = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
-  ok(/forCorrect\(correct, this\.subject \|\| 'chinese', total\)/.test(finishSrc),
-     '结算传入本局题数，复习局不再套绝对阈值');
+  ok(/stars\.forCorrect\(correct, rule, total\)/.test(finishSrc)
+     && /this\.review \? 'review'/.test(finishSrc),
+     '结算传入本局题数，复习局显式走 review 档，不再套语文阈值');
 
   // 复习局独立语义：写进 session，难度评估跳过。
   const runnerSrc = fs.readFileSync(path.join(ROOT, 'src/js/40-runner.js'), 'utf8');
@@ -984,6 +985,109 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(/mtime_ns/.test(caSrc), '缓存键含 mtime_ns，重生成音频立刻失效');
   ok(fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf8')
        .indexOf('.audio_health_cache.json') >= 0, '缓存文件不进 git');
+}
+
+/* ---- 8i. 1.2.14：结算页复习入口 / 哑巴喇叭 / 复习局独立阈值 ---- */
+{
+  const fs = require('fs');
+  const resultSrc = fs.readFileSync(path.join(MP, 'pages/result/result.js'), 'utf8');
+  const resultWxml = fs.readFileSync(path.join(MP, 'pages/result/result.wxml'), 'utf8');
+  const playSrc = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  const starsSrc = fs.readFileSync(path.join(MP, 'lib/stars.js'), 'utf8');
+  const stars9 = require(path.join(MP, 'lib/stars.js'));
+
+  // 复习局有独立一档：临时把数学改成 8/5，复习局也不该跟着变。
+  ok(/review:\s*\{ three: 9, two: 6 \}/.test(starsSrc),
+     '星星规则表里有独立的 review 档');
+  ok(/this\.review \? 'review'/.test(playSrc), '结算显式传 review，不再落到语文');
+  const mathBak = stars9.RULES.math;
+  stars9.RULES.math = { three: 8, two: 5 };
+  eq(stars9.forCorrect(8, 'review', 10), 2,
+     '把数学调成 8/5 后，复习局仍按 review 的 9/6 给 2 星');
+  eq(stars9.forCorrect(8, 'math', 10), 3, '数学本局确实按新阈值升到 3 星');
+  stars9.RULES.math = mathBak;
+  eq(stars9.forCorrect(8, 'chinese', 10), 2, '恢复后普通语文局不受影响');
+  eq(stars9.forCorrect(3, 'review', 3), 3, '3 题复习局全对仍给 3 星');
+
+  // 喇叭不能只看「映射表非空」，还要查这句题干有没有对应音频。
+  ok(/tts\.available\(\)\s*&&\s*tts\.has\(readInfo\.text\)/.test(playSrc),
+     '读题按钮同时检查映射表与这句题干的音频');
+  const MAP9 = require(path.join(MP, 'generated/data/tts-map.js'));
+  const tts9 = require(path.join(MP, 'lib/tts.js'));
+  const anyText = Object.keys(MAP9)[0];
+  const anySrc = MAP9[anyText];
+  delete MAP9[anyText];
+  eq(tts9.has(anyText), false, '映射表少一句时 has() 立刻返回 false');
+  eq(tts9.speak(anyText), false, '缺音频的文本不会被静默排队播放');
+  MAP9[anyText] = anySrc;
+
+  // 端到端：模拟「题库加了新题型、忘了重跑 tts:audio」。
+  const stemBak = app.globalData.save.settings.readStem;
+  app.globalData.save.settings.readStem = true;
+  const origForQuestion = G.TTSText.forQuestion;
+  G.TTSText.forQuestion = function () {
+    return { text: '__本地新题型_没有音频__', skip: false };
+  };
+  const p9 = makeInstance(loadPage('pages/play/play.js'));
+  p9.onLoad({ subject: 'chinese' });
+  eq(p9.data.canRead, false, '新增题型没生成音频时不画哑巴喇叭');
+  eq(p9.data.readText, '', '喇叭不出现时也不留朗读文本');
+  G.TTSText.forQuestion = origForQuestion;
+  app.globalData.save.settings.readStem = stemBak;
+
+  // 结算页按钮：只有「普通局 + 有错题 + 错题本够 3 题」才出现。
+  ok(/bindtap="onReview"/.test(resultWxml) &&
+     /wx:if="\{\{reviewRoundSize >= 3\}\}"/.test(resultWxml),
+     '结算页按错题数决定是否摆复习入口（与首页同阈值）');
+  ok(/复习错题（本局 \{\{reviewRoundSize\}\} 题）/.test(resultWxml),
+     '按钮只报即将开的一局有几题，不承诺全是刚错的题');
+  ok(/wx\.redirectTo\(\{ url: '\/pages\/play\/play\?mode=review' \}\)/.test(resultSrc),
+     '复习按钮用 redirectTo 跳复习局，不堆页面栈');
+  ok(/r\.correct < r\.total && !this\.review/.test(resultSrc),
+     '全对局和复习局都不重复摆复习入口');
+  ok(/Math\.min\(wrongCount, G\.ROUND_SIZE\)/.test(resultSrc),
+     '结算页与首页一样按一局上限截断题数');
+
+  const save9 = app.globalData.save;
+  const wrongBak = save9.wrongBook;
+  const mkResult = (correct, review) => ({
+    subject: 'math', review: review, correct: correct, total: 10,
+    stars: 2, nominal: 2, capped: false,
+    lifetime: save9.points.lifetime, lifetimeBefore: save9.points.lifetime
+  });
+  const mkWrong = (n) => Array.from({ length: n }, (_, i) => ({
+    qid: 'fake-' + i, wrongCount: 1, lastWrongAt: i, cleared: false
+  }));
+
+  save9.wrongBook = mkWrong(4);
+  app.globalData.lastResult = mkResult(6, false);
+  wx.__lastNav = null;
+  const rp = makeInstance(loadPage('pages/result/result.js'));
+  rp.onLoad();
+  eq(rp.data.reviewRoundSize, 4, '错 4 题时结算页报「本局 4 题」');
+  rp.onReview();
+  ok(!!wx.__lastNav && wx.__lastNav.url === '/pages/play/play?mode=review',
+     '点复习按钮直接进复习局');
+
+  app.globalData.lastResult = mkResult(10, false);
+  const rp2 = makeInstance(loadPage('pages/result/result.js'));
+  rp2.onLoad();
+  eq(rp2.data.reviewRoundSize, 0, '全对局不摆复习按钮');
+
+  app.globalData.lastResult = mkResult(6, true);
+  const rp3 = makeInstance(loadPage('pages/result/result.js'));
+  rp3.onLoad();
+  eq(rp3.data.reviewRoundSize, 0, '复习局结算不摆第二个重复的复习入口');
+
+  save9.wrongBook = mkWrong(12);
+  app.globalData.lastResult = mkResult(7, false);
+  const rp4 = makeInstance(loadPage('pages/result/result.js'));
+  rp4.onLoad();
+  eq(rp4.data.reviewRoundSize, 10, '错题超过一局上限时报 10 题');
+  const appWxss = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  ok(/\.btn-review\s*\{/.test(appWxss), '复习按钮有区别于主按钮的暖色描边样式');
+
+  save9.wrongBook = wrongBak;
 }
 
 /* ---- 9. 备份 ---- */

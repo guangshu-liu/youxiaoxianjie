@@ -22,11 +22,16 @@ var BADGES = [
 ];
 
 /**
- * 每科一套星星阈值。
+ * 每科一套星星阈值，外加复习局独立一档。
  *
- * 现在三科都是 9 / 6，留成一张表是为了**以后能单独调**：数学一局 10 题里
+ * 现在都是 9 / 6，留成一张表是为了**以后能单独调**：数学一局 10 题里
  * 有 8 成是难度 2（计算、应用题、找规律），如果实际玩下来 3 星太少，
  * 把 math 的 three 改成 8 就行，不用动逻辑。
+ *
+ * review 单独一档是必须的：复习局跨科混合、没有 subject，以前靠
+ * `this.subject || 'chinese'` 悄悄落到语文档 —— 现在三科同阈值看不出
+ * 问题，一旦真把 math 改成 8/5，复习局会继续按语文算，而且从结算数字
+ * 上完全看不出来。play 页显式传 'review'，调单科阈值就不会连带改到它。
  *
  * 阈值不再是 8 / 5：旧阈值下「1 星」几乎不会出现（中等水平约 0.4%），
  * 等于白设一档；9 / 6 之后三科都能真的掉到 1 星，3 星也要做对 9 题
@@ -35,7 +40,8 @@ var BADGES = [
 var RULES = {
   chinese: { three: 9, two: 6 },
   math:    { three: 9, two: 6 },
-  english: { three: 9, two: 6 }
+  english: { three: 9, two: 6 },
+  review:  { three: 9, two: 6 }
 };
 
 /**
@@ -99,6 +105,9 @@ function progressPct(lifetime) {
 
 module.exports = {
   BADGES: BADGES,
+  // 导出只为回归测试能临时改 math 档，验证复习局不受单科调整影响；
+  // 运行时不要在业务代码里改这张表。
+  RULES: RULES,
   forCorrect: forCorrect,
   badgeState: badgeState,
   nextBadge: nextBadge,

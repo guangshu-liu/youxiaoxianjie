@@ -132,9 +132,13 @@ Page({
     // 只朗读题干、不朗读选项；听音题有自带音频，跳过朗读。
     // 规则在 generated/lib/game.js 里，和网页版共用同一份实现。
     var readInfo = G.TTSText ? G.TTSText.forQuestion(q) : { text: '', skip: true };
+    // tts.has() 不能省：available() 只看映射表非空。本地加了新题型却忘了
+    // 重跑 npm run tts:audio 时，只查 available 会画出一个点了没反应、
+    // 还不报错的哑巴喇叭；和下面听音指令用 has() 判断保持同一口径。
     var canRead = !readInfo.skip && !!readInfo.text
       && !(this.save.settings && this.save.settings.readStem === false)
-      && tts.available();
+      && tts.available()
+      && tts.has(readInfo.text);
 
     // 听音题的题干不朗读（会和单词音频抢喇叭），但孩子不认汉字，
     // 只听到一个词、看不懂屏幕上的「听一听…」，第一次遇到全靠猜。
@@ -366,8 +370,11 @@ Page({
     var correct = this.results.filter(function (r) { return r === true; }).length;
     var total = this.results.length;
     // 复习局题数不固定，必须把 total 传进去按正确率判档，否则 3 道题
-    // 全对在 9/6 的绝对阈值下只能拿 1 星。
-    var nominal = stars.forCorrect(correct, this.subject || 'chinese', total);
+    // 全对在 9/6 的绝对阈值下只能拿 1 星。它同时走独立的 review 档：
+    // 跨科混合局没有 subject，不能靠 `|| 'chinese'` 隐式落到语文档 ——
+    // 以后单独调数学阈值时，复习局会悄悄跟着语文，谁也看不出来。
+    var rule = this.review ? 'review' : (this.subject || 'chinese');
+    var nominal = stars.forCorrect(correct, rule, total);
 
     // 顺序不能反：finishSession 记的是**实际到账**的星星。
     // 先 awardPoints 拿到被每日上限削过的值，再把它传给 finishSession，

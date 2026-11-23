@@ -328,6 +328,41 @@ npm run mp:build     # 生成 miniprogram/generated/
 另外两项在主 README 的音频章节：题干音频降到 16 kHz / 12 kbps（0.99 →
 0.85 MB），以及 `check_audio.py` 的解码缓存（全量 30 秒 → 命中 1.3 秒）。
 
+## 1.2.14：结算页复习入口 + 两处健壮性
+
+三项都只在小程序端，`src/js/`、`docs/`、题库 JSON、生成器一行未动，
+网页版产物哈希不变。
+
+**结算页直接复习错题。** 以前一局打完错了 4 道，孩子只能「再来一局」
+（同科新题）或回首页找复习按钮 —— 最自然的「把刚错的再过一遍」反而没
+入口。现在 `result.wxml` 在 `reviewRoundSize >= 3` 时摆一个暖色描边的
+「🔁 复习错题（本局 N 题）」，点一下 `redirectTo` 到 `?mode=review`
+（和「再来一局」一样用 redirectTo，不堆页面栈）。N 的口径与首页完全
+一致：错题本里未 `cleared` 的题数，按 `G.ROUND_SIZE` 截断。三点边界：
+全对局不摆；复习局不摆（它的「再来一局」本来就是复习）；不足 3 题不摆
+（和首页一样，一两道题的局孩子刚进入状态就结束了）。
+
+**按钮不写「这局」是有意的**：`buildReviewRound` 按错题权重从**整个错题本**
+挑题，错题本积压时会带上更早的错题，所以只承诺「下一局几题」，不承诺
+全是刚才错的那几道。要做到「只练这局刚错的」得给 play 页传 qid 列表、
+改共用 Runner，收益不抵改动面，1.2.14 不做。
+
+**读题喇叭不再可能是哑巴。** `play.js` 原来只用 `tts.available()` 判断
+（只看映射表非空）：本地加了新题型却忘了重跑 `npm run tts:audio` 时，
+喇叭会显示、点了没反应、还不报错。现在补 `tts.has(readInfo.text)`，和
+听音题中文指令的判断口径一致。发布链路里 `npm run tts:audio:check`
+本来就挡得住，这条修的是「跳过 verify 的本地开发」。
+
+**复习局不再隐式用语文阈值。** `finish()` 原来是
+`stars.forCorrect(correct, this.subject || 'chinese', total)` —— 复习局
+没有 subject，永远落语文档。现在 `lib/stars.js` 的 `RULES` 多了独立的
+`review` 档（同样 9/6），`finish()` 显式传 `'review'`。当前三科阈值相同，
+行为零变化；以后把 math 调成 8/5，复习局也不会悄悄跟着语文。回归测试
+会临时把 math 改成 8/5，断言复习局仍给 2 星、math 本局给 3 星。
+
+无头断言 387 → 409 项，新增覆盖：结算页四种局面（有错题 / 全对 /
+复习局 / 错题超一局上限）、复习按钮跳转、缺音频时不画喇叭、review 档隔离。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -351,7 +386,7 @@ npm run mp:build     # 生成 miniprogram/generated/
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，387 项断言
+npm run mp:test      # wx 桩 + Node，409 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

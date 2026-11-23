@@ -20,7 +20,9 @@ Page({
     badges: [],
     newBadge: null,
     confetti: false,
-    pieces: []
+    pieces: [],
+    // 结算页的错题复习入口：只报「点进去这一局几题」，口径和首页一致。
+    reviewRoundSize: 0
   },
 
   onLoad: function () {
@@ -32,6 +34,24 @@ Page({
 
     this.subject = r.subject;
     this.review = !!r.review;
+
+    // 打完一局最自然的下一步是把刚错的题再过一遍。数据口径与首页完全
+    // 一致：数错题本里还没 cleared 的题，再按一局上限截断。三点约束：
+    //   · 全对局不摆 —— 没有刚错的题可练；
+    //   · 复习局不摆 —— 它的「再来一局」本来就是复习，别放两个一样的入口；
+    //   · 不足 3 题不摆（在 WXML 里判断）—— 和首页一样，一两道题的局
+    //     孩子刚进入状态就结束了。
+    // 复习局按错题权重从**整个错题本**挑题，可能带上更早的错题，所以
+    // 按钮只报即将开的一局有几题，不承诺「全是刚错的那几道」。
+    var wrongCount = 0;
+    if (r.correct < r.total && !this.review) {
+      var save = getApp().globalData.save;
+      wrongCount = ((save && save.wrongBook) || []).filter(function (w) {
+        return !w.cleared;
+      }).length;
+    }
+    var reviewRoundSize = Math.min(wrongCount, G.ROUND_SIZE);
+
     var pct = Math.round(r.correct / r.total * 100);
     var praise = pct >= 90 ? '太棒了！'
                : pct >= 70 ? '做得很好！'
@@ -56,7 +76,8 @@ Page({
       badges: all,
       newBadge: fresh,
       confetti: pct >= 70,
-      pieces: pct >= 70 ? confetti.pieces() : []
+      pieces: pct >= 70 ? confetti.pieces() : [],
+      reviewRoundSize: reviewRoundSize
     });
 
     sfx.play('ui.star');
@@ -88,6 +109,13 @@ Page({
       clearTimeout(this._countTimer);
       this._countTimer = null;
     }
+  },
+
+  /** 直接把错题再过一遍。result 是 redirectTo 进来的，这里也用 redirectTo，
+   *  不让「结算页 → 复习局 → 结算页」在页面栈里越堆越深。 */
+  onReview: function () {
+    sfx.play('ui.tap');
+    wx.redirectTo({ url: '/pages/play/play?mode=review' });
   },
 
   onAgain: function () {

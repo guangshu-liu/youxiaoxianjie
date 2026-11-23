@@ -31,6 +31,7 @@
     </view>
   </view>
 
+  <button wx:if="{{reviewRoundSize >= 3}}" class="btn btn-review" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
   <button class="btn btn-primary btn-xl" bindtap="onAgain">再来一局</button>
   <button class="btn btn-ghost" bindtap="onHome">回到首页</button>
 
