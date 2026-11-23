@@ -11,6 +11,8 @@
  */
 var G = require('../../generated/lib/game.js');
 var sfx = require('../../lib/sfx.js');
+var stars = require('../../lib/stars.js');
+var rewards = require('../../lib/rewards.js');
 
 var COOLDOWN_KEY = 'yxjx.parent.cooldown';
 var FAIL_KEY = 'yxjx.parent.fails';
@@ -98,7 +100,10 @@ Page({
     importText: '',
     readStem: true,
     visualMath: true,
-    visualSteps: true
+    visualSteps: true,
+    badges: [],
+    monsters: true,
+    dailyGoal: true
   },
 
   onLoad: function () {
@@ -186,6 +191,50 @@ Page({
     sfx.play('ui.tap');
   },
 
+  /**
+   * 徽章兑现只是一条线下记录：不扣 balance、不写 redemptions，
+   * 所以三方审计（lifetime / balance / sessions）完全不受影响。
+   * 没解锁的徽章不能勾，防止提前把奖励标成「已给」。
+   */
+  onToggleBadgeClaim: function (e) {
+    var ds = (e && e.currentTarget && e.currentTarget.dataset) || {};
+    var need = +ds.need;
+    if (!need) return;
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    var b = stars.badgeState(save.points.lifetime).filter(function (x) {
+      return x.need === need;
+    })[0];
+    if (!b || !b.got) return;
+
+    save.badgeClaims = save.badgeClaims || {};
+    if (v) save.badgeClaims[need] = G.localDateStr();
+    else delete save.badgeClaims[need];
+    G.Store.save(save);
+    this.buildPanel();
+    sfx.play('ui.tap');
+  },
+
+  onToggleMonsters: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.monsters = v;
+    G.Store.save(save);
+    this.setData({ monsters: v });
+    sfx.play('ui.tap');
+  },
+
+  onToggleDailyGoal: function (e) {
+    var v = !!(e && e.detail && e.detail.value);
+    var save = getApp().globalData.save;
+    save.settings = save.settings || {};
+    save.settings.dailyGoal = v;
+    G.Store.save(save);
+    this.setData({ dailyGoal: v });
+    sfx.play('ui.tap');
+  },
+
   /* ---------- 面板 ---------- */
 
   buildPanel: function () {
@@ -202,7 +251,10 @@ Page({
       sessions: this.buildSessions(save),
       readStem: !(save.settings && save.settings.readStem === false),
       visualMath: !(save.settings && save.settings.visualMath === false),
-      visualSteps: !(save.settings && save.settings.visualSteps === false)
+      visualSteps: !(save.settings && save.settings.visualSteps === false),
+      badges: rewards.badgeList(save, stars.badgeState(save.points.lifetime)),
+      monsters: !(save.settings && save.settings.monsters === false),
+      dailyGoal: !(save.settings && save.settings.dailyGoal === false)
     });
     this.buildBackupHint();
   },
@@ -223,10 +275,9 @@ Page({
     return {
       points: dc.pointsEarned,
       cap: save.limits.maxPointsPerDay,
-      sessions: save.sessions.filter(function (s) {
-        // 中途退出的局不算「玩了一局」，否则今日局数会虚高。
-        return !s.aborted && G.localDateStr(new Date(s.ts)) === G.localDateStr();
-      }).length
+      // 和首页「今日小目标」共用同一个口径，两处数字永远一致
+      //（中途退出的局不算「玩了一局」，否则今日局数会虚高）。
+      sessions: rewards.roundsToday(save)
     };
   },
 

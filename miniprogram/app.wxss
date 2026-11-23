@@ -101,7 +101,8 @@ view, text, button, input, textarea {
   justify-content: center;
   align-items: center;
   text-align: center;
-  gap: 16px;
+  /* 1.2.15 多了一行错题小怪物，整体间距收 2px 换回来，别把首页顶出屏幕。 */
+  gap: 14px;
 }
 
 .home-title {
@@ -178,6 +179,7 @@ view, text, button, input, textarea {
   border: 2px solid var(--c-line);
   opacity: .45;
   filter: grayscale(1);
+  position: relative;
 }
 
 .badge-got {
@@ -190,6 +192,60 @@ view, text, button, input, textarea {
 
 .badge-emoji { font-size: 30px; line-height: 1.1; }
 .badge-name  { font-size: 14px; color: var(--c-ink-soft); }
+
+/* 家长确认线下兑现后的小角标：绝对定位，不占徽章条高度。 */
+.badge-claimed {
+  position: absolute;
+  top: -8px;
+  right: -6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--c-ok);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.home-sub-done { color: var(--c-ok); }
+
+/* ---------- 错题小怪物 ----------
+   纯静态 CSS 形状，不是循环动画；血量跟着 rightStreak 变，属于反馈型。 */
+
+.monster-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 520px;
+}
+.monster-hint { font-size: 14px; color: var(--c-ink-soft); }
+.monster-tip  { font-size: 13px; color: var(--c-ink-soft); }
+.monster-list { display: flex; gap: 6px; }
+.monster { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 26px; }
+.monster-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 24px;
+  height: 20px;
+  border-radius: 10px 10px 6px 6px;
+  background: #B4A7E8;
+}
+.monster-t1 .monster-face { background: #7FD8FF; }
+.monster-t2 .monster-face { background: #F5B971; }
+.monster-eye { width: 4px; height: 4px; border-radius: 50%; background: #fff; }
+.monster-hp { display: flex; gap: 2px; }
+.hp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--c-line);
+  background: transparent;
+}
+.hp-dot.hp-on { background: var(--c-bad); border-color: var(--c-bad); }
 
 .badge-progress {
   width: 100%;

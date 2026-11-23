@@ -1,6 +1,6 @@
 <view class="screen screen-home">
   <view class="home-title">幼小衔接闯关</view>
-  <view class="home-sub">{{subTitle}}</view>
+  <view class="home-sub {{goalReached ? 'home-sub-done' : ''}}">{{subTitle}}</view>
 
   <view class="home-stats">
     <view class="home-points">{{stars}}</view>
@@ -11,6 +11,7 @@
     <view wx:for="{{badges}}" wx:key="need" class="badge {{item.got ? 'badge-got' : ''}}">
       <text class="badge-emoji">{{item.emoji}}</text>
       <text class="badge-name">{{item.name}}</text>
+      <text wx:if="{{item.claimed}}" class="badge-claimed">已换</text>
     </view>
   </view>
 
@@ -22,6 +23,20 @@
     再攒 {{nextBadge.left}} 颗星星，解锁「{{nextBadge.name}}」
   </view>
   <view class="home-next" wx:else>四个徽章都拿到啦！</view>
+
+  <view wx:if="{{monsters.length}}" class="monster-row">
+    <text class="monster-hint">错题小怪物 {{monsterTotal}} 只</text>
+    <view class="monster-list">
+      <view wx:for="{{monsters}}" wx:key="id" class="monster monster-t{{item.tone}}">
+        <view class="monster-face"><view class="monster-eye"></view><view class="monster-eye"></view></view>
+        <view class="monster-hp">
+          <view class="hp-dot {{item.hp >= 1 ? 'hp-on' : ''}}"></view>
+          <view class="hp-dot {{item.hp >= 2 ? 'hp-on' : ''}}"></view>
+        </view>
+      </view>
+    </view>
+    <text class="monster-tip">连对 2 次收服</text>
+  </view>
 
   <view class="subject-list">
     <button class="btn btn-primary btn-xl subject-btn" data-subject="chinese" bindtap="onStart">

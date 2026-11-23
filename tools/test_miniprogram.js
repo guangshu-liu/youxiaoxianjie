@@ -1090,6 +1090,168 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   save9.wrongBook = wrongBak;
 }
 
+/* ---- 8j. 1.2.15：徽章兑现 / 错题小怪物 / 每日小目标 ---- */
+{
+  const fs = require('fs');
+  const R = require(path.join(MP, 'lib/rewards.js'));
+  const homeWxml = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const parentWxml = fs.readFileSync(path.join(MP, 'pages/parent/parent.wxml'), 'utf8');
+  const parentSrc = fs.readFileSync(path.join(MP, 'pages/parent/parent.js'), 'utf8');
+  const appWxss9 = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const rewardsSrc = fs.readFileSync(path.join(MP, 'lib/rewards.js'), 'utf8');
+  const saveB = app.globalData.save;
+
+  // 备份，别污染后面的备份导出测试
+  const sessionsB = saveB.sessions;
+  const wrongB = saveB.wrongBook;
+  const claimsB = saveB.badgeClaims;
+  const lifetimeB = saveB.points.lifetime;
+  const balanceB = saveB.points.balance;
+  const monstersB = saveB.settings.monsters;
+  const dailyGoalB = saveB.settings.dailyGoal;
+
+  const now = Date.now();
+  const mkSession = (ts, extra) => Object.assign({ ts: ts }, extra || {});
+
+  // --- 今日局数口径：与家长页「今日局数」同源 ---
+  saveB.sessions = [
+    mkSession(now),
+    mkSession(now, { aborted: true }),
+    mkSession(now - 86400000),
+    mkSession(now, { review: true })
+  ];
+  eq(R.roundsToday(saveB), 2, '今天 2 局：中途退出和昨天的都不算，复习局算');
+  eq(R.GOAL, 2, '每日小目标是 2 局');
+  eq(R.goalState(saveB).reached, true, '2 局达成目标');
+  ok(/目标完成/.test(R.goalState(saveB).text), '达成文案');
+  saveB.sessions = [mkSession(now)];
+  eq(R.goalState(saveB).reached, false, '1 局未达成');
+  ok(/今天 1 \/ 2 局/.test(R.goalState(saveB).text), '未达成文案报进度');
+  eq(R.goalState(saveB).done, 1, 'done 是实际完成局数');
+  saveB.sessions = [];
+  eq(R.roundsToday(saveB), 0, '没玩过是 0 局');
+  eq(R.goalState(saveB).reached, false, '0 局没达成');
+
+  // --- 小怪物：血量跟着 rightStreak，cleared 即被收服 ---
+  saveB.wrongBook = [
+    { qid: 'q1', subject: 'math', wrongCount: 5, rightStreak: 0, cleared: false, lastWrongAt: 3 },
+    { qid: 'q2', subject: 'chinese', wrongCount: 3, rightStreak: 1, cleared: false, lastWrongAt: 2 },
+    { qid: 'q3', subject: 'english', wrongCount: 1, rightStreak: 0, cleared: false, lastWrongAt: 1 },
+    { qid: 'q4', subject: 'math', wrongCount: 9, rightStreak: 2, cleared: true, lastWrongAt: 9 }
+  ];
+  const mon = R.monstersOf(saveB);
+  eq(mon.total, 3, 'cleared 的题已收服，不再出现在首页');
+  eq(mon.shown.length, 3, '3 只全部显示');
+  eq(mon.shown[0].id, 'q1', '错得最多的排最前，和复习局同源');
+  eq(mon.shown[0].hp, 2, 'rightStreak=0 是满血 2 格');
+  eq(mon.shown[1].hp, 1, '连对 1 次掉 1 格血');
+  eq(mon.shown[0].subject, '数学', '怪物带科目标签');
+  eq(mon.shown[0].tone, 0, '颜色按位置轮换');
+  eq(R.monstersOf(saveB, 2).shown.length, 2, '首页最多摆几只可控');
+  eq(R.HP, 2, '血量与 cleared 的 rightStreak >= 2 对齐');
+  eq(R.MONSTER_LIMIT, 5, '默认最多 5 只，不挤爆首页');
+
+  // --- 徽章兑现：老存档兼容 ---
+  delete saveB.badgeClaims;
+  eq(Object.keys(R.claimsOf(saveB)).length, 0, '老存档没有 badgeClaims 时按未兑现');
+  const bs0 = R.badgeList(saveB, stars.badgeState(100));
+  eq(bs0.length, 4, '四个徽章都列出');
+  ok(bs0.every((b) => b.got && !b.claimed), '老存档里四枚都解锁、都没兑现');
+  eq(bs0[0].claimedAt, '', '未兑现没有日期');
+  eq(R.badgeList({ badgeClaims: { 10: '2026-11-23' } }, stars.badgeState(100))[0].claimed,
+     true, '按 need 取兑现记录，换图标改名也不丢');
+
+  // --- 家长页：写入 / 撤销 / 未解锁不能勾 / 不动账目 ---
+  const pcfg9 = loadPage('pages/parent/parent.js');
+  const pp9 = makeInstance(pcfg9);
+  pp9.onLoad();
+  pp9.setData({ gateInput: String(G.PARENT_GATE.answer) });
+  pp9.onGateSubmit();
+  eq(pp9.data.unlocked, true, '门禁通过后进面板');
+  saveB.points.lifetime = 100;
+  pp9.buildPanel();
+  eq(pp9.data.badges.length, 4, '家长页列出四枚徽章');
+  pp9.onToggleBadgeClaim({ detail: { value: true }, currentTarget: { dataset: { need: '10' } } });
+  eq(saveB.badgeClaims[10], G.localDateStr(), '勾选写入兑现日期');
+  ok(pp9.data.badges[0].claimed, '面板立刻刷新为已兑现');
+  const raw9 = storage.get(G.Store.KEY);
+  ok(!!raw9 && JSON.parse(raw9).badgeClaims[10] === G.localDateStr(),
+     '兑现记录真的写进存储，备份导出也带得走');
+  eq(saveB.points.balance, balanceB, '兑现不扣当前星星');
+  eq(saveB.points.lifetime, 100, '兑现不改累计星星');
+  eq(saveB.sessions.length, 0, '兑现不写 sessions');
+  eq(saveB.redemptions.length, 0, '兑现不写现金兑换记录');
+  pp9.onToggleBadgeClaim({ detail: { value: false }, currentTarget: { dataset: { need: '10' } } });
+  eq(saveB.badgeClaims[10], undefined, '误勾可以取消');
+  saveB.points.lifetime = 5;
+  pp9.buildPanel();
+  pp9.onToggleBadgeClaim({ detail: { value: true }, currentTarget: { dataset: { need: '50' } } });
+  eq(!!saveB.badgeClaims[50], false, '没解锁的徽章不能标记兑现');
+  saveB.points.lifetime = lifetimeB;
+
+  // --- 两个家长开关 ---
+  pp9.onToggleMonsters({ detail: { value: false } });
+  eq(saveB.settings.monsters, false, '小怪物开关写进存档');
+  eq(pp9.data.monsters, false, '面板状态同步');
+  pp9.onToggleDailyGoal({ detail: { value: false } });
+  eq(saveB.settings.dailyGoal, false, '小目标开关写进存档');
+  eq(pp9.data.dailyGoal, false, '面板状态同步');
+  eq(pp9.data.today.sessions, R.roundsToday(saveB), '家长页今日局数与首页同口径');
+
+  // --- 首页：开关、副标题、复习入口不受显示开关影响 ---
+  saveB.settings.monsters = true;
+  saveB.settings.dailyGoal = true;
+  saveB.badgeClaims = { 10: '2026-11-23' };
+  saveB.points.lifetime = 100;
+  saveB.sessions = [mkSession(now)];
+  const hp9 = makeInstance(loadPage('pages/home/home.js'));
+  hp9.onShow();
+  eq(hp9.data.monsters.length, 3, '首页渲染 3 只小怪物（第 4 只已收服）');
+  eq(hp9.data.monsterTotal, 3, '总数与错题本一致');
+  ok(hp9.data.badges[0].claimed, '已兑现徽章带 claimed 角标数据');
+  ok(/今天 1 \/ 2 局/.test(hp9.data.subTitle), '副标题带今日小目标，不新增一行');
+  eq(hp9.data.goalReached, false, '1 局未达成，不变色');
+  eq(hp9.data.reviewRoundSize, 3, '复习按钮仍按真实错题数');
+
+  saveB.sessions = [mkSession(now), mkSession(now)];
+  hp9.onShow();
+  eq(hp9.data.goalReached, true, '2 局达成后变色');
+  ok(/目标完成/.test(hp9.data.subTitle), '达成文案出现在副标题');
+
+  saveB.settings.monsters = false;
+  saveB.settings.dailyGoal = false;
+  hp9.onShow();
+  eq(hp9.data.monsters.length, 0, '关掉开关后首页不渲染小怪物');
+  ok(!/今天/.test(hp9.data.subTitle), '关掉开关后副标题恢复原文案');
+  eq(hp9.data.reviewRoundSize, 3, '显示开关绝不影响复习入口');
+
+  // --- 静态结构 ---
+  ok(/wx:if="\{\{item\.claimed\}\}" class="badge-claimed"/.test(homeWxml),
+     '首页有已兑现角标');
+  ok(/wx:if="\{\{monsters\.length\}\}"/.test(homeWxml), '没错题时不摆小怪物行');
+  ok(/bindchange="onToggleBadgeClaim"/.test(parentWxml) &&
+     /data-need="\{\{item\.need\}\}"/.test(parentWxml), '家长页兑现开关按 need 绑定');
+  ok(/disabled="\{\{!item\.got\}\}"/.test(parentWxml), '未解锁的开关禁用');
+  ok(/bindchange="onToggleMonsters"/.test(parentWxml) &&
+     /bindchange="onToggleDailyGoal"/.test(parentWxml), '两个家长开关都在面板里');
+  ok(/rewards\.roundsToday\(save\)/.test(parentSrc), '家长页复用同一份今日局数口径');
+  ok(/\.monster-face/.test(appWxss9) && /\.badge-claimed/.test(appWxss9),
+     '小怪物和角标样式都在全局样式里');
+  ok(!/require\([^)]*\bsrc\//.test(rewardsSrc),
+     '新模块不引用共用 src/ 逻辑，网页版产物零改动');
+
+  // 恢复现场
+  saveB.sessions = sessionsB;
+  saveB.wrongBook = wrongB;
+  if (claimsB === undefined) delete saveB.badgeClaims;
+  else saveB.badgeClaims = claimsB;
+  saveB.points.lifetime = lifetimeB;
+  saveB.points.balance = balanceB;
+  saveB.settings.monsters = monstersB;
+  saveB.settings.dailyGoal = dailyGoalB;
+  G.Store.save(saveB);
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

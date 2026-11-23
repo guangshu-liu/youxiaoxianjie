@@ -1,6 +1,7 @@
 /* home — 首页：星星、徽章、开始 */
 var G = require('../../generated/lib/game.js');
 var stars = require('../../lib/stars.js');
+var rewards = require('../../lib/rewards.js');
 var sfx = require('../../lib/sfx.js');
 
 Page({
@@ -12,7 +13,11 @@ Page({
     nextBadge: null,
     lastText: '',
     reviewCount: 0,
-    reviewRoundSize: 0
+    reviewRoundSize: 0,
+    // 1.2.15 第一批：错题小怪物、每日小目标、徽章已兑现角标
+    monsters: [],
+    monsterTotal: 0,
+    goalReached: false
   },
 
   onShow: function () {
@@ -25,10 +30,19 @@ Page({
       return !w.cleared;
     }).length;
 
+    // 两个孩子可见的小组件都能被家长单独关掉。关掉只影响显示：
+    // reviewCount 始终按错题本真实数算，否则复习按钮会跟着一起消失。
+    var settings = save.settings || {};
+    var monstersOn = settings.monsters !== false;
+    var goalOn = settings.dailyGoal !== false;
+    var m = monstersOn ? rewards.monstersOf(save) : { total: 0, shown: [] };
+    var g = goalOn ? rewards.goalState(save) : null;
+
     this.setData({
       stars: save.points.balance || 0,
-      subTitle: '选一科，每局 ' + G.ROUND_SIZE + ' 题',
-      badges: stars.badgeState(lifetime),
+      // 每日小目标塞进原有的副标题，不新增一行 —— 首页本来就快占满一屏。
+      subTitle: '选一科，每局 ' + G.ROUND_SIZE + ' 题' + (g ? ' · ' + g.text : ''),
+      badges: rewards.badgeList(save, stars.badgeState(lifetime)),
       progressPct: stars.progressPct(lifetime),
       nextBadge: stars.nextBadge(lifetime),
       lastText: last ? ('上次：' + last.correct + ' / ' + last.total + ' 题') : '',
@@ -36,7 +50,10 @@ Page({
       // 按钮只报「本局几题」：以前报错题总数（比如 37），点进去却只做
       // 10 道，家长以为漏题。总错题数在家长页「待巩固的题」里看。
       reviewCount: reviewCount,
-      reviewRoundSize: Math.min(reviewCount, G.ROUND_SIZE)
+      reviewRoundSize: Math.min(reviewCount, G.ROUND_SIZE),
+      monsters: m.shown,
+      monsterTotal: m.total,
+      goalReached: !!(g && g.reached)
     });
   },
 

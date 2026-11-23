@@ -68,6 +68,37 @@
   </view>
 
   <view class="p-section">
+    <view class="p-section-title">徽章兑换（家长确认）</view>
+    <view class="stat-card">
+      <view class="stat-row" wx:for="{{badges}}" wx:key="need">
+        <text class="stat-label">{{item.label}}</text>
+        <switch
+          checked="{{item.claimed}}"
+          disabled="{{!item.got}}"
+          data-need="{{item.need}}"
+          bindchange="onToggleBadgeClaim"
+          color="#4FC3F7" />
+      </view>
+      <view class="muted">孩子攒够星星解锁、你线下把奖励给他之后，再在这里勾「已兑现」。这只是个记录，不扣星星、不改账目；误勾可以取消。</view>
+    </view>
+  </view>
+
+  <view class="p-section">
+    <view class="p-section-title">首页小组件</view>
+    <view class="stat-card">
+      <view class="stat-row">
+        <text class="stat-label">错题小怪物</text>
+        <switch checked="{{monsters}}" bindchange="onToggleMonsters" color="#4FC3F7" />
+      </view>
+      <view class="stat-row">
+        <text class="stat-label">今日 2 局小目标</text>
+        <switch checked="{{dailyGoal}}" bindchange="onToggleDailyGoal" color="#4FC3F7" />
+      </view>
+      <view class="muted">小怪物按错题本里还没掌握的题生成，连对两次就收服；今日目标只打勾、不发星星。觉得分散注意力可随时关掉。</view>
+    </view>
+  </view>
+
+  <view class="p-section">
     <view class="p-section-title">朗读设置</view>
     <view class="stat-card">
       <view class="stat-row">
