@@ -4,3 +4,4 @@ __pycache__/
 output/
 miniprogram/generated/
 miniprogram/project.private.config.json
+.audio_health_cache.json

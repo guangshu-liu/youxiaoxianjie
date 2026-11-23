@@ -60,15 +60,17 @@ npm run mp:appid -- --check              # 随时复核当前用的是不是正�
 **读题喇叭在，但一点声音都没有**；叠加 `wx.loadSubpackage` 回调不落地时
 请求会永远排队。1.2.7 起改成**预生成音频直接放主包**：
 
-`tools/gen_tts_audio.py` 按题库规则把 171 条中文题干念成 m4a（0.97 MB），
-放进主包 `ttsAudio/`，`lib/tts.js` 按文本查 `tts-map.js` 直接播放。
+`tools/gen_tts_audio.py` 按题库规则把 174 条中文题干念成 m4a（16 kHz / 12 kbps，
+0.85 MB），放进主包 `ttsAudio/`，`lib/tts.js` 按文本查 `tts-map.js` 直接播放。
 **不需要插件、不需要分包、不需要联网、不需要域名白名单、不需要在后台点任何东西。**
 
-> 体积怎么压下来的：`afconvert` 会给每个 m4a 塞约 3 KB 的 `free` 页对齐
-> 填充块，171 个文件白占 515 KB。生成器剥掉它并修正 `moov/stco` 偏移表，
-> 解码出的 PCM 逐字节不变（音质、时长、音量都不动），主包合计约 1.81 MB。
-> 改动题库或朗读规则后跑 `npm run tts:audio` 重新生成，否则
-> `npm run verify` 会挡住「清单与规则不一致」。
+> 体积怎么压下来的，两条：`afconvert` 会给每个 m4a 塞约 3 KB 的 `free`
+> 页对齐填充块（171 个文件白占 515 KB），生成器剥掉它并修正 `moov/stco`
+> 偏移表，解码出的 PCM 逐字节不变；1.2.13 起又把题干音频从 22.05 kHz /
+> 16 kbps 降到 **16 kHz / 12 kbps**，174 条由 0.99 MB 降到 0.85 MB。
+> 容器头是固定开销，所以实际只省约 140 KB，不是码率差的 25%。
+> 改码率或朗读规则后必须跑 `python3 tools/gen_tts_audio.py --force`
+> 全量重生成（默认会复用已有 m4a），否则 `--check` 会报「编码参数不一致」。
 
 ## 构建
 
@@ -288,6 +290,44 @@ npm run mp:build     # 生成 miniprogram/generated/
 清掉，不会把上一题的揭晓动作漏到下一题。帧数据由 `visual-math.js` 的
 `calcSteps()` / `makeTenSteps()` 纯函数生成，题库和网页版产物仍然零改动。
 
+## 1.2.13：按「小程序为主」修的五件事
+
+用户确认孩子平时主要用小程序，所以**网页版不补复习局、不补可视化**，
+两端的功能差距是刻意保留的（见主 README「微信小程序」一节）。
+
+**星星按正确率折算（真 bug）。** `lib/stars.js` 的 `forCorrect()` 原来用绝对
+题数阈值（9 题 3 星 / 6 题 2 星），而复习局「不足一局就出几道算几道」，
+首页错题 ≥3 道就放入口 —— 3 道错题全做对只能拿 1 星。现在改成
+`forCorrect(correct, subject, total)` 按 `correct/total` 判 0.9 / 0.6，
+普通局 10 题逐档与旧版完全一致；`total < 3` 固定 1 星防刷（2 题全对拿
+3 星太便宜）。每日 60 星上限 + 错题 `cleared` 机制兜住长局。
+
+**复习局独立语义（同源的第二个 bug）。** `finishSession` / `abandonSession`
+现在往 session 写 `review` 标记，`levelDetailOf()` 评估难度档时跳过复习局 ——
+复习局专挑不会的题，正确率天然偏低，以前算进来会把孩子一直压在基础档。
+老存档没有这个字段，按普通局处理。`30-bank.js` / `40-runner.js` 是共用逻辑，
+`docs/app.js` 会跟着同步，但网页版没有复习局，行为零变化。
+
+**答案不进答题前的数据层。** 以前 `visual.forQuestion()` 返回的对象里已经
+带着 `result`（得数积木）、`parts[].solved`（拆数答案）、`after.word`（英语
+正确词），只靠 WXML 的 `revealed` 挡着 —— 模板改错一行就泄题。现在
+`lib/visual.js` 把这三个字段从 `forQuestion()` 剥掉，新增 `reveal()` 只在
+作答后返回、`merge()` 在 `onOption` 同一次 `setData` 里合并回去。答题前的
+`page.data.visual` 里根本不存在答案字段。`steps`（进位/借位过程帧）是讲解
+数据、只在 `answered` 之后渲染，留在前半边 —— 切题窗口必须进题时就知道
+这题有没有分步。无头测试对全 600 道题断言「零答案字段」。
+
+**音位格子按音素数。`visual-english.js` 以前用 `w.length`，`six` 会画 3 格，
+实际是 /s/ /ɪ/ /k/ /s/ 四个音。现在 `phonemeCount()` 把 `x` 算两个音、
+`sh/ch/th/wh/ck/ph/ng` 和叠字母算一个；长词仍 clamp 到 3~5 格，只给节奏
+示意（`nose`/`snake` 的 magic e、`juice` 的双元音不逐一数，不值当）。
+
+**首页按钮报本局题数。** 以前「复习错题（37）」点进去只做 10 道，改成
+「复习错题（本局 10 题）」；总错题数在家长页「待巩固的题」看。
+
+另外两项在主 README 的音频章节：题干音频降到 16 kHz / 12 kbps（0.99 →
+0.85 MB），以及 `check_audio.py` 的解码缓存（全量 30 秒 → 命中 1.3 秒）。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -311,7 +351,7 @@ npm run mp:build     # 生成 miniprogram/generated/
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，316 项断言
+npm run mp:test      # wx 桩 + Node，387 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

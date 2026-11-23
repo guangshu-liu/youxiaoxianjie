@@ -308,7 +308,11 @@
       total: items.length,
       pointsEarned: pointsEarned,
       items: items,
-      spins: spins
+      spins: spins,
+      // 复习局专挑错题，正确率天然偏低，不能拿去评估难度档。
+      // levelDetailOf() 会跳过带这个标记的局；普通局为 false，老存档
+      // 没这个字段时是 undefined，同样按普通局处理，兼容。
+      review: !!round.review
     };
     save.sessions.push(session);
     while (save.sessions.length > 30) save.sessions.shift();   // 只留最近 30 局
@@ -337,7 +341,8 @@
       pointsEarned: 0,
       items: items,
       spins: [],
-      aborted: true
+      aborted: true,
+      review: !!round.review
     };
     save.sessions.push(session);
     while (save.sessions.length > 30) save.sessions.shift();

@@ -19,14 +19,21 @@
 路径，表现为「读题喇叭在，但一点声音都没有」。主包 2 MB 上限原本装不下
 171 条音频，靠下面这条解决 ——
 
-体积关键：macOS `afconvert` 会把音频数据对齐到 4096 字节页边界，中间塞一个
-约 3 KB 的 `free` 填充 box。171 个文件合计白白占 515 KB。这里生成后剥掉
-`free` 并修正 `moov/stco` 里的 chunk 偏移表，解码出的 PCM 逐字节不变
-（音质、时长、音量完全不动），音频从 1.46 MB 降到 0.97 MB，主包合计
-约 1.81 MB，稳稳落在 2 MB 以内。
+体积关键有两条：
+  1. macOS `afconvert` 会把音频数据对齐到 4096 字节页边界，中间塞一个约
+     3 KB 的 `free` 填充 box。这里生成后剥掉 `free` 并修正 `moov/stco` 的
+     chunk 偏移表，解码出的 PCM 逐字节不变（音质、时长、音量完全不动）。
+  2. 采样率 / 码率。1.2.12 之前是 AAC-LC 22.05 kHz / 16 kbps，174 条占
+     0.97 MB，主包静态合计 1.97 MB，离 2 MB 只剩 31 KB。1.2.13 起降到
+     **16 kHz / 12 kbps**，省约 25%（≈0.25 MB），给后面加题、加语音留出
+     空间。中文提示句是合成女声、语速 205，频带本来就不宽，12 kbps 对
+     听清「看拼音，选出正确的字」这类短句完全够；而且时长、音量、有声
+     窗占比仍由 `tools/check_audio.py` 逐条解码把关，音质退化会当场报错。
 
-音频参数：macOS `say -v Tingting -r 205` → `afconvert` AAC-LC 22.05 kHz /
-16 kbps，iOS / Android 的 InnerAudioContext 都原生支持。
+音频参数：macOS `say -v Tingting -r 205` → `afconvert` AAC-LC 16 kHz /
+12 kbps，iOS / Android 的 InnerAudioContext 都原生支持。
+改码率后必须跑 `python3 tools/gen_tts_audio.py --force` 全量重生成，
+不能只改参数 —— `generate()` 默认复用磁盘上已有的 m4a。
 """
 
 import argparse
@@ -47,10 +54,11 @@ TEXTS_JS = os.path.join(ROOT, 'tools', 'tts_texts.js')
 
 VOICE = 'Tingting'
 RATE = 205
-AF_CONVERT = ['afconvert', '-f', 'm4af', '-d', 'aac@22050', '-b', '16000']
+AF_CONVERT = ['afconvert', '-f', 'm4af', '-d', 'aac@16000', '-b', '12000']
 AUDIO_URL_ROOT = '/ttsAudio/'
 
-# 主包上限 2 MB。除题干音频外的主包约 885 KB，留 100 KB 余量给以后改动。
+# 主包上限 2 MB。除题干音频外的主包约 0.9 MB，留足余量给以后加题加语音。
+# 降码率后实际约 0.73 MB；这个上限是兜底，防止哪天又有人把码率调回去。
 TTS_MAX_BYTES = int(1.15 * 1024 * 1024)
 
 OK = '\033[32m✔\033[0m'
@@ -157,7 +165,7 @@ def spec_obj(entries):
         'comment': '由 tools/gen_tts_audio.py 生成，勿手改。文本来自 22-tts-text.js 的规则去重结果。',
         'voice': VOICE,
         'rate': RATE,
-        'format': 'AAC-LC 22050Hz / 16kbps / m4a（已剥离 free 填充块）',
+        'format': 'AAC-LC 16000Hz / 12kbps / m4a（已剥离 free 填充块）',
         'location': 'miniprogram/ttsAudio（主包）',
         'entries': entries
     }
@@ -173,34 +181,42 @@ def map_source(entries):
 
 def generate_one(text, dest, tmpdir):
     aiff = os.path.join(tmpdir, 'tts.aiff')
+    staged = os.path.join(tmpdir, 'out.m4a')
     r = subprocess.run(['say', '-v', VOICE, '-r', str(RATE), '-o', aiff, text],
                        capture_output=True, text=True)
     if r.returncode:
         return 'say 失败：' + (r.stderr or '').strip()[:160]
-    r = subprocess.run(AF_CONVERT + [aiff, dest], capture_output=True, text=True)
+    r = subprocess.run(AF_CONVERT + [aiff, staged], capture_output=True, text=True)
     if r.returncode:
         return 'afconvert 失败：' + (r.stderr or '').strip()[:160]
-    if not os.path.exists(dest) or os.path.getsize(dest) < 500:
+    if not os.path.exists(staged) or os.path.getsize(staged) < 500:
         return '输出文件异常'
-    strip_filler(dest)
+    strip_filler(staged)
+    # 原子覆盖而不是「先删后写」：改码率全量重生成时一条都不用删，
+    # 中途失败也不会把已有音频清空。临时目录就在 AUDIO_DIR 里，同卷，
+    # os.replace 不会跨设备报错。
+    os.replace(staged, dest)
     return None
 
 
-def generate(entries):
+def generate(entries, force=False):
     os.makedirs(AUDIO_DIR, exist_ok=True)
     wanted = set(e['file'] for e in entries)
 
     made, reused, trimmed, errors = 0, 0, 0, []
-    with tempfile.TemporaryDirectory(prefix='tts_') as tmp:
+    with tempfile.TemporaryDirectory(prefix='tts_', dir=AUDIO_DIR) as tmp:
         for e in entries:
             dest = os.path.join(AUDIO_DIR, e['file'])
-            if os.path.exists(dest) and os.path.getsize(dest) > 500:
+            if not force and os.path.exists(dest) and os.path.getsize(dest) > 500:
                 reused += 1
                 # 旧版本（分包时代）留下的文件带 free 填充，就地瘦身，
                 # 不必重新合成，音色与 PCM 完全不变。
                 if has_filler(dest) and strip_filler(dest):
                     trimmed += 1
                 continue
+            # --force 用于改了码率之后全量重合成。generate_one 走临时文件
+            # + os.replace 原子覆盖，不删目录也不删文件：万一中途 say 失败，
+            # 已生成的那部分还在，不会把 174 条音频一次性清空。
             err = generate_one(e['text'], dest, tmp)
             if err:
                 errors.append(e['text'] + ' → ' + err)
@@ -245,6 +261,10 @@ def check():
         fail('清单与 22-tts-text.js 的规则不一致，跑 npm run tts:audio 重建')
     if spec.get('voice') != VOICE or spec.get('rate') != RATE:
         fail('清单里的音色/语速与生成器不一致，需要重生成')
+    if spec.get('format') != spec_obj([])['format']:
+        # 改了 AF_CONVERT 却忘了 --force 时，磁盘上还是旧码率的 m4a，
+        # 清单却写着新参数 —— 这种「看着省了体积、其实没省」必须拦住。
+        fail('清单里的编码参数与生成器不一致，跑 python3 tools/gen_tts_audio.py --force 全量重生成')
 
     if not os.path.isfile(MAP_PATH):
         fail('缺少映射 ' + MAP_PATH)
@@ -295,12 +315,10 @@ def main():
         if not shutil.which(tool):
             fail('找不到 ' + tool + '（本脚本依赖 macOS 自带的 say / afconvert）')
 
-    if args.force:
-        shutil.rmtree(AUDIO_DIR, ignore_errors=True)
     if args.check:
         check()
     else:
-        generate(entries_for(computed_texts()))
+        generate(entries_for(computed_texts()), force=args.force)
 
 
 if __name__ == '__main__':

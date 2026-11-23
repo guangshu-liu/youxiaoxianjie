@@ -114,9 +114,10 @@
   /**
    * 孩子当前该做哪一档题（1 = 基础，2 = 进阶）。
    *
-   * 只看最近 20 次**本科目**作答：英语全对不该让数学跟着升档。存档里
-   * 只留有 qid 和 correct，所以用 byIdMap 回查科目；题库换过之后旧 qid
-   * 查不到就跳过，不拿失效记录充数。
+   * 只看最近 20 次**本科目、非复习局**的作答（中途退出局已答的题仍算）：英语全对不该
+   * 让数学跟着升档；错题复习局专挑不会的题，正确率天然偏低，若算进来会
+   * 一直把孩子压在基础档。存档里只留有 qid 和 correct，所以用 byIdMap
+   * 回查科目；题库换过之后旧 qid 查不到就跳过，不拿失效记录充数。
    *
    * 样本不足 6 次（新用户 / 刚清了存档 / 题库更新）一律留在基础档；
    * 返回 { level, acc, seen }。acc 供 drawOne 决定进阶题的混入比例：
@@ -129,7 +130,10 @@
     var seen = 0, correct = 0;
 
     for (var i = sessions.length - 1; i >= 0 && seen < 20; i--) {
-      var items = (sessions[i] && sessions[i].items) || [];
+      // 复习局的题目全是错题，把它计入等于用「专门挑出来的难点」衡量
+      // 整体水平，会把档位永久压低。普通局 / 老存档（无该字段）照常计入。
+      if (sessions[i] && sessions[i].review) continue;
+      var items = (sessions[i].items) || [];
       for (var j = items.length - 1; j >= 0 && seen < 20; j--) {
         var it = items[j];
         var q = byIdMap[it.qid];

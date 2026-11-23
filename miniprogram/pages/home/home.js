@@ -11,7 +11,8 @@ Page({
     progressPct: 0,
     nextBadge: null,
     lastText: '',
-    reviewCount: 0
+    reviewCount: 0,
+    reviewRoundSize: 0
   },
 
   onShow: function () {
@@ -20,6 +21,9 @@ Page({
 
     var lifetime = save.points.lifetime || 0;
     var last = save.sessions.length ? save.sessions[save.sessions.length - 1] : null;
+    var reviewCount = (save.wrongBook || []).filter(function (w) {
+      return !w.cleared;
+    }).length;
 
     this.setData({
       stars: save.points.balance || 0,
@@ -29,9 +33,10 @@ Page({
       nextBadge: stars.nextBadge(lifetime),
       lastText: last ? ('上次：' + last.correct + ' / ' + last.total + ' 题') : '',
       // 少于 3 道错题不摆复习入口：一局太短，孩子刚进入状态就结束了。
-      reviewCount: (save.wrongBook || []).filter(function (w) {
-        return !w.cleared;
-      }).length
+      // 按钮只报「本局几题」：以前报错题总数（比如 37），点进去却只做
+      // 10 道，家长以为漏题。总错题数在家长页「待巩固的题」里看。
+      reviewCount: reviewCount,
+      reviewRoundSize: Math.min(reviewCount, G.ROUND_SIZE)
     });
   },
 

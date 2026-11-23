@@ -25,7 +25,14 @@ check_audio.py — 语音全链路体检（零依赖，只要 macOS 自带的 af
 用法：
     python3 tools/check_audio.py             # 完整体检
     python3 tools/check_audio.py --quick    # 跳过 PCM 解码（只看结构 / 文件）
+    python3 tools/check_audio.py --no-cache # 忽略解码缓存，强制全量重解码
     python3 tools/check_audio.py --json     # 机器可读的结果
+
+解码缓存：262 条音频每条都要起一次 afinfo + 一次 afconvert，全量体检约
+30 秒，其中绝大部分花在子进程启动上。`afinfo` 的时长和 PCM 的峰值 / RMS /
+有声占比按 (路径, 大小, mtime_ns, 探针类型) 缓存在 `.audio_health_cache.json`，
+只有音频文件真的变了才重新解码。引用层、副本 sha1、映射这些检查**不缓存**
+—— 文件一改就得重查。缓存文件不进 git，改了体检逻辑就调 CACHE_VERSION。
 """
 
 import argparse
@@ -45,6 +52,15 @@ DATA = os.path.join(ROOT, 'src', 'data')
 SPEC = os.path.join(DATA, 'english_audio.json')
 MANIFEST = os.path.join(ROOT, 'tools', 'audio_manifest.json')
 MASTER = os.path.join(ROOT, 'audio')
+
+# 改了 duration() / pcm_stats() 的判定口径就 +1，让旧探针结果全部失效。
+CACHE_VERSION = 1
+CACHE_PATH = os.path.join(ROOT, '.audio_health_cache.json')
+_probe_cache = {}
+_cache_on = False
+_cache_hits = 0
+_cache_writes = 0
+
 COPIES = [
     ('网页版', os.path.join(ROOT, 'docs', 'audio')),
     ('小程序', os.path.join(ROOT, 'miniprogram', 'generated', 'audio')),
@@ -200,6 +216,85 @@ def duration(path):
     return float(m.group(1)) if m else None
 
 
+# ---- 解码结果缓存 --------------------------------------------------------
+
+def load_cache(enabled):
+    global _probe_cache, _cache_on
+    _cache_on = bool(enabled)
+    if not _cache_on:
+        return
+    try:
+        with open(CACHE_PATH, encoding='utf-8') as f:
+            obj = json.load(f)
+        if obj.get('version') == CACHE_VERSION:
+            _probe_cache = obj.get('probes') or {}
+    except (OSError, ValueError):
+        _probe_cache = {}
+
+
+def save_cache():
+    """只留每个 (文件, 探针类型) 的最新一条，避免换码率后旧条目无限堆积。"""
+    global _cache_writes
+    if not _cache_on or not _cache_writes:
+        return
+    latest = {}
+    for key in _probe_cache:
+        parts = key.rsplit('|', 3)
+        if len(parts) != 4:
+            continue
+        base = parts[0] + '|' + parts[3]
+        try:
+            mt = int(parts[2])
+        except ValueError:
+            continue
+        if base not in latest or mt > latest[base][0]:
+            latest[base] = (mt, key)
+    probes = {k: _probe_cache[k] for _, k in latest.values()}
+    tmp = CACHE_PATH + '.tmp'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump({'version': CACHE_VERSION, 'probes': probes}, f)
+        os.replace(tmp, CACHE_PATH)
+    except OSError:
+        pass          # 缓存写不了不影响体检结论，下次全量解码而已
+
+
+def cache_key(path, kind):
+    st = os.stat(path)
+    # mtime_ns 而不是 mtime：同一秒内重新生成音频也必须失效。
+    return '%s|%d|%d|%s' % (os.path.relpath(path, ROOT),
+                            st.st_size, st.st_mtime_ns, kind)
+
+
+def cached_duration(path):
+    global _cache_hits, _cache_writes
+    if not _cache_on:
+        return duration(path)
+    key = cache_key(path, 'dur')
+    if key in _probe_cache:
+        _cache_hits += 1
+        return _probe_cache[key]
+    val = duration(path)
+    if val is not None:      # afinfo 失败别缓存，下次还能重试
+        _probe_cache[key] = val
+        _cache_writes += 1
+    return val
+
+
+def cached_pcm_stats(path, tmpdir):
+    global _cache_hits, _cache_writes
+    if not _cache_on:
+        return pcm_stats(path, tmpdir)
+    key = cache_key(path, 'pcm')
+    if key in _probe_cache:
+        _cache_hits += 1
+        return tuple(_probe_cache[key])
+    val = pcm_stats(path, tmpdir)   # 抛异常时不写缓存，交给调用方报错
+    _probe_cache[key] = list(val)
+    _cache_writes += 1
+    return val
+
+
 def parse_map(path):
     """从 data.js / audio.js 里抠出 AUDIO_MAP 的 id → src。
 
@@ -275,7 +370,7 @@ def check_tts(errs, stats, tmpdir, quick, have_tools):
             errs.append('%s 不是 m4a（缺 ftyp 头）' % e['file'])
 
         if have_tools:
-            sec = duration(path)
+            sec = cached_duration(path)
             if sec is None:
                 errs.append('%s 无法被 afinfo 解析' % e['file'])
             else:
@@ -287,7 +382,7 @@ def check_tts(errs, stats, tmpdir, quick, have_tools):
                                 % (e['file'], sec, len(e['text']), limit))
             if not quick:
                 try:
-                    _s, peak, rms, voiced = pcm_stats(path, tmpdir)
+                    _s, peak, rms, voiced = cached_pcm_stats(path, tmpdir)
                 except Exception as ex:
                     errs.append('%s 解码失败：%s' % (e['file'], ex))
                 else:
@@ -313,8 +408,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--quick', action='store_true', help='跳过 PCM 解码')
     ap.add_argument('--json', action='store_true', help='输出 JSON')
+    ap.add_argument('--no-cache', action='store_true', help='忽略解码缓存，强制全量重解码')
     args = ap.parse_args()
 
+    load_cache(not args.no_cache)
     errs = []
     warns = []
     stats = {'files': 0, 'decoded': 0, 'bytes': 0,
@@ -380,7 +477,7 @@ def main():
                 errs.append('%s 的 sha1 与 audio_manifest.json 不符（文件被改过或没重新生成）' % aid)
 
             if have_tools:
-                sec = duration(master)
+                sec = cached_duration(master)
                 if sec is None:
                     errs.append('%s 无法被 afinfo 解析' % aid)
                 else:
@@ -391,7 +488,7 @@ def main():
                                     % (aid, sec, MIN_SEC, MAX_SEC))
                 if not args.quick:
                     try:
-                        _s, peak, rms, voiced = pcm_stats(master, tmpdir)
+                        _s, peak, rms, voiced = cached_pcm_stats(master, tmpdir)
                     except Exception as ex:
                         errs.append('%s 解码失败：%s' % (aid, ex))
                     else:
@@ -449,6 +546,7 @@ def main():
         check_tts(errs, stats, tmpdir, args.quick, have_tools)
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
+        save_cache()
 
     if args.json:
         print(json.dumps({'ok': not errs, 'errors': errs, 'warnings': warns,
@@ -459,6 +557,9 @@ def main():
     print('语音体检  audio/ · docs/ · miniprogram/')
     print('=' * 52)
     print('  语音清单 %3d 条   题库引用 %3d 条' % (len(spec_ids), len(refs)))
+    if _cache_on and _cache_hits:
+        print('  解码缓存 命中 %3d 条探针（文件没变就不重复起 afinfo/afconvert）'
+              % _cache_hits)
     print('  主文件   %3d 个   %s' % (stats['files'],
                                      ('%.1f KB' % (stats['bytes'] / 1024.0))))
     if stats['min_sec'] is not None:

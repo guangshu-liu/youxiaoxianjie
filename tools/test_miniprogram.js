@@ -525,7 +525,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
     options: [{ id: 'a', text: '99' }], answer: 'a'
   }, true), null, '题库得数与算式不符时拒绝演示，不画错图形');
 
-  // 关键：答题前只画两个操作数，结果行靠 WXML 的 answered 关着。
+  // 关键（1.2.13）：答题前数据层就不存在得数，不是靠 WXML 的 answered 挡着。
+  const V8e = require(path.join(MP, 'lib/visual.js'));
   const cfg = loadPage('pages/play/play.js');
   const page = makeInstance(cfg);
   page.onLoad({ subject: 'math' });
@@ -535,7 +536,10 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(page.data.visual.left.value, /^(\d+)/.exec(sample.stem.text)[1] * 1,
      '左侧积木对应算式第一个数');
   eq(page.data.answered, false, '答题前结果行不显示，不提前泄答案');
-  ok(!!page.data.visual.result, '得数数据已备好，作答后直接揭晓');
+  eq(page.data.visual.result, undefined, '答题前页面数据里没有得数积木');
+  ok(!!V8e.reveal(sample, true).result, '得数改由 reveal() 在作答后返回');
+  ok(!!V8e.merge(page.data.visual, V8e.reveal(sample, true)).result,
+     'merge 后 visual 才补上得数');
 
   const save = app.globalData.save;
   save.settings.visualMath = false;
@@ -585,7 +589,20 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(cover.pinyin, 45, '语文 45 道看拼音选字可演示，2 道零声母跳过');
   eq(cover.none, 343, '其余 343 道静默跳过');
 
-  // 拆数 / 凑十：四种题干格式，每种只有一个未知块，答案藏在 solved 里。
+  // 1.2.13：答案字段在数据结构上就不进答题前的 visual。
+  let leaked = 0;
+  [math, ch, en].forEach((d) => d.forEach((q) => {
+    const v = V.forQuestion(q, true);
+    if (!v) return;
+    if (V.ANSWER_KEYS.some((k) => v[k] !== undefined)) leaked++;
+    if ((v.parts || []).some((p) => p && p.solved)) leaked++;
+  }));
+  eq(leaked, 0, '全 600 道题：forQuestion 返回的对象里不存在任何答案字段');
+  eq(V.reveal(en.find((q) => q.tags[0] === '听音选词'), false), null,
+     '家长关掉开关后 reveal 也返回 null，不会绕过开关塞答案');
+
+  // 拆数 / 凑十：四种题干格式，每种只有一个未知块。答案不再塞在
+  // parts[].solved 里跟着进题，改由 reveal() 作答后返回。
   const modes = {};
   math.filter((q) => q.tags[0] === '拆数').forEach((q) => {
     const v = V.forQuestion(q, true);
@@ -593,8 +610,12 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
     modes[v.mode] = (modes[v.mode] || 0) + 1;
     const unknowns = v.parts.filter((p) => p.unknown);
     eq(unknowns.length, 1, '每道拆数题只有一个未知块：' + q.stem.text);
+    eq(unknowns[0].solved, undefined,
+       '答题前的未知块里没有得数：' + q.stem.text);
     const ans = q.options.find((o) => o.id === q.answer).text;
-    eq(unknowns[0].solved.label, ans, '未知块备好正确答案：' + q.stem.text);
+    const revealedParts = V.reveal(q, true).parts;
+    eq(revealedParts.filter((p) => p.unknown)[0].solved.label, ans,
+       '作答后 reveal 才给出正确答案：' + q.stem.text);
   });
   eq(modes.place, 14, '位值拆分 14 道');
   eq(modes['make-ten'], 7, '凑十 7 道');
@@ -604,7 +625,10 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const ten = V.forQuestion(tenQ, true);
   eq(ten.mode, 'make-ten', '凑十题识别为 make-ten');
   eq(ten.hint.a + ten.hint.c, 10, '凑十提示的两个数正好凑成十');
-  eq(ten.parts.filter((p) => p.unknown)[0].solved.label, '6', '凑十题得数 6 备在 unknown 里');
+  eq(ten.parts.filter((p) => p.unknown)[0].solved, undefined,
+     '凑十题答题前的问号里没有得数');
+  eq(V.reveal(tenQ, true).parts.filter((p) => p.unknown)[0].solved.label, '6',
+     '凑十题得数 6 由 reveal 在作答后给出');
   eq(ten.top, null, '凑十题不画总量积木，避免把 16 直接摆出来');
   eq(V.math.forSplitQuestion(Object.assign({}, tenQ,
     { stem: { text: '8 + 8 = 8 + 3 + ?' } }), true), null,
@@ -627,16 +651,19 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   const blend = V.forQuestion(blendQ, true);
   eq(blend.before.type, 'split', '拼合 CVC 题画词族两块');
   ok(!blend.before.word, '拼合题答题前不显示合并后的答案词');
-  eq(blend.after.word, 'dam', '作答后才揭晓正确词');
+  eq(blend.after, undefined, '答题前 visual 里没有 after（正确词字段不存在）');
+  eq(V.reveal(blendQ, true).after.word, 'dam', '作答后 reveal 才揭晓正确词');
   const listenQ = en.find((q) => q.tags[0] === '听音选词');
   const listen = V.forQuestion(listenQ, true);
   eq(listen.before.type, 'slots', '听音题答题前只画音位格子');
   ok(listen.before.slots.length >= 3 && listen.before.slots.length <= 5,
      '音位格子 3~5 个，长词不画满');
   ok(!listen.before.slots.some((s) => s.ch), '格子里没有字母，答题前不泄答案');
-  eq(listen.after.word, 'yam', '作答后才给正确词');
-  eq(listen.audioId, 'en.yam', '答错重播用的音频 id 保留');
-  ok(listen.after.letters.every((L, i) => L.delay === (i * 0.12).toFixed(2)),
+  eq(listen.after, undefined, '听音题答题前没有 after，数据层不泄答案词');
+  const listenReveal = V.reveal(listenQ, true);
+  eq(listenReveal.after.word, 'yam', '作答后 reveal 才给正确词');
+  eq(listen.audioId, 'en.yam', '答错重播用的音频 id 保留在答题前数据里');
+  ok(listenReveal.after.letters.every((L, i) => L.delay === (i * 0.12).toFixed(2)),
      '字母卡片依次高亮，各差 120ms');
   const rhyme = V.forQuestion(en.find((q) => q.tags[0] === '押韵配对'), true);
   eq(rhyme.before.rime, 'am', 'ram 拆出词族 am，把「结尾音」摆出来');
@@ -795,6 +822,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   p.later = (ms) => { calls.push(ms); };
   p.onOption({ currentTarget: { dataset: { id: answerOf(carryQ) } } });
   eq(p.data.answered, true, '作答后进入已作答态');
+  ok(!!p.data.visual.result, '作答后 reveal 把得数合并进 visual（同一次 setData）');
   eq(p.data.revealed, false, '分步题作答瞬间仍不揭晓得数');
   eq(p.data.stepNow, -1, '分步帧等定时器依次点亮');
   eq(p.data.explainLong, true, '分步题倒计时条标记为长时');
@@ -871,6 +899,91 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   save.settings.visualSteps = true;
   G.Store.save(save);
+}
+
+/* ---- 8h. 1.2.13：星星折算 / 复习局语义 / 音位 / 降码率 / 体检缓存 ---- */
+{
+  const fs = require('fs');
+  const stars8 = require(path.join(MP, 'lib/stars.js'));
+  const VE = require(path.join(MP, 'lib/visual-english.js'));
+
+  // 按正确率判档：普通局逐档与旧版一致，短复习局不再吃亏。
+  eq(stars8.forCorrect(9, 'chinese', 10), 3, '标准局 9/10 仍是 3 星');
+  eq(stars8.forCorrect(6, 'chinese', 10), 2, '标准局 6/10 仍是 2 星');
+  eq(stars8.forCorrect(5, 'chinese', 10), 1, '标准局 5/10 仍是 1 星');
+  eq(stars8.forCorrect(0, 'chinese', 10), 1, '全错仍有 1 星保底');
+  eq(stars8.forCorrect(9, 'chinese'), 3, '省略 total 时按标准 10 题，兼容旧调用');
+  eq(stars8.forCorrect(3, 'chinese', 3), 3, '3 题复习局全对拿 3 星（修复前只有 1 星）');
+  eq(stars8.forCorrect(5, 'chinese', 5), 3, '5 题复习局全对拿 3 星');
+  eq(stars8.forCorrect(8, 'chinese', 8), 3, '8 题复习局全对拿 3 星');
+  eq(stars8.forCorrect(4, 'chinese', 5), 2, '5 题对 4 道按 80% 给 2 星');
+  eq(stars8.forCorrect(2, 'chinese', 3), 2, '3 题对 2 道按 67% 给 2 星');
+  eq(stars8.forCorrect(2, 'chinese', 2), 1, '不足 3 题的极短局固定 1 星，防刷');
+  eq(stars8.forCorrect(1, 'chinese', 1), 1, '单题局固定 1 星');
+
+  const finishSrc = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  ok(/forCorrect\(correct, this\.subject \|\| 'chinese', total\)/.test(finishSrc),
+     '结算传入本局题数，复习局不再套绝对阈值');
+
+  // 复习局独立语义：写进 session，难度评估跳过。
+  const runnerSrc = fs.readFileSync(path.join(ROOT, 'src/js/40-runner.js'), 'utf8');
+  eq((runnerSrc.match(/review: !!round\.review/g) || []).length, 2,
+     '完成局和中途退出局都写 review 标记');
+  const bankSrc = fs.readFileSync(path.join(ROOT, 'src/js/30-bank.js'), 'utf8');
+  ok(/sessions\[i\]\.review\) continue/.test(bankSrc), '难度评估跳过复习局');
+
+  const s8 = app.globalData.save;
+  const sessionsBak = s8.sessions;
+  const math8 = G.Bank.of('math');
+  const mkItems = (ok) => math8.slice(0, 6).map((q) => ({ qid: q.id, correct: ok }));
+  s8.sessions = [
+    { items: mkItems(true), total: 6 },
+    { items: mkItems(false), total: 6, review: true }
+  ];
+  eq(G.Bank.levelOf(s8, 'math'), 2, '复习局全错不把难度档拉回基础档');
+  s8.sessions = [
+    { items: mkItems(true), total: 6 },
+    { items: mkItems(false), total: 6 }
+  ];
+  eq(G.Bank.levelOf(s8, 'math'), 1, '普通局全错仍如实降档');
+  s8.sessions = sessionsBak;
+
+  // 音位格子按音素，不按字母。
+  eq(VE.phonemeCount('six'), 4, 'six 是 4 个音 /s/ /ɪ/ /k/ /s/，不是 3 格');
+  eq(VE.phonemeCount('fix'), 4, 'fix 的 x 算两个音');
+  eq(VE.phonemeCount('mix'), 4, 'mix 的 x 算两个音');
+  eq(VE.phonemeCount('cat'), 3, '普通 CVC 仍是 3 格');
+  eq(VE.phonemeCount('yam'), 3, 'yam 仍是 3 格');
+  eq(VE.phonemeCount('shop'), 3, 'sh 双字母单音');
+  eq(VE.phonemeCount('ball'), 3, 'ball 的 ll 叠字母算一个音');
+
+  // 首页按钮报本局题数，不再报「复习错题（37）」却只做 10 道。
+  const homeSrc = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
+  ok(/reviewRoundSize: Math\.min\(reviewCount, G\.ROUND_SIZE\)/.test(homeSrc),
+     '首页算出本局实际题数（上限 10）');
+  const homeWxml = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  ok(/本局 \{\{reviewRoundSize\}\} 题/.test(homeWxml), '按钮文案报本局题数');
+  ok(!/复习错题（\{\{reviewCount\}\}）/.test(homeWxml), '不再直接展示错题总数');
+
+  // 音频降码率：清单、生成器、一致性校验三处都要改到位。
+  const spec8 = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'src/data/tts_audio.json'), 'utf8'));
+  eq(spec8.entries.length, 174, '174 条题干音频');
+  ok(/16000Hz \/ 12kbps/.test(spec8.format), '清单记录 16kHz / 12kbps');
+  const genSrc = fs.readFileSync(path.join(ROOT, 'tools/gen_tts_audio.py'), 'utf8');
+  ok(/aac@16000.*12000/.test(genSrc), '生成器确实用 16kHz / 12kbps');
+  ok(/spec\.get\('format'\)/.test(genSrc),
+     '清单编码与生成器不一致时会被体检拦住，不能只改参数不重生成');
+  ok(/os\.replace\(staged, dest\)/.test(genSrc),
+     '重生成走临时文件原子覆盖，不批量删除已有音频');
+
+  // 体检缓存：键要能感知文件变化，且缓存文件不进 git。
+  const caSrc = fs.readFileSync(path.join(ROOT, 'tools/check_audio.py'), 'utf8');
+  ok(/CACHE_VERSION/.test(caSrc) && /--no-cache/.test(caSrc),
+     '体检支持缓存且能强制全量重解码');
+  ok(/mtime_ns/.test(caSrc), '缓存键含 mtime_ns，重生成音频立刻失效');
+  ok(fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf8')
+       .indexOf('.audio_health_cache.json') >= 0, '缓存文件不进 git');
 }
 
 /* ---- 9. 备份 ---- */

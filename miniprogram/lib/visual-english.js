@@ -7,7 +7,7 @@
  *     · 题干本来就带词的题（拼合 CVC / 押韵配对）→ 画 onset + rime 两块，
  *       只把已有的信息摆出来，不合并成答案词。
  *     · 听音题 → 只画几个空心「音位格子」，不显示字母；音频一开始播，
- *       格子跟着依次点亮，训练「这个词有几个音」的节奏感。
+ *       格子跟着依次点亮，问的是「这个词有几个音」，不是几个字母。
  *   作答后
  *     正确答案已经在选项里标绿了，这时才把正确词拆成字母卡片依次高亮，
  *     形成「听到的音 → 看到的拼写」闭环。答错时会重播一次单词音频，
@@ -58,6 +58,35 @@ function letters(word, step) {
   return out;
 }
 
+/* 双字母单音（sh/ch/th/…）和叠字母（ball 的 ll / zoo 的 oo）算一个音。
+ * qu 不算：它是 /k/ + /w/ 两个音。 */
+var DIGRAPHS = ['sh', 'ch', 'th', 'wh', 'ck', 'ph', 'ng'];
+
+/**
+ * 按音素数格子，不按字母数。最容易错的是 x：six 只有 3 个字母，却是
+ * /s/ /ɪ/ /k/ /s/ 四个音；fix / mix 同理。以前用 w.length，会少画一格，
+ * 教的又是音位意识，等于教错。
+ *
+ * 长词（≥5 字母）仍由调用方 clamp 到 5 格，只给节奏示意：OPW2 的长词
+ * 多是「听开头字母」题，真要逐一数准还得处理 magic e（nose/snake）和
+ * 双元音（juice/goat），代价不值，多画几格反而把注意力从「听」上拽走。
+ */
+function phonemeCount(word) {
+  var w = String(word || '').toLowerCase();
+  var n = 0;
+  for (var i = 0; i < w.length; i++) {
+    var two = w.slice(i, i + 2);
+    if (two.length === 2 &&
+        (DIGRAPHS.indexOf(two) >= 0 || two.charAt(0) === two.charAt(1))) {
+      n++;
+      i++;
+      continue;
+    }
+    n += (w.charAt(i) === 'x') ? 2 : 1;   // x = /k/ + /s/
+  }
+  return n;
+}
+
 /** 音位格子：只表示「有几个音」，不表示字母，答题前不泄题。 */
 function slots(n) {
   var out = [];
@@ -98,9 +127,12 @@ function forQuestion(q, enabled) {
 
   if (!before && audioId) {
     var w = wordFromAudioId(audioId);
-    // 3~5 个格子就够表达节奏；question / umbrella 这类长词不必画满，
+    // 3~5 个格子够表达节奏；question / umbrella 这类长词不必画满，
     // 否则一排格子反而把注意力从「听」上拽走。
-    before = { type: 'slots', slots: slots(Math.max(3, Math.min(5, w.length || 3))) };
+    before = {
+      type: 'slots',
+      slots: slots(Math.max(3, Math.min(5, phonemeCount(w) || 3)))
+    };
   }
 
   if (!before) return null;
@@ -120,5 +152,7 @@ module.exports = {
   forQuestion: forQuestion,
   onsetRime: onsetRime,
   letters: letters,
+  slots: slots,
+  phonemeCount: phonemeCount,
   wordFromAudioId: wordFromAudioId
 };

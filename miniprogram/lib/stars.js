@@ -39,15 +39,26 @@ var RULES = {
 };
 
 /**
- * 一局该给几颗星。只看答对题数，不掺随机。
+ * 一局该给几颗星。不掺随机，按**正确率**判档。
+ *
+ * 阈值 RULES 是按标准局 10 题定的（9 题 3 星 / 6 题 2 星），这里换算成
+ * 0.9 / 0.6。不换算的话错题复习局会吃亏 —— 复习局「不足一局就出几道算
+ * 几道」，3 道题全对在绝对阈值下只能拿 1 星，孩子会觉得全对了也没奖励。
+ *
+ * total 省略时按 10 题标准局，普通局行为与旧版逐档一致（9→3、6→2）。
+ * 少于 3 题的局固定 1 星：2 道题全对拿 3 星太容易刷；每日 60 星上限和
+ * 错题 cleared 机制只兜住长局，兜不住这种极短局。
  *
  * 1 星是保底 —— 全错也给。这个游戏的前提是「答错不卡住」，
  * 结算时给 0 星等于把「答错」变成惩罚，和整个设计相反。
  */
-function forCorrect(correct, subject) {
+function forCorrect(correct, subject, total) {
   var r = RULES[subject] || RULES.chinese;
-  if (correct >= r.three) return 3;
-  if (correct >= r.two) return 2;
+  var n = total || 10;
+  if (n < 3 || !correct || correct <= 0) return 1;
+  var pct = correct / n;
+  if (pct >= r.three / 10) return 3;
+  if (pct >= r.two / 10) return 2;
   return 1;
 }
 

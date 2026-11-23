@@ -171,9 +171,9 @@ Page({
       enterFlag: this.data.enterFlag === 'a' ? 'b' : 'a',
       speaking: false,
       starPop: false,
-      // 纯函数解析题干，不改题库；家长关掉开关时传 false 直接返回 null。
-      visual: visual.forQuestion(q,
-        !(this.save.settings && this.save.settings.visualMath === false)),
+      // 纯函数解析题干，不改题库；forQuestion 只给答题前数据，得数积木 /
+      // 正确词由 onOption 里的 reveal() 合并，答题前 data 里不存在答案。
+      visual: visual.forQuestion(q, this.visualEnabled()),
       // 新题把分步演示整体归零，上一题的定时器已由 clearTimers 清掉。
       stepNow: -1,
       revealed: false,
@@ -218,6 +218,11 @@ Page({
     });
   },
 
+  /** 家长面板「把题目画出来」总开关；老存档没这个键时默认开。 */
+  visualEnabled: function () {
+    return !(this.save.settings && this.save.settings.visualMath === false);
+  },
+
   buildDots: function () {
     var out = [];
     for (var i = 0; i < this.round.questions.length; i++) {
@@ -259,8 +264,14 @@ Page({
     var stepsOff = !!(this.save.settings && this.save.settings.visualSteps === false);
     var stepsOn = !!(v && v.steps && !stepsOff);
 
+    // 作答后才把得数积木 / 正确词 / unknown.solved 合并进 visual。
+    // 必须和 answered 放在同一次 setData：分两次会有一帧
+    // 「answered=true 但 visual.after 还不存在」，字母卡片渲染空数据。
+    var revealedVisual = visual.merge(v, visual.reveal(q, this.visualEnabled()));
+
     this.setData({
       answered: true,
+      visual: revealedVisual,
       options: options,
       fb: correct ? 'ok' : 'bad',
       shake: !correct,
@@ -354,7 +365,9 @@ Page({
     this._closed = true;       // 正常结算，onUnload 不要再记未完成局
     var correct = this.results.filter(function (r) { return r === true; }).length;
     var total = this.results.length;
-    var nominal = stars.forCorrect(correct, this.subject || 'chinese');
+    // 复习局题数不固定，必须把 total 传进去按正确率判档，否则 3 道题
+    // 全对在 9/6 的绝对阈值下只能拿 1 星。
+    var nominal = stars.forCorrect(correct, this.subject || 'chinese', total);
 
     // 顺序不能反：finishSession 记的是**实际到账**的星星。
     // 先 awardPoints 拿到被每日上限削过的值，再把它传给 finishSession，

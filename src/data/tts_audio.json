@@ -2,7 +2,7 @@
   "comment": "由 tools/gen_tts_audio.py 生成，勿手改。文本来自 22-tts-text.js 的规则去重结果。",
   "voice": "Tingting",
   "rate": 205,
-  "format": "AAC-LC 22050Hz / 16kbps / m4a（已剥离 free 填充块）",
+  "format": "AAC-LC 16000Hz / 12kbps / m4a（已剥离 free 填充块）",
   "location": "miniprogram/ttsAudio（主包）",
   "entries": [
     {
