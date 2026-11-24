@@ -13,9 +13,10 @@
  *      合并进 visual。以前靠 WXML 的 revealed 挡着，模板改错一行就泄题；
  *      现在答题前的数据层根本不存在这些字段。
  *
- * steps（进位 / 借位 / 凑十的过程帧）是「怎么算」的讲解数据，不是写好的
- * 得数，而且只在 `answered` 之后渲染，所以留在答题前那半边 —— 切题窗口
- * 要在进题时就知道这题有没有分步，不能等作答后才拿到。
+ * steps（进位 / 借位 / 凑十的过程帧）是「怎么算」的讲解数据，只在
+ * `answered` 之后渲染，所以留在答题前那半边 —— 切题窗口要在进题时就知道
+ * 这题有没有分步，不能等作答后才拿到。1.2.20 起 steps.rest（完整得数或
+ * 得数的个位）也在这层剥掉：frames 是过程，rest 是答案，不能混在一起。
  */
 'use strict';
 
@@ -26,6 +27,8 @@ var pairs = require('./visual-pairs.js');
 
 /** 一眼就是答案的字段。新增 kind 时若也写了得数，要加进这张表。 */
 var ANSWER_KEYS = ['result', 'answer', 'after'];
+/** steps 里唯一直接就是得数的字段；frames 是「怎么算」，保留。 */
+var STEP_ANSWER_KEYS = ['rest'];
 
 /** 内部用的完整解析结果。不导出 —— 页面代码不该有拿到答案的入口。 */
 function full(q, enabled) {
@@ -68,6 +71,10 @@ function forQuestion(q, enabled) {
       return (p && p.solved) ? copyWithout(p, ['solved']) : p;
     });
   }
+  // 1.2.20：12 道题的 rest 是完整得数、37 道是得数的个位，以前只在 WXML
+  // 里靠 answered 挡着。过程帧要留在答题前，答案字段不行 —— 剥掉后模板
+  // 就算改错一行也拿不到得数。reveal() 不需要 rest（WXML 不消费它）。
+  if (v.steps) safe.steps = copyWithout(v.steps, STEP_ANSWER_KEYS);
   return safe;
 }
 
@@ -98,6 +105,7 @@ module.exports = {
   reveal: reveal,
   merge: merge,
   ANSWER_KEYS: ANSWER_KEYS,
+  STEP_ANSWER_KEYS: STEP_ANSWER_KEYS,
   math: math,
   english: english,
   chinese: chinese,

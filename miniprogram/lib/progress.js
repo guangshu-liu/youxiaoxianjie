@@ -108,21 +108,48 @@ function levelMapBySubject(save) {
   return out;
 }
 
-/** 最近若干局正确率折线。排除中途退出和 0 题的脏数据，按时间从旧到新。 */
+/**
+ * 折线只认「能算出正确率」的局。
+ *
+ * 1.2.20：原来的 filter 只看 `total > 0`，导入备份 / 老存档里的脏数据
+ * （correct 是字符串、NaN、比 total 还大、ts 是未来时间）会把 NaNrpx
+ * 和越界坐标直接交给 WXML；sessions 顺序也从不检查，导入后线段左右乱穿。
+ * 复习局和三科难度评估（30-bank.js 的 levelDetailOf）一样排除：一局全是
+ * 专门挑出来的错题，混进折线会把「最近正确率」压低，和家长页看到的档位
+ * 对不上。
+ */
+function isTrendRow(s, now) {
+  if (!s || s.aborted || s.review) return false;
+  if (typeof s.total !== 'number' || !isFinite(s.total) || s.total <= 0) return false;
+  if (typeof s.correct !== 'number' || !isFinite(s.correct)) return false;
+  var ts = +s.ts;
+  return isFinite(ts) && ts <= now;
+}
+
+/** 最近若干局正确率折线。按时间从旧到新，脏数据一律夹回 0~100%。 */
 function trend(save, limit) {
-  var max = limit || TREND_LIMIT;
-  var rows = (save.sessions || [])
-    .filter(function (s) { return !s.aborted && s.total > 0; })
-    .slice(-max);
+  var max = TREND_LIMIT;
+  if (limit !== undefined && limit !== null) {
+    // 延续 1.2.18 的空局语义：显式 0 / 负数 / NaN 是「不要点」，不是省略。
+    max = (typeof limit === 'number' && isFinite(limit) && limit >= 0)
+      ? Math.floor(limit) : 0;
+  }
+  var now = Date.now();
+  var all = (save && save.sessions) || [];
+  var sorted = (Array.isArray(all) ? all : [])
+    .filter(function (s) { return isTrendRow(s, now); })
+    .sort(function (a, b) { return (+a.ts) - (+b.ts); });
+  var rows = max > 0 ? sorted.slice(-max) : [];
 
   var points = rows.map(function (s, i) {
-    var pct = Math.round(s.correct / s.total * 100);
+    var correct = Math.max(0, Math.min(s.total, s.correct));
+    var pct = Math.round(correct / s.total * 100);
     return {
       i: i,
       x: rows.length === 1 ? CHART_X0 + CHART_W / 2 : CHART_X0 + i * CHART_W / (rows.length - 1),
       y: CHART_Y0 + pct * CHART_H / 100,
       pct: pct,
-      label: s.correct + '/' + s.total
+      label: correct + '/' + s.total
     };
   });
 

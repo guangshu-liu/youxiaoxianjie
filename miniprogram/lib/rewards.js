@@ -83,8 +83,13 @@ function badgeList(save, badges) {
  */
 function monstersOf(save, limit) {
   var max = limit || MONSTER_LIMIT;
-  var list = (save.wrongBook || [])
-    .filter(function (w) { return !w.cleared; })
+  var book = (save && save.wrongBook) || [];
+  // 1.2.20：失效 qid（题库改版 / 导入老备份）以前会留一只永远收服不了的
+  // 小怪物 —— 复习局反查不到它，连对两次也清不掉。和 reviewPicks 一样
+  // 先反查题库：只有还能组进复习局的题才摆到首页。家长页 wrongTotal 仍
+  // 是错题本真实条数（含失效项），那个口径是「待巩固的题」，不动。
+  var list = (Array.isArray(book) ? book : [])
+    .filter(function (w) { return w && !w.cleared && G.Bank.byId(w.qid); })
     .sort(function (a, b) {
       return ((b.wrongCount || 0) - (a.wrongCount || 0)) ||
              ((b.lastWrongAt || 0) - (a.lastWrongAt || 0));

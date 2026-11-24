@@ -204,7 +204,9 @@ Page({
       if (instruction) {
         tts.schedule(instruction, 250, function () { self.playWord(id); });
       } else {
-        this.later(350, function () { self.playWord(id); });
+        // 记下这条自动播定时器：孩子在 350ms 内答错或点喇叭时，
+        // playWord() 会先掐掉它，避免「重播 + 自动播」两次播同一个词。
+        this._autoPlayTimer = this.later(350, function () { self.playWord(id); });
       }
     } else if (canRead) {
       var text = readInfo.text;
@@ -219,8 +221,14 @@ Page({
    * 播单词音频，同时让音位格子 / 字母卡片跟着依次点亮。
    * 挂 class 而不是用固定延时的原因：中文指令可能让音频晚 1s 才开始，
    * 从进题时刻算的动画会早在声音之前就演完，孩子看不到「跟着声音」。
+   *
+   * 1.2.20：一次只留一条声音。中文指令（tts.schedule 的播完回调）可能还
+   * 在念，进题自动播词的 350ms 定时器也可能还没触发；答错重播、点喇叭、
+   * 「继续玩」补播都会走到这里。先掐掉再播，否则指令会和两次单词叠放。
    */
   playWord: function (id) {
+    this.cancelAutoPlay();
+    tts.stop();
     audio.play(id);
     var p = this.data.pulse === 'a' ? 'b' : 'a';
     this.setData({
@@ -228,6 +236,18 @@ Page({
       slotsClass: 'v-slots-pulse-' + p,
       lettersClass: 'v-letters-pulse-' + p
     });
+  },
+
+  /** 只掐进题自动播词那一条定时器，不影响切题 / 分步动画的节奏。 */
+  cancelAutoPlay: function () {
+    var t = this._autoPlayTimer;
+    if (!t) return;
+    clearTimeout(t);
+    if (this._timers) {
+      var i = this._timers.indexOf(t);
+      if (i >= 0) this._timers.splice(i, 1);
+    }
+    this._autoPlayTimer = null;
   },
 
   /** 家长面板「把题目画出来」总开关；老存档没这个键时默认开。 */
@@ -519,6 +539,9 @@ Page({
   },
 
   clearTimers: function () {
+    // clearTimers 会连自动播定时器一起清掉，别留一个已经失效的 id，
+    // 否则下一题的 playWord() 会去 clear 一条别的定时器。
+    this._autoPlayTimer = null;
     if (!this._timers) return;
     for (var i = 0; i < this._timers.length; i++) clearTimeout(this._timers[i]);
     this._timers = [];

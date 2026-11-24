@@ -88,6 +88,17 @@ global.App = function (cfg) { global.__lastApp = cfg; };
 global.setTimeout = (fn) => { fn(); return 0; };
 global.clearTimeout = () => {};
 
+// 1.2.20 家长门禁的冷却倒计时要起 setInterval。桩里只登记回调，
+// 不让 Node 进程被一个永远不结束的定时器挂住；断言可手动推进回调。
+global.__intervals = [];
+global.setInterval = (fn) => {
+  global.__intervals.push(fn);
+  return global.__intervals.length;
+};
+global.clearInterval = (id) => {
+  if (id > 0 && id <= global.__intervals.length) global.__intervals[id - 1] = null;
+};
+
 /* ---------------------------------------------------------------- 启动 */
 
 let app;
@@ -742,6 +753,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
     if (v.kind === 'math-calc' && v.borrow) borrow++;
     if (v.mode === 'make-ten') ten++;
     if (v.steps.frames.length !== 2) bad.push(q.stem.text + ':帧数');
+    // 1.2.20：过程帧可以留在答题前，得数字段 rest 不行。
+    if ('rest' in v.steps) bad.push(q.stem.text + ':rest 泄题');
     v.steps.frames.forEach((f) => {
       if (f.bars.length + f.dots.length > 25) bad.push(q.stem.text + ':帧过大');
       if (f.bars.some((b) => typeof b.cls !== 'string') ||
@@ -761,7 +774,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   const cs = V.forQuestion(carryQ, true).steps;
   eq(cs.need, 4, '66 + 4 要搬 4 个点');
-  eq(cs.rest, 0, '66 + 4 补完十不剩点');
+  eq(cs.rest, undefined, '1.2.20：66 + 4 的得数不再藏在 steps.rest');
   eq(cs.frames[0].dots.filter((d) => d.cls === 'v-dot-take').length, 4,
      '进位帧① 4 个橙色要搬点');
   eq(cs.frames[1].bars.filter((b) => b.cls === 'v-bar-new').length, 1,
@@ -769,7 +782,7 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   const bs = V.forQuestion(borrowQ, true).steps;
   eq(bs.need, 7, '94 - 7 要减 7 个点');
-  eq(bs.rest, 7, '94 - 7 拆棒后剩 7 个点');
+  eq(bs.rest, undefined, '1.2.20：94 - 7 的得数个位不再藏在 steps.rest');
   eq(bs.frames[0].bars.filter((b) => b.cls === 'v-bar-break').length, 1,
      '借位帧① 一根十棒标成要拆开');
   eq(bs.frames[1].bars.length, 8, '借位帧② 少了一根棒');
@@ -778,14 +791,15 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   const ts = V.forQuestion(tenQ, true).steps;
   eq(ts.need, 2, '凑十题拿 2 个去补');
-  eq(ts.rest, 6, '凑十题剩 6 个，就是问号的答案');
+  eq(ts.rest, undefined, '1.2.20：凑十题问号的答案不再藏在 steps.rest');
   eq(ts.frames[0].dots.length, 8, '凑十帧① 画的是题干里的第二个 8');
   eq(ts.frames[1].bars.filter((b) => b.cls === 'v-bar-new').length, 1,
      '凑十帧② 2 个凑成一根十棒');
 
   eq(V.forQuestion(plainQ, true).steps, null, '不进位题没有分步帧，节奏不变');
   eq(vm.forQuestion(carryQ, false), null, '总开关关掉时不解析');
-  eq(vm.makeTenSteps(8, 2, 6).rest, 6, '凑十帧生成器可直接复用');
+  eq(vm.makeTenSteps(8, 2, 6).rest, 6, '内部帧生成器仍带 rest（页面拿不到）');
+  ok(V.STEP_ANSWER_KEYS.indexOf('rest') >= 0, '得数字段清单对外可查');
   eq(vm.calcSteps(12, 4, '+'), null, '个位相加不满十不分步');
   eq(vm.calcSteps(94, 3, '-'), null, '个位够减不用借位');
 
@@ -1937,6 +1951,180 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
      '结算页报数与共用函数同源');
   save19.wrongBook = wrongBak19;
   app.globalData.lastResult = resultBak19;
+}
+
+/* ---- 8O. 1.2.20：第三批收尾（叠音 / 折线 / 门禁 / 泄题 / 小怪物 / 工具） ---- */
+{
+  const fs = require('fs');
+  const playSrc20 = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  const parentSrc20 = fs.readFileSync(path.join(MP, 'pages/parent/parent.js'), 'utf8');
+  const visualSrc20 = fs.readFileSync(path.join(MP, 'lib/visual.js'), 'utf8');
+  const audioTool20 = fs.readFileSync(path.join(ROOT, 'tools/check_audio.py'), 'utf8');
+  const pkg20 = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+  const rewards20 = require(path.join(MP, 'lib/rewards.js'));
+  const progress20 = require(path.join(MP, 'lib/progress.js'));
+  const tts20 = require(path.join(MP, 'lib/tts.js'));
+
+  /* ① 英语答错重播：掐掉中文指令 + 350ms 自动播，只留一次单词音频。 */
+  ok(/playWord: function \(id\) \{[\s\S]{0,420}this\.cancelAutoPlay\(\);[\s\S]{0,160}tts\.stop\(\);/.test(playSrc20),
+     'playWord 是所有重播入口的统一闸门');
+  ok(/this\._autoPlayTimer = this\.later\(350/.test(playSrc20),
+     '无中文指令时记下自动播定时器');
+  ok(/clearTimers: function \(\) \{[\s\S]{0,160}this\._autoPlayTimer = null/.test(playSrc20),
+     '换题不会留一个失效的定时器 id');
+
+  const en20 = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/english.json'), 'utf8'));
+  const listenQ20 = en20.find((q) => q.tags[0] === '听音选词');
+  const cfg20 = loadPage('pages/play/play.js');
+  const p20 = makeInstance(cfg20);
+  p20.onLoad({ subject: 'english' });
+  const stemSettings20 = p20.save.settings;
+  const hadStem20 = Object.prototype.hasOwnProperty.call(stemSettings20, 'readStem');
+  const stemBak20 = stemSettings20.readStem;
+  stemSettings20.readStem = false;      // 强制走「无中文指令」的 350ms 自动播分支
+  p20.round.questions[p20.idx] = listenQ20;
+
+  let tid20 = 1000;
+  const pending20 = [];
+  p20.later = function (ms, fn) {
+    const id = ++tid20;
+    pending20.push({ id: id, ms: ms, fn: fn });
+    if (!this._timers) this._timers = [];
+    this._timers.push(id);
+    return id;
+  };
+  const origStop20 = tts20.stop;
+  const origClear20 = global.clearTimeout;
+  let stopCalls20 = 0;
+  const cleared20 = [];
+  tts20.stop = function () { stopCalls20++; return origStop20.apply(this, arguments); };
+  global.clearTimeout = (id) => { cleared20.push(id); };
+
+  p20.renderQuestion();
+  const autoId20 = p20._autoPlayTimer;
+  ok(autoId20 > 0, '进题记下自动播定时器 id');
+  eq(pending20.length, 1, '无中文指令时只有一条自动播');
+  eq(pending20[0].ms, 350, '自动播仍是 350ms');
+  const wrong20 = listenQ20.options.find((o) => o.id !== listenQ20.answer).id;
+  p20.onOption({ currentTarget: { dataset: { id: wrong20 } } });
+  eq(p20._autoPlayTimer, null, '答错重播时掐掉还没触发的自动播');
+  ok(cleared20.indexOf(autoId20) >= 0, '自动播定时器真的被 clearTimeout');
+  ok(p20._timers.indexOf(autoId20) < 0, '自动播定时器从待清列表里移除');
+  ok(stopCalls20 >= 1, '重播前掐掉中文指令 / 题干朗读，不再叠音');
+
+  tts20.stop = origStop20;
+  global.clearTimeout = origClear20;
+  if (hadStem20) stemSettings20.readStem = stemBak20;
+  else delete stemSettings20.readStem;
+
+  /* ② 折线：脏数据、排序、复习局口径、上限边界。 */
+  const now20 = Date.now();
+  const row20 = (correct, total, ts, extra) =>
+    Object.assign({ correct: correct, total: total, ts: ts }, extra || {});
+  const sessions20 = [
+    row20(10, 10, now20 - 1000),                       // 最新：100%
+    row20(5, 10, now20 - 4000),                        // 最旧：50%
+    row20(99, 10, now20 - 3000),                       // 脏：correct > total
+    row20(5, 10, now20 + 999999),                      // 未来日期
+    row20(5, 10, NaN),                                 // 缺 ts
+    row20('9', 10, now20 - 2000),                      // 字符串 correct
+    row20(5, 10, now20 - 2500, { review: true }),      // 复习局
+    row20(5, 10, now20 - 2600, { aborted: true }),     // 中途退出
+    row20(5, 0, now20 - 2700),                         // 0 题
+    row20(5, NaN, now20 - 2800)                        // NaN 题数
+  ];
+  const tr20 = progress20.trend({ sessions: sessions20 });
+  eq(tr20.count, 3, '脏数据 / 未来 / 复习局 / 退出 / 0 题全部排除');
+  eq(tr20.points[0].label, '5/10', '按时间从旧到新排，不再看数组顺序');
+  eq(tr20.points[1].pct, 100, 'correct > total 夹回 100%，坐标不越界');
+  ok(!/NaN|Infinity/.test(JSON.stringify(tr20)), '折线数据里没有 NaN / Infinity');
+  eq(progress20.trend({ sessions: 'oops' }).count, 0, 'sessions 非数组不抛错');
+  eq(progress20.trend({ sessions: sessions20 }, 0).count, 0, '显式 0 个点不是省略');
+  eq(progress20.trend({ sessions: sessions20 }, NaN).count, 0, 'NaN 上限按 0 个点');
+  eq(progress20.trend({ sessions: sessions20 }, -3).count, 0, '负数上限按 0 个点');
+  ok(/s\.review/.test(fs.readFileSync(path.join(MP, 'lib/progress.js'), 'utf8')),
+     '复习局与难度评估同口径，不拉低折线');
+
+  const saveP20 = app.globalData.save;
+  const sessBak20 = saveP20.sessions;
+  saveP20.sessions = sessions20;
+  const pp20 = makeInstance(loadPage('pages/parent/parent.js'));
+  pp20.buildPanel();
+  eq(pp20.data.trend.count, 3, '家长页折线端到端用新口径');
+  saveP20.sessions = sessBak20;
+
+  /* ③ 家长门禁：冷却秒数自己走，到点自动放开。 */
+  const COOL20 = 'yxjx.parent.cooldown', FAIL20 = 'yxjx.parent.fails';
+  const coolBak20 = storage.get(COOL20), failBak20 = storage.get(FAIL20);
+  storage.set(COOL20, String(Date.now() + 30000));
+  storage.set(FAIL20, '0');
+  const pg20 = makeInstance(loadPage('pages/parent/parent.js'));
+  pg20.onLoad();
+  ok(/请等 \d+ 秒后再试/.test(pg20.data.gateErr), '进页面按剩余秒数提示');
+  const timerId20 = pg20._gateTimer;
+  ok(timerId20 > 0 && typeof global.__intervals[timerId20 - 1] === 'function',
+     '冷却期间起了倒计时');
+  storage.set(COOL20, String(Date.now() + 29000));
+  global.__intervals[timerId20 - 1]();
+  ok(/请等 (28|29) 秒后再试/.test(pg20.data.gateErr), '秒数自己递减，不用再点按钮');
+  storage.set(COOL20, String(Date.now() - 1));
+  global.__intervals[timerId20 - 1]();
+  eq(pg20.data.gateErr, '现在可以再试了', '冷却结束自动放开');
+  eq(global.__intervals[timerId20 - 1], null, '到点后定时器被清掉');
+  eq(pg20.data.gateFocus, true, '冷却结束把焦点还给输入框');
+
+  storage.delete(COOL20);
+  storage.delete(FAIL20);
+  const pg20b = makeInstance(loadPage('pages/parent/parent.js'));
+  pg20b.onLoad();
+  for (let i = 0; i < 3; i++) {
+    pg20b.setData({ gateInput: '999999' });
+    pg20b.onGateSubmit();
+  }
+  ok(/请等 \d+ 秒后再试/.test(pg20b.data.gateErr),
+     '第三次错显示真实剩余秒数，不再是写死的「30 秒」');
+  ok(pg20b._gateTimer > 0, '触发冷却时起倒计时');
+  pg20b.setData({ gateInput: String(G.PARENT_GATE.answer) });
+  pg20b.onGateSubmit();
+  eq(pg20b.data.unlocked, false, '冷却期间输对也进不去');
+  storage.delete(COOL20);
+  pg20b.onGateSubmit();
+  eq(pg20b.data.unlocked, true, '冷却结束后正确口令可进入');
+  eq(pg20b._gateTimer, null, '解锁后倒计时被清掉');
+
+  storage.set(COOL20, String(Date.now() + 30000));
+  const pg20c = makeInstance(loadPage('pages/parent/parent.js'));
+  pg20c.onLoad();
+  const tid20c = pg20c._gateTimer;
+  pg20c.onUnload();
+  eq(global.__intervals[tid20c - 1], null, '离开页面时倒计时被清掉');
+  if (coolBak20 === undefined) storage.delete(COOL20); else storage.set(COOL20, coolBak20);
+  if (failBak20 === undefined) storage.delete(FAIL20); else storage.set(FAIL20, failBak20);
+
+  /* ④ 答题前数据层不带得数：统一入口剥 steps.rest。 */
+  ok(/STEP_ANSWER_KEYS = \['rest'\]/.test(visualSrc20)
+     && /safe\.steps = copyWithout\(v\.steps, STEP_ANSWER_KEYS\)/.test(visualSrc20),
+     'steps.rest 在 forQuestion 统一剥掉');
+
+  /* ⑤ 小怪物：失效 qid 不再留一只永远收服不了的怪物。 */
+  const ids20 = G.Bank.of('math').slice(0, 3).map((q) => q.id);
+  const saveM20 = { wrongBook: [
+    { qid: 'gone-20', wrongCount: 99, lastWrongAt: 99, cleared: false, subject: 'math' },
+    { qid: ids20[0], wrongCount: 5, lastWrongAt: 5, cleared: false, subject: 'math' },
+    { qid: ids20[1], wrongCount: 4, lastWrongAt: 4, cleared: true, subject: 'math' },
+    { qid: ids20[2], wrongCount: 3, lastWrongAt: 3, cleared: false, subject: 'math' }
+  ] };
+  const mon20 = rewards20.monstersOf(saveM20);
+  eq(mon20.total, 2, '失效 qid 不占小怪物名额');
+  eq(mon20.shown[0].id, ids20[0], '失效项权重再高也不会排第一');
+  eq(rewards20.monstersOf({ wrongBook: 'oops' }).total, 0, 'wrongBook 非数组不抛错');
+
+  /* ⑥ 工具链：缓存 key 含内容哈希，verify 纳入产物一致性检查。 */
+  ok(/CACHE_VERSION = 2/.test(audioTool20)
+     && /sha1\(path\)\[:16\]/.test(audioTool20)
+     && /%d-%s/.test(audioTool20),
+     '音频体检缓存 key 加内容哈希且版本已升');
+  ok(/npm run mp:check/.test(pkg20.scripts.verify), 'verify 纳入 mp:check');
 }
 
 /* ---- 9. 备份 ---- */

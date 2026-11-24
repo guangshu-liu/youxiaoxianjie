@@ -30,9 +30,11 @@ check_audio.py — 语音全链路体检（零依赖，只要 macOS 自带的 af
 
 解码缓存：262 条音频每条都要起一次 afinfo + 一次 afconvert，全量体检约
 30 秒，其中绝大部分花在子进程启动上。`afinfo` 的时长和 PCM 的峰值 / RMS /
-有声占比按 (路径, 大小, mtime_ns, 探针类型) 缓存在 `.audio_health_cache.json`，
-只有音频文件真的变了才重新解码。引用层、副本 sha1、映射这些检查**不缓存**
-—— 文件一改就得重查。缓存文件不进 git，改了体检逻辑就调 CACHE_VERSION。
+有声占比按 (路径, 大小, mtime_ns, 内容哈希, 探针类型) 缓存在
+`.audio_health_cache.json`，只有音频内容真的变了才重新解码。`cp -p`
+换掉坏音频又保留原尺寸/时间戳时也骗不过缓存。引用层、副本 sha1、
+映射这些检查**不缓存** —— 文件一改就得重查。缓存文件不进 git，
+改了体检逻辑就调 CACHE_VERSION。
 """
 
 import argparse
@@ -53,8 +55,9 @@ SPEC = os.path.join(DATA, 'english_audio.json')
 MANIFEST = os.path.join(ROOT, 'tools', 'audio_manifest.json')
 MASTER = os.path.join(ROOT, 'audio')
 
-# 改了 duration() / pcm_stats() 的判定口径就 +1，让旧探针结果全部失效。
-CACHE_VERSION = 1
+# 改了 duration() / pcm_stats() 的判定口径、或缓存 key 的组成就 +1，
+# 让旧探针结果全部失效。1.2.20：key 加入内容哈希，1 → 2。
+CACHE_VERSION = 2
 CACHE_PATH = os.path.join(ROOT, '.audio_health_cache.json')
 _probe_cache = {}
 _cache_on = False
@@ -259,11 +262,24 @@ def save_cache():
         pass          # 缓存写不了不影响体检结论，下次全量解码而已
 
 
+# 内容哈希的进程内记忆：同一次体检里 dur / pcm 两个探针会对同一个文件
+# 各调一次 cache_key，别把文件读两遍。
+_hash_memo = {}
+
+
 def cache_key(path, kind):
     st = os.stat(path)
-    # mtime_ns 而不是 mtime：同一秒内重新生成音频也必须失效。
-    return '%s|%d|%d|%s' % (os.path.relpath(path, ROOT),
-                            st.st_size, st.st_mtime_ns, kind)
+    rel = os.path.relpath(path, ROOT)
+    memo_key = (rel, st.st_size, st.st_mtime_ns)
+    if memo_key not in _hash_memo:
+        # 1.2.20：光看 size+mtime 会被 `cp -p` 骗过去 —— 换掉一个坏音频、
+        # 又刻意保留原尺寸和时间戳时，缓存仍命中旧的「健康」结论。
+        # 取前 16 位十六进制足够区分，key 也不至于长得离谱。
+        _hash_memo[memo_key] = sha1(path)[:16]
+    # 第 2 段是「size-hash」：save_cache 只把第 3 段当整数解析（mtime_ns），
+    # rsplit('|', 3) 的四段结构保持不变，旧 key 也不会被误读。
+    return '%s|%d-%s|%d|%s' % (rel, st.st_size, _hash_memo[memo_key],
+                                st.st_mtime_ns, kind)
 
 
 def cached_duration(path):

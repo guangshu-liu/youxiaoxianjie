@@ -21,7 +21,7 @@
     "mp:check": "python3 tools/build_miniprogram.py --check",
     "mp:appid": "python3 tools/set_appid.py",
     "mp:test": "node tools/test_miniprogram.js",
-    "verify": "npm run qbank:check && npm run audio:check && npm run tts:audio:check && npm run validate && npm run test && npm run build && npm run test:build && npm run docs:sync && npm run mp:build && npm run mp:test && npm run audio:health",
+    "verify": "npm run qbank:check && npm run audio:check && npm run tts:audio:check && npm run validate && npm run test && npm run build && npm run test:build && npm run docs:sync && npm run mp:build && npm run mp:test && npm run audio:health && npm run mp:check",
     "build": "python3 tools/build.py all",
     "build:online": "python3 tools/build.py online",
     "build:single": "python3 tools/build.py single",

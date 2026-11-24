@@ -116,13 +116,44 @@ Page({
     var s = gateState();
     if (s.blocked) {
       this.setData({ gateErr: this.blockedText(s) });
+      this.startCooldown();
       return;
     }
     this.setData({ gateFocus: true });
   },
 
+  onUnload: function () {
+    this.stopCooldown();
+  },
+
   blockedText: function (s) {
-    return '请等 ' + Math.ceil((s.until - Date.now()) / 1000) + ' 秒后再试';
+    return '请等 ' + Math.max(0, Math.ceil((s.until - Date.now()) / 1000)) + ' 秒后再试';
+  },
+
+  /**
+   * 1.2.20：冷却提示自己走秒。以前只在点「进入」或进页面时算一次，
+   * 界面停在「请等 30 秒」不动，家长只能反复点按钮刷新。
+   * 定时器只在冷却期间存在，到点 / 解锁 / 离开页面都会清掉。
+   */
+  startCooldown: function () {
+    this.stopCooldown();
+    var self = this;
+    this._gateTimer = setInterval(function () {
+      var s = gateState();
+      if (!s.blocked) {
+        self.stopCooldown();
+        self.setData({ gateErr: '现在可以再试了', gateFocus: true });
+        return;
+      }
+      self.setData({ gateErr: self.blockedText(s) });
+    }, 1000);
+  },
+
+  stopCooldown: function () {
+    if (this._gateTimer) {
+      clearInterval(this._gateTimer);
+      this._gateTimer = null;
+    }
   },
 
   /* ---------- 门禁 ---------- */
@@ -137,11 +168,13 @@ Page({
     var s = gateState();
     if (s.blocked) {
       this.setData({ gateErr: this.blockedText(s) });
+      this.startCooldown();
       return;
     }
 
     if (+this.data.gateInput === G.PARENT_GATE.answer) {
       clearFails();
+      this.stopCooldown();
       this.setData({ unlocked: true, gateInput: '', gateErr: '', gateFocus: false });
       this.buildPanel();
       return;
@@ -149,9 +182,10 @@ Page({
 
     var blocked = recordFail();
     this.setData({
-      gateErr: blocked ? '错误次数过多，请 30 秒后再试' : '答案不对',
+      gateErr: blocked ? this.blockedText(gateState()) : '答案不对',
       gateInput: ''
     });
+    if (blocked) this.startCooldown();
   },
 
   onGateCancel: function () {
