@@ -534,6 +534,53 @@ JS 里是假值，于是显式传 `total = 0` 被当成「调用方没传」，�
 同一实例换正常局仍能结算并拿 3 星、0 题结算页零 NaN、今日局数排除空局
 且兼容缺 total 的老 session。
 
+## 1.2.19：复习按钮题数与组局彻底同源
+
+第三批第 2 项。**这一版动了共用逻辑 `src/js/40-runner.js`**，
+`docs/app.js` 会跟着同步、网页版产物哈希会变；但网页版本来就没有
+复习局，行为零变化、UI 一行未改。push 后 GitHub Pages 自动更新。
+
+**根因**：按钮报数走的是
+`wrongBook.filter(!cleared).length → Math.min(n, 10)`，而
+`buildReviewRound()` 要拿每个 qid 去 `G.Bank.byId()` 反查题库，
+查不到就跳过。两套口径分开算，题库改版 / 导入老备份后必然对不上：
+错题本里 9 条未掌握、其中 3 条 qid 已失效时，按钮写「本局 9 题」，
+点进去只出 6 题；全部失效时还会开一局空的（被 `play.onLoad` 挡下，
+孩子只看到「暂时没有要复习的题」）。另外老存档 / 备份可能带重复
+qid，按钮会多算，同一道题还会在一局里出现两次。
+
+**改法**：抽题逻辑收成唯一真相源。
+
+1. `src/js/40-runner.js` 新增 `reviewPicks(save, size)`：按错题权重
+   排序 → 去重 qid → 反查题库 → 截断到一局上限。
+   `buildReviewRound()` 改成 `arrange(reviewPicks(...), save)`，
+   新增导出的 `reviewRoundSize()` 直接返回 `reviewPicks(...).length`。
+   顺手把 `var want = size || G.ROUND_SIZE` 换成「只有 undefined /
+   null 才算省略」，显式 0 / 负数 / NaN 返回空数组，与 1.2.18 的
+   0 题语义一致。
+2. `pages/home/home.js` + `home.wxml`：按钮报数改调
+   `G.Runner.reviewRoundSize(save)`，显示门槛从 `reviewCount >= 3`
+   改成 `reviewRoundSize >= 3`（和结算页一致）。`reviewCount` 保留为
+   错题本真实条数，与家长页「待巩固的题」同口径 —— **家长视角看总数、
+   孩子视角看本局几题，两个数刻意不同**。
+3. `pages/result/result.js`：删掉自己那份 `Math.min(wrongCount, 10)`，
+   同样调共用函数。三点约束不变（全对局不摆、复习局不摆、不足 3 题不摆）。
+
+**没动的**：`rewards.monstersOf()` 仍按错题本条数生成小怪物，失效 qid
+会留一只永远收服不了的怪物；家长页 `wrongTotal` 也不过滤失效 qid。
+它们都不是「本局几题」，口径不同是刻意的，不在这版扩散。
+
+**测试数据也换了真货**：1.2.14 / 1.2.15 的回归断言长期用
+`'fake-N'`、`'q1'..'q4'` 假 qid 造错题本，旧口径下照样能过，一换成
+「反查题库」就全露馅。现在改用 `G.Bank.of('math')` 的真实 id ——
+1.2.16 关卡地图 100% 失效却 572 项全绿，就是被这种假数据漏掉的。
+
+无头断言 658 → 688 项。新增覆盖：共用函数导出与同源结构、
+12 道真实题截断到 10、前 3 条失效 + 6 条真实时按钮报 6 且组局出 6、
+重复 qid 去重且一局不出两遍、全失效 / 全 cleared / 缺 wrongBook /
+显式 0 / 负数 / NaN、首页与结算页端到端报数等于共用函数、
+全部失效时首页不摆「本局 0 题」的按钮、错题本真实条数仍单独保留。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -557,7 +604,7 @@ JS 里是假值，于是显式传 `total = 0` 被当成「调用方没传」，�
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，658 项断言
+npm run mp:test      # wx 桩 + Node，688 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

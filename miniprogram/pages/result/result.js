@@ -37,22 +37,20 @@ Page({
     this.subject = r.subject;
     this.review = !!r.review;
 
-    // 打完一局最自然的下一步是把刚错的题再过一遍。数据口径与首页完全
-    // 一致：数错题本里还没 cleared 的题，再按一局上限截断。三点约束：
+    // 打完一局最自然的下一步是把刚错的题再过一遍。1.2.19 起与首页、
+    // 与 buildReviewRound 完全同源：调 G.Runner.reviewRoundSize()，它按
+    // 「去重 qid → 反查题库 → 截断到一局上限」算出实际会出的题数，
+    // 失效 qid 不会再让按钮报 10 题却只出 6 题。三点约束：
     //   · 全对局不摆 —— 没有刚错的题可练；
     //   · 复习局不摆 —— 它的「再来一局」本来就是复习，别放两个一样的入口；
     //   · 不足 3 题不摆（在 WXML 里判断）—— 和首页一样，一两道题的局
     //     孩子刚进入状态就结束了。
     // 复习局按错题权重从**整个错题本**挑题，可能带上更早的错题，所以
     // 按钮只报即将开的一局有几题，不承诺「全是刚错的那几道」。
-    var wrongCount = 0;
+    var reviewRoundSize = 0;
     if (r.correct < r.total && !this.review) {
-      var save = getApp().globalData.save;
-      wrongCount = ((save && save.wrongBook) || []).filter(function (w) {
-        return !w.cleared;
-      }).length;
+      reviewRoundSize = G.Runner.reviewRoundSize(getApp().globalData.save);
     }
-    var reviewRoundSize = Math.min(wrongCount, G.ROUND_SIZE);
 
     // 1.2.18：lastResult 若来自异常路径 / 旧存档的 0 题局，除零会出 NaN，
     // 带进 setData 后文案、彩纸、emoji 全落到错误分支。0 题按 0% 处理。

@@ -69,7 +69,7 @@
   </view>
 
   <view class="home-row">
-    <button wx:if="{{reviewCount >= 3}}" class="btn btn-ghost" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
+    <button wx:if="{{reviewRoundSize >= 3}}" class="btn btn-ghost" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
     <button class="btn btn-ghost" bindtap="onParent">👨‍👩‍👧 家长</button>
   </view>
 

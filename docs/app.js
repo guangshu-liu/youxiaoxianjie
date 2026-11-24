@@ -2204,6 +2204,47 @@
   }
 
   /**
+   * 挑出这一局复习**真正能出的题** —— 组局和按钮报数的唯一真相源。
+   *
+   * 1.2.19：以前按钮按 wrongBook 里未 cleared 的**条数**截断到 10，
+   * buildReviewRound 却要拿 qid 反查题库；题库改版后旧 qid 查不到就跳过，
+   * 于是「报 10 题、实际只出 6 题」，全部失效时还会开一局空的。另外
+   * 老存档 / 备份导入可能带重复 qid，会让按钮多算、同一题出一局两次。
+   * 现在把挑题逻辑收在这里：去重 → 反查题库 → 按上限截断，两边都调它，
+   * 数字不可能再对不上。
+   *
+   * size 显式传 0（或负数 / 非数字）时返回空数组：延续 1.2.18 的
+   * 「0 题就是空局」语义，不再用 `size || ROUND_SIZE` 把 0 当省略。
+   */
+  function reviewPicks(save, size) {
+    var want = (size === undefined || size === null)
+      ? G.ROUND_SIZE : Math.floor(Number(size) || 0);
+    if (want <= 0) return [];
+    var recs = ((save && save.wrongBook) || [])
+      .filter(function (w) { return w && !w.cleared; })
+      .sort(function (a, b) {
+        return ((b.wrongCount || 0) - (a.wrongCount || 0)) ||
+               ((b.lastWrongAt || 0) - (a.lastWrongAt || 0));
+      });
+
+    var seen = Object.create(null);
+    var picked = [];
+    for (var i = 0; i < recs.length && picked.length < want; i++) {
+      var id = recs[i].qid;
+      if (!id || seen[id]) continue;   // 老存档 / 备份里的重复 qid 只算一次
+      seen[id] = true;
+      var q = G.Bank.byId(id);
+      if (q) picked.push(q);           // 题库更新后旧 qid 查不到，跳过
+    }
+    return picked;
+  }
+
+  /** 这一局真正能出几道题：首页 / 结算页按钮、空局判断都用它。 */
+  function reviewRoundSize(save, size) {
+    return reviewPicks(save, size).length;
+  }
+
+  /**
    * 组一局**错题复习**（小程序用）。
    *
    * 只从错题本里还没 cleared 的题抽，错得最多的排前面；不足一局就出
@@ -2212,22 +2253,8 @@
    * 一上来连错两道就把人劝退。
    */
   function buildReviewRound(save, size) {
-    var want = size || G.ROUND_SIZE;
-    var ids = (save.wrongBook || [])
-      .filter(function (w) { return !w.cleared; })
-      .sort(function (a, b) {
-        return (b.wrongCount - a.wrongCount) || ((b.lastWrongAt || 0) - (a.lastWrongAt || 0));
-      })
-      .map(function (w) { return w.qid; });
-
-    var picked = [];
-    for (var i = 0; i < ids.length && picked.length < want; i++) {
-      var q = G.Bank.byId(ids[i]);
-      if (q) picked.push(q);       // 题库更新后旧 qid 会查不到，跳过
-    }
-
     return {
-      questions: arrange(picked, save),
+      questions: arrange(reviewPicks(save, size), save),
       startedAt: Date.now(),
       review: true
     };
@@ -2450,6 +2477,7 @@
     buildRound: buildRound,
     buildSubjectRound: buildSubjectRound,
     buildReviewRound: buildReviewRound,
+    reviewRoundSize: reviewRoundSize,
     successProb: successProb,
     recordAnswer: recordAnswer,
     awardPoints: awardPoints,

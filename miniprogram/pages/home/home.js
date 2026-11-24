@@ -35,12 +35,17 @@ Page({
     var done = (Array.isArray(save.sessions) ? save.sessions : [])
       .filter(function (s) { return s && !s.aborted; });
     var last = done.length ? done[done.length - 1] : null;
+    // 错题本真实条数（含失效 qid），与家长页「待巩固的题」同口径。
     var reviewCount = (save.wrongBook || []).filter(function (w) {
       return !w.cleared;
     }).length;
+    // 1.2.19：按钮报的是「点进去这一局实际会出几道题」，与
+    // buildReviewRound 共用 reviewPicks() —— 失效 qid 查不到题、
+    // 重复 qid 只算一次、超过 10 道截断，都在这里一次性算准。
+    var reviewRoundSize = G.Runner.reviewRoundSize(save);
 
     // 两个孩子可见的小组件都能被家长单独关掉。关掉只影响显示：
-    // reviewCount 始终按错题本真实数算，否则复习按钮会跟着一起消失。
+    // 复习入口按真实可出题数算，不会跟着显示开关一起消失。
     var settings = save.settings || {};
     var monstersOn = settings.monsters !== false;
     var goalOn = settings.dailyGoal !== false;
@@ -56,11 +61,12 @@ Page({
       progressPct: stars.progressPct(lifetime),
       nextBadge: stars.nextBadge(lifetime),
       lastText: last ? ('上次：' + last.correct + ' / ' + last.total + ' 题') : '',
-      // 少于 3 道错题不摆复习入口：一局太短，孩子刚进入状态就结束了。
+      // 少于 3 道可出的题不摆复习入口：一局太短，孩子刚进入状态就结束了。
       // 按钮只报「本局几题」：以前报错题总数（比如 37），点进去却只做
-      // 10 道，家长以为漏题。总错题数在家长页「待巩固的题」里看。
+      // 10 道，家长以为漏题；再后来改成报条数，题库改版后又会出现
+      // 「报 10 题、实际只出 6 题」。总错题数在家长页「待巩固的题」里看。
       reviewCount: reviewCount,
-      reviewRoundSize: Math.min(reviewCount, G.ROUND_SIZE),
+      reviewRoundSize: reviewRoundSize,
       monsters: m.shown,
       monsterTotal: m.total,
       goalReached: !!(g && g.reached),

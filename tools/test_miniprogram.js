@@ -968,12 +968,16 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(VE.phonemeCount('ball'), 3, 'ball 的 ll 叠字母算一个音');
 
   // 首页按钮报本局题数，不再报「复习错题（37）」却只做 10 道。
+  // 1.2.19 起不再自己 Math.min(条数)：与 buildReviewRound 共用 reviewPicks()。
   const homeSrc = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
-  ok(/reviewRoundSize: Math\.min\(reviewCount, G\.ROUND_SIZE\)/.test(homeSrc),
-     '首页算出本局实际题数（上限 10）');
+  ok(/G\.Runner\.reviewRoundSize\(save\)/.test(homeSrc)
+     && /reviewRoundSize: reviewRoundSize/.test(homeSrc),
+     '首页按共用抽题逻辑报本局实际题数');
   const homeWxml = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
   ok(/本局 \{\{reviewRoundSize\}\} 题/.test(homeWxml), '按钮文案报本局题数');
   ok(!/复习错题（\{\{reviewCount\}\}）/.test(homeWxml), '不再直接展示错题总数');
+  ok(/wx:if="\{\{reviewRoundSize >= 3\}\}"/.test(homeWxml),
+     '按可出题数决定摆不摆按钮，不再按错题条数');
 
   // 音频降码率：清单、生成器、一致性校验三处都要改到位。
   const spec8 = JSON.parse(fs.readFileSync(
@@ -1054,8 +1058,10 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
      '复习按钮用 redirectTo 跳复习局，不堆页面栈');
   ok(/r\.correct < r\.total && !this\.review/.test(resultSrc),
      '全对局和复习局都不重复摆复习入口');
-  ok(/Math\.min\(wrongCount, G\.ROUND_SIZE\)/.test(resultSrc),
-     '结算页与首页一样按一局上限截断题数');
+  // 1.2.19：截断与去重 / 失效过滤都收进共用 reviewRoundSize()，
+  // 结算页不再自己 Math.min(条数)。
+  ok(/reviewRoundSize = G\.Runner\.reviewRoundSize\(getApp\(\)\.globalData\.save\)/.test(resultSrc),
+     '结算页与首页、组局共用同一份本局题数');
 
   const save9 = app.globalData.save;
   const wrongBak = save9.wrongBook;
@@ -1064,8 +1070,12 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
     stars: 2, nominal: 2, capped: false,
     lifetime: save9.points.lifetime, lifetimeBefore: save9.points.lifetime
   });
+  // 1.2.19：换成真实题库 id。以前用 'fake-N' 假 qid 造错题本，
+  // 按钮报数按条数算照样能过，一旦口径改成「反查题库」就全露馅 ——
+  // 1.2.16 的关卡地图正是被这种假数据漏掉真 bug 的。
+  const mathIds9 = G.Bank.of('math').map((q) => q.id);
   const mkWrong = (n) => Array.from({ length: n }, (_, i) => ({
-    qid: 'fake-' + i, wrongCount: 1, lastWrongAt: i, cleared: false
+    qid: mathIds9[i], wrongCount: 1, lastWrongAt: i, cleared: false
   }));
 
   save9.wrongBook = mkWrong(4);
@@ -1142,16 +1152,18 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(R.goalState(saveB).reached, false, '0 局没达成');
 
   // --- 小怪物：血量跟着 rightStreak，cleared 即被收服 ---
+  // 1.2.19：同样换成真实题库 id，让「复习按钮报数」的断言走真实链路。
+  const idsB = G.Bank.of('math').slice(0, 4).map((q) => q.id);
   saveB.wrongBook = [
-    { qid: 'q1', subject: 'math', wrongCount: 5, rightStreak: 0, cleared: false, lastWrongAt: 3 },
-    { qid: 'q2', subject: 'chinese', wrongCount: 3, rightStreak: 1, cleared: false, lastWrongAt: 2 },
-    { qid: 'q3', subject: 'english', wrongCount: 1, rightStreak: 0, cleared: false, lastWrongAt: 1 },
-    { qid: 'q4', subject: 'math', wrongCount: 9, rightStreak: 2, cleared: true, lastWrongAt: 9 }
+    { qid: idsB[0], subject: 'math', wrongCount: 5, rightStreak: 0, cleared: false, lastWrongAt: 3 },
+    { qid: idsB[1], subject: 'chinese', wrongCount: 3, rightStreak: 1, cleared: false, lastWrongAt: 2 },
+    { qid: idsB[2], subject: 'english', wrongCount: 1, rightStreak: 0, cleared: false, lastWrongAt: 1 },
+    { qid: idsB[3], subject: 'math', wrongCount: 9, rightStreak: 2, cleared: true, lastWrongAt: 9 }
   ];
   const mon = R.monstersOf(saveB);
   eq(mon.total, 3, 'cleared 的题已收服，不再出现在首页');
   eq(mon.shown.length, 3, '3 只全部显示');
-  eq(mon.shown[0].id, 'q1', '错得最多的排最前，和复习局同源');
+  eq(mon.shown[0].id, idsB[0], '错得最多的排最前，和复习局同源');
   eq(mon.shown[0].hp, 2, 'rightStreak=0 是满血 2 格');
   eq(mon.shown[1].hp, 1, '连对 1 次掉 1 格血');
   eq(mon.shown[0].subject, '数学', '怪物带科目标签');
@@ -1370,8 +1382,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   saveK.settings.levelMap = false;
   hpK.onShow();
   eq(hpK.data.levels, null, '关掉后首页不渲染关卡点');
-  eq(hpK.data.reviewRoundSize, Math.min(saveK.wrongBook.filter((w) => !w.cleared).length, G.ROUND_SIZE),
-     '显示开关不影响复习入口');
+  eq(hpK.data.reviewRoundSize, G.Runner.reviewRoundSize(saveK),
+     '显示开关不影响复习入口，且报数与组局同源');
   saveK.settings.bigText = true;
   hpK.onShow();
   eq(hpK.data.bigText, true, '首页读到大字模式');
@@ -1816,6 +1828,115 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(R18.roundsToday(save18), 2, '0 题局不算今日局数，缺 total 的老 session 仍算');
   eq(R18.goalState(save18).reached, true, '2 局仍达成今日小目标');
   save18.sessions = sessions18Bak;
+}
+
+/* ---- 8N. 1.2.19：复习按钮题数口径与 buildReviewRound 同源 ---- */
+{
+  const fs = require('fs');
+  const runnerSrc19 = fs.readFileSync(path.join(ROOT, 'src/js/40-runner.js'), 'utf8');
+  const homeSrc19 = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
+  const homeWxml19 = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const resultSrc19 = fs.readFileSync(path.join(MP, 'pages/result/result.js'), 'utf8');
+
+  ok(typeof G.Runner.reviewRoundSize === 'function',
+     '共用逻辑导出「本局真正能出几题」');
+  ok(/function reviewPicks\(save, size\)/.test(runnerSrc19)
+     && /arrange\(reviewPicks\(save, size\), save\)/.test(runnerSrc19)
+     && /return reviewPicks\(save, size\)\.length/.test(runnerSrc19),
+     '组局与报数共用同一个挑题函数，逻辑不可能漂移');
+  const picksFn19 = runnerSrc19.slice(
+    runnerSrc19.indexOf('function reviewPicks'),
+    runnerSrc19.indexOf('function buildReviewRound'));
+  ok(!/size \|\| G\.ROUND_SIZE/.test(picksFn19)
+     && /size === undefined \|\| size === null/.test(picksFn19),
+     'reviewPicks 不再把显式 0 当省略（其它组局函数的默认值不动）');
+  ok(/seen\[id\]/.test(runnerSrc19), '重复 qid 去重');
+  ok(/G\.Runner\.reviewRoundSize\(save\)/.test(homeSrc19)
+     && /reviewRoundSize = G\.Runner\.reviewRoundSize\(/.test(resultSrc19),
+     '首页与结算页都调共用函数，不再自己 Math.min 条数');
+  ok(/wx:if="\{\{reviewRoundSize >= 3\}\}"/.test(homeWxml19),
+     '首页按可出题数决定摆不摆按钮');
+
+  const pool19 = G.Bank.of('math').slice(0, 15).map((q) => q.id);
+  const mk19 = (id, n, extra) => Object.assign(
+    { qid: id, wrongCount: n, lastWrongAt: n, cleared: false }, extra || {});
+  const case19 = (wrong, size) => {
+    const s = G.Store.defaultSave();
+    s.wrongBook = wrong;
+    return {
+      save: s,
+      reported: G.Runner.reviewRoundSize(s, size),
+      actual: G.Runner.buildReviewRound(s, size === undefined ? 10 : size).questions
+    };
+  };
+  const same19 = (c, name) => eq(c.reported, c.actual.length, name);
+
+  // 常规：超过一局上限截断到 10。
+  const full19 = case19(pool19.slice(0, 12).map((id, i) => mk19(id, i + 1)));
+  eq(full19.reported, 10, '12 道真实错题报「本局 10 题」');
+  same19(full19, '12 道真实错题报数与实际完全一致');
+
+  // 核心回归：权重最高的前几条 qid 失效（题库改版 / 导入老备份）。
+  const mixed19 = ['gone-a', 'gone-b', 'gone-c'].concat(pool19.slice(0, 6))
+    .map((id, i) => mk19(id, 10 - i));
+  const mix19 = case19(mixed19);
+  eq(mix19.reported, 6, '9 条未掌握但 3 条失效时，按钮只报能出的 6 题');
+  same19(mix19, '失效 qid 场景下报数 = 组局实际题数');
+  eq(mix19.actual[0].id, pool19[0], '失效 qid 跳过后，错得最多的真实题排第一');
+
+  // 老存档 / 备份里的重复 qid：不多算、不在一局里出两遍。
+  const dup19 = case19(
+    [pool19[0], pool19[0], pool19[1], pool19[1], pool19[2], pool19[3]]
+      .map((id, i) => mk19(id, i + 1)));
+  eq(dup19.reported, 4, '6 条错题里只有 4 个不同 qid，按钮报 4 题');
+  same19(dup19, '重复 qid 场景报数 = 组局实际题数');
+  eq(new Set(dup19.actual.map((q) => q.id)).size, dup19.actual.length,
+     '一局里不会把同一道题出两次');
+
+  // 全部失效 / 全 cleared / 老存档无字段 / 显式 0 / 省略。
+  const dead19 = case19(['x1', 'x2', 'x3', 'x4'].map((id, i) => mk19(id, i + 1)));
+  eq(dead19.reported, 0, '全部失效时不摆复习入口，也不开空局');
+  same19(dead19, '全部失效时仍与组局一致');
+  const cleared19 = case19(pool19.slice(0, 3)
+    .map((id, i) => mk19(id, i + 1, { cleared: i === 0 })));
+  eq(cleared19.reported, 2, 'cleared 的题不计入');
+  same19(cleared19, 'cleared 场景报数 = 组局实际题数');
+  eq(G.Runner.reviewRoundSize({}), 0, '老存档缺 wrongBook 不抛错，返回 0');
+  eq(G.Runner.reviewRoundSize(G.Store.defaultSave(), 0), 0,
+     '显式 size=0 是空局，不再被当成省略');
+  eq(G.Runner.reviewRoundSize(G.Store.defaultSave(), -3), 0, '负数 size 按空局');
+  eq(G.Runner.reviewRoundSize(G.Store.defaultSave(), NaN), 0, 'NaN size 按空局');
+  eq(G.Runner.reviewRoundSize(G.Store.defaultSave()), 0,
+     '省略 size 时按标准局上限，没错题仍是 0');
+
+  // 页面端到端：按钮读到的就是共用函数算出来的数。
+  const save19 = app.globalData.save;
+  const wrongBak19 = save19.wrongBook;
+  const resultBak19 = app.globalData.lastResult;
+  save19.wrongBook = mixed19;
+  const hp19 = makeInstance(loadPage('pages/home/home.js'));
+  hp19.onShow();
+  eq(hp19.data.reviewRoundSize, 6, '首页按钮报 6 题，与组局一致');
+  eq(hp19.data.reviewRoundSize, G.Runner.reviewRoundSize(save19),
+     '首页报数与共用函数同源');
+  eq(hp19.data.reviewCount, 9, '错题本真实条数仍保留给家长口径');
+  save19.wrongBook = dead19.save.wrongBook;
+  hp19.onShow();
+  eq(hp19.data.reviewRoundSize, 0, '全部失效时首页不摆「本局 0 题」的按钮');
+
+  save19.wrongBook = mixed19;
+  app.globalData.lastResult = {
+    subject: 'math', review: false, correct: 6, total: 10,
+    stars: 2, nominal: 2, capped: false,
+    lifetime: save19.points.lifetime, lifetimeBefore: save19.points.lifetime
+  };
+  const rp19 = makeInstance(loadPage('pages/result/result.js'));
+  rp19.onLoad();
+  eq(rp19.data.reviewRoundSize, 6, '结算页按钮也报 6 题，不再报 9 题');
+  eq(rp19.data.reviewRoundSize, G.Runner.reviewRoundSize(save19),
+     '结算页报数与共用函数同源');
+  save19.wrongBook = wrongBak19;
+  app.globalData.lastResult = resultBak19;
 }
 
 /* ---- 9. 备份 ---- */
