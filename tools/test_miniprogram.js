@@ -791,8 +791,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   // WXML / WXSS：过程帧只在作答后渲染，得数改由 revealed 控制。
   const wxml = fs.readFileSync(path.join(MP, 'pages/play/play.wxml'), 'utf8');
-  ok(/wx:if="\{\{answered && visual\.steps\}\}"/.test(wxml),
-     '过程帧只在作答后渲染，答题前一个得数都不露');
+  ok(/wx:if="\{\{answered && showSteps && visual\.steps\}\}"/.test(wxml),
+     '过程帧只在作答后且分步开关打开时渲染，答题前一个得数都不露');
   ok(/wx:if="\{\{revealed && visual\.kind === 'math-calc'\}\}"/.test(wxml),
      '得数行由 revealed 控制，可延后到分步最后一步');
   ok(/wx:if="\{\{!revealed\}\}" class="v-q"/.test(wxml),
@@ -1500,6 +1500,220 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   else saveK.settings.bigText = bigTextK;
   app.globalData.lastResult = lastResultK;
   G.Store.save(saveK);
+}
+
+/* ---- 8L. 1.2.17：七个真机可复现 bug 的回归 ---- */
+{
+  const fs = require('fs');
+  const P17 = require(path.join(MP, 'lib/progress.js'));
+  const V17 = require(path.join(MP, 'lib/visual.js'));
+  const playWxml17 = fs.readFileSync(path.join(MP, 'pages/play/play.wxml'), 'utf8');
+  const playSrc17 = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  const parentSrc17 = fs.readFileSync(path.join(MP, 'pages/parent/parent.js'), 'utf8');
+  const homeSrc17 = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
+  const runnerSrc17 = fs.readFileSync(path.join(ROOT, 'src/js/40-runner.js'), 'utf8');
+
+  /* ① 关卡地图：必须走「真正打完一局」的链路，不喂手工造的假 sessions。
+   *    1.2.16 的断言全是 mkS('math') 手工对象（自带 subject），所以
+   *    finishSession 根本没存 subject 这件事被完整漏掉了。 */
+  const saveFix = G.Store.defaultSave();
+  const roundFix = G.Runner.buildSubjectRound(saveFix, 'math', G.ROUND_SIZE);
+  ok(roundFix.questions.length > 0, '真实题库组出了一局数学题');
+  const itemsFix = roundFix.questions.map((q) => ({
+    qid: q.id, subject: q.subject, correct: true, ms: 700
+  }));
+  G.Runner.finishSession(saveFix, roundFix, itemsFix, [], 0);
+  const sessFix = saveFix.sessions[saveFix.sessions.length - 1];
+  eq(sessFix.subject, undefined, '共用 Runner 写的 session 仍没有 subject');
+  ok(sessFix.items.length > 0 && !!sessFix.items[0].subject,
+     '但每题的 items 都带科目，够用来推断');
+  eq(P17.roundsOf(saveFix, 'math'), 1, '真实完成局能被关卡地图数到');
+  eq(P17.levelMapBySubject(saveFix).math.cleared, 1, '打完一局真的点亮一格');
+  eq(P17.levelMapBySubject(saveFix).math.fullTitle, '第 2 关', '关卡文案跟着前进');
+  eq(P17.levelMapBySubject(saveFix).chinese.cleared, 0, '数学的局不会串到语文');
+  G.Store.save(app.globalData.save);   // finishSession 写过盘，把测试现场还原
+
+  ok(!/subject:\s*round\.subject/.test(runnerSrc17),
+     '修关卡地图没有动共用 Runner，网页版产物零改动');
+  eq(P17.subjectOf({ subject: 'math' }), 'math', '新存档若带 subject 直接采用');
+  eq(P17.subjectOf({ items: [{ subject: 'math' }, { subject: 'math' }] }), 'math',
+     '老存档从 items 推断单科局');
+  eq(P17.subjectOf({ items: [{ subject: 'math' }, { subject: 'chinese' }] }), '',
+     '复习局/混合科目局不归任何一科');
+  eq(P17.subjectOf({ subject: 'math', review: true }), '', '复习局明确排除');
+  eq(P17.subjectOf({ subject: 'math', aborted: true }), '', '中途退出明确排除');
+
+  /* ⑦ 轮次文案：刚通关时不能一边 6 格全亮一边写「第 2 轮」。 */
+  const lapSave17 = { wrongBook: [], sessions: [] };
+  for (let i = 0; i < 6; i++) lapSave17.sessions.push({ ts: Date.now(), subject: 'math' });
+  const lap6 = P17.levelMapBySubject(lapSave17).math;
+  eq(lap6.cleared, 6, '刚通关仍是 6 格全亮');
+  eq(lap6.fullTitle, '第 1 轮 · 通关', '刚通关属于第 1 轮，不自相矛盾');
+  ok(!/第 2 轮/.test(lap6.fullTitle), '刚通关不提前宣布第 2 轮');
+  lapSave17.sessions.push({ ts: Date.now(), subject: 'math' });
+  eq(P17.levelMapBySubject(lapSave17).math.fullTitle, '第 2 轮 · 第 2 关',
+     '第 7 局才开第 2 轮');
+
+  /* ② 备份恢复：importAll 的同步 throw 必须给出提示。 */
+  const toastFix = [];
+  const origToast17 = wx.showToast;
+  wx.showToast = (o) => { toastFix.push(o && o.title); };
+  const pp17 = makeInstance(loadPage('pages/parent/parent.js'));
+  pp17.onLoad();
+  toastFix.length = 0;
+  const saveRef17 = app.globalData.save;
+  pp17.setData({ importText: '{}' });
+  pp17.onImport();
+  eq(toastFix.length, 1, '粘贴非备份 JSON 时有一次失败提示');
+  ok(/恢复失败/.test(toastFix[0] || ''), '提示写明恢复失败');
+  eq(app.globalData.save, saveRef17, '导入失败不换存档引用');
+  toastFix.length = 0;
+  pp17.setData({ importText: JSON.stringify({ kind: 'yxjx-backup', save: {} }) });
+  pp17.onImport();
+  ok(/恢复失败/.test(toastFix[0] || ''), '缺 schema 的备份同样有提示');
+  ok(/try \{[\s\S]{0,220}G\.Store\.importAll\(payload\)/.test(parentSrc17),
+     '同步 throw 由 try/catch 接住');
+  ok(/\.catch\(function \(e\)/.test(parentSrc17), '异步失败仍走 .catch，两条路都在');
+  wx.showToast = origToast17;
+
+  /* ③ 退出确认框：弹窗前掐定时器，取消后按原节奏重放。 */
+  const pcfg17 = loadPage('pages/play/play.js');
+  const laterSpy17 = [];
+  function mkExit17(answered, correct, withSteps) {
+    const p = Object.assign({}, pcfg17, {
+      data: JSON.parse(JSON.stringify(pcfg17.data)),
+      setData: function (patch) {
+        Object.keys(patch).forEach((k) => { this.data[k] = patch[k]; });
+      },
+      _timers: [11, 22], _answered: answered, _lastCorrect: correct,
+      _closed: false, _exitResume: null,
+      save: { settings: {} },
+      laterCalls: [], clearCalls: 0, stepCalls: 0,
+      advanceCalls: [], closeCalls: 0, wordCalls: 0
+    });
+    p.setData({
+      audioId: '',
+      // 故意先摆成「已揭晓」：取消弹窗后分步重演必须把它重新盖回去，
+      // 否则这条断言会因为默认值恰好是 false 而假通过。
+      revealed: true,
+      visual: withSteps ? { steps: { frames: [{}, {}] } } : null
+    });
+    p.later = function (ms, fn) { this.laterCalls.push({ ms: ms, fn: fn }); return 0; };
+    p.clearTimers = function () { this.clearCalls++; this._timers = []; };
+    p.runSteps = function () { this.stepCalls++; };
+    p.advance = function (c) { this.advanceCalls.push(c); };
+    p.closeRound = function () { this.closeCalls++; };
+    p.playWord = function () { this.wordCalls++; };
+    return p;
+  }
+  const origModal17 = wx.showModal;
+  let modalRes17 = { confirm: false };
+  wx.showModal = (o) => { if (o.success) o.success(modalRes17); };
+
+  modalRes17 = { confirm: false };
+  const ep1 = mkExit17(true, true, false);
+  ep1.onExit();
+  eq(ep1.clearCalls, 1, '弹窗前先掐掉切题定时器，读文案时题目不会自己翻页');
+  eq(ep1.laterCalls.length, 1, '点「继续玩」重排一次推进');
+  eq(ep1.laterCalls[0].ms, 620, '答对仍是 620ms 窗口');
+  eq(ep1.advanceCalls.length, 0, '重排的是定时器，不会立刻结算');
+
+  const ep2 = mkExit17(true, false, true);
+  ep2.onExit();
+  eq(ep2.stepCalls, 1, '分步题取消后把过程帧从头重演');
+  eq(ep2.laterCalls[0].ms, 1900, '分步题恢复 1900ms 窗口');
+  eq(ep2.data.revealed, false, '重演前得数重新盖住');
+
+  const ep4 = mkExit17(false, false, false);
+  ep4.setData({ audioId: 'en.ant' });
+  ep4.onExit();
+  eq(ep4.wordCalls, 1, '未作答时补播被掐掉的进题音频');
+  eq(ep4.laterCalls.length, 0, '未作答不排切题定时器');
+
+  modalRes17 = { confirm: true };
+  const ep3 = mkExit17(true, true, false);
+  ep3.onExit();
+  eq(ep3.closeCalls, 1, '确认退出照旧记未完成局');
+  eq(ep3.laterCalls.length, 0, '确认退出不重排推进，不会先结算发星星');
+  wx.showModal = origModal17;
+  ok(/this\.clearTimers\(\);[\s\S]{0,160}wx\.showModal/.test(playSrc17),
+     'clearTimers 在 showModal 之前，不是只写在确认回调里');
+
+  /* ④ 关掉分步讲解后不能留一排永不点亮的空过程帧。 */
+  ok(/wx:if="\{\{answered && showSteps && visual\.steps\}\}"/.test(playWxml17),
+     '过程帧同时受 answered 与分步开关控制');
+  eq(pcfg17.data.showSteps, false, '新题默认不渲染过程帧');
+  ok(/showSteps: false/.test(playSrc17) && /showSteps: stepsOn/.test(playSrc17),
+     '换题归零、作答时按开关赋值');
+  const math17 = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/math.json'), 'utf8'));
+  const stepQ17 = math17.filter((q) => {
+    const v = V17.forQuestion(q, true);
+    return v && v.steps;
+  })[0];
+  ok(!!stepQ17, '找到一道带过程帧的题用于开关回归');
+  function mkOption17(stepsOff) {
+    const p = Object.assign({}, pcfg17, {
+      data: JSON.parse(JSON.stringify(pcfg17.data)),
+      setData: function (patch) {
+        Object.keys(patch).forEach((k) => { this.data[k] = patch[k]; });
+      }
+    });
+    p.save = { settings: stepsOff ? { visualSteps: false } : {}, points: { balance: 0 } };
+    p.round = { questions: [stepQ17] };
+    p.idx = 0; p.results = [null]; p.items = []; p.qStartAt = Date.now();
+    p._answered = false;
+    p.later = function () {};
+    p.playWord = function () {};
+    p.setData({
+      options: stepQ17.options.map((o) => ({
+        id: o.id, text: o.text, single: false, state: '', delay: 0
+      })),
+      visual: V17.forQuestion(stepQ17, true),
+      roundCorrect: 0, pulse: 'a'
+    });
+    return p;
+  }
+  const op1 = mkOption17(false);
+  op1.onOption({ currentTarget: { dataset: { id: stepQ17.answer } } });
+  eq(op1.data.showSteps, true, '分步开着时过程帧正常渲染');
+  const op2 = mkOption17(true);
+  op2.onOption({ currentTarget: { dataset: { id: stepQ17.answer } } });
+  eq(op2.data.showSteps, false, '家长关掉分步后不再残留半透明空卡片');
+  eq(op2.data.revealed, true, '关掉分步仍是作答即揭晓');
+
+  /* ⑤ 首页「上次」只认完整完成的局。 */
+  ok(/filter\(function \(s\) \{ return s && !s\.aborted; \}\)/.test(homeSrc17),
+     '首页排除中途退出的局');
+  const saveHome17 = app.globalData.save;
+  const sessionsBak17 = saveHome17.sessions;
+  saveHome17.sessions = [
+    { ts: Date.now(), correct: 9, total: 10, items: [] },
+    { ts: Date.now(), correct: 2, total: 3, items: [], aborted: true }
+  ];
+  const hp17 = makeInstance(loadPage('pages/home/home.js'));
+  hp17.onShow();
+  eq(hp17.data.lastText, '上次：9 / 10 题', '中途退出的局不当成上次成绩');
+  saveHome17.sessions = sessionsBak17;
+
+  /* ⑥ 听音选字母：高亮的首字母要和正确答案一样是大写。 */
+  const en17 = JSON.parse(fs.readFileSync(path.join(ROOT, 'src/data/english.json'), 'utf8'));
+  const initialQs17 = en17.filter((q) => (q.tags || [])[0] === '听音选字母');
+  eq(initialQs17.length, 26, '26 道听音选字母题');
+  let bad17 = 0, leaked17 = 0;
+  initialQs17.forEach((q) => {
+    const before = V17.forQuestion(q, true);
+    if (before && before.after) leaked17++;
+    const merged = V17.merge(before, V17.reveal(q, true));
+    const ansText = q.options.filter((o) => o.id === q.answer)
+      .map((o) => o.text)[0];
+    if (!merged.after || merged.after.letters[0].ch !== ansText) bad17++;
+  });
+  eq(bad17, 0, '26 道题高亮首字母与正确答案（大写）完全一致');
+  eq(leaked17, 0, '答题前仍不显示整词/首字母');
+  const sample17 = initialQs17[0];
+  const merged17 = V17.merge(V17.forQuestion(sample17, true), V17.reveal(sample17, true));
+  eq(merged17.after.word, 'ant', '整词仍按音频原名小写保存，不影响别的字段');
+  eq(merged17.after.letters[0].ch, 'A', '展示成 Ant，高亮的 A 与选项一致');
 }
 
 /* ---- 9. 备份 ---- */

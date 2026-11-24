@@ -29,7 +29,12 @@ Page({
     if (!save) return;
 
     var lifetime = save.points.lifetime || 0;
-    var last = save.sessions.length ? save.sessions[save.sessions.length - 1] : null;
+    // 1.2.17：中途退出也会 push 一条 aborted 局，它只记了已答的几题。
+    // 以前直接取最后一条，首页会显示「上次：2 / 3 题」；今日目标、折线、
+    // 关卡地图都排除 aborted，这里口径要一致。
+    var done = (Array.isArray(save.sessions) ? save.sessions : [])
+      .filter(function (s) { return s && !s.aborted; });
+    var last = done.length ? done[done.length - 1] : null;
     var reviewCount = (save.wrongBook || []).filter(function (w) {
       return !w.cleared;
     }).length;

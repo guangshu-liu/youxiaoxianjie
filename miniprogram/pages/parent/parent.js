@@ -456,7 +456,21 @@ Page({
     }
 
     var self = this;
-    G.Store.importAll(payload).then(function (r) {
+    var restore;
+    // importAll 的两处格式校验是**同步 throw**（10-store.js），而下面的
+    // .catch 挂在 .then 之后 —— 同步抛异常时 Promise 连创建都没有，
+    // .catch 根本注册不上。以前粘一段合法 JSON 但不是备份，界面完全
+    // 没反应，家长只会反复粘贴。这里把同步失败也接住。
+    try {
+      restore = G.Store.importAll(payload);
+    } catch (e) {
+      wx.showToast({
+        title: '恢复失败：' + (e && e.message ? e.message : '备份内容无法识别'),
+        icon: 'none'
+      });
+      return;
+    }
+    restore.then(function (r) {
       getApp().globalData.save = r.save;
       self.setData({ importText: '' });
       self.buildPanel();

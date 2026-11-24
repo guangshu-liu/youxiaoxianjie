@@ -50,6 +50,9 @@ Page({
     stepNow: -1,
     revealed: false,
     explainLong: false,
+    // 过程帧只在「分步讲解」真的开着时渲染。1.2.17 前 WXML 只看
+    // visual.steps，家长关掉分步后仍留一排永不点亮的半透明空卡片。
+    showSteps: false,
     // 音位格子 / 字母卡片「跟音频依次点亮」的脉冲 class。
     // a/b 交替是为了强制重播 CSS 动画，和 enterFlag 同一套机制。
     pulse: 'a',
@@ -186,6 +189,7 @@ Page({
       stepNow: -1,
       revealed: false,
       explainLong: false,
+      showSteps: false,
       // 新题先不点亮音位格子，等单词音频真正开播时再 pulse。
       slotsClass: '',
       lettersClass: ''
@@ -252,6 +256,8 @@ Page({
     var id = e.currentTarget.dataset.id;
     var q = this.round.questions[this.idx];
     var correct = id === q.answer;
+    // 退出确认框可能在切题窗口内弹出，取消后要按这题的结果重放节奏。
+    this._lastCorrect = correct;
 
     // 选项不播「嗒」声（网页版用 data-sfx-off 关掉的就是它），
     // 直接出对/错音；两个叠在一起会糊成一团。
@@ -296,7 +302,8 @@ Page({
       // 仍是「作答即揭晓」，和 1.2.11 之前完全一样。
       revealed: !stepsOn,
       stepNow: -1,
-      explainLong: stepsOn
+      explainLong: stepsOn,
+      showSteps: stepsOn
     });
 
     if (stepsOn) this.runSteps();
@@ -440,19 +447,56 @@ Page({
   onExit: function () {
     sfx.play('ui.tap');
     var self = this;
+    // 1.2.17：弹窗读文案往往超过 1.5~1.9 秒。以前定时器只在「确认退出」
+    // 回调里才清，弹窗期间题目会自己翻页；最后一题更会先 finish() 发星星
+    // 并跳结算页，用户选「不算完成、不发星星」却已经结算完，再被
+    // navigateBack 弹回首页。现在弹窗前先掐掉全部定时器并留一份现场。
+    this._exitResume = {
+      answered: !!this._answered,
+      correct: !!this._lastCorrect,
+      audioId: this._answered ? '' : (this.data.audioId || '')
+    };
+    this.clearTimers();
     wx.showModal({
       title: '退出这一局？',
       content: '已经答过的题会记下来，但这一局不算完成，也不发星星。',
       confirmText: '退出',
       cancelText: '继续玩',
       success: function (res) {
-        if (!res.confirm) return;
+        if (!res.confirm) {
+          self.resumeFromExit();
+          return;
+        }
         self.clearTimers();
         tts.stop();
         audio.stop();
         self.closeRound();
         wx.navigateBack({ delta: 1 });
       }
+    });
+  },
+
+  /** 点「继续玩」：按弹窗前的现场，把被掐掉的反馈节奏重放一遍。 */
+  resumeFromExit: function () {
+    var snap = this._exitResume;
+    this._exitResume = null;
+    if (!snap || this._closed) return;
+    if (!snap.answered) {
+      // 还没作答，被掐掉的只是进题自动播的 350ms；补播一次即可。
+      if (snap.audioId) this.playWord(snap.audioId);
+      return;
+    }
+    var v = this.data.visual;
+    var stepsOff = !!(this.save.settings && this.save.settings.visualSteps === false);
+    var stepsOn = !!(v && v.steps && !stepsOff);
+    var self = this;
+    if (stepsOn) {
+      // 分步动画可能停在中途，从头重演一遍，得数仍由最后一步揭晓。
+      this.setData({ stepNow: -1, revealed: false });
+      this.runSteps();
+    }
+    this.later(stepsOn ? 1900 : (snap.correct ? 620 : 1500), function () {
+      self.advance(snap.correct);
     });
   },
 

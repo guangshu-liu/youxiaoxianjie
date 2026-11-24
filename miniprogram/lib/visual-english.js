@@ -123,8 +123,12 @@ function forQuestion(q, enabled) {
     if (!w) return null;
     // 不改 letters() 的返回结构，只在这条分支里补高亮 class，
     // 老的听音选词 / 辨短元音题行为一个字段都不变。
+    // 1.2.17：题目问「开头是哪个**大写**字母」、正确答案是 A，可高亮的
+    // 却是小写 a。首字母直接用答案文本（上面已校验 /^[A-Z]$/），
+    // 展示成 Ant，孩子看到的高亮和要点的选项才对得上。
     var ls = letters(w, 0.12).map(function (L) {
       L.cls = L.i === 0 ? 'v-letter-lead' : '';
+      if (L.i === 0) L.ch = ans;
       return L;
     });
     return {

@@ -24,11 +24,38 @@ var CHART_X0 = 30;
 var CHART_Y0 = 18;         // rpx：0% 的 bottom
 var CHART_H = 114;         // rpx：100% 相对 0% 的高度
 
-/** 某科累计完成的局数。中途退出不算；复习局没有 subject，不计入任何一科。 */
+/**
+ * 一局属于哪一科。
+ *
+ * 1.2.17：finishSession 写 session 时只存了 items，从来没存 subject
+ * （src/js/40-runner.js 是网页版共用逻辑，按「网页版不动」的约定不改它）。
+ * 于是老版本直接读 s.subject 会让三科地图永远停在「第 1 关」。
+ * 现在退而求其次从 items[].subject 推断：小程序是单科局，每题的科目一致；
+ * 混合科目（复习局 / 网页版 3:3:4 混合局）一律不归任何一科。
+ * 这样老存档里已经打过的局也能立刻点亮，不用等新局、不用迁移存档。
+ */
+function subjectOf(s) {
+  if (!s || s.aborted || s.review) return '';
+  if (s.subject) return s.subject;
+  var items = s.items || [];
+  if (!items.length) return '';
+  var first = items[0] && items[0].subject;
+  if (!first) return '';
+  for (var i = 1; i < items.length; i++) {
+    if (items[i].subject !== first) return '';
+  }
+  return first;
+}
+
+/** 某科累计完成的局数。中途退出、复习局、混合科目局都不算。 */
 function roundsOf(save, subject) {
-  return (save.sessions || []).filter(function (s) {
-    return !s.aborted && s.subject === subject;
-  }).length;
+  var sessions = (save && save.sessions) || [];
+  if (!Array.isArray(sessions)) return 0;
+  var n = 0;
+  for (var i = 0; i < sessions.length; i++) {
+    if (subjectOf(sessions[i]) === subject) n++;
+  }
+  return n;
 }
 
 /**
@@ -41,7 +68,10 @@ function roundsOf(save, subject) {
 function levelMap(save) {
   return G.SUBJECTS.map(function (s) {
     var n = roundsOf(save, s);
-    var lap = Math.floor(n / LAP);
+    // 1.2.17：刚走满 6 关时仍算「第 1 轮通关」，轮次等下一局才 +1。
+    // 旧算法用 floor(n/6)，n=6 就写「第 2 轮 · 第 1 关 · 通关」，
+    // 和「6 格全亮」自相矛盾。n-1 让轮次在真正开新地图时才跳。
+    var lap = Math.floor(Math.max(0, n - 1) / LAP);
     var step = n % LAP;
     var justFinished = n > 0 && step === 0;
     var cleared = justFinished ? LAP : step;
@@ -63,9 +93,10 @@ function levelMap(save) {
       nodes: nodes,
       justFinished: justFinished,
       lapText: lap > 0 ? '第 ' + (lap + 1) + ' 轮 · ' : '',
-      title: '第 ' + nextStep + ' 关' + (justFinished ? ' · 通关' : ''),
-      fullTitle: (lap > 0 ? '第 ' + (lap + 1) + ' 轮 · ' : '') +
-                 '第 ' + nextStep + ' 关' + (justFinished ? ' · 通关' : '')
+      title: justFinished ? '通关' : '第 ' + nextStep + ' 关',
+      fullTitle: justFinished
+        ? '第 ' + (lap + 1) + ' 轮 · 通关'
+        : (lap > 0 ? '第 ' + (lap + 1) + ' 轮 · ' : '') + '第 ' + nextStep + ' 关'
     };
   });
 }
@@ -135,6 +166,7 @@ module.exports = {
   CHART_W: CHART_W,
   CHART_H: CHART_H,
   roundsOf: roundsOf,
+  subjectOf: subjectOf,
   levelMap: levelMap,
   levelMapBySubject: levelMapBySubject,
   trend: trend,
