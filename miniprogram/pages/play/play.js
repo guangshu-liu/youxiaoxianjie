@@ -380,6 +380,16 @@ Page({
     this._closed = true;       // 正常结算，onUnload 不要再记未完成局
     var correct = this.results.filter(function (r) { return r === true; }).length;
     var total = this.results.length;
+    // 1.2.18：一题都没答的空局不发星、不写 sessions、也不进结算页。
+    // onLoad 已经挡过 round.questions.length === 0，这里是第二道闸：
+    // 以后若有人改了抽题 / 切题逻辑绕过 onLoad，也不会出现「0 / 0 得 3 星」
+    // 的脏成绩。不设 lastResult，result 页就读不到这条假局。
+    if (!total) {
+      this.clearTimers();
+      wx.showToast({ title: '这一局没有题目', icon: 'none' });
+      wx.navigateBack({ delta: 1 });
+      return;
+    }
     // 复习局题数不固定，必须把 total 传进去按正确率判档，否则 3 道题
     // 全对在 9/6 的绝对阈值下只能拿 1 星。它同时走独立的 review 档：
     // 跨科混合局没有 subject，不能靠 `|| 'chinese'` 隐式落到语文档 ——

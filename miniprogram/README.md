@@ -492,6 +492,48 @@ home / play / result 三个页面，样式集中在 `app.wxss` 末尾一组 `.bi
 退出弹窗的取消 / 确认 / 分步 / 未作答四条路径、`showSteps` 在开关开与关时
 的运行时取值、首页 lastText 排除 aborted、26 道听音选字母的高亮与零泄题。
 
+## 1.2.18：收掉「0 题空局」这条边界
+
+第三批第 1 项，不加功能。全部落在小程序端，`src/js/`、`docs/`、题库、
+生成器、音频一行未改，网页版产物哈希不变。
+
+**根因**：`stars.forCorrect()` 里写的是 `var n = total || 10`。`0` 在
+JS 里是假值，于是显式传 `total = 0` 被当成「调用方没传」，按 10 题标准局
+算 —— `forCorrect(9, 'math', 0)` 会给 3 星。真实结算链路里
+`play.onLoad()` 已经挡了 `round.questions.length === 0`，所以真机暂时踩不到；
+但 `result` 页读 `lastResult` 时 `correct / total` 会除零出 NaN，今日局数
+也会把空局算成一局，属于「一旦有人改了抽题逻辑就会连锁出错」的隐式依赖。
+
+四处一起收：
+
+1. **`lib/stars.js`** — 只有 `undefined` / `null` 才按 10 题标准局；显式
+   `0` / 负数 / NaN 返回 **0 星**。空局是「一题都没答」，不是「答错」，
+   所以不吃「全错也保底 1 星」那一档；这条产品语义写进了函数注释。
+   另外把 `correct > total` 的脏数据夹回题数，避免除出 >100% 白拿高星。
+   正常局逐档不变：9→3、6→2、全错→1、3 题复习局全对→3。
+2. **`pages/play/play.js` 的 `finish()`** — 第二道闸：`total === 0` 时
+   `clearTimers()` + toast「这一局没有题目」+ `navigateBack`，**不调
+   `awardPoints`、不写 sessions、不设 lastResult、不跳结算页**。放在算星
+   之前，也不设「未完成局」—— 一道题都没答，没什么可记的。
+3. **`pages/result/result.js`** — `pct` 改成 `r.total > 0 ? ... : 0`，
+   异常 / 旧存档里的 0 题成绩不会把 NaN 带进 setData（文案、彩纸、emoji
+   都会落到错误分支）。
+4. **`lib/rewards.js` 的 `roundsToday()`** — 明确标成 0 题的空局不算
+   「今天玩了一局」，与折线一致。这里用 `s.total === undefined || s.total > 0`
+   而不是简单的 `> 0`：老存档 / 精简备份的 session 可能没有 total 字段，
+   仍按完成局算；折线因为要拿 total 当分母，必须要求 `total > 0`，两者
+   只在「显式 0 题」这一点上同口径。家长页「今日局数」直接复用此函数。
+
+**取舍**：没改 `src/js/40-runner.js` 的 `finishSession`（那会同步到
+`docs/app.js`），也没改 `buildReviewRound` 的失效 qid 过滤 —— 那是另一条
+待办，不属于这次的 0 题边界。
+
+无头断言 621 → 658 项。新增覆盖：四科 + review 的 0 题 / 负数 / NaN /
+字符串 0、省略与 null 的旧调用兼容、correct 越界夹取、0 题结算入口的
+不发星 / 不写 session / 不写 lastResult / 不跳转 / 有提示 / 掐定时器、
+同一实例换正常局仍能结算并拿 3 星、0 题结算页零 NaN、今日局数排除空局
+且兼容缺 total 的老 session。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -515,7 +557,7 @@ home / play / result 三个页面，样式集中在 `app.wxss` 末尾一组 `.bi
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，621 项断言
+npm run mp:test      # wx 桩 + Node，658 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

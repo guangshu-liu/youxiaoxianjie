@@ -54,7 +54,9 @@ Page({
     }
     var reviewRoundSize = Math.min(wrongCount, G.ROUND_SIZE);
 
-    var pct = Math.round(r.correct / r.total * 100);
+    // 1.2.18：lastResult 若来自异常路径 / 旧存档的 0 题局，除零会出 NaN，
+    // 带进 setData 后文案、彩纸、emoji 全落到错误分支。0 题按 0% 处理。
+    var pct = r.total > 0 ? Math.round(r.correct / r.total * 100) : 0;
     var praise = pct >= 90 ? '太棒了！'
                : pct >= 70 ? '做得很好！'
                : pct >= 50 ? '有进步！'

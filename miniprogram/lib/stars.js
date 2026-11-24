@@ -51,18 +51,34 @@ var RULES = {
  * 0.9 / 0.6。不换算的话错题复习局会吃亏 —— 复习局「不足一局就出几道算
  * 几道」，3 道题全对在绝对阈值下只能拿 1 星，孩子会觉得全对了也没奖励。
  *
- * total 省略时按 10 题标准局，普通局行为与旧版逐档一致（9→3、6→2）。
- * 少于 3 题的局固定 1 星：2 道题全对拿 3 星太容易刷；每日 60 星上限和
- * 错题 cleared 机制只兜住长局，兜不住这种极短局。
+ * total 省略（undefined / null）时按 10 题标准局，普通局行为与旧版逐档
+ * 一致（9→3、6→2）。少于 3 题的局固定 1 星：2 道题全对拿 3 星太容易刷；
+ * 每日 60 星上限和错题 cleared 机制只兜住长局，兜不住这种极短局。
  *
  * 1 星是保底 —— 全错也给。这个游戏的前提是「答错不卡住」，
  * 结算时给 0 星等于把「答错」变成惩罚，和整个设计相反。
+ *
+ * 1.2.18 的空局边界：只有「没传 total」才算省略。显式传 0（或负数 /
+ * NaN）是一题都没答的空局，返回 0 星 —— 它不是「答错」，不该吃保底，
+ * 更不该被旧写法 `total || 10` 当成省略值，让 9 道对题在 0 题局里
+ * 算出 3 星。另外把脏数据里超过题数的 correct 夹回 n，避免除出 >100%
+ * 的正确率白拿高星。
  */
 function forCorrect(correct, subject, total) {
   var r = RULES[subject] || RULES.chinese;
-  var n = total || 10;
+  var n;
+  if (total === undefined || total === null) {
+    n = 10;                              // 省略：兼容旧调用，按标准局
+  } else {
+    n = Number(total);
+    if (!isFinite(n) || n < 1) return 0;  // 显式 0 / 负数 / NaN → 空局不发星
+    n = Math.floor(n);
+  }
   if (n < 3 || !correct || correct <= 0) return 1;
-  var pct = correct / n;
+  var c = Number(correct);
+  if (!isFinite(c)) return 1;
+  if (c > n) c = n;                     // 答对数不可能比题数还多
+  var pct = c / n;
   if (pct >= r.three / 10) return 3;
   if (pct >= r.two / 10) return 2;
   return 1;

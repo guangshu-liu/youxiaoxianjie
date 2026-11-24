@@ -1716,6 +1716,108 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(merged17.after.letters[0].ch, 'A', '展示成 Ant，高亮的 A 与选项一致');
 }
 
+/* ---- 8M. 1.2.18：0 题空局边界（第三批第 1 项） ---- */
+{
+  const fs = require('fs');
+  const S18 = require(path.join(MP, 'lib/stars.js'));
+  const R18 = require(path.join(MP, 'lib/rewards.js'));
+  const starsSrc18 = fs.readFileSync(path.join(MP, 'lib/stars.js'), 'utf8');
+  const playSrc18 = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  const resultSrc18 = fs.readFileSync(path.join(MP, 'pages/result/result.js'), 'utf8');
+
+  /* ① 纯函数：显式 0 题不再被 `total || 10` 当成「省略」。 */
+  G.SUBJECTS.concat(['review']).forEach((s) => {
+    eq(S18.forCorrect(9, s, 0), 0, s + ' 9 对题但 0 题局不给星');
+    eq(S18.forCorrect(0, s, 0), 0, s + ' 0 题局连保底 1 星也不发');
+  });
+  eq(S18.forCorrect(9, 'math', -1), 0, '负数题数按空局处理');
+  eq(S18.forCorrect(9, 'math', NaN), 0, 'NaN 题数按空局处理');
+  eq(S18.forCorrect(9, 'math', '0'), 0, '字符串 0 也按空局处理');
+  eq(S18.forCorrect(9, 'math', undefined), 3, '省略 total 仍按 10 题标准局');
+  eq(S18.forCorrect(9, 'math', null), 3, 'null 视作省略，兼容旧调用');
+  eq(S18.forCorrect(9, 'math', 10), 3, '正常 9/10 仍是 3 星');
+  eq(S18.forCorrect(0, 'math', 10), 1, '答了但全错仍保底 1 星（空局 ≠ 全错）');
+  eq(S18.forCorrect(20, 'math', 10), 3, '脏数据 correct > total 被夹回题数');
+  eq(S18.forCorrect(3, 'review', 3), 3, '3 题复习局全对仍 3 星');
+  ok(!/var n = total \|\| 10/.test(starsSrc18)
+     && /if \(total === undefined/.test(starsSrc18),
+     '不再用 total || 10 把 0 当省略');
+
+  /* ② 结算入口：0 题局不发星、不写 session、不进结算页。 */
+  const cfg18 = loadPage('pages/play/play.js');
+  const p18 = makeInstance(cfg18);
+  const fresh18 = G.Store.defaultSave();
+  p18.round = { questions: [], startedAt: Date.now() };
+  p18.results = [];
+  p18.items = [];
+  p18.save = fresh18;
+  p18.review = false;
+  p18.subject = 'math';
+  p18.clearTimers = function () { this.clearCalls = (this.clearCalls || 0) + 1; };
+  const life18Before = fresh18.points.lifetime;
+  const prevResult18 = app.globalData.lastResult;
+  const prevNav18 = wx.__lastNav;
+  let toast18 = '', back18 = 0;
+  const origToast18 = wx.showToast, origBack18 = wx.navigateBack;
+  wx.showToast = (o) => { toast18 = (o && o.title) || ''; };
+  wx.navigateBack = () => { back18++; };
+
+  p18.finish();
+  eq(fresh18.points.lifetime, life18Before, '0 题局没发星星');
+  eq(fresh18.sessions.length, 0, '0 题局不写 sessions');
+  eq(app.globalData.lastResult, prevResult18, '0 题局不写 lastResult');
+  eq(wx.__lastNav, prevNav18, '0 题局不跳结算页');
+  eq(back18, 1, '0 题局退回上一页');
+  ok(/这一局没有题目/.test(toast18), '0 题局有明确提示，不会静默卡住');
+  eq(p18.clearCalls, 1, '0 题局掐掉定时器');
+
+  // 同一实例换成正常 10 题局，确认第二道闸没误伤正常结算。
+  p18.results = [true, true, true, true, true, true, true, true, true, false];
+  p18.items = p18.results.map((c, i) => ({ qid: 'q' + i, subject: 'math', correct: c, ms: 100 }));
+  p18.round = { questions: p18.results.map(() => ({})), startedAt: Date.now() };
+  p18.finish();
+  eq(app.globalData.lastResult.total, 10, '正常局仍能结算 10 题');
+  eq(app.globalData.lastResult.nominal, 3, '正常局 9 对仍拿 3 星');
+  eq(fresh18.sessions.length, 1, '正常局照常写一条 session');
+  wx.showToast = origToast18;
+  wx.navigateBack = origBack18;
+  wx.__lastNav = prevNav18;
+  app.globalData.lastResult = prevResult18;
+  ok(/if \(!total\) \{[\s\S]{0,320}wx\.navigateBack/.test(playSrc18),
+     '结算页入口有 0 题第二道闸，且在算星之前');
+
+  /* ③ 结算展示：0 题结算页不出现 NaN。 */
+  app.globalData.lastResult = {
+    subject: 'math', review: false, correct: 0, total: 0,
+    stars: 0, nominal: 0, capped: false,
+    lifetime: app.globalData.save.points.lifetime, lifetimeBefore: 0
+  };
+  const rp18 = makeInstance(loadPage('pages/result/result.js'));
+  rp18.onLoad();
+  eq(rp18.data.score, '0 / 0', '0 题结算显示 0 / 0');
+  eq(rp18.data.emoji, '💪', '0 题按 0% 给鼓励表情，不是 NaN 分支');
+  eq(rp18.data.confetti, false, '0 题不撒彩纸');
+  eq(rp18.data.reviewRoundSize, 0, '0 题局不摆复习按钮');
+  ok(!/NaN/.test(JSON.stringify(rp18.data)), '结算数据里没有 NaN');
+  ok(/var pct = r\.total > 0 \?/.test(resultSrc18), '结算页百分比不再除零');
+  app.globalData.lastResult = prevResult18;
+
+  /* ④ 今日局数：0 题空局不算「玩了一局」，老存档缺 total 仍算。 */
+  const save18 = app.globalData.save;
+  const sessions18Bak = save18.sessions;
+  const now18 = Date.now();
+  save18.sessions = [
+    { ts: now18, total: 0 },
+    { ts: now18 },
+    { ts: now18, total: 10 },
+    { ts: now18, total: 0, aborted: true },
+    { ts: now18 - 86400000, total: 10 }
+  ];
+  eq(R18.roundsToday(save18), 2, '0 题局不算今日局数，缺 total 的老 session 仍算');
+  eq(R18.goalState(save18).reached, true, '2 局仍达成今日小目标');
+  save18.sessions = sessions18Bak;
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

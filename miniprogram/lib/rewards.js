@@ -16,11 +16,21 @@ var GOAL = 2;              // 每天 2 局
 var MONSTER_LIMIT = 5;     // 首页最多摆 5 只，多了挤
 var HP = 2;                // 与 recordAnswer 的 rightStreak >= 2 → cleared 对齐
 
-/** 今天完成的局数。中途退出的不算；口径与家长页「今日局数」完全一致。 */
+/**
+ * 今天完成的局数。中途退出、0 题空局都不算；口径与家长页「今日局数」
+ * 完全一致，和折线一样不会把 0 题空局算成一局。
+ *
+ * 1.2.18：这里用「total 缺失 或 > 0」而不是简单的 `s.total > 0` ——
+ * 老存档 / 精简备份里的 session 可能没有 total 字段，那些仍算完成局，
+ * 只有明确标成 0 题（或脏数据里的负数 / NaN）才排除。折线必须要求
+ * total > 0（它要拿 total 当分母），所以只在「显式 0 题」这一点上同口径。
+ */
 function roundsToday(save) {
   var today = G.localDateStr();
   return (save.sessions || []).filter(function (s) {
-    return !s.aborted && G.localDateStr(new Date(s.ts)) === today;
+    return !s.aborted
+      && (s.total === undefined || s.total > 0)
+      && G.localDateStr(new Date(s.ts)) === today;
   }).length;
 }
 
