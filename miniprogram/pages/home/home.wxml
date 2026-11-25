@@ -1,44 +1,12 @@
 <view class="screen screen-home {{bigText ? 'big-text' : ''}}">
-  <view class="home-head">
-    <view class="home-title">幼小衔接闯关</view>
-    <view class="home-sub {{goalReached ? 'home-sub-done' : ''}}">{{subTitle}}</view>
-  </view>
-
-  <view class="home-progress-row">
-    <view class="home-stats">
-      <view class="home-points">{{stars}}</view>
-      <view class="home-points-label">星星</view>
+  <!-- 1.2.24 极简版：标题本来就在导航栏里，首页顶部不再重复堆信息。
+       只留右上角一枚状态胶囊，星星数与徽章解锁状态仍看得见；
+       徽章名称、兑现记录、进度条在家长页与结算页，数据一个不删。 -->
+  <view class="home-mini">
+    <text class="home-mini-stars">⭐ {{stars}}</text>
+    <view class="home-mini-badges">
+      <text wx:for="{{badges}}" wx:key="need" class="home-mini-badge {{item.got ? 'is-got' : ''}}">{{item.emoji}}</text>
     </view>
-    <view class="badge-progress">
-      <view class="badge-progress-bar" style="width:{{progressPct}}%"></view>
-    </view>
-  </view>
-
-  <view class="badge-strip">
-    <view wx:for="{{badges}}" wx:key="need" class="badge {{item.got ? 'badge-got' : ''}}">
-      <text class="badge-emoji">{{item.emoji}}</text>
-      <text class="badge-name">{{item.name}}</text>
-      <text wx:if="{{item.claimed}}" class="badge-claimed">已换</text>
-    </view>
-  </view>
-
-  <view class="home-next" wx:if="{{nextBadge}}">
-    再攒 {{nextBadge.left}} 颗星星，解锁「{{nextBadge.name}}」
-  </view>
-  <view class="home-next" wx:else>四个徽章都拿到啦！</view>
-
-  <view wx:if="{{monsters.length}}" class="monster-row">
-    <text class="monster-hint">错题小怪物 {{monsterTotal}} 只</text>
-    <view class="monster-list">
-      <view wx:for="{{monsters}}" wx:key="id" class="monster monster-t{{item.tone}}">
-        <view class="monster-face"><view class="monster-eye"></view><view class="monster-eye"></view></view>
-        <view class="monster-hp">
-          <view class="hp-dot {{item.hp >= 1 ? 'hp-on' : ''}}"></view>
-          <view class="hp-dot {{item.hp >= 2 ? 'hp-on' : ''}}"></view>
-        </view>
-      </view>
-    </view>
-    <text class="monster-tip">连对 2 次收服</text>
   </view>
 
   <view class="subject-list">
@@ -75,6 +43,4 @@
     <button wx:if="{{reviewRoundSize >= 3}}" class="btn btn-ghost home-action" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
     <button class="btn btn-ghost home-action" bindtap="onParent">👨‍👩‍👧 家长</button>
   </view>
-
-  <view class="home-last" wx:if="{{lastText}}">{{lastText}}</view>
 </view>

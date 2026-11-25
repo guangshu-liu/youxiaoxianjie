@@ -1261,17 +1261,23 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq(hp9.data.reviewRoundSize, 3, '显示开关绝不影响复习入口');
 
   // --- 静态结构 ---
-  ok(/wx:if="\{\{item\.claimed\}\}" class="badge-claimed"/.test(homeWxml),
-     '首页有已兑现角标');
-  ok(/wx:if="\{\{monsters\.length\}\}"/.test(homeWxml), '没错题时不摆小怪物行');
+  // 1.2.24 首页收成极简版后，角标与小怪物行不再摆在首页；兑现记录、开关、
+  // 数据层都还在（下面 4 条 + 上面的 data 断言共同兜住，不是把功能删了）。
+  ok(!/badge-claimed/.test(homeWxml), '首页极简版不摆「已换」角标');
+  ok(!/monster-row/.test(homeWxml), '首页极简版不摆小怪物行');
+  ok(/checked="\{\{item\.claimed\}\}"/.test(parentWxml), '兑现记录仍在家长页可见可改');
+  ok(/function badgeList/.test(rewardsSrc) && /claimed:\s*!!at/.test(rewardsSrc),
+     'badgeList 仍产出 claimed，首页随时能恢复角标');
   ok(/bindchange="onToggleBadgeClaim"/.test(parentWxml) &&
      /data-need="\{\{item\.need\}\}"/.test(parentWxml), '家长页兑现开关按 need 绑定');
   ok(/disabled="\{\{!item\.got\}\}"/.test(parentWxml), '未解锁的开关禁用');
   ok(/bindchange="onToggleMonsters"/.test(parentWxml) &&
      /bindchange="onToggleDailyGoal"/.test(parentWxml), '两个家长开关都在面板里');
   ok(/rewards\.roundsToday\(save\)/.test(parentSrc), '家长页复用同一份今日局数口径');
-  ok(/\.monster-face/.test(appWxss9) && /\.badge-claimed/.test(appWxss9),
-     '小怪物和角标样式都在全局样式里');
+  ok(/\.badge-strip\s*\{/.test(appWxss9) && /\.badge-name\s*\{/.test(appWxss9),
+     '结算页复用的徽章样式没被一起删掉');
+  ok(!/\.monster-face/.test(appWxss9) && !/\.badge-claimed/.test(appWxss9),
+     '首页专属死规则清干净');
   ok(!/require\([^)]*\bsrc\//.test(rewardsSrc),
      '新模块不引用共用 src/ 逻辑，网页版产物零改动');
 
@@ -2363,28 +2369,71 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   eq((wxml23.match(/class="level-inline"/g) || []).length, 3,
      '仍是每组一排在按钮内部');
 
-  /* 顶部压缩、底部两个大按钮 */
-  ok(/class="home-progress-row"/.test(wxml23), '星星与进度条并成一行');
-  ok(/flex:\s*1/.test(wxss23.slice(wxss23.indexOf('.badge-progress {'),
-                                  wxss23.indexOf('.badge-progress-bar'))),
-     '进度条在行内占满剩余宽度');
+  /* 底部两个大按钮。顶部信息区在 1.2.24 又收成极简胶囊，见 8S。 */
   eq((wxml23.match(/home-action/g) || []).length, 2, '复习与家长两个按钮改成大卡片');
   ok(/min-height:\s*92px/.test(wxss23), '底部按钮加高');
-  ok(/font-size:\s*30px/.test(wxss23.slice(wxss23.indexOf('.home-title {'),
-                                           wxss23.indexOf('.home-sub {'))),
-     '标题收敛，不再用 46px 抢位置');
-
-  /* 功能一个没删：星星、徽章、小怪物、目标、复习、上次成绩、大字 */
-  ['badge-strip', 'badge-progress-bar', 'monster-row', 'home-next',
-   'home-last', 'big-text'].forEach((c) => {
-    ok(wxml23.indexOf(c) >= 0, c + ' 功能元素保留');
-  });
   ok(/本局 \{\{reviewRoundSize\}\} 题/.test(wxml23), '复习按钮仍报本局题数');
-  ok(/\{\{stars\}\}/.test(wxml23) && /\{\{lastText\}\}/.test(wxml23),
-     '星星与上次成绩仍显示');
+  ok(/\{\{stars\}\}/.test(wxml23), '星星数仍显示');
   ok(/\.big-text \.subject-name \{ font-size: 50px; \}/.test(wxss23),
      '大字模式跟着放大，不会反而缩回 36px');
   ok(/yxjx-6ee740ece2/.test(sw23), 'docs/sw.js 哈希不变，网页版不用重新部署');
+}
+
+/* ---- 8S. 1.2.24：首页顶部收成极简版 ---- */
+{
+  const fs = require('fs');
+  const wxml24 = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const homeSrc24 = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
+  const wxss24 = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const result24 = fs.readFileSync(path.join(MP, 'pages/result/result.wxml'), 'utf8');
+  const parent24 = fs.readFileSync(path.join(MP, 'pages/parent/parent.wxml'), 'utf8');
+  const sw24 = fs.readFileSync(path.join(ROOT, 'docs/sw.js'), 'utf8');
+
+  /* 原来顶部 5 行 + 底部 1 行全部收净，一个绑定都不留。 */
+  ['home-head', 'home-title', 'home-sub', 'home-progress-row', 'home-stats',
+   'home-points', 'badge-strip', 'badge-progress', 'home-next', 'monster-row',
+   'home-last', '{{subTitle}}', '{{progressPct}}', '{{nextBadge}}',
+   '{{lastText}}', '{{monsters.length}}'].forEach((c) => {
+    ok(wxml24.indexOf(c) < 0, c + ' 已从首页收掉');
+  });
+
+  /* 右上角一枚胶囊：星星 + 四枚小徽章，绝对定位不占布局高度。 */
+  eq((wxml24.match(/class="home-mini"/g) || []).length, 1, '只剩一枚状态胶囊');
+  ok(/⭐ \{\{stars\}\}/.test(wxml24), '胶囊里仍是真实星星数');
+  ok(/wx:for="\{\{badges\}\}"/.test(wxml24) &&
+     /item\.got \? 'is-got'/.test(wxml24), '徽章解锁状态仍在胶囊里可辨');
+  const miniBlock24 = wxss24.slice(wxss24.indexOf('.home-mini {'),
+                                   wxss24.indexOf('.home-mini-stars'));
+  ok(/position:\s*absolute/.test(miniBlock24) && /top:\s*12px/.test(miniBlock24),
+     '胶囊绝对定位，不占文档流、不把首页顶出小屏');
+  ok(/\.big-text \.home-mini-stars/.test(wxss24), '大字模式同步放大胶囊');
+
+  /* 首页专属死规则清掉，结算页复用的徽章样式必须保留。 */
+  ['.home-title {', '.home-sub {', '.home-last', '.home-next',
+   '.badge-progress', '.badge-claimed', '.monster-face', '.hp-dot'].forEach((c) => {
+    ok(wxss24.indexOf(c) < 0, '不留死规则 ' + c);
+  });
+  ok(/\.badge-strip\s*\{/.test(wxss24) && /\.badge-name\s*\{/.test(wxss24),
+     '结算页仍在用的徽章样式保留');
+  ok(/class="badge-strip"/.test(result24), '结算页确实还摆徽章条');
+
+  /* 三科卡片与两个入口一个不少。 */
+  eq((wxml24.match(/class="subject-btn /g) || []).length, 3, '三科卡片仍在');
+  eq((wxml24.match(/class="level-inline"/g) || []).length, 3, '三科关卡点仍在');
+  eq((wxml24.match(/home-action/g) || []).length, 2, '复习与家长入口仍在');
+  ok(/wx:if="\{\{reviewRoundSize >= 3\}\}"/.test(wxml24), '复习入口门槛照旧');
+  ok(/height:\s*176px/.test(wxss24), '卡片尺寸没被顺手改掉');
+
+  /* 关键：home.js 一行没动，被收掉的只是展示层，数据随时能接回来。 */
+  ['stars:', 'subTitle:', 'badges:', 'progressPct:', 'nextBadge:',
+   'lastText:', 'monsters:', 'goalReached:', 'levels:', 'bigText:'].forEach((k) => {
+    ok(homeSrc24.indexOf(k) >= 0, 'home.js 仍产出数据 ' + k);
+  });
+  ok(/rewards\.badgeList\(save/.test(homeSrc24) &&
+     /rewards\.monstersOf\(save\)/.test(homeSrc24), '徽章与小怪物数据仍在算');
+  ok(/bindchange="onToggleBadgeClaim"/.test(parent24) &&
+     /当前星星/.test(parent24), '账目与徽章在家长页照常可见');
+  ok(/yxjx-6ee740ece2/.test(sw24), 'docs/sw.js 哈希不变，网页版不用重新部署');
 }
 
 /* ---- 9. 备份 ---- */

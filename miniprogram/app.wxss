@@ -95,10 +95,12 @@ view, text, button, input, textarea {
 .btn-xs  { font-size: 15px; min-height: 36px; padding: 5px 11px; border-radius: var(--r-sm); }
 .btn-icon { min-width: var(--tap); width: var(--tap); font-size: 24px; padding: 0; }
 
-/* ---------- 首页（1.2.23 卡片式版式） ----------
- * 方向：三科从三条横条改成横排三张大圆角卡片、科名竖排、关卡点落在
- * 卡片底部；顶部星星与徽章压缩成「一行进度 + 一排小徽章」，中间留白。
- * 星星、徽章、小怪物、每日目标、复习入口这些既有功能一个不删，只收尺寸。
+/* ---------- 首页（1.2.24 极简版） ----------
+ * 三科横排大卡片是唯一视觉主角。1.2.24 把标题、副标题、大星星数字、
+ * 进度条、四张徽章卡、解锁文案、小怪物行、上次成绩全部从首页收掉，
+ * 只在右上角留一枚不占布局高度的状态胶囊（星星 + 四枚小徽章）。
+ * 这些功能的数据和入口一个没删：home.js 照常算，家长页看账目与兑现，
+ * 结算页看徽章条，答题页看星星。随时加回 WXML 就能恢复展示。
  * 尺寸仍用 px（按 375pt 排的），卡片用 flex:1 横向自适应。 */
 
 .screen-home {
@@ -108,32 +110,29 @@ view, text, button, input, textarea {
   gap: 11px;
 }
 
-.home-head { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-.home-title {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--c-ink);
-  text-shadow: none;
-}
-.home-sub { font-size: 14px; color: var(--c-ink-soft); letter-spacing: 1px; margin: 0; }
-
-.home-progress-row {
+/* 绝对定位：胶囊不占文档流，首页在矮屏上也不会被顶出屏幕。 */
+.home-mini {
+  position: absolute;
+  top: 12px;
+  right: 18px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  width: 100%;
-  max-width: 520px;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid var(--c-line);
 }
-.home-stats { display: flex; align-items: baseline; gap: 5px; margin: 0; flex-shrink: 0; }
-.home-points {
-  font-size: 30px;
+.home-mini-stars {
+  font-size: 15px;
   font-weight: 800;
+  line-height: 1.2;
   color: var(--c-second);
-  line-height: 1;
-  text-shadow: none;
+  white-space: nowrap;
 }
-.home-points-label { font-size: 13px; color: var(--c-ink-soft); letter-spacing: 1px; }
+.home-mini-badges { display: flex; gap: 3px; }
+.home-mini-badge { font-size: 14px; line-height: 1.2; opacity: .3; filter: grayscale(1); }
+.home-mini-badge.is-got { opacity: 1; filter: none; }
 
 .home-row { display: flex; gap: 12px; width: 100%; max-width: 520px; }
 .home-row .btn { flex: 1; }
@@ -149,7 +148,6 @@ view, text, button, input, textarea {
   line-height: 1.35;
   box-shadow: 0 4px 0 rgba(0,0,0,.05);
 }
-.home-last { margin-top: 2px; font-size: 15px; color: var(--c-ink-soft); }
 
 /* 三科入口。一局只出一科；横排大卡片，科名竖排两字。 */
 .subject-list {
@@ -272,78 +270,8 @@ view, text, button, input, textarea {
 .badge-emoji { font-size: 22px; line-height: 1.1; }
 .badge-name  { font-size: 11px; color: var(--c-ink-soft); }
 
-/* 家长确认线下兑现后的小角标：绝对定位，不占徽章条高度。 */
-.badge-claimed {
-  position: absolute;
-  top: -8px;
-  right: -6px;
-  padding: 1px 6px;
-  border-radius: 999px;
-  background: var(--c-ok);
-  color: #fff;
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-.home-sub-done { color: var(--c-ok); }
-
-/* ---------- 错题小怪物 ----------
-   纯静态 CSS 形状，不是循环动画；血量跟着 rightStreak 变，属于反馈型。 */
-
-.monster-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  width: 100%;
-  max-width: 520px;
-}
-.monster-hint { font-size: 14px; color: var(--c-ink-soft); }
-.monster-tip  { font-size: 13px; color: var(--c-ink-soft); }
-.monster-list { display: flex; gap: 6px; }
-.monster { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 26px; }
-.monster-face {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  width: 24px;
-  height: 20px;
-  border-radius: 10px 10px 6px 6px;
-  background: #B4A7E8;
-}
-.monster-t1 .monster-face { background: #7FD8FF; }
-.monster-t2 .monster-face { background: #F5B971; }
-.monster-eye { width: 4px; height: 4px; border-radius: 50%; background: #fff; }
-.monster-hp { display: flex; gap: 2px; }
-.hp-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  border: 1px solid var(--c-line);
-  background: transparent;
-}
-.hp-dot.hp-on { background: var(--c-bad); border-color: var(--c-bad); }
-
-.badge-progress {
-  flex: 1;
-  width: auto;
-  max-width: none;
-  height: 12px;
-  border-radius: 999px;
-  background: #EFE7D6;
-  overflow: hidden;
-}
-
-.badge-progress-bar {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #7FD8FF, var(--c-second));
-  transition: width .4s ease;
-}
-
-.home-next { font-size: 13px; color: var(--c-ink-soft); }
+/* 徽章条本身仍被结算页复用，所以上面这组规则保留；1.2.24 只删首页
+   专属的「已换角标 / 进度条 / 解锁文案 / 小怪物」死规则。 */
 
 /* ---------- 答题 ---------- */
 
@@ -1005,10 +933,8 @@ view, text, button, input, textarea {
 .big-text .options-big-number .option-text { font-size: 56px; }
 .big-text .explain { font-size: 24px; }
 .big-text .subject-name { font-size: 50px; }
-.big-text .home-sub { font-size: 22px; }
-.big-text .home-next { font-size: 19px; }
-.big-text .home-last { font-size: 19px; }
-.big-text .badge-name { font-size: 17px; }
+.big-text .home-mini-stars { font-size: 19px; }
+.big-text .home-mini-badge { font-size: 18px; }
 .big-text .summary-subject { font-size: 24px; }
 .big-text .summary-title { font-size: 40px; }
 .big-text .summary-score { font-size: 62px; }
