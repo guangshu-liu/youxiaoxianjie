@@ -45,7 +45,6 @@
         <view class="level-track">
           <view wx:for="{{levels.chinese.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
         </view>
-        <text class="level-title">{{levels.chinese.fullTitle}}</text>
       </view>
     </button>
     <button class="btn btn-secondary btn-xl subject-btn" data-subject="math" bindtap="onStart">
@@ -54,7 +53,6 @@
         <view class="level-track">
           <view wx:for="{{levels.math.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
         </view>
-        <text class="level-title">{{levels.math.fullTitle}}</text>
       </view>
     </button>
     <button class="btn btn-xl subject-btn subject-en" data-subject="english" bindtap="onStart">
@@ -63,7 +61,6 @@
         <view class="level-track">
           <view wx:for="{{levels.english.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
         </view>
-        <text class="level-title">{{levels.english.fullTitle}}</text>
       </view>
     </button>
   </view>

@@ -680,6 +680,24 @@ WXML 的 `answered` 挡着 —— 模板改错一行就泄题。现在 `visual.f
 `recordRound` 在 `finishSession` 之前的顺序、共用 Runner 与 `docs/sw.js`
 零改动。1.2.16 那组地图断言改为隔离 `save.rounds` 后再验「没玩过」。
 
+## 1.2.22：首页选课按钮去掉「第几关」文字
+
+三科按钮右侧原来有一行 `level-title`（`{{levels.*.fullTitle}}`），内容是
+「第 5 轮 · 第 2 关」这类 `nowrap` 长文案。它是选课行里最占地方的元素，
+小屏上把三个按钮挤得又满又大。现在只保留 `level-track` 的六个小圆点：
+
+- `home.wxml` 删掉三处 `<text class="level-title">`，`app.wxss` 删掉
+  对应规则，`level-inline` 从纵向两行改回单行居中。
+- 圆点 11 → 10px、间距 5 → 4px、空心「下一关」13 → 12px，整组更轻。
+- **只改展示层**。累计计数器、通关判定、`levelMapBySubject()`、
+  家长页 `levelMap` 开关、数据层 `fullTitle` / `lapText` 全部保留，
+  以后想恢复文字只需要加回一行 WXML + 一条 CSS。代价是首页看不出
+  轮次了，只能靠「六格全亮 = 通关」和空心圈区分。
+
+无头断言 798 → 810 项。新增覆盖：三处文字标签与 CSS 规则确实删净、
+三科六点仍在、关卡点仍挂在按钮内部不新增行、尺寸收紧、首页仍传
+关卡数据、数据层文案保留。`src/js/`、`docs/`、题库、音频零改动。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -703,7 +721,7 @@ WXML 的 `answered` 挡着 —— 模板改错一行就泄题。现在 `visual.f
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，798 项断言
+npm run mp:test      # wx 桩 + Node，810 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

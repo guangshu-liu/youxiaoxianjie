@@ -152,25 +152,25 @@ view, text, button, input, textarea {
 /* ---------- 三科闯关地图（1.2.16） ----------
  * 关卡点塞在原有三科按钮内部右侧，不新增一行：首页已经被徽章、进度条、
  * 小怪物占满，再叠一排会把底部复习按钮顶出小屏。白点在彩色按钮上都
- * 看得清；「下一关」用空心圈标出，没有循环动画。 */
+ * 看得清；「下一关」用空心圈标出，没有循环动画。
+ * 1.2.22：去掉按钮里的「第 5 轮 · 第 2 关」文字。那串 nowrap 文字是
+ * 选课行里最占地方的元素，小屏上把三个按钮挤得又满又大。现在只留
+ * 一排小点，尺寸顺带收一格；数据层 fullTitle / 累计进度全部照旧。 */
 .level-inline {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 3px;
+  align-items: center;
   margin-left: auto;
 }
-.level-track { display: flex; gap: 5px; }
+.level-track { display: flex; gap: 4px; }
 .level-node {
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   border-radius: 999px;
   background: rgba(255,255,255,.32);
   border: 1px solid rgba(255,255,255,.65);
 }
 .level-done { background: #fff; border-color: #fff; }
-.level-now { width: 13px; height: 13px; background: transparent; border: 2px solid #fff; }
-.level-title { font-size: 12px; line-height: 1; opacity: .92; white-space: nowrap; }
+.level-now { width: 12px; height: 12px; background: transparent; border: 2px solid #fff; }
 
 .subject-en {
   background: linear-gradient(180deg, #8BE58B 0%, #66BB6A 100%);

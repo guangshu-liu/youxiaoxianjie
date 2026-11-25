@@ -2299,6 +2299,35 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(/yxjx-6ee740ece2/.test(swSrc21), 'docs/sw.js 缓存哈希不变，网页版不用重新部署');
 }
 
+/* ---- 8Q. 1.2.22：首页选课按钮去掉「第几关」文字，只留小圆点 ---- */
+{
+  const fs = require('fs');
+  const homeWxml22 = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const homeSrc22 = fs.readFileSync(path.join(MP, 'pages/home/home.js'), 'utf8');
+  const wxss22 = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const progressSrc22 = fs.readFileSync(path.join(MP, 'lib/progress.js'), 'utf8');
+
+  ok(!/level-title/.test(homeWxml22), '首页不再渲染「第几关」文字标签');
+  ok(!/fullTitle/.test(homeWxml22), '首页不取 fullTitle，长文案不再挤占按钮');
+  ok(!/\.level-title\s*\{/.test(wxss22), '对应样式一起删掉，不留死规则');
+  eq((homeWxml22.match(/class="level-inline"/g) || []).length, 3,
+     '三科按钮仍各有一组关卡点');
+  ['chinese', 'math', 'english'].forEach((s) => {
+    ok(new RegExp('levels\\.' + s + '\\.nodes').test(homeWxml22),
+       s + ' 的 6 个关卡点还在');
+  });
+  ok(/<button[^>]*subject-btn[\s\S]{0,420}class="level-inline"/.test(homeWxml22),
+     '关卡点仍挂在按钮内部，没有新增一行');
+  ok(/width: 10px/.test(wxss22) && /gap: 4px/.test(wxss22),
+     '圆点和间距收小一格，选课行更轻');
+  ok(!/flex-direction: column/.test(wxss22.slice(wxss22.indexOf('.level-inline'),
+     wxss22.indexOf('.level-track'))), '去掉文字后不再需要纵向排布');
+  ok(/levels: mapOn \? progress\.levelMapBySubject\(save\) : null/.test(homeSrc22),
+     '首页仍传关卡数据，家长页开关照常生效');
+  ok(/fullTitle:/.test(progressSrc22) && /lapText:/.test(progressSrc22),
+     '数据层文案与累计进度保留，随时能恢复显示');
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {
