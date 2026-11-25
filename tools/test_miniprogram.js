@@ -1304,6 +1304,11 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   const saveK = app.globalData.save;
   const sessionsK = saveK.sessions;
+  // 1.2.21：累计计数器是独立真相源，清空 sessions 也不会归零。
+  // 这一段的「没玩过」断言要把它一起隔离，否则会被前面测试段写过的
+  // 计数器带偏；段尾照原样还原。
+  const roundsK = saveK.rounds;
+  saveK.rounds = {};
   const levelMapK = saveK.settings.levelMap;
   const bigTextK = saveK.settings.bigText;
   const lastResultK = app.globalData.lastResult;
@@ -1520,6 +1525,8 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
 
   // --- 恢复现场，别污染备份导出测试 ---
   saveK.sessions = sessionsK;
+  if (roundsK === undefined) delete saveK.rounds;
+  else saveK.rounds = roundsK;
   if (levelMapK === undefined) delete saveK.settings.levelMap;
   else saveK.settings.levelMap = levelMapK;
   if (bigTextK === undefined) delete saveK.settings.bigText;
@@ -2125,6 +2132,171 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
      && /%d-%s/.test(audioTool20),
      '音频体检缓存 key 加内容哈希且版本已升');
   ok(/npm run mp:check/.test(pkg20.scripts.verify), 'verify 纳入 mp:check');
+}
+
+/* ---- 8P. 1.2.21：关卡地图累计计数器（30 局窗口边界） ---- */
+{
+  const fs = require('fs');
+  const P21 = require(path.join(MP, 'lib/progress.js'));
+  const runnerSrc21 = fs.readFileSync(path.join(ROOT, 'src/js/40-runner.js'), 'utf8');
+  const playSrc21 = fs.readFileSync(path.join(MP, 'pages/play/play.js'), 'utf8');
+  const swSrc21 = fs.readFileSync(path.join(ROOT, 'docs/sw.js'), 'utf8');
+  const storeSrc21 = fs.readFileSync(path.join(ROOT, 'src/js/10-store.js'), 'utf8');
+  const appSrc21 = fs.readFileSync(path.join(MP, 'app.js'), 'utf8');
+
+  // 复刻 play.finish() 的顺序：先 recordRound，再 finishSession(push+shift)。
+  // 不喂手工假 sessions —— 1.2.16 就是被假数据漏掉真 bug 的。
+  const oneRound = (save, subject, review) => {
+    const round = review
+      ? G.Runner.buildReviewRound(save, G.ROUND_SIZE)
+      : G.Runner.buildSubjectRound(save, subject, G.ROUND_SIZE);
+    const items = round.questions.map((q) => ({
+      qid: q.id, subject: q.subject, correct: true, ms: 700
+    }));
+    if (!items.length) return false;
+    P21.recordRound(save, { review: !!review, aborted: false, items: items });
+    G.Runner.finishSession(save, round, items, [], 0);
+    return true;
+  };
+  const seedWrong = (save) => {
+    save.wrongBook = G.Bank.of('math').slice(0, 3).map((q, i) => ({
+      qid: q.id, subject: 'math', wrongCount: 3,
+      lastWrongAt: Date.now() - i, cleared: false
+    }));
+  };
+
+  /* ① 新存档连打 35 局：旧算法会卡在 30，新计数器必须继续涨。 */
+  const saveA = G.Store.defaultSave();
+  let playedA = 0;
+  for (let i = 0; i < 35; i++) if (oneRound(saveA, 'math', false)) playedA++;
+  eq(playedA, 35, '35 局数学全部走完真实结算链路');
+  eq(saveA.sessions.length, 30, '共用 Runner 仍只留 30 局');
+  eq(P21.windowRounds(saveA, 'math'), 30, '窗口推导值封顶 30，正是老 bug 的根因');
+  eq(saveA.rounds.math, 35, '累计计数器落在存档里且不受裁剪影响');
+  eq(P21.roundsOf(saveA, 'math'), 35, '地图读到 35 局，不再卡在 30');
+  ok(/第 6 轮/.test(P21.levelMapBySubject(saveA).math.lapText),
+     '35 局后地图走到第 6 轮，不再定格第 5 轮');
+
+  /* 真实结算页端到端：确认 play.finish() 接线生效，不是只在测试里复刻。 */
+  const p21 = makeInstance(loadPage('pages/play/play.js'));
+  const saveE2E = G.Store.defaultSave();
+  p21.save = saveE2E;
+  p21.review = false;
+  p21.subject = 'math';
+  p21.clearTimers = function () {};
+  const lastResult21 = app.globalData.lastResult;
+  const nav21 = wx.__lastNav;
+  for (let i = 0; i < 32; i++) {
+    p21.results = [true, true, true, true, true, true, true, true, true, false];
+    p21.items = p21.results.map((c, j) => ({
+      qid: 'e2e' + i + '_' + j, subject: 'math', correct: c, ms: 100
+    }));
+    p21.round = { questions: p21.results.map(() => ({})), startedAt: Date.now() + i };
+    p21.finish();
+  }
+  eq(saveE2E.sessions.length, 30, '真实结算页同样只留 30 局');
+  eq(saveE2E.rounds.math, 32, '真实结算页把 32 局都记进计数器');
+  eq(P21.roundsOf(saveE2E, 'math'), 32, '真实结算页的地图不封顶');
+  app.globalData.lastResult = lastResult21;
+  wx.__lastNav = nav21;
+
+  /* ② 5 局复习局把普通局挤出窗口：窗口值掉到 25，地图不倒退。 */
+  seedWrong(saveA);
+  let reviewsA = 0;
+  for (let i = 0; i < 5; i++) if (oneRound(saveA, '', true)) reviewsA++;
+  eq(reviewsA, 5, '5 局复习局都能组出题');
+  eq(P21.windowRounds(saveA, 'math'), 25, '窗口里被挤掉 5 条普通局');
+  eq(saveA.rounds.math, 35, '复习局不给任何科目 +1');
+  eq(P21.roundsOf(saveA, 'math'), 35, '复习局挤出后地图不倒退');
+  eq(saveA.rounds.chinese, undefined, '数学的局不串到语文');
+
+  /* 冷启动固化：升级后第一局就是复习局，也不能再倒退一次。 */
+  const saveB = G.Store.defaultSave();
+  for (let i = 0; i < 30; i++) {
+    saveB.sessions.push({ ts: Date.now(), items: [{ subject: 'math' }] });
+  }
+  eq(saveB.rounds, undefined, '升级前存档没有计数器');
+  eq(P21.ensureRounds(saveB), true, '冷启动为老存档补出计数器');
+  eq(saveB.rounds.math, 30, '起点取窗口值，升级这一刻不跳也不退');
+  eq(saveB.rounds.chinese, 0, '没打过的科目从 0 起算');
+  eq(P21.ensureRounds(saveB), false, '已初始化的存档不重复写');
+  seedWrong(saveB);
+  for (let i = 0; i < 5; i++) oneRound(saveB, '', true);
+  eq(P21.windowRounds(saveB, 'math'), 25, '复习局照样挤掉 5 条普通局');
+  eq(P21.roundsOf(saveB, 'math'), 30, '升级后立刻锁住，第一局是复习局也不倒退');
+  oneRound(saveB, 'math', false);
+  eq(P21.roundsOf(saveB, 'math'), 31, '锁住之后普通局继续正常前进');
+  const sBad = { sessions: [{ items: [{ subject: 'math' }] }], rounds: [] };
+  eq(P21.ensureRounds(sBad), true, '脏 rounds 被重建');
+  eq(sBad.rounds.math, 1, '重建时按窗口值补齐');
+  ok(/progress\.ensureRounds\(save\)/.test(appSrc21), 'app.onLaunch 里真的调用了固化');
+  ok(appSrc21.indexOf('progress.ensureRounds(save)') < appSrc21.indexOf('G.Store.save(save)'),
+     '固化在启动那次落盘之前');
+
+  /* ③ 老存档兜底：精确复现用户实测的「30 局 → 第 5 轮·通关」。 */
+  const saveC = G.Store.defaultSave();
+  for (let i = 0; i < 30; i++) {
+    saveC.sessions.push({ ts: Date.now(), items: [{ subject: 'math' }] });
+  }
+  eq(saveC.rounds, undefined, '老存档没有计数器');
+  eq(P21.roundsOf(saveC, 'math'), 30, '无计数器时按窗口值兜底');
+  eq(P21.levelMapBySubject(saveC).math.fullTitle, '第 5 轮 · 通关',
+     '复现实测：30 局数学显示第 5 轮 · 通关');
+  oneRound(saveC, 'math', false);
+  eq(P21.roundsOf(saveC, 'math'), 31, '升级后第 31 局真的前进（不是拿窗口值起步又卡住）');
+  seedWrong(saveC);
+  for (let i = 0; i < 5; i++) oneRound(saveC, '', true);
+  eq(P21.windowRounds(saveC, 'math'), 25,
+     '旧算法此刻会退回第 5 轮 · 第 2 关（用户实测的倒退）');
+  eq(P21.roundsOf(saveC, 'math'), 31, '新算法把轮次钉在累计值，不再倒退');
+  ok(/第 6 轮/.test(P21.levelMapBySubject(saveC).math.lapText),
+     '升级后继续前进到第 6 轮');
+
+  /* ④ 脏计数器：导入旧备份 / 手改存档不能把 NaN 交给 WXML。 */
+  [NaN, -5, 'oops', Infinity, null, [], {}, true, 2.9].forEach((v) => {
+    const sd = {
+      sessions: [{ items: [{ subject: 'math' }] }, { items: [{ subject: 'math' }] }],
+      rounds: { math: v }
+    };
+    eq(P21.roundsOf(sd, 'math'), 2, '脏计数器回落窗口值：' + String(v));
+    P21.recordRound(sd, { items: [{ subject: 'math' }] });
+    ok(typeof sd.rounds.math === 'number' && isFinite(sd.rounds.math)
+       && sd.rounds.math === 3, '脏计数器写入后仍是有限整数：' + String(v));
+  });
+  eq(P21.roundsOf({ sessions: 'oops', rounds: { math: 7 } }, 'math'), 7,
+     'sessions 非数组时仍认计数器');
+  ok(!/NaN|Infinity/.test(JSON.stringify(P21.levelMap({ rounds: { math: NaN }, sessions: [] }))),
+     '地图数据里没有 NaN / Infinity');
+
+  /* ⑤ 不计入口径：和 subjectOf / 真实 session 完全一致。 */
+  const sF = G.Store.defaultSave();
+  eq(P21.recordRound(sF, { review: true, items: [{ subject: 'math' }] }), false,
+     '复习局不 +1');
+  eq(P21.recordRound(sF, { aborted: true, items: [{ subject: 'math' }] }), false,
+     '中途退出不 +1');
+  eq(P21.recordRound(sF, { items: [{ subject: 'math' }, { subject: 'chinese' }] }), false,
+     '混合科目局不 +1');
+  eq(P21.recordRound(sF, { items: [] }), false, '0 题局不 +1');
+  eq(P21.recordRound(sF, { items: [{ subject: 'nope' }] }), false, '未知科目不 +1');
+  eq(sF.rounds, undefined, '以上都不在存档里建字段');
+  eq(P21.recordRound(sF, { items: [{ subject: 'math' }] }), true, '正常单科局写入');
+  eq(sF.rounds.math, 1, '第一局从 1 起算');
+  eq(P21.roundsOf(sF, 'chinese'), 0, '不串科');
+  eq(P21.roundsOf(sF, 'english'), 0, '第三科也不串');
+
+  /* ⑥ 备份往返 + 网页版零改动。 */
+  const roundTrip21 = JSON.parse(JSON.stringify(saveA));
+  eq(roundTrip21.rounds.math, 35, '导出再导入的 JSON 往返保留累计局数');
+  ok(/save:\s*s\b/.test(storeSrc21), 'exportAll 全量带存档，不列字段白名单');
+  ok(/_cache = migrate\(payload\.save\)/.test(storeSrc21), 'importAll 走 migrate');
+  ok(!/delete save\[/.test(storeSrc21), 'migrate 不删未知字段，rounds 不会被抹掉');
+  ok(!/save\.rounds|recordRound/.test(runnerSrc21), '共用 Runner 没被改');
+  ok(/progress\.recordRound\(this\.save/.test(playSrc21), '计数器只在小程序结算页写入');
+  const idxRec21 = playSrc21.indexOf('progress.recordRound(this.save');
+  const idxFin21 = playSrc21.indexOf('G.Runner.finishSession(this.save');
+  ok(idxRec21 > 0 && idxFin21 > idxRec21,
+     '计数器写在 finishSession 之前，蹭同一次落盘');
+  ok(/yxjx-6ee740ece2/.test(swSrc21), 'docs/sw.js 缓存哈希不变，网页版不用重新部署');
 }
 
 /* ---- 9. 备份 ---- */

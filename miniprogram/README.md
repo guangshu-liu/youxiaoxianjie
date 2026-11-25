@@ -631,6 +631,55 @@ WXML 的 `answered` 挡着 —— 模板改错一行就泄题。现在 `visual.f
 三次错误 / 冷却中拦截 / 解锁与离开页面清定时器、全 49 道分步题的
 `steps.rest` 不泄题、失效 qid 不占怪物名额、工具链静态断言。
 
+## 1.2.21：关卡地图改成真正的累计进度
+
+**根因。** `src/js/40-runner.js` 的 `finishSession()` / `abandonSession()`
+都在 push 之后执行 `while (save.sessions.length > 30) save.sessions.shift()`。
+1.2.16 的 `roundsOf()` 只遍历这个窗口，于是：
+
+| 实测 | 窗口内数学局数 | 旧地图 |
+| --- | --- | --- |
+| 连打 30 局数学 | 30 | 第 5 轮 · 通关 |
+| 再打 5 局复习局 | 25 | 第 5 轮 · 第 2 关（倒退） |
+
+单科连玩时窗口值恒为 30，地图**永久定格**，不是「慢一点」；复习局本身
+被 `subjectOf()` 排除，但它会挤掉窗口里的普通局，于是进度往回走。和
+`progress.js` 里「永远有下一关」的注释直接矛盾。星星账目、答题、折线、
+复习按钮都不受影响 —— 折线和今日局数本来就是「最近 / 今日」语义，
+30 局裁剪对它们是合理的，不用跟着改。
+
+**改法。** 存档里新增独立计数器 `save.rounds = { chinese, math, english }`：
+
+- `windowRounds(save, subject)`：抽出原来的窗口推导，降级为老存档兜底。
+- `countOf(v)`：计数器只认有限非负整数，字符串 / NaN / 负数 / 数组 /
+  对象一律当 0，避免脏值经 `max()` 把 `NaN` 交给 `levelMap()` 的 WXML。
+- `roundsOf()` = `max(countOf(save.rounds[subject]), windowRounds(...))`。
+- `recordRound(save, probe)`：整局结算时 +1。**必须在 `finishSession()`
+  之前调用** —— 它 push 后立刻 shift，窗口满 30 时窗口值根本不涨，
+  只有计数器能体现这一局；先写也正好蹭它内部那次 `G.Store.save()`
+  一起落盘。传入的判定对象刻意不带 `subject`，让 `subjectOf()` 走和
+  真实 session 完全一样的 `items` 推断路径：复习局 / 中途退出 /
+  混合科目 / 0 题局一律不计入。
+- `ensureRounds(save)`：`app.onLaunch` 在启动落盘前把老存档的窗口值
+  固化成计数器起点。只靠 `recordRound` 的话，升级后第一局若是复习局，
+  窗口被挤掉而计数器还没建立，地图仍会倒退一次。
+
+**为什么不用动 `10-store.js`。** `migrate()` 只补字段不删未知字段，
+`exportAll()` 全量带 `save`，`importAll()` 用 `migrate(payload.save)`
+覆盖 `_cache`，`parent.js` 导入成功后还会刷新 `getApp().globalData.save`。
+所以 `rounds` 会跟着备份走，不需要动共用逻辑，网页版产物哈希不变。
+
+**明确修不好的部分。** 升级前已经滚出 30 局窗口的历史局数找不回来 ——
+存档从没记过，不是算错。升级后地图从当前可见轮次继续前进，不补算。
+同理，导入**旧版本**备份会回到那个备份的进度，这是恢复快照的预期行为。
+
+无头断言 727 → 798 项。新增覆盖：真实结算链路连打 35 局不封顶、
+真实 `play.finish()` 连打 32 局端到端、5 局复习挤出窗口不倒退、
+冷启动固化后先打复习局不倒退、精确复现实测的「第 5 轮 · 通关」、
+九种脏计数器、不计入的五种口径、备份 JSON 往返与 `migrate` 静态断言、
+`recordRound` 在 `finishSession` 之前的顺序、共用 Runner 与 `docs/sw.js`
+零改动。1.2.16 那组地图断言改为隔离 `save.rounds` 后再验「没玩过」。
+
 ## 已知风险
 
 - `wx.createWebAudioContext()` 需要基础库 **2.19.0+**。拿不到上下文时音效退化
@@ -654,7 +703,7 @@ WXML 的 `answered` 挡着 —— 模板改错一行就泄题。现在 `visual.f
 ## 测试
 
 ```bash
-npm run mp:test      # wx 桩 + Node，727 项断言
+npm run mp:test      # wx 桩 + Node，798 项断言
 ```
 
 覆盖：启动顺序、存档读写、混合局与单科局、星星与徽章边界、一整局答题的推进与结算、

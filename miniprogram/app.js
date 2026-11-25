@@ -9,6 +9,7 @@
 var G = require('./generated/lib/game.js');
 var bank = require('./generated/data/bank.js');
 var audio = require('./lib/audio.js');
+var progress = require('./lib/progress.js');
 
 App({
   globalData: {
@@ -24,6 +25,11 @@ App({
 
     var save = G.Store.load();
     G.Bank.init(bank);
+
+    // 1.2.21：sessions 只留 30 条。老存档升级时先把窗口值固化成累计计数器
+    // 起点，否则第一局若是复习局，地图还会倒退一次。必须在下面 save()
+    // 之前做，让它一起落盘；新存档三科都是 0，无副作用。
+    progress.ensureRounds(save);
 
     // 覆盖构建产物里的存根。必须在 Store.load 之后、任何备份操作之前。
     G.Audio = audio;

@@ -1,11 +1,16 @@
 /* progress.js — 1.2.16 第二批：把 sessions 变成「看得到的前进」
  *
- * 全是纯读函数：只读 save，不写存档、不碰 wx，页面负责渲染和写设置。
+ * 除 recordRound 外全是纯读函数：只读 save，不写存档、不碰 wx，页面负责
+ * 渲染和写设置。recordRound 是唯一写入口，只在整局结算时调一次。
  * 刻意只放小程序端、不进 src/js/ —— 网页版产物哈希保持零改动。
  *
  *   1. levelMap    三科各自的 6 关小地图，按累计完成局数点亮
  *   2. trend       最近 10 局正确率折线的坐标（rpx 单位，纯数据不画图）
  *   3. bigTextOf   家长开关「大字模式」的统一口径
+ *
+ * 1.2.21：sessions 在共用 Runner 里被硬裁到 30 条，光数这个窗口会让地图
+ * 停在第 5 轮、还会被复习局挤出倒退。于是存档里另存一份真正的累计计数器
+ * save.rounds，roundsOf() 取 max(计数器, 窗口值) —— 后者兜住老存档。
  *
  * 三者都不碰 points / redemptions / sessions：星星账目仍只有整局结算
  * 一个入口，家长页三方审计和每日 60 星上限不受影响。
@@ -47,8 +52,8 @@ function subjectOf(s) {
   return first;
 }
 
-/** 某科累计完成的局数。中途退出、复习局、混合科目局都不算。 */
-function roundsOf(save, subject) {
+/** 只数最近 30 条窗口。1.2.21 起只作为老存档的兜底，不再是唯一真相源。 */
+function windowRounds(save, subject) {
   var sessions = (save && save.sessions) || [];
   if (!Array.isArray(sessions)) return 0;
   var n = 0;
@@ -56,6 +61,75 @@ function roundsOf(save, subject) {
     if (subjectOf(sessions[i]) === subject) n++;
   }
   return n;
+}
+
+/**
+ * 计数器只认有限非负整数。导入的旧备份 / 手改存档里可能是字符串、NaN、
+ * 负数、数组甚至对象，直接进 max() 会把 NaN 一路带给 levelMap 的 WXML。
+ * 不合法就当 0，让窗口值兜底。
+ */
+function countOf(v) {
+  return (typeof v === 'number' && isFinite(v) && v >= 0) ? Math.floor(v) : 0;
+}
+
+/** 某科累计完成的局数。中途退出、复习局、混合科目局都不算。 */
+function roundsOf(save, subject) {
+  var counted = countOf(save && save.rounds && save.rounds[subject]);
+  var windowed = windowRounds(save, subject);
+  return Math.max(counted, windowed);
+}
+
+/**
+ * 冷启动时把老存档的窗口值固化成计数器起点。
+ *
+ * 只靠 recordRound 的话，升级后第一局若是复习局，窗口里的普通局被挤掉、
+ * 计数器还没建立，地图仍会倒退一次。这里在 app.onLaunch 就锁住升级点：
+ * 之后无论打多少复习局，roundsOf 都有计数器保底。
+ * 已经滚出窗口的历史局数照样找不回，存档从没记过。
+ */
+function ensureRounds(save) {
+  if (!save || typeof save !== 'object') return false;
+  var rounds = save.rounds;
+  if (!rounds || typeof rounds !== 'object' || Array.isArray(rounds)) {
+    rounds = {};
+    save.rounds = rounds;
+  }
+  var changed = false;
+  G.SUBJECTS.forEach(function (s) {
+    if (rounds[s] === undefined) {
+      rounds[s] = windowRounds(save, s);
+      changed = true;
+    }
+  });
+  return changed;
+}
+
+/**
+ * 整局结算时把真正的累计局数 +1。
+ *
+ * 必须在 finishSession() **之前**调用：它内部 push 后立刻 shift，窗口满 30
+ * 时窗口值根本不会涨，只有计数器能体现这一局；先写也正好蹭它内部那次
+ * G.Store.save() 一起落盘，不用多存一遍。
+ *
+ * 老存档第一次走到这里时计数器不存在，用当前窗口值起步 —— 升级这一刻
+ * 地图不倒退。已经滚出窗口的历史局数没处找回，存档从没记过，不是算错。
+ *
+ * 调用方传入的判定对象刻意不带 subject，让 subjectOf() 走和 finishSession
+ * 真实产物完全一样的 items 推断路径：复习局 / 中途退出 / 混合科目局 /
+ * 0 题局一律不计入。
+ */
+function recordRound(save, session) {
+  var sub = subjectOf(session);
+  if (!sub || G.SUBJECTS.indexOf(sub) < 0) return false;
+  if (!save || typeof save !== 'object') return false;
+
+  var rounds = save.rounds;
+  if (!rounds || typeof rounds !== 'object' || Array.isArray(rounds)) {
+    rounds = {};
+    save.rounds = rounds;
+  }
+  rounds[sub] = Math.max(countOf(rounds[sub]), windowRounds(save, sub)) + 1;
+  return true;
 }
 
 /**
@@ -193,6 +267,9 @@ module.exports = {
   CHART_W: CHART_W,
   CHART_H: CHART_H,
   roundsOf: roundsOf,
+  windowRounds: windowRounds,
+  ensureRounds: ensureRounds,
+  recordRound: recordRound,
   subjectOf: subjectOf,
   levelMap: levelMap,
   levelMapBySubject: levelMapBySubject,

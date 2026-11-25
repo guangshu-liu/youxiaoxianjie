@@ -422,6 +422,18 @@ Page({
     // 否则三方审计会发现「本次入账」对不上累计值。
     var lifetimeBefore = this.save.points.lifetime;
     var award = G.Runner.awardPoints(this.save, nominal);
+
+    // 1.2.21：sessions 只留 30 条，关卡地图光数窗口会卡住、还会被复习局
+    // 挤出倒退。这里写一份真正的累计计数器。顺序必须在 finishSession
+    // 之前：它 push 后立刻 shift，窗口满 30 时窗口值不再涨；蹭它内部
+    // 那次 G.Store.save() 一起落盘。
+    // 判定对象刻意不带 subject，让 subjectOf() 走和真实 session 一样的
+    // items 推断路径 —— 复习局 / 混合科目局 / 0 题局一律不计入。
+    progress.recordRound(this.save, {
+      review: this.review,
+      aborted: false,
+      items: this.items
+    });
     G.Runner.finishSession(this.save, this.round, this.items, [], award.awarded);
 
     getApp().globalData.lastResult = {
