@@ -95,71 +95,136 @@ view, text, button, input, textarea {
 .btn-xs  { font-size: 15px; min-height: 36px; padding: 5px 11px; border-radius: var(--r-sm); }
 .btn-icon { min-width: var(--tap); width: var(--tap); font-size: 24px; padding: 0; }
 
-/* ---------- 首页 ---------- */
+/* ---------- 首页（1.2.23 卡片式版式） ----------
+ * 方向：三科从三条横条改成横排三张大圆角卡片、科名竖排、关卡点落在
+ * 卡片底部；顶部星星与徽章压缩成「一行进度 + 一排小徽章」，中间留白。
+ * 星星、徽章、小怪物、每日目标、复习入口这些既有功能一个不删，只收尺寸。
+ * 尺寸仍用 px（按 375pt 排的），卡片用 flex:1 横向自适应。 */
 
 .screen-home {
   justify-content: center;
   align-items: center;
   text-align: center;
-  /* 1.2.15 多了一行错题小怪物，整体间距收 2px 换回来，别把首页顶出屏幕。 */
-  gap: 14px;
+  gap: 11px;
 }
 
+.home-head { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .home-title {
-  font-size: 46px;
+  font-size: 30px;
   font-weight: 800;
-  letter-spacing: 4px;
-  color: var(--c-primary-d);
-  text-shadow: 0 3px 0 rgba(255,255,255,.9), 0 6px 16px rgba(244,112,63,.22);
+  letter-spacing: 2px;
+  color: var(--c-ink);
+  text-shadow: none;
 }
+.home-sub { font-size: 14px; color: var(--c-ink-soft); letter-spacing: 1px; margin: 0; }
 
-.home-sub { font-size: 19px; color: var(--c-ink-soft); letter-spacing: 2px; margin-bottom: 4px; }
-
-.home-stats { margin: 4px 0 10px; }
-
-.home-points {
-  font-size: 68px;
-  font-weight: 800;
-  color: var(--c-second);
-  line-height: 1;
-  text-shadow: 0 3px 0 rgba(255,255,255,.9);
-}
-
-.home-points-label { font-size: 17px; color: var(--c-ink-soft); letter-spacing: 4px; }
-
-.home-row { display: flex; gap: var(--gap); width: 100%; max-width: 520px; }
-.home-row .btn { flex: 1; }
-
-/* 三科入口。一局只出一科。 */
-.subject-list {
+.home-progress-row {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 10px;
   width: 100%;
   max-width: 520px;
 }
+.home-stats { display: flex; align-items: baseline; gap: 5px; margin: 0; flex-shrink: 0; }
+.home-points {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--c-second);
+  line-height: 1;
+  text-shadow: none;
+}
+.home-points-label { font-size: 13px; color: var(--c-ink-soft); letter-spacing: 1px; }
 
+.home-row { display: flex; gap: 12px; width: 100%; max-width: 520px; }
+.home-row .btn { flex: 1; }
+.home-action {
+  min-height: 92px;
+  padding: 10px 8px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.78);
+  border: 2px solid var(--c-line);
+  color: var(--c-ink);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.35;
+  box-shadow: 0 4px 0 rgba(0,0,0,.05);
+}
+.home-last { margin-top: 2px; font-size: 15px; color: var(--c-ink-soft); }
+
+/* 三科入口。一局只出一科；横排大卡片，科名竖排两字。 */
+.subject-list {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+  margin: 6px 0 2px;
+}
 .subject-btn {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 176px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 5px 0 rgba(0,0,0,.08), 0 10px 20px rgba(0,0,0,.07);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
 }
+/* 小程序 button 默认 ::after 边框，卡片上会变成一圈白线 */
+.subject-btn::after { border: none; }
+.subject-cn { background: linear-gradient(180deg, #FFA883 0%, #FF8A65 100%); }
+.subject-ma { background: linear-gradient(180deg, #84DAFF 0%, #4FC3F7 100%); }
+.subject-en { background: linear-gradient(180deg, #8BE58B 0%, #66BB6A 100%); }
 
-.subject-emoji { font-size: 32px; }
-.subject-name { font-size: 30px; font-weight: 800; letter-spacing: 4px; }
-
-/* ---------- 三科闯关地图（1.2.16） ----------
- * 关卡点塞在原有三科按钮内部右侧，不新增一行：首页已经被徽章、进度条、
- * 小怪物占满，再叠一排会把底部复习按钮顶出小屏。白点在彩色按钮上都
- * 看得清；「下一关」用空心圈标出，没有循环动画。
- * 1.2.22：去掉按钮里的「第 5 轮 · 第 2 关」文字。那串 nowrap 文字是
- * 选课行里最占地方的元素，小屏上把三个按钮挤得又满又大。现在只留
- * 一排小点，尺寸顺带收一格；数据层 fullTitle / 累计进度全部照旧。 */
-.level-inline {
+.subject-emoji {
+  position: absolute;
+  top: 14px;
+  left: 12px;
   display: flex;
   align-items: center;
-  margin-left: auto;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(45,49,66,.22);
+  font-size: 18px;
+  line-height: 1;
+}
+.subject-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: 0;
+  text-shadow: 0 2px 3px rgba(0,0,0,.12);
+}
+.subject-name text { display: block; }
+
+/* ---------- 三科闯关地图（1.2.16 / 1.2.22 / 1.2.23） ----------
+ * 关卡点一直挂在三科按钮内部，不新增一行。1.2.22 去掉「第几关」文字，
+ * 1.2.23 改成卡片后把这排点绝对定位到卡片底部居中。白点在彩色卡片上
+ * 都看得清；「下一关」用空心圈标出，没有循环动画。
+ * 数据层 fullTitle / 累计进度照旧，随时能恢复文字。 */
+.level-inline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .level-track { display: flex; gap: 4px; }
 .level-node {
@@ -172,20 +237,11 @@ view, text, button, input, textarea {
 .level-done { background: #fff; border-color: #fff; }
 .level-now { width: 12px; height: 12px; background: transparent; border: 2px solid #fff; }
 
-.subject-en {
-  background: linear-gradient(180deg, #8BE58B 0%, #66BB6A 100%);
-  color: #fff;
-}
-
-.home-last { margin-top: 18px; font-size: 17px; color: var(--c-ink-soft); }
-
-.screen-home .btn-xl { max-width: 520px; }
-
 /* ---------- 徽章 ---------- */
 
 .badge-strip {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -194,10 +250,10 @@ view, text, button, input, textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  width: 74px;
-  padding: 8px 4px;
-  border-radius: var(--r-md);
+  gap: 1px;
+  width: 54px;
+  padding: 5px 2px;
+  border-radius: 12px;
   background: rgba(255,255,255,.55);
   border: 2px solid var(--c-line);
   opacity: .45;
@@ -213,8 +269,8 @@ view, text, button, input, textarea {
   box-shadow: 0 4px 0 rgba(79,195,247,.25);
 }
 
-.badge-emoji { font-size: 30px; line-height: 1.1; }
-.badge-name  { font-size: 14px; color: var(--c-ink-soft); }
+.badge-emoji { font-size: 22px; line-height: 1.1; }
+.badge-name  { font-size: 11px; color: var(--c-ink-soft); }
 
 /* 家长确认线下兑现后的小角标：绝对定位，不占徽章条高度。 */
 .badge-claimed {
@@ -225,7 +281,7 @@ view, text, button, input, textarea {
   border-radius: 999px;
   background: var(--c-ok);
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.4;
 }
 
@@ -271,9 +327,10 @@ view, text, button, input, textarea {
 .hp-dot.hp-on { background: var(--c-bad); border-color: var(--c-bad); }
 
 .badge-progress {
-  width: 100%;
-  max-width: 520px;
-  height: 14px;
+  flex: 1;
+  width: auto;
+  max-width: none;
+  height: 12px;
   border-radius: 999px;
   background: #EFE7D6;
   overflow: hidden;
@@ -286,7 +343,7 @@ view, text, button, input, textarea {
   transition: width .4s ease;
 }
 
-.home-next { font-size: 16px; color: var(--c-ink-soft); }
+.home-next { font-size: 13px; color: var(--c-ink-soft); }
 
 /* ---------- 答题 ---------- */
 
@@ -947,7 +1004,7 @@ view, text, button, input, textarea {
 .big-text .option-single .option-text { font-size: 62px; }
 .big-text .options-big-number .option-text { font-size: 56px; }
 .big-text .explain { font-size: 24px; }
-.big-text .subject-name { font-size: 36px; }
+.big-text .subject-name { font-size: 50px; }
 .big-text .home-sub { font-size: 22px; }
 .big-text .home-next { font-size: 19px; }
 .big-text .home-last { font-size: 19px; }

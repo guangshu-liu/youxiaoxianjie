@@ -1,10 +1,17 @@
 <view class="screen screen-home {{bigText ? 'big-text' : ''}}">
-  <view class="home-title">幼小衔接闯关</view>
-  <view class="home-sub {{goalReached ? 'home-sub-done' : ''}}">{{subTitle}}</view>
+  <view class="home-head">
+    <view class="home-title">幼小衔接闯关</view>
+    <view class="home-sub {{goalReached ? 'home-sub-done' : ''}}">{{subTitle}}</view>
+  </view>
 
-  <view class="home-stats">
-    <view class="home-points">{{stars}}</view>
-    <view class="home-points-label">星星</view>
+  <view class="home-progress-row">
+    <view class="home-stats">
+      <view class="home-points">{{stars}}</view>
+      <view class="home-points-label">星星</view>
+    </view>
+    <view class="badge-progress">
+      <view class="badge-progress-bar" style="width:{{progressPct}}%"></view>
+    </view>
   </view>
 
   <view class="badge-strip">
@@ -13,10 +20,6 @@
       <text class="badge-name">{{item.name}}</text>
       <text wx:if="{{item.claimed}}" class="badge-claimed">已换</text>
     </view>
-  </view>
-
-  <view class="badge-progress">
-    <view class="badge-progress-bar" style="width:{{progressPct}}%"></view>
   </view>
 
   <view class="home-next" wx:if="{{nextBadge}}">
@@ -39,24 +42,27 @@
   </view>
 
   <view class="subject-list">
-    <button class="btn btn-primary btn-xl subject-btn" data-subject="chinese" bindtap="onStart">
-      <text class="subject-emoji">📖</text><text class="subject-name">语文</text>
+    <button class="subject-btn subject-cn" data-subject="chinese" bindtap="onStart">
+      <text class="subject-emoji">📖</text>
+      <view class="subject-name"><text>语</text><text>文</text></view>
       <view wx:if="{{levels}}" class="level-inline">
         <view class="level-track">
           <view wx:for="{{levels.chinese.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
         </view>
       </view>
     </button>
-    <button class="btn btn-secondary btn-xl subject-btn" data-subject="math" bindtap="onStart">
-      <text class="subject-emoji">🔢</text><text class="subject-name">数学</text>
+    <button class="subject-btn subject-ma" data-subject="math" bindtap="onStart">
+      <text class="subject-emoji">🔢</text>
+      <view class="subject-name"><text>数</text><text>学</text></view>
       <view wx:if="{{levels}}" class="level-inline">
         <view class="level-track">
           <view wx:for="{{levels.math.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
         </view>
       </view>
     </button>
-    <button class="btn btn-xl subject-btn subject-en" data-subject="english" bindtap="onStart">
-      <text class="subject-emoji">🔤</text><text class="subject-name">英语</text>
+    <button class="subject-btn subject-en" data-subject="english" bindtap="onStart">
+      <text class="subject-emoji">🔤</text>
+      <view class="subject-name"><text>英</text><text>语</text></view>
       <view wx:if="{{levels}}" class="level-inline">
         <view class="level-track">
           <view wx:for="{{levels.english.nodes}}" wx:key="i" class="level-node {{item.done ? 'level-done' : ''}} {{item.now ? 'level-now' : ''}}"></view>
@@ -66,8 +72,8 @@
   </view>
 
   <view class="home-row">
-    <button wx:if="{{reviewRoundSize >= 3}}" class="btn btn-ghost" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
-    <button class="btn btn-ghost" bindtap="onParent">👨‍👩‍👧 家长</button>
+    <button wx:if="{{reviewRoundSize >= 3}}" class="btn btn-ghost home-action" bindtap="onReview">🔁 复习错题（本局 {{reviewRoundSize}} 题）</button>
+    <button class="btn btn-ghost home-action" bindtap="onParent">👨‍👩‍👧 家长</button>
   </view>
 
   <view class="home-last" wx:if="{{lastText}}">{{lastText}}</view>

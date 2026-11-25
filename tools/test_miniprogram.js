@@ -2328,6 +2328,65 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
      '数据层文案与累计进度保留，随时能恢复显示');
 }
 
+/* ---- 8R. 1.2.23：首页按参考图改成卡片式版式 ---- */
+{
+  const fs = require('fs');
+  const wxml23 = fs.readFileSync(path.join(MP, 'pages/home/home.wxml'), 'utf8');
+  const wxss23 = fs.readFileSync(path.join(MP, 'app.wxss'), 'utf8');
+  const sw23 = fs.readFileSync(path.join(ROOT, 'docs/sw.js'), 'utf8');
+
+  /* 三科横排大卡片 */
+  const listBlock23 = wxss23.slice(wxss23.indexOf('.subject-list {'),
+                                   wxss23.indexOf('.subject-btn {'));
+  ok(/flex-direction:\s*row/.test(listBlock23), '三科入口从三条横条改成横排');
+  const cardBlock23 = wxss23.slice(wxss23.indexOf('.subject-btn {'),
+                                   wxss23.indexOf('.subject-cn '));
+  ok(/height:\s*176px/.test(cardBlock23) && /border-radius:\s*28px/.test(cardBlock23),
+     '选课按钮是大圆角卡片');
+  ok(/\.subject-btn::after\s*\{\s*border:\s*none/.test(wxss23),
+     '去掉小程序 button 默认的 ::after 描边');
+  ['subject-cn', 'subject-ma', 'subject-en'].forEach((c) => {
+    ok(wxml23.indexOf('class="subject-btn ' + c + '"') >= 0, c + ' 保留自己的配色');
+  });
+  eq((wxml23.match(/<view class="subject-name">/g) || []).length, 3, '三科科名都在');
+  const nameBlock23 = wxss23.slice(wxss23.indexOf('.subject-name {'),
+                                   wxss23.indexOf('.subject-name text'));
+  ok(/flex-direction:\s*column/.test(nameBlock23), '科名竖排两字');
+  ok(/<view class="subject-name"><text>语<\/text><text>文<\/text><\/view>/.test(wxml23),
+     '语文拆成竖排两字');
+
+  /* 关卡点落在卡片底部，仍不新增一行 */
+  const inlineBlock23 = wxss23.slice(wxss23.indexOf('.level-inline {'),
+                                     wxss23.indexOf('.level-track'));
+  ok(/position:\s*absolute/.test(inlineBlock23) && /bottom:\s*14px/.test(inlineBlock23),
+     '关卡点绝对定位到卡片底部');
+  eq((wxml23.match(/class="level-inline"/g) || []).length, 3,
+     '仍是每组一排在按钮内部');
+
+  /* 顶部压缩、底部两个大按钮 */
+  ok(/class="home-progress-row"/.test(wxml23), '星星与进度条并成一行');
+  ok(/flex:\s*1/.test(wxss23.slice(wxss23.indexOf('.badge-progress {'),
+                                  wxss23.indexOf('.badge-progress-bar'))),
+     '进度条在行内占满剩余宽度');
+  eq((wxml23.match(/home-action/g) || []).length, 2, '复习与家长两个按钮改成大卡片');
+  ok(/min-height:\s*92px/.test(wxss23), '底部按钮加高');
+  ok(/font-size:\s*30px/.test(wxss23.slice(wxss23.indexOf('.home-title {'),
+                                           wxss23.indexOf('.home-sub {'))),
+     '标题收敛，不再用 46px 抢位置');
+
+  /* 功能一个没删：星星、徽章、小怪物、目标、复习、上次成绩、大字 */
+  ['badge-strip', 'badge-progress-bar', 'monster-row', 'home-next',
+   'home-last', 'big-text'].forEach((c) => {
+    ok(wxml23.indexOf(c) >= 0, c + ' 功能元素保留');
+  });
+  ok(/本局 \{\{reviewRoundSize\}\} 题/.test(wxml23), '复习按钮仍报本局题数');
+  ok(/\{\{stars\}\}/.test(wxml23) && /\{\{lastText\}\}/.test(wxml23),
+     '星星与上次成绩仍显示');
+  ok(/\.big-text \.subject-name \{ font-size: 50px; \}/.test(wxss23),
+     '大字模式跟着放大，不会反而缩回 36px');
+  ok(/yxjx-6ee740ece2/.test(sw23), 'docs/sw.js 哈希不变，网页版不用重新部署');
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {
