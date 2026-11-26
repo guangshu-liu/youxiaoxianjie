@@ -2436,6 +2436,100 @@ ok(!!G.Bank.zibiao() && G.Bank.zibiao().chars.length === 136, '字表 136 字');
   ok(/yxjx-6ee740ece2/.test(sw24), 'docs/sw.js 哈希不变，网页版不用重新部署');
 }
 
+/* ---- 8T. 1.2.25：正式版新代码包主动提示重启 ---- */
+{
+  const fs = require('fs');
+  const appSrc25 = fs.readFileSync(path.join(MP, 'app.js'), 'utf8');
+  const sw25 = fs.readFileSync(path.join(ROOT, 'docs/sw.js'), 'utf8');
+  const umBlock25 = appSrc25.slice(appSrc25.indexOf('// 1.2.25'));
+
+  /* 静态：能力检测、三个回调、可取消、失败给出可操作出路。 */
+  ok(/typeof wx\.getUpdateManager === 'function'/.test(umBlock25),
+     '先做能力检测，低版本基础库不炸');
+  ok(/try \{/.test(umBlock25) && /catch \(e\)/.test(umBlock25),
+     '整段包在 try/catch 里');
+  ['onCheckForUpdate', 'onUpdateReady', 'onUpdateFailed', 'applyUpdate'].forEach((k) => {
+    ok(umBlock25.indexOf(k) >= 0, '注册 ' + k);
+  });
+  ok(/cancelText:\s*'稍后再说'/.test(umBlock25), '可以稍后再说，不打断正在答的题');
+  ok(/r && r\.confirm/.test(umBlock25), '只有点确认才重启');
+  ok(/showCancel:\s*false/.test(umBlock25), '下载失败时只给一个「知道了」');
+  ok(/删掉这个小程序/.test(umBlock25), '失败提示给出删掉重进的操作路径');
+  ok(appSrc25.indexOf('// 1.2.25') > appSrc25.indexOf('setInnerAudioOption'),
+     '更新检查排在启动主链路之后，抛错也不影响存档与音频');
+  ok(/yxjx-6ee740ece2/.test(sw25), 'docs/sw.js 哈希不变，网页版不用重新部署');
+
+  /* 动态：默认 wx 桩没有这个 API —— 前面所有断言都跑在低版本路径上。 */
+  eq(typeof wx.getUpdateManager, 'undefined', '默认桩模拟低版本基础库');
+
+  const handlers25 = {};
+  const modals25 = [];
+  let applied25 = 0;
+  let confirm25 = true;
+  const origGetUM25 = wx.getUpdateManager;
+  const origModal25 = wx.showModal;
+  const origInfo25 = console.info;
+  const origWarn25 = console.warn;
+
+  // 桩里故意触发的「抛错」会打一整段堆栈，容易被误读成测试失败。
+  console.info = () => {};
+  console.warn = () => {};
+
+  wx.getUpdateManager = function () {
+    return {
+      onCheckForUpdate: (cb) => { handlers25.check = cb; },
+      onUpdateReady: (cb) => { handlers25.ready = cb; },
+      onUpdateFailed: (cb) => { handlers25.failed = cb; },
+      applyUpdate: () => { applied25++; }
+    };
+  };
+  wx.showModal = function (o) {
+    modals25.push(o);
+    if (o && o.success) o.success({ confirm: confirm25, cancel: !confirm25 });
+  };
+
+  try {
+    app.onLaunch();
+    ['check', 'ready', 'failed'].forEach((k) => {
+      eq(typeof handlers25[k], 'function', 'onLaunch 注册了 ' + k);
+    });
+
+    handlers25.check({ hasUpdate: false });
+    handlers25.check({ hasUpdate: true });
+    eq(modals25.length, 0, '仅检查到新版本不弹窗，等下载完成才提示');
+
+    handlers25.ready();
+    eq(modals25.length, 1, '新包下载完成弹一次重启提示');
+    ok(/重启/.test(modals25[0].confirmText), '确认按钮是「立即重启」');
+    eq(modals25[0].cancelText, '稍后再说', '取消按钮是「稍后再说」');
+    eq(applied25, 1, '点确认才 applyUpdate');
+
+    confirm25 = false;
+    handlers25.ready();
+    eq(modals25.length, 2, '稍后分支也只弹一次');
+    eq(applied25, 1, '点稍后再说不重启，孩子能接着答完这局');
+
+    confirm25 = true;
+    handlers25.failed();
+    eq(modals25.length, 3, '下载失败也给提示');
+    eq(modals25[2].showCancel, false, '失败提示只有一个按钮');
+    ok(/删掉这个小程序/.test(modals25[2].content), '失败文案给得出路');
+    eq(applied25, 1, '失败时不会误重启');
+
+    /* 基础库 API 抛错也不能拖垮启动。 */
+    wx.getUpdateManager = function () { throw new Error('mock SDK'); };
+    let threw25 = false;
+    try { app.onLaunch(); } catch (e) { threw25 = true; }
+    eq(threw25, false, 'getUpdateManager 抛错时 onLaunch 仍然正常返回');
+  } finally {
+    wx.showModal = origModal25;
+    console.info = origInfo25;
+    console.warn = origWarn25;
+    if (origGetUM25 === undefined) delete wx.getUpdateManager;
+    else wx.getUpdateManager = origGetUM25;
+  }
+}
+
 /* ---- 9. 备份 ---- */
 {
   G.Store.exportAll().then(() => {

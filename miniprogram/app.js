@@ -56,6 +56,45 @@ App({
 
     // 题干朗读音频在主包 ttsAudio/ 里，随小程序一起下载，无需预热。
     // 和英文单词音频走同一条 InnerAudioContext 路径，断网也能播。
+
+    // 1.2.25：正式版的新代码包是微信异步下发的，界面里又不显示版本号。
+    // 没有这段时用户可能一直跑着旧包，把「开发版和正式版长得不一样」
+    // 当成 bug。新包下载完只弹一次：点「立即重启」才 applyUpdate，
+    // 点「稍后再说」不打断正在答的题（下次冷启动微信自己也会换包）。
+    // 下载失败要给一条能自己操作的出路，否则用户只能干等。
+    // 低版本基础库和部分开发者工具环境没有这个 API，整段做能力检测 + try，
+    // 且放在启动主链路最后 —— 就算它抛错，存档和音频设置也已经完成。
+    try {
+      if (typeof wx.getUpdateManager === 'function') {
+        var updateManager = wx.getUpdateManager();
+        if (updateManager) {
+          updateManager.onCheckForUpdate(function (res) {
+            console.info('[app] 版本检查：' + (res && res.hasUpdate ? '发现新版本' : '已是最新'));
+          });
+          updateManager.onUpdateReady(function () {
+            wx.showModal({
+              title: '发现新版本',
+              content: '新版本已经下载好啦，重启后就能用上。',
+              confirmText: '立即重启',
+              cancelText: '稍后再说',
+              success: function (r) {
+                if (r && r.confirm) updateManager.applyUpdate();
+              }
+            });
+          });
+          updateManager.onUpdateFailed(function () {
+            wx.showModal({
+              title: '更新没成功',
+              content: '请删掉这个小程序，重新搜索进入一次，就能用上最新版。',
+              showCancel: false,
+              confirmText: '知道了'
+            });
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('[app] 版本更新检查不可用', e);
+    }
   },
 
   onHide: function () {
